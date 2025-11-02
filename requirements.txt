@@ -18,7 +18,7 @@ srt==3.5.3
 tqdm==4.67.1
 typing_extensions==4.14.1
 urllib3==2.5.0
-videobeaux @ file:///Users/rr/Downloads/videobeaux
+videobeaux @ file:///Users/tgm/Desktop/videobeaux
 videogrep==2.3.0
 vosk==0.3.44
 websockets==15.0.1
