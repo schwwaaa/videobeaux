@@ -1,0 +1,61 @@
+Top 20 Captburn Commands (V0 baseline) — testfile.mp4 / testfile.json
+
+1) Default pop-on (bottom-center, simple)
+python captburn.py -i testfile.mp4 -t testfile.json --style popon --align 2 --margin-v 100
+
+2) Film dialogue (small serif, outline only)
+python captburn.py -i testfile.mp4 -t testfile.json --style popon --align 2 --font "Baskerville" --italic --font-size 36 --primary "#FFFFFF" --outline "#000000" --outline-width 2 --margin-v 90
+
+3) Fade-in, top-right (Baskerville example)
+python captburn.py -i testfile.mp4 -t testfile.json --style popon --align 9 --font "Baskerville" --italic --shadow 3 --primary "#FFFFFF" --outline "#202020" --outline-width 1 --margin-r 80 --margin-v 100
+
+4) Lower‑third speaker ID (bottom-left, smaller)
+python captburn.py -i testfile.mp4 -t testfile.json --style popon --align 1 --font "Source Sans 3" --bold --font-size 30 --outline "#000000" --outline-width 2 --margin-l 100 --margin-v 120
+
+5) Top-center prompt/question
+python captburn.py -i testfile.mp4 -t testfile.json --style popon --align 8 --font "Source Sans 3" --font-size 34 --outline "#000000" --outline-width 2 --margin-v 90
+
+6) Center title card (bold, larger)
+python captburn.py -i testfile.mp4 -t testfile.json --style popon --align 5 --font "Futura" --bold --font-size 86 --outline "#000000" --outline-width 2
+
+7) Vintage VHS box (opaque background)
+python captburn.py -i testfile.mp4 -t testfile.json --style popon --align 2 --font "Courier New" --font-size 44 --border-style 3 --back "#000000" --back-opacity 0.85 --primary "#00FF00" --margin-v 110
+
+8) XY exact placement (top-left 100,100) — anchor TL
+python captburn.py -i testfile.mp4 -t testfile.json --style popon --x 100 --y 100 --align 7
+
+9) XY exact center (640,360 on 1280x720) — anchor MC
+python captburn.py -i testfile.mp4 -t testfile.json --style popon --x 640 --y 360 --align 5
+
+10) Motion: drift up from bottom-center over 1500ms
+python captburn.py -i testfile.mp4 -t testfile.json --style popon --move 640,620,640,420,0,1500 --align 2
+
+11) Motion: slide left→right across center over 2s
+python captburn.py -i testfile.mp4 -t testfile.json --style popon --move 200,360,1080,360,0,2000 --align 5
+
+12) Paint-on word reveal (bottom-center)
+python captburn.py -i testfile.mp4 -t testfile.json --style painton --align 2 --margin-v 110
+
+13) Paint-on (top-center, subtle)
+python captburn.py -i testfile.mp4 -t testfile.json --style painton --align 8 --font "Source Sans 3" --font-size 34 --outline "#000000" --outline-width 2 --margin-v 90
+
+14) Roll-up 2 lines (bottom-center, 7 words/line)
+python captburn.py -i testfile.mp4 -t testfile.json --style rollup --align 2 --margin-v 120 --rollup-lines 2 --words-per-line 7
+
+15) Roll-up 3 lines (top-left)
+python captburn.py -i testfile.mp4 -t testfile.json --style rollup --align 7 --margin-l 80 --margin-v 80 --rollup-lines 3 --words-per-line 6
+
+16) Narrow width, spaced letters (mid-center)
+python captburn.py -i testfile.mp4 -t testfile.json --style popon --align 5 --scale-x 85 --scale-y 100 --spacing 4 --font "Helvetica" --font-size 44
+
+17) Rotation: slight cinematic tilt (-1.2°) at bottom-center
+python captburn.py -i testfile.mp4 -t testfile.json --style popon --align 2 --font "Source Sans 3" --font-size 40 --rotate -1.2 --outline "#000000" --outline-width 2 --margin-v 100
+
+18) Rotation: vertical caption (90°) mid-right
+python captburn.py -i testfile.mp4 -t testfile.json --style popon --align 6 --font "Helvetica" --font-size 36 --rotate 90 --margin-r 120
+
+19) High-contrast broadcast box (bottom-center)
+python captburn.py -i testfile.mp4 -t testfile.json --style popon --align 2 --font "Helvetica" --shadow 0 --primary "#FFFFFF" --outline "#000000" --outline-width 2 --back "#000000" --back-opacity 0.8 --border-style 3 --margin-v 100
+
+20) Top-left locator/date (tiny & restrained)
+python captburn.py -i testfile.mp4 -t testfile.json --style popon --align 7 --font "IBM Plex Sans" --font-size 28 --outline "#000000" --outline-width 2 --margin-l 80 --margin-v 80
