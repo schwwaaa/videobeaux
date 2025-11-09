@@ -116,12 +116,22 @@ def main():
         print(f"❌ {global_args.output} already exists. Use --force to overwrite.")
         sys.exit(1)
 
+    # combined_args = argparse.Namespace(**vars(global_args), **vars(program_args))
+    # try:
+    #     mod.run(combined_args)
+    # except:
+    #     print(f"😵 Exiting due to failure...")
+    #     sys.exit(1)
     combined_args = argparse.Namespace(**vars(global_args), **vars(program_args))
     try:
         mod.run(combined_args)
-    except:
-        print(f"😵 Exiting due to failure...")
-        sys.exit(1)
+    except Exception as e:
+        import traceback
+        print("\n💥 Program crashed with an unhandled exception:\n")
+        traceback.print_exc()
+        print("\n🐛 Combined args that were passed to the program:\n", combined_args)
+        print("\n😵 Exiting due to failure...")
+        sys.exit(1)    
 
 if __name__ == "__main__":
     main()
