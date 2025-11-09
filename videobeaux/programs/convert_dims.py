@@ -54,60 +54,87 @@ VIDEO_PRESETS = {
 }
 
 def register_arguments(parser):
-    parser.description = "Converts an input video to a specified preset dimension. Optionally stretch to fit dimensions or maintain aspect ratio with padding."
+    parser.description = ("Converts an input video to a specified preset dimension. "
+                          "Optionally stretch to fit dimensions or maintain aspect ratio with padding.")
     parser.add_argument(
-        "--output-format",
-        required=True,
-        type=str,
-        help="Format to convert output into (e.g., mp4, mov, etc). Output argument can just be a filename with no extension."
+        "--output-format", required=True, type=str,
+        help="Format to convert output into (e.g., mp4, mov). Output can be a filename without extension."
     )
     parser.add_argument(
-        "--preset",
-        required=True,
-        type=str,
-        choices=VIDEO_PRESETS.keys(),
-        help="Preset dimension to convert the video to (e.g., 1080p, instagram_reels, etc)."
+        "--preset", required=True, type=str, choices=VIDEO_PRESETS.keys(),
+        help="Preset dimension (e.g., 1080p, instagram_reels)."
     )
     parser.add_argument(
-        "--translate",
-        type=str,
-        choices=["yes", "no"],
-        default="no",
-        help="Whether to stretch video to fit preset dimensions ('yes') or maintain aspect ratio with padding ('no', default)."
+        "--translate", type=str, choices=["yes", "no"], default="no",
+        help="Stretch to fit dimensions exactly ('yes') or maintain aspect ratio with padding ('no')."
     )
+    # NOTE: input/output/force provided by top-level CLI.
+
+def _resolve_output_path(output: Path, fmt: str) -> Path:
+    """
+    If user supplied an extension already and it matches fmt, keep it.
+    If they supplied a different extension, replace it with fmt.
+    If no extension, append fmt.
+    """
+    suffix = output.suffix.lower().lstrip(".")
+    if suffix == fmt.lower():
+        return output
+    return output.with_suffix(f".{fmt}")
 
 def run(args):
     output_path = Path(args.output)
-    clean_output = output_path.with_suffix(f".{args.output_format}")
-    
-    if clean_output.exists() and not args.force:
+    clean_output = _resolve_output_path(output_path, args.output_format)
+
+    # Ensure destination folder exists
+    clean_output.parent.mkdir(parents=True, exist_ok=True)
+
+    if clean_output.exists() and not getattr(args, "force", False):
         print(f"❌ {clean_output} already exists. Use --force to overwrite.")
         sys.exit(1)
 
-    # Get the target dimensions from the preset
     if args.preset not in VIDEO_PRESETS:
         print(f"❌ Invalid preset: {args.preset}. Available presets: {', '.join(VIDEO_PRESETS.keys())}")
         sys.exit(1)
-    
+
     target_width, target_height = VIDEO_PRESETS[args.preset]
-    
-    # FFmpeg command based on translate flag
+
+    # Filter graph (keep your translate semantics)
     if args.translate == "yes":
-        # Stretch video to fit dimensions exactly, ignoring aspect ratio
-        video_filter = f"scale={target_width}:{target_height}:force_original_aspect_ratio=disable"
+        vf = (
+            f"scale={target_width}:{target_height}:force_original_aspect_ratio=disable,"
+            f"setsar=1,setdar={target_width}/{target_height}"
+        )
     else:
-        # Maintain aspect ratio with padding
-        video_filter = f"scale={target_width}:{target_height}:force_original_aspect_ratio=decrease,pad={target_width}:{target_height}:(ow-iw)/2:(oh-ih)/2"
-    
+        vf = (
+            f"scale={target_width}:{target_height}:force_original_aspect_ratio=decrease,"
+            f"pad={target_width}:{target_height}:(ow-iw)/2:(oh-ih)/2,"
+            f"setsar=1,setdar={target_width}/{target_height}"
+        )
+
     command = [
         "ffmpeg",
         "-i", str(args.input),
-        "-vf", video_filter,
-        "-c:v", "libx264",  # Use H.264 for compatibility
-        "-c:a", "aac",      # Use AAC for audio compatibility
-        "-b:v", "5000k",    # Set reasonable video bitrate
-        str(clean_output)
+
+        # Map robustly: succeed even if the source has no audio
+        "-map", "0:v:0",
+        "-map", "0:a?:0",
+
+        "-vf", vf,
+        "-c:v", "libx264",
+        "-b:v", "5000k",
+        "-pix_fmt", "yuv420p",
+        "-preset", "medium",
+
+        "-c:a", "aac",
+        "-b:a", "160k",
+        "-ar", "48000",
+
+        "-movflags", "+faststart",
+
+        str(clean_output),
     ]
 
-    # Add -y flag if force overwrite is enabled
-    run_ffmpeg_with_progress((command[:1] + ["-y"] + command[1:]) if args.force else command, args.input, clean_output)
+    if getattr(args, "force", False):
+        command = command[:1] + ["-y"] + command[1:]
+
+    run_ffmpeg_with_progress(command, args.input, clean_output)
