@@ -15,7 +15,7 @@ def main():
     print("📺 The friendly multilateral video toolkit built for artists by artists. ")
     print("🫂  It's your best friend!")
     print()
-    print("🌐 https://vondas.network")
+    print("🌐 schwwaaa")
 
     #print('-' * 50)
     print()

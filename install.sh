@@ -5,7 +5,7 @@
 # INSTALL FFMPEG
 brew install ffmpeg
 # CLONE PROJECT
-git clone git@github.com:vondas-network/videobeaux.git
+git clone git@github.com:schwwaaa/videobeaux.git
 # GO TO DIRECTORY
 cd videobeaux
 # CREATE VIRTUAL ENVIRONMENT
