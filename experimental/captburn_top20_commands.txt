@@ -59,3 +59,30 @@ python captburn.py -i testfile.mp4 -t testfile.json --style popon --align 2 --fo
 
 20) Top-left locator/date (tiny & restrained)
 python captburn.py -i testfile.mp4 -t testfile.json --style popon --align 7 --font "IBM Plex Sans" --font-size 28 --outline "#000000" --outline-width 2 --margin-l 80 --margin-v 80
+
+
+videobeaux -P captburn --input testfile.mp4 --output out/default.mp4
+videobeaux -P captburn --input testfile.mp4 --output out/trans_explicit.mp4 -t media/testfile.json
+videobeaux -P captburn --input testfile.mp4 --output out/reburn_from_capton.mp4 --caption media/testfile.captburn.json
+videobeaux -P captburn --input testfile.mp4 --output out/doc_center.mp4 --style popon --font "Helvetica Neue" --font-size 38 --align 2 --primary "#FFFFFF" --outline "#000000" --outline-width 2 --shadow 2
+videobeaux -P captburn --input testfile.mp4 --output out/vintage_top_right.mp4 --style popon --font "Baskerville" --italic --font-size 48 --align 9 --margin-r 120 --margin-v 80
+videobeaux -P captburn --input testfile.mp4 --output out/mono_terminal.mp4 --font "Courier New" --font-size 34 --primary "#00FF00" --outline "#002200"
+videobeaux -P captburn --input testfile.mp4 --output out/opaque_box.mp4 --border-style 3 --back "#000000" --back-opacity 0.6
+videobeaux -P captburn --input testfile.mp4 --output out/youtube_shadow.mp4 --font "Arial Black" --font-size 48 --shadow 4 --outline "#101010" --outline-width 3
+videobeaux -P captburn --input testfile.mp4 --output out/bottom_center_film.mp4 --align 2 --margin-v 60 --font-size 36
+videobeaux -P captburn --input testfile.mp4 --output out/bottom_left.mp4 --align 1 --margin-l 100 --margin-v 60 --font-size 36
+videobeaux -P captburn --input testfile.mp4 --output out/bottom_right.mp4 --align 3 --margin-r 100 --margin-v 60 --font-size 36
+videobeaux -P captburn --input testfile.mp4 --output out/top_left.mp4 --align 7 --margin-l 60 --margin-v 80 --font-size 34
+videobeaux -P captburn --input testfile.mp4 --output out/top_center.mp4 --align 8 --margin-v 100 --font-size 34
+videobeaux -P captburn --input testfile.mp4 --output out/top_right.mp4 --align 9 --margin-r 80 --margin-v 100 --font-size 34
+videobeaux -P captburn --input testfile.mp4 --output out/rotate_slight.mp4 --align 2 --font "Source Sans 3" --font-size 40 --rotate -2.0 --outline "#000000" --outline-width 2 --margin-v 80
+videobeaux -P captburn --input testfile.mp4 --output out/move_slide_in.mp4 --align 2 --move 100,620,100,540,0,1000 --font-size 36
+videobeaux -P captburn --input testfile.mp4 --output out/spin_quote.mp4 --align 8 --rotate 10 --font "Baskerville" --italic --font-size 42
+videobeaux -P captburn --input testfile.mp4 --output out/painton.mp4 --style painton --font "Futura" --font-size 40
+videobeaux -P captburn --input testfile.mp4 --output out/rollup2.mp4 --style rollup --rollup-lines 2 --words-per-line 7 --font-size 34
+videobeaux -P captburn --input testfile.mp4 --output out/rollup4_small.mp4 --style rollup --rollup-lines 4 --font-size 30
+videobeaux -P captburn --input testfile.mp4 --output out/scale_compress.mp4 --scale-x 85 --scale-y 100
+videobeaux -P captburn --input testfile.mp4 --output out/spacing_wide.mp4 --spacing 1.8
+videobeaux -P captburn --input testfile.mp4 --output out/small_wide_screen.mp4 --font-size 28 --margin-v 120
+videobeaux -P captburn --input testfile.mp4 --output out/fast_preview.mp4 --crf 28 --preset ultrafast
+videobeaux -P captburn --input testfile.mp4 --output out/archival_quality.mp4 --crf 16 --preset slow --vcodec libx264

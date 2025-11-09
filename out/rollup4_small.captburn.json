@@ -1,0 +1,506 @@
+{
+  "version": "1.0.2",
+  "style": {
+    "name": "CaptBurn",
+    "fontname": "Arial",
+    "fontsize": 30,
+    "primary": "#FFFFFF",
+    "outline": "#000000",
+    "outline_width": 3.0,
+    "shadow": 0.0,
+    "back": "#000000",
+    "back_opacity": 0.0,
+    "bold": false,
+    "italic": false,
+    "scale_x": 100,
+    "scale_y": 100,
+    "spacing": 0.0,
+    "margin_l": 60,
+    "margin_r": 60,
+    "margin_v": 40,
+    "align": 2,
+    "border_style": 1
+  },
+  "events": [
+    {
+      "start": 0.12,
+      "end": 0.84,
+      "text": "because"
+    },
+    {
+      "start": 0.12,
+      "end": 2.13,
+      "text": "because as"
+    },
+    {
+      "start": 1.98,
+      "end": 2.23,
+      "text": "because as we"
+    },
+    {
+      "start": 2.13,
+      "end": 2.38,
+      "text": "because as we were"
+    },
+    {
+      "start": 2.219213,
+      "end": 2.469213,
+      "text": "because as we were just"
+    },
+    {
+      "start": 2.28,
+      "end": 2.73,
+      "text": "because as we were just talking"
+    },
+    {
+      "start": 2.43,
+      "end": 2.88,
+      "text": "because as we were just talking\\Nabout"
+    },
+    {
+      "start": 2.73,
+      "end": 2.98,
+      "text": "because as we were just talking\\Nabout a"
+    },
+    {
+      "start": 2.88,
+      "end": 3.27,
+      "text": "because as we were just talking\\Nabout a moment"
+    },
+    {
+      "start": 2.94,
+      "end": 3.69,
+      "text": "because as we were just talking\\Nabout a moment ago"
+    },
+    {
+      "start": 3.27,
+      "end": 4.17,
+      "text": "because as we were just talking\\Nabout a moment ago with"
+    },
+    {
+      "start": 3.78,
+      "end": 4.41,
+      "text": "because as we were just talking\\Nabout a moment ago with\\Nwith"
+    },
+    {
+      "start": 4.17,
+      "end": 4.95,
+      "text": "because as we were just talking\\Nabout a moment ago with\\Nwith alan"
+    },
+    {
+      "start": 4.41,
+      "end": 6.239729,
+      "text": "because as we were just talking\\Nabout a moment ago with\\Nwith alan after"
+    },
+    {
+      "start": 5.46,
+      "end": 6.69,
+      "text": "because as we were just talking\\Nabout a moment ago with\\Nwith alan after one"
+    },
+    {
+      "start": 6.3,
+      "end": 6.84,
+      "text": "because as we were just talking\\Nabout a moment ago with\\Nwith alan after one of"
+    },
+    {
+      "start": 6.69,
+      "end": 7.08,
+      "text": "because as we were just talking\\Nabout a moment ago with\\Nwith alan after one of\\Nthe"
+    },
+    {
+      "start": 6.84,
+      "end": 7.829846,
+      "text": "because as we were just talking\\Nabout a moment ago with\\Nwith alan after one of\\Nthe doge"
+    },
+    {
+      "start": 7.08,
+      "end": 9.12,
+      "text": "because as we were just talking\\Nabout a moment ago with\\Nwith alan after one of\\Nthe doge employees"
+    },
+    {
+      "start": 8.310181,
+      "end": 9.66,
+      "text": "because as we were just talking\\Nabout a moment ago with\\Nwith alan after one of\\Nthe doge employees was"
+    },
+    {
+      "start": 9.12,
+      "end": 10.14,
+      "text": "because as we were just talking\\Nabout a moment ago with\\Nwith alan after one of\\Nthe doge employees was allegedly"
+    },
+    {
+      "start": 9.72,
+      "end": 10.53,
+      "text": "about a moment ago with\\Nwith alan after one of\\Nthe doge employees was allegedly\\Nattacked"
+    },
+    {
+      "start": 10.14,
+      "end": 10.62,
+      "text": "about a moment ago with\\Nwith alan after one of\\Nthe doge employees was allegedly\\Nattacked in"
+    },
+    {
+      "start": 10.53,
+      "end": 11.16,
+      "text": "about a moment ago with\\Nwith alan after one of\\Nthe doge employees was allegedly\\Nattacked in washington"
+    },
+    {
+      "start": 10.62,
+      "end": 11.34,
+      "text": "about a moment ago with\\Nwith alan after one of\\Nthe doge employees was allegedly\\Nattacked in washington d"
+    },
+    {
+      "start": 11.16,
+      "end": 11.633912,
+      "text": "about a moment ago with\\Nwith alan after one of\\Nthe doge employees was allegedly\\Nattacked in washington d c"
+    },
+    {
+      "start": 11.34,
+      "end": 11.85,
+      "text": "with alan after one of\\Nthe doge employees was allegedly\\Nattacked in washington d c\\Nthat's"
+    },
+    {
+      "start": 11.645056,
+      "end": 11.96972,
+      "text": "with alan after one of\\Nthe doge employees was allegedly\\Nattacked in washington d c\\Nthat's what"
+    },
+    {
+      "start": 11.85,
+      "end": 12.21,
+      "text": "with alan after one of\\Nthe doge employees was allegedly\\Nattacked in washington d c\\Nthat's what donald"
+    },
+    {
+      "start": 11.969919,
+      "end": 12.42,
+      "text": "with alan after one of\\Nthe doge employees was allegedly\\Nattacked in washington d c\\Nthat's what donald trump"
+    },
+    {
+      "start": 12.21,
+      "end": 12.87,
+      "text": "with alan after one of\\Nthe doge employees was allegedly\\Nattacked in washington d c\\Nthat's what donald trump used"
+    },
+    {
+      "start": 12.42,
+      "end": 13.23,
+      "text": "the doge employees was allegedly\\Nattacked in washington d c\\Nthat's what donald trump used\\Nas"
+    },
+    {
+      "start": 12.87,
+      "end": 14.52,
+      "text": "the doge employees was allegedly\\Nattacked in washington d c\\Nthat's what donald trump used\\Nas justification"
+    },
+    {
+      "start": 13.77,
+      "end": 14.61,
+      "text": "the doge employees was allegedly\\Nattacked in washington d c\\Nthat's what donald trump used\\Nas justification to"
+    },
+    {
+      "start": 14.52,
+      "end": 15.0,
+      "text": "the doge employees was allegedly\\Nattacked in washington d c\\Nthat's what donald trump used\\Nas justification to send"
+    },
+    {
+      "start": 14.61,
+      "end": 15.36,
+      "text": "the doge employees was allegedly\\Nattacked in washington d c\\Nthat's what donald trump used\\Nas justification to send in"
+    },
+    {
+      "start": 15.0,
+      "end": 16.95,
+      "text": "attacked in washington d c\\Nthat's what donald trump used\\Nas justification to send in\\Nfederal"
+    },
+    {
+      "start": 16.590125,
+      "end": 17.31,
+      "text": "attacked in washington d c\\Nthat's what donald trump used\\Nas justification to send in\\Nfederal troops"
+    },
+    {
+      "start": 16.95,
+      "end": 17.61,
+      "text": "attacked in washington d c\\Nthat's what donald trump used\\Nas justification to send in\\Nfederal troops into"
+    },
+    {
+      "start": 17.31,
+      "end": 18.18,
+      "text": "attacked in washington d c\\Nthat's what donald trump used\\Nas justification to send in\\Nfederal troops into washington"
+    },
+    {
+      "start": 17.61,
+      "end": 18.39,
+      "text": "attacked in washington d c\\Nthat's what donald trump used\\Nas justification to send in\\Nfederal troops into washington d"
+    },
+    {
+      "start": 18.18,
+      "end": 18.617108,
+      "text": "that's what donald trump used\\Nas justification to send in\\Nfederal troops into washington d\\Nc"
+    },
+    {
+      "start": 18.39,
+      "end": 18.838445,
+      "text": "that's what donald trump used\\Nas justification to send in\\Nfederal troops into washington d\\Nc to"
+    },
+    {
+      "start": 18.63,
+      "end": 19.02,
+      "text": "that's what donald trump used\\Nas justification to send in\\Nfederal troops into washington d\\Nc to to"
+    },
+    {
+      "start": 18.899874,
+      "end": 19.2,
+      "text": "that's what donald trump used\\Nas justification to send in\\Nfederal troops into washington d\\Nc to to get"
+    },
+    {
+      "start": 19.02,
+      "end": 19.38,
+      "text": "that's what donald trump used\\Nas justification to send in\\Nfederal troops into washington d\\Nc to to get things"
+    },
+    {
+      "start": 19.2,
+      "end": 19.56,
+      "text": "as justification to send in\\Nfederal troops into washington d\\Nc to to get things\\Nunder"
+    },
+    {
+      "start": 19.38,
+      "end": 20.009216,
+      "text": "as justification to send in\\Nfederal troops into washington d\\Nc to to get things\\Nunder control"
+    },
+    {
+      "start": 19.56,
+      "end": 20.099663,
+      "text": "as justification to send in\\Nfederal troops into washington d\\Nc to to get things\\Nunder control the"
+    },
+    {
+      "start": 20.010784,
+      "end": 20.31,
+      "text": "as justification to send in\\Nfederal troops into washington d\\Nc to to get things\\Nunder control the car"
+    },
+    {
+      "start": 20.1,
+      "end": 20.7,
+      "text": "as justification to send in\\Nfederal troops into washington d\\Nc to to get things\\Nunder control the car jacking"
+    },
+    {
+      "start": 20.31,
+      "end": 21.33,
+      "text": "federal troops into washington d\\Nc to to get things\\Nunder control the car jacking\\Nsituation"
+    },
+    {
+      "start": 20.700273,
+      "end": 21.51,
+      "text": "federal troops into washington d\\Nc to to get things\\Nunder control the car jacking\\Nsituation he"
+    },
+    {
+      "start": 21.33,
+      "end": 21.806191,
+      "text": "federal troops into washington d\\Nc to to get things\\Nunder control the car jacking\\Nsituation he used"
+    },
+    {
+      "start": 21.51,
+      "end": 22.11,
+      "text": "federal troops into washington d\\Nc to to get things\\Nunder control the car jacking\\Nsituation he used that"
+    },
+    {
+      "start": 21.806191,
+      "end": 23.31,
+      "text": "federal troops into washington d\\Nc to to get things\\Nunder control the car jacking\\Nsituation he used that and"
+    },
+    {
+      "start": 22.83,
+      "end": 23.500197,
+      "text": "c to to get things\\Nunder control the car jacking\\Nsituation he used that and\\Ni"
+    },
+    {
+      "start": 23.34,
+      "end": 23.699352,
+      "text": "c to to get things\\Nunder control the car jacking\\Nsituation he used that and\\Ni i"
+    },
+    {
+      "start": 23.500197,
+      "end": 23.85,
+      "text": "c to to get things\\Nunder control the car jacking\\Nsituation he used that and\\Ni i know"
+    },
+    {
+      "start": 23.7,
+      "end": 23.97,
+      "text": "c to to get things\\Nunder control the car jacking\\Nsituation he used that and\\Ni i know it's"
+    },
+    {
+      "start": 23.85,
+      "end": 24.15,
+      "text": "c to to get things\\Nunder control the car jacking\\Nsituation he used that and\\Ni i know it's hard"
+    },
+    {
+      "start": 23.97,
+      "end": 24.24,
+      "text": "under control the car jacking\\Nsituation he used that and\\Ni i know it's hard\\Nto"
+    },
+    {
+      "start": 24.15,
+      "end": 24.48,
+      "text": "under control the car jacking\\Nsituation he used that and\\Ni i know it's hard\\Nto predict"
+    },
+    {
+      "start": 24.24,
+      "end": 24.57,
+      "text": "under control the car jacking\\Nsituation he used that and\\Ni i know it's hard\\Nto predict the"
+    },
+    {
+      "start": 24.48,
+      "end": 24.929727,
+      "text": "under control the car jacking\\Nsituation he used that and\\Ni i know it's hard\\Nto predict the future"
+    },
+    {
+      "start": 24.57,
+      "end": 25.26,
+      "text": "under control the car jacking\\Nsituation he used that and\\Ni i know it's hard\\Nto predict the future mark"
+    },
+    {
+      "start": 24.930461,
+      "end": 25.71,
+      "text": "situation he used that and\\Ni i know it's hard\\Nto predict the future mark\\Nbut"
+    },
+    {
+      "start": 25.26,
+      "end": 26.07,
+      "text": "situation he used that and\\Ni i know it's hard\\Nto predict the future mark\\Nbut you"
+    },
+    {
+      "start": 25.92,
+      "end": 26.22,
+      "text": "situation he used that and\\Ni i know it's hard\\Nto predict the future mark\\Nbut you can"
+    },
+    {
+      "start": 26.07,
+      "end": 26.61,
+      "text": "situation he used that and\\Ni i know it's hard\\Nto predict the future mark\\Nbut you can imagine"
+    },
+    {
+      "start": 26.22,
+      "end": 26.7,
+      "text": "situation he used that and\\Ni i know it's hard\\Nto predict the future mark\\Nbut you can imagine the"
+    },
+    {
+      "start": 26.61,
+      "end": 27.36,
+      "text": "i i know it's hard\\Nto predict the future mark\\Nbut you can imagine the\\Nadministration"
+    },
+    {
+      "start": 26.7,
+      "end": 27.84,
+      "text": "i i know it's hard\\Nto predict the future mark\\Nbut you can imagine the\\Nadministration using"
+    },
+    {
+      "start": 27.36,
+      "end": 28.14,
+      "text": "i i know it's hard\\Nto predict the future mark\\Nbut you can imagine the\\Nadministration using this"
+    },
+    {
+      "start": 27.84,
+      "end": 28.26,
+      "text": "i i know it's hard\\Nto predict the future mark\\Nbut you can imagine the\\Nadministration using this as"
+    },
+    {
+      "start": 28.14,
+      "end": 28.39,
+      "text": "i i know it's hard\\Nto predict the future mark\\Nbut you can imagine the\\Nadministration using this as a"
+    },
+    {
+      "start": 28.26,
+      "end": 29.1,
+      "text": "to predict the future mark\\Nbut you can imagine the\\Nadministration using this as a\\Njustification"
+    },
+    {
+      "start": 28.32,
+      "end": 29.25,
+      "text": "to predict the future mark\\Nbut you can imagine the\\Nadministration using this as a\\Njustification for"
+    },
+    {
+      "start": 29.1,
+      "end": 29.73,
+      "text": "to predict the future mark\\Nbut you can imagine the\\Nadministration using this as a\\Njustification for something"
+    },
+    {
+      "start": 29.25,
+      "end": 31.8,
+      "text": "to predict the future mark\\Nbut you can imagine the\\Nadministration using this as a\\Njustification for something i"
+    },
+    {
+      "start": 31.53,
+      "end": 32.19,
+      "text": "to predict the future mark\\Nbut you can imagine the\\Nadministration using this as a\\Njustification for something i must"
+    },
+    {
+      "start": 32.007415,
+      "end": 32.4,
+      "text": "but you can imagine the\\Nadministration using this as a\\Njustification for something i must\\Nadmit"
+    },
+    {
+      "start": 32.19,
+      "end": 32.665836,
+      "text": "but you can imagine the\\Nadministration using this as a\\Njustification for something i must\\Nadmit i'm"
+    },
+    {
+      "start": 32.496588,
+      "end": 32.939832,
+      "text": "but you can imagine the\\Nadministration using this as a\\Njustification for something i must\\Nadmit i'm on"
+    },
+    {
+      "start": 32.665836,
+      "end": 33.138182,
+      "text": "but you can imagine the\\Nadministration using this as a\\Njustification for something i must\\Nadmit i'm on a"
+    },
+    {
+      "start": 33.059432,
+      "end": 33.33,
+      "text": "but you can imagine the\\Nadministration using this as a\\Njustification for something i must\\Nadmit i'm on a metal"
+    },
+    {
+      "start": 33.138182,
+      "end": 33.631571,
+      "text": "administration using this as a\\Njustification for something i must\\Nadmit i'm on a metal\\Nloss"
+    },
+    {
+      "start": 33.33,
+      "end": 33.718253,
+      "text": "administration using this as a\\Njustification for something i must\\Nadmit i'm on a metal\\Nloss to"
+    },
+    {
+      "start": 33.634603,
+      "end": 33.99,
+      "text": "administration using this as a\\Njustification for something i must\\Nadmit i'm on a metal\\Nloss to guess"
+    },
+    {
+      "start": 33.718253,
+      "end": 34.14,
+      "text": "administration using this as a\\Njustification for something i must\\Nadmit i'm on a metal\\Nloss to guess as"
+    },
+    {
+      "start": 33.99,
+      "end": 34.24,
+      "text": "administration using this as a\\Njustification for something i must\\Nadmit i'm on a metal\\Nloss to guess as to"
+    },
+    {
+      "start": 34.14,
+      "end": 34.41,
+      "text": "justification for something i must\\Nadmit i'm on a metal\\Nloss to guess as to\\Nwhat"
+    },
+    {
+      "start": 34.23,
+      "end": 34.77,
+      "text": "justification for something i must\\Nadmit i'm on a metal\\Nloss to guess as to\\Nwhat happens"
+    },
+    {
+      "start": 34.41,
+      "end": 35.19,
+      "text": "justification for something i must\\Nadmit i'm on a metal\\Nloss to guess as to\\Nwhat happens next"
+    },
+    {
+      "start": 34.77,
+      "end": 35.97,
+      "text": "justification for something i must\\Nadmit i'm on a metal\\Nloss to guess as to\\Nwhat happens next but"
+    },
+    {
+      "start": 35.58,
+      "end": 36.75,
+      "text": "justification for something i must\\Nadmit i'm on a metal\\Nloss to guess as to\\Nwhat happens next but courage"
+    }
+  ]
+}

@@ -1,0 +1,161 @@
+videobeaux — hash_fingerprint
+=================================
+
+## Description
+
+`hash_fingerprint` is a fast, flexible hashing cataloger for media libraries within videobeaux.  
+It computes deterministic hashes and fingerprints to ensure data integrity, verify exports, detect duplicates, and measure perceptual similarity.
+
+### Features
+- File-level hashes: `md5`, `sha1`, `sha256` (streamed, low RAM)
+- Stream-level hash: FFmpeg-based hash of decoded content
+- Frame-level checksum: `framemd5` per frame
+- Perceptual hash: aHash over sampled frames (Pillow required)
+- Works on single files or entire directories (recursive)
+- Outputs to JSON or CSV
+
+---
+
+## Why Use It
+
+### 1. Integrity & Provenance
+Ensure the exact same content is delivered or archived — detect even one-bit changes.
+
+### 2. Duplicate & Version Control
+Detect duplicates and content drift across export iterations.
+
+### 3. Codec-Level Comparison
+FFmpeg’s stream hash reveals content changes even when metadata or bitrates differ.
+
+### 4. Frame-Accurate Verification
+framemd5 provides true frame-level checksum comparison.
+
+### 5. Perceptual Matching
+Find visually similar clips using aHash to detect re-encodes or near-duplicates.
+
+---
+
+## Use Cases
+
+- Library audits for media integrity
+- Delivery verification (QC workflows)
+- Regression testing for re-exports
+- Duplicate detection
+- Visual similarity clustering (phash)
+
+---
+
+## Inputs & Outputs
+
+**Inputs**
+- `-i/--input`: file or directory
+- `--recursive`: traverse directories
+- `--exts`: filter by extensions
+
+**Outputs**
+- `--catalog`: JSON or CSV catalog path
+
+### Example JSON Record
+```json
+{
+  "path": "/abs/path/to/media/bbb.mov",
+  "size_bytes": 12345678,
+  "file_md5": "…",
+  "file_sha256": "…",
+  "stream_sha256": "…",
+  "framemd5": ["stream, pts, checksum…"],
+  "phash_algo": "aHash",
+  "phash_frames": 124,
+  "phash_list": ["f3a1…", "9b7c…"]
+}
+```
+
+---
+
+## Key Flags
+
+| Flag | Description |
+|------|--------------|
+| `--file-hashes` | md5, sha1, sha256 (default: md5 sha256) |
+| `--stream-hash` | Compute stream hash using FFmpeg |
+| `--framemd5` | Generate per-frame checksums |
+| `--phash` | Enable perceptual hashing |
+| `--phash-fps` | Sample frequency for phash |
+| `--phash-size` | Hash matrix size (8 → 64-bit, 16 → 256-bit) |
+| `--catalog` | Output catalog path (.json or .csv) |
+
+---
+
+## Example Commands
+
+**Default file hash**
+```bash
+videobeaux -P hash_fingerprint -i ./media/bbb.mov --catalog ./out/outbbb_hashes.json -F
+```
+
+**Directory recursive hash**
+```bash
+videobeaux -P hash_fingerprint -i ./media --recursive --exts .mp4 .mov --catalog ./out/outdir_hashes.json -F
+```
+
+**Add stream hash**
+```bash
+videobeaux -P hash_fingerprint -i ./media/bbb.mov --stream-hash sha256 --stream-kind video --catalog ./out/outbbb_streamsha.json -F
+```
+
+**Frame checksum**
+```bash
+videobeaux -P hash_fingerprint -i ./media/bbb.mov --framemd5 --catalog ./out/outbbb_framemd5.json -F
+```
+
+**Perceptual hash**
+```bash
+videobeaux -P hash_fingerprint -i ./media/bbb.mov --phash --phash-fps 1.0 --phash-size 16 --catalog ./out/outbbb_phash.json -F
+```
+
+**Compare exports**
+```bash
+videobeaux -P hash_fingerprint -i ./out/v1 --recursive --file-hashes sha256 --catalog ./out/v1_hashes.json -F
+videobeaux -P hash_fingerprint -i ./out/v2 --recursive --file-hashes sha256 --catalog ./out/v2_hashes.json -F
+```
+
+---
+
+## Performance Notes
+
+- File hashes: Fastest, limited by I/O.
+- Stream hash / framemd5: CPU-intensive (decoding).
+- Perceptual hashing: Adjustable via fps and size.
+- Always prefer local disk for large scans.
+
+---
+
+## Best Practices
+
+- **Ingest Audit:** `--file-hashes sha256` on daily ingest.
+- **QC Re-exports:** Add `--stream-hash sha256`.
+- **Forensic Accuracy:** Use `--framemd5` for exact match.
+- **Similarity:** Use `--phash --phash-fps 0.5 --phash-size 8` for clustering.
+
+---
+
+## Troubleshooting
+
+- Ensure FFmpeg is installed and in PATH.
+- Install Pillow for `--phash` (`pip install Pillow`).
+- Create parent directories for output paths.
+
+---
+
+## Security & Determinism
+
+- Hashes are deterministic and consistent across systems.
+- md5 is fast for duplicates; sha256 is more secure.
+- Stream and frame hashes depend on FFmpeg decoding path.
+
+---
+
+## Future Enhancements
+
+- `--verify` mode to compare current files vs stored catalog.
+- Duplicate-grouping report in JSON/CSV.

@@ -1,0 +1,66 @@
+# videobeaux: captburn
+
+## Description
+`captburn` is a modular caption-generation and burn-in engine for videobeaux.  
+It ingests video and transcript data (JSON-based) and produces high-quality `.ass` subtitle files or directly burns captions into the video.  
+It supports multiple captioning modes — **pop-on**, **paint-on**, and **roll-up** — and preserves all ASS styling fields.
+
+## Features
+- Generates ASS subtitles from JSON transcripts or caption files.
+- Supports `popon`, `painton`, and `rollup` timing modes.
+- Full styling options: font, size, color, outline, background, alignment, margins, rotation.
+- Generates both `.captburn.json` (metadata) and `.captburn.ass` (subtitle style) sidecars.
+- Can reburn captions directly using `--caption` JSON without reprocessing.
+- Threaded pipeline compatible with FFmpeg rendering.
+
+## Parameters
+| Flag | Type | Description |
+|------|------|--------------|
+| `-i, --input` | str | Input video file |
+| `--json` | str | Path to transcript or caption JSON |
+| `--caption` | str | (Optional) Caption JSON for reburn |
+| `--rotate` | float | Rotation angle for text (ASS Angle tag) |
+| `--font` | str | Font family (e.g. Arial, Helvetica) |
+| `--font-size` | int | Text size |
+| `--color` | str | Primary text color (hex or ASS color) |
+| `--outline-color` | str | Outline color |
+| `--back-color` | str | Background box color |
+| `--back-opacity` | float | Background opacity (0.0–1.0) |
+| `--align` | int | Alignment (ASS-style \\anN code) |
+| `--margin-v` | int | Vertical margin in pixels |
+| `--tracking` | float | Character spacing multiplier |
+| `--rotate` | float | Rotation of the text block |
+| `-F, --force` | flag | Overwrite existing files |
+
+## Modes
+| Mode | Description |
+|------|--------------|
+| `popon` | Sentence-level captions (common for subtitles) |
+| `painton` | Word-by-word reveal effect |
+| `rollup` | Scrolling line-by-line broadcast style |
+
+## Example Usage
+```bash
+# Generate and burn captions using a transcript JSON
+videobeaux -P captburn -i ./media/bbb.mov --json ./media/bbb.json -F
+
+# Burn captions from an existing caption JSON (reburn mode)
+videobeaux -P captburn -i ./media/bbb.mov --caption ./media/bbb.captburn.json -F
+
+# Specify font, size, and color
+videobeaux -P captburn -i ./media/bbb.mov --json ./media/bbb.json   --font "Helvetica" --font-size 42 --color "#FFFFFF" --outline-color "#000000"   --align 2 --margin-v 50 -F
+
+# Apply rotation to text (e.g., stylized tilt)
+videobeaux -P captburn -i ./media/bbb.mov --json ./media/bbb.json --rotate 5 -F
+```
+
+## Outputs
+- `.captburn.ass`: Styled subtitle file
+- `.captburn.json`: Caption metadata file
+- `.mp4`: (if burn enabled) Video with captions baked in
+
+## Notes
+- Automatically detects video resolution for accurate ASS PlayResX/Y.
+- Uses actual pixel-true coordinates and alignment.
+- Fully compatible with reburn workflow using `--caption`.
+- Built upon FFmpeg `subtitles` and `ass` filters for reliable rendering.

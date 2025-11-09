@@ -1,0 +1,93 @@
+HDR → SDR Tone Map (videobeaux program)
+======================================
+
+Name
+----
+tonemap_hdr_sdr — Convert HDR (PQ/HLG) video to SDR (BT.709) using
+ffmpeg `zscale` + `tonemap` with Hable (default), Mobius, Reinhard, or Clip.
+
+What it does
+------------
+• Linearizes HDR content with zscale using a specified nominal peak (nits).
+• Applies an SDR-target tonemap operator (default: Hable) with optional highlight desaturation.
+• Converts color primaries/transfer/matrix to BT.709 and tags the stream accordingly.
+• Outputs in a user-specified pixel format (default yuv420p).
+• Re-encodes video (libx264 by default); audio can be copied with --copy-audio.
+
+When to use
+-----------
+Use this when you have HDR10/HLG masters that need a faithful SDR deliverable
+for web or broadcast players that don’t support HDR.
+
+Invocation pattern
+------------------
+videobeaux -P tonemap_hdr_sdr -i <input> --outfile <output> [options]
+
+Arguments
+---------
+--outfile <path>
+    Output file path for the SDR result. Use this instead of the global -o.
+
+--algo {hable,mobius,reinhard,clip}
+    The tonemap curve/operator. Defaults to "hable".
+    • hable: Filmic curve with pleasing roll-off; great default.
+    • mobius: Preserves mid-tones; gentle shoulder.
+    • reinhard: Classic operator; can feel flatter.
+    • clip: Hard clip (avoid unless you need an absolute ceiling).
+
+--desat <float 0.0–1.0>
+    Highlight desaturation applied during tonemapping. Default: 0.0.
+    Try 0.15–0.35 for very hot HDR sources to avoid neon colors in speculars.
+
+--peak <nits>
+    Nominal peak luminance (nits) passed to zscale:npl for linearization.
+    Default: 1000. Use 4000 for HDR masters graded to 4000 nits.
+
+--dither {none,ordered,random,error_diffusion}
+    Dithering strategy in zscale before format(). Default: error_diffusion.
+
+--pix-fmt <ffmpeg pixel format>
+    Output pixel format. Common: yuv420p (default), yuv422p10le, yuv420p10le.
+
+--x264-preset <string>
+    libx264 preset if encoding H.264. Default: medium. Examples: slow, fast.
+
+--crf <number>
+    CRF value for libx264 quality. Default: 18 (visually lossless-ish).
+
+--copy-audio
+    If set, copies audio bit-for-bit. Otherwise audio is encoded as AAC.
+
+Standard/global flags respected (from videobeaux)
+------------------------------------------------
+--force  Overwrite output if it exists (injects -y into ffmpeg).
+
+Color tagging
+-------------
+The program writes BT.709 tags on the output:
+    -colorspace bt709 -color_trc bt709 -color_primaries bt709
+
+Practical guidance
+------------------
+• Start with: --algo hable --peak 1000 --desat 0.2
+• If midtones feel too flat, try --algo mobius.
+• If highlights look too neon, increase --desat to ~0.25–0.35.
+• For mezzanine masters, use 10-bit: --pix-fmt yuv422p10le and lower CRF.
+
+Performance notes
+-----------------
+• zscale + tonemap is GPU-agnostic and runs on CPU; performance depends on your CPU.
+• For speed, you can try a faster x264 preset (e.g., --x264-preset fast) or target ProRes.
+
+Troubleshooting
+---------------
+• “Washed out” SDR: confirm your player isn’t forcing HDR or BT.2020. The output is
+  explicitly tagged BT.709.
+• Crushed highlights: your source peak was higher than expected; try --peak 4000 or switch
+  operator to mobius.
+• Banding: use 10-bit pix-fmt (e.g., yuv420p10le) and keep --dither error_diffusion.
+
+Changelog
+---------
+v1.0.1 — Switched to program-scoped --outfile (no use of global -o). 
+v1.0.0 — Initial release (Hable default, Mobius/Reinhard/Clip options, desat, peak, dither, pix-fmt, CRF, copy-audio).

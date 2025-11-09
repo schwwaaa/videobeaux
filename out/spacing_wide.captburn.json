@@ -1,0 +1,91 @@
+{
+  "version": "1.0.2",
+  "style": {
+    "name": "CaptBurn",
+    "fontname": "Arial",
+    "fontsize": 42,
+    "primary": "#FFFFFF",
+    "outline": "#000000",
+    "outline_width": 3.0,
+    "shadow": 0.0,
+    "back": "#000000",
+    "back_opacity": 0.0,
+    "bold": false,
+    "italic": false,
+    "scale_x": 100,
+    "scale_y": 100,
+    "spacing": 1.8,
+    "margin_l": 60,
+    "margin_r": 60,
+    "margin_v": 40,
+    "align": 2,
+    "border_style": 1
+  },
+  "events": [
+    {
+      "start": 0.12,
+      "end": 2.88,
+      "text": "because as we were just talking about"
+    },
+    {
+      "start": 2.88,
+      "end": 6.69,
+      "text": "a moment ago with with alan after one"
+    },
+    {
+      "start": 6.69,
+      "end": 10.53,
+      "text": "of the doge employees was allegedly attacked"
+    },
+    {
+      "start": 10.53,
+      "end": 12.21,
+      "text": "in washington d c that's what donald"
+    },
+    {
+      "start": 12.21,
+      "end": 15.36,
+      "text": "trump used as justification to send in"
+    },
+    {
+      "start": 16.590125,
+      "end": 18.838445,
+      "text": "federal troops into washington d c to"
+    },
+    {
+      "start": 18.899874,
+      "end": 20.7,
+      "text": "to get things under control the car jacking"
+    },
+    {
+      "start": 20.700273,
+      "end": 23.97,
+      "text": "situation he used that and i i know it's"
+    },
+    {
+      "start": 23.97,
+      "end": 26.07,
+      "text": "hard to predict the future mark but you"
+    },
+    {
+      "start": 26.07,
+      "end": 27.84,
+      "text": "can imagine the administration using"
+    },
+    {
+      "start": 27.84,
+      "end": 29.73,
+      "text": "this as a justification for something"
+    },
+    {
+      "start": 31.53,
+      "end": 33.99,
+      "text": "i must admit i'm on a metal loss to guess"
+    },
+    {
+      "start": 33.99,
+      "end": 36.75,
+      "text": "as to what happens next but courage"
+    }
+  ]
+}
