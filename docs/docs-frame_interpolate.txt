@@ -1,0 +1,72 @@
+──────────────────────────────
+📘 FRAME INTERPOLATION DOCUMENTATION
+──────────────────────────────
+
+NAME:
+    Frame Interpolation
+
+PURPOSE:
+    Create smooth slow-motion or higher-FPS video from a standard input file.
+    Useful for turning 24 FPS or 30 FPS footage into 48 FPS, 60 FPS, or higher
+    frame rates for cinematic or broadcast-ready results.
+
+SUPPORTED ENGINES:
+    • ffmpeg (default) — uses minterpolate for motion-compensated synthesis
+    • rife-ncnn (scaffold only, external binary required)
+    • dain-ncnn (scaffold only, external binary required)
+
+USAGE:
+    videobeaux -P frame_interpolate -i INPUT --outfile OUTPUT [options]
+
+REQUIRED:
+    --outfile      Path to the resulting file. (Do NOT use global -o.)
+
+FPS OPTIONS:
+    --fps N        Target frame rate (e.g., 60, 120).
+    --multiplier X Multiply input FPS by X (e.g., 2.0 → 30→60). Ignored if --fps is given.
+
+ENGINE OPTIONS:
+    --engine {ffmpeg|rife-ncnn|dain-ncnn}
+                   Select interpolation backend. Default: ffmpeg.
+
+FFMPEG FILTER SETTINGS:
+    --mi-mode {dup,blend,mci}      Motion interpolation mode (default mci)
+    --me-mode {bidir,bilat}        Motion estimation mode (default bidir)
+    --mc-mode {obmc,aobmc}         Motion compensation mode (default aobmc)
+    --vsbmc {0,1}                  Variable-size block motion comp (default 1)
+    --scd {none,fdiff,mv}          Scene-change detection (default fdiff)
+
+ENCODING CONTROLS:
+    --x264-preset PRESET           libx264 preset (ultrafast..placebo, default medium)
+    --crf VALUE                    Constant Rate Factor (default 18)
+    --copy-audio                   Copy audio instead of re-encoding
+
+ADVANCED:
+    --profile {quality,balanced,speed}
+        • quality  = maximum smoothness & accuracy
+        • balanced = sensible default between speed & quality
+        • speed    = fastest possible transcode
+
+    --encoder {x264,vt_h264,vt_hevc}
+        • x264     = CPU software encoder
+        • vt_h264  = macOS hardware encoder (VideoToolbox, AVC)
+        • vt_hevc  = macOS hardware encoder (VideoToolbox, HEVC)
+
+    --bitrate VALUE
+        Target bitrate for VideoToolbox encoders (e.g., 8M, 10M).
+
+    --threads N
+        Set FFmpeg -threads and -filter_threads for manual CPU control.
+
+NOTES:
+    • Use --multiplier if you don’t know source FPS (auto-detected via ffprobe).
+    • For faster turnaround, combine --profile speed with VideoToolbox.
+    • Use lower FPS targets (48–50) for smoother renders with shorter transcode time.
+    • All processed videos are tagged as BT.709 color space for player consistency.
+
+EXAMPLES:
+    See “frame_interpolate_examples.txt” for ready-to-run command examples.
+
+──────────────────────────────
+END OF DOCUMENT
+──────────────────────────────
