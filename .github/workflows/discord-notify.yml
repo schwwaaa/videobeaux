@@ -27,6 +27,9 @@ jobs:
           commit_url="${{ github.event.head_commit.url }}"
           commit_msg="${{ steps.last_commit.outputs.message }}"
 
+          # Commit message, safely JSON-escaped via toJSON
+          commit_title=${{ toJSON(github.event.head_commit.message) }}
+
           payload=$(cat <<EOF
           {
             "content": "**${repo}** updated on branch **${branch}** by **${pusher}**",
