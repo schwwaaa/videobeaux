@@ -32,7 +32,7 @@ jobs:
             "content": "**${repo}** updated on branch **${branch}** by **${pusher}**",
             "embeds": [
               {
-                "title": "Latest Commit",
+                "title": ${commit_title},
                 "description": "${commit_msg}",
                 "url": "${commit_url}"
               }
