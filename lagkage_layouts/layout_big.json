@@ -1,0 +1,108 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "top_right_logo",
+      "filename": "media/reem.png",
+      "type": "img",
+      "mode": "place",
+      "place": "top_right",
+      "size": 18,
+      "opacity": 0.95,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 2,
+      "name": "top_left_bug",
+      "filename": "media/screen.png",
+      "type": "img",
+      "mode": "place",
+      "place": "top_left",
+      "size": 10,
+      "opacity": 0.8,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 3,
+      "name": "pip_camera_a",
+      "filename": "media/schwwaaa.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 80,
+      "pos_y": 80,
+      "size": 28,
+      "opacity": 1.0,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 4,
+      "name": "pip_camera_b",
+      "filename": "media/faith.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 80,
+      "pos_y": 420,
+      "size": 28,
+      "opacity": 1.0,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 5,
+      "name": "right_side_vertical_bar",
+      "filename": "media/mask1.png",
+      "type": "img",
+      "mode": "place",
+      "place": "center_right",
+      "size": 12,
+      "opacity": 0.9,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 6,
+      "name": "lower_third_plate",
+      "filename": "media/gross.png",
+      "type": "img",
+      "mode": "place",
+      "place": "bottom_center",
+      "size": 60,
+      "opacity": 0.95,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 7,
+      "name": "looping_sticker_left",
+      "filename": "media/circus.gif",
+      "type": "gif",
+      "mode": "free",
+      "pos_x": 120,
+      "pos_y": 260,
+      "size": 14,
+      "opacity": 1.0,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 8,
+      "name": "looping_sticker_right",
+      "filename": "media/bunny.gif",
+      "type": "gif",
+      "mode": "free",
+      "pos_x": 1520,
+      "pos_y": 260,
+      "size": 14,
+      "opacity": 1.0,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 9,
+      "name": "full_frame_vhs_noise",
+      "filename": "media/media.gif",
+      "type": "gif",
+      "mode": "place",
+      "place": "center",
+      "size": 100,
+      "opacity": 0.35,
+      "blend_mode": "normal"
+    }
+  ]
+}

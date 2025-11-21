@@ -1,0 +1,39 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "logo",
+      "filename": "media/mask8.png",
+      "type": "img",
+      "mode": "place",
+      "place": "top_right",
+      "size": 20,
+      "opacity": 0.85,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 2,
+      "name": "corner_camera",
+      "filename": "media/schwwaaa.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 120,
+      "pos_y": 200,
+      "size": 35,
+      "opacity": 0.7,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 3,
+      "name": "animated_sticker",
+      "filename": "media/media.gif",
+      "type": "gif",
+      "mode": "place",
+      "place": "bottom_left",
+      "size": 15,
+      "opacity": 0.6,
+      "blend_mode": "normal"
+    }
+  ]
+}
