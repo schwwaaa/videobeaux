@@ -1,0 +1,32 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "pip_left_zoomcrop",
+      "filename": "../media/faith.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 80,
+      "pos_y": 160,
+      "size": 42,
+      "opacity": 1.0,
+      "zoom": 1.8,
+      "crop_x": 10,
+      "crop_y": 10,
+      "crop_w": 80,
+      "crop_h": 80
+    },
+    {
+      "layer_number": 2,
+      "name": "pip_right_normal",
+      "filename": "../media/schwwaaa.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 1040,
+      "pos_y": 160,
+      "size": 42,
+      "opacity": 1.0
+    }
+  ]
+}

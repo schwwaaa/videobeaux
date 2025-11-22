@@ -1,0 +1,33 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "corner_logo",
+      "filename": "../media/logo.png",
+      "type": "img",
+      "mode": "place",
+      "place": "top_right",
+      "size": 12,
+      "opacity": 0.9,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 2,
+      "name": "zoomcrop_sticker",
+      "filename": "../media/sticker.gif",
+      "type": "gif",
+      "mode": "free",
+      "pos_x": 160,
+      "pos_y": 420,
+      "size": 18,
+      "opacity": 1.0,
+      "zoom": 1.5,
+      "crop_x": 10,
+      "crop_y": 10,
+      "crop_w": 80,
+      "crop_h": 80,
+      "blend_mode": "normal"
+    }
+  ]
+}

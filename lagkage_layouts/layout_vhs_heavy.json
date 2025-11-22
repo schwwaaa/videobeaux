@@ -1,0 +1,41 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "vhs_noise_full",
+      "filename": "../media/media.gif",
+      "type": "gif",
+      "mode": "free",
+      "pos_x": 0,
+      "pos_y": 0,
+      "size": 120,
+      "opacity": 0.5,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 2,
+      "name": "mask_center",
+      "filename": "../media/mask1.png",
+      "type": "img",
+      "mode": "free",
+      "pos_x": 640,
+      "pos_y": 260,
+      "size": 40,
+      "opacity": 0.95,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 3,
+      "name": "logo_top_center",
+      "filename": "../media/reem.png",
+      "type": "img",
+      "mode": "free",
+      "pos_x": 840,
+      "pos_y": 40,
+      "size": 18,
+      "opacity": 0.95,
+      "blend_mode": "normal"
+    }
+  ]
+}

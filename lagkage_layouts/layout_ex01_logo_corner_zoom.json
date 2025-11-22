@@ -1,0 +1,16 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "logo_zoom_top_right",
+      "filename": "../media/reem.png",
+      "type": "img",
+      "mode": "place",
+      "place": "top_right",
+      "size": 42,
+      "opacity": 0.95,
+      "zoom": 4.5
+    }
+  ]
+}

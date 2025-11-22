@@ -1,0 +1,28 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "pip_zoomed_small",
+      "filename": "../media/schwwaaa.mp4",
+      "type": "video",
+      "mode": "place",
+      "place": "top_right",
+      "size": 22,
+      "opacity": 1.0,
+      "zoom": 1.8,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 2,
+      "name": "logo_top_left",
+      "filename": "../media/reem.png",
+      "type": "img",
+      "mode": "place",
+      "place": "top_left",
+      "size": 14,
+      "opacity": 0.95,
+      "blend_mode": "normal"
+    }
+  ]
+}

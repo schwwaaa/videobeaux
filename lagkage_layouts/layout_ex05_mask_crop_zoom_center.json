@@ -1,0 +1,20 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "mask_center_zoomcrop",
+      "filename": "../media/mask1.png",
+      "type": "img",
+      "mode": "place",
+      "place": "center",
+      "size": 30,
+      "opacity": 0.9,
+      "zoom": 1.6,
+      "crop_x": 10,
+      "crop_y": 10,
+      "crop_w": 80,
+      "crop_h": 80
+    }
+  ]
+}

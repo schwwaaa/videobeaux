@@ -1,0 +1,106 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "corner_logo",
+      "filename": "../media/reem.png",
+      "type": "img",
+      "mode": "place",
+      "place": "top_left",
+      "size": 14,
+      "opacity": 0.95,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 2,
+      "name": "pip_left",
+      "filename": "../media/schwwaaa.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 120,
+      "pos_y": 200,
+      "size": 24,
+      "opacity": 1.0,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 3,
+      "name": "pip_right",
+      "filename": "../media/faith.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 1180,
+      "pos_y": 200,
+      "size": 24,
+      "opacity": 1.0,
+      "zoom": 1.4,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 4,
+      "name": "lower_third_band",
+      "filename": "../media/gross.png",
+      "type": "img",
+      "mode": "free",
+      "pos_x": 260,
+      "pos_y": 780,
+      "size": 54,
+      "opacity": 0.95,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 5,
+      "name": "mask_left_edge",
+      "filename": "../media/mask1.png",
+      "type": "img",
+      "mode": "free",
+      "pos_x": -40,
+      "pos_y": 320,
+      "size": 26,
+      "opacity": 0.9,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 6,
+      "name": "circus_sticker_zoomcrop",
+      "filename": "../media/circus.gif",
+      "type": "gif",
+      "mode": "free",
+      "pos_x": 420,
+      "pos_y": 260,
+      "size": 18,
+      "opacity": 1.0,
+      "zoom": 1.8,
+      "crop_x": 20,
+      "crop_y": 20,
+      "crop_w": 60,
+      "crop_h": 60,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 7,
+      "name": "bunny_sticker_free",
+      "filename": "../media/bunny.gif",
+      "type": "gif",
+      "mode": "free",
+      "pos_x": 1320,
+      "pos_y": 260,
+      "size": 16,
+      "opacity": 1.0,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 8,
+      "name": "vhs_noise_background",
+      "filename": "../media/media.gif",
+      "type": "gif",
+      "mode": "free",
+      "pos_x": 0,
+      "pos_y": 0,
+      "size": 110,
+      "opacity": 0.3,
+      "blend_mode": "normal"
+    }
+  ]
+}

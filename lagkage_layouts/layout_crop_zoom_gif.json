@@ -1,0 +1,34 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "logo_top_center",
+      "filename": "../media/reem.png",
+      "type": "img",
+      "mode": "free",
+      "pos_x": 840,
+      "pos_y": 40,
+      "size": 18,
+      "opacity": 0.95,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 2,
+      "name": "crop_zoom_circus",
+      "filename": "../media/circus.gif",
+      "type": "gif",
+      "mode": "free",
+      "pos_x": 260,
+      "pos_y": 260,
+      "size": 22,
+      "opacity": 1.0,
+      "zoom": 1.8,
+      "crop_x": 20,
+      "crop_y": 20,
+      "crop_w": 60,
+      "crop_h": 60,
+      "blend_mode": "normal"
+    }
+  ]
+}

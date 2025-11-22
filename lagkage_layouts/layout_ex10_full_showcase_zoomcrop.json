@@ -1,0 +1,76 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "corner_logo",
+      "filename": "../media/reem.png",
+      "type": "img",
+      "mode": "place",
+      "place": "top_left",
+      "size": 14,
+      "opacity": 0.95
+    },
+    {
+      "layer_number": 2,
+      "name": "pip_left",
+      "filename": "../media/schwwaaa.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 120,
+      "pos_y": 220,
+      "size": 24,
+      "opacity": 1.0
+    },
+    {
+      "layer_number": 3,
+      "name": "pip_right_zoom",
+      "filename": "../media/faith.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 1180,
+      "pos_y": 220,
+      "size": 24,
+      "opacity": 1.0,
+      "zoom": 1.5
+    },
+    {
+      "layer_number": 4,
+      "name": "lower_third_band",
+      "filename": "../media/gross.png",
+      "type": "img",
+      "mode": "free",
+      "pos_x": 260,
+      "pos_y": 780,
+      "size": 54,
+      "opacity": 0.95
+    },
+    {
+      "layer_number": 5,
+      "name": "circus_zoomcrop",
+      "filename": "../media/circus.gif",
+      "type": "gif",
+      "mode": "free",
+      "pos_x": 420,
+      "pos_y": 260,
+      "size": 18,
+      "opacity": 1.0,
+      "zoom": 1.8,
+      "crop_x": 20,
+      "crop_y": 20,
+      "crop_w": 60,
+      "crop_h": 60
+    },
+    {
+      "layer_number": 6,
+      "name": "bunny_free",
+      "filename": "../media/bunny.gif",
+      "type": "gif",
+      "mode": "free",
+      "pos_x": 1320,
+      "pos_y": 260,
+      "size": 16,
+      "opacity": 1.0
+    }
+  ]
+}

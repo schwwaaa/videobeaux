@@ -1,0 +1,20 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "lower_third_band_crop",
+      "filename": "../media/gross.png",
+      "type": "img",
+      "mode": "free",
+      "pos_x": 260,
+      "pos_y": 780,
+      "size": 54,
+      "opacity": 0.95,
+      "crop_x": 0,
+      "crop_y": 20,
+      "crop_w": 100,
+      "crop_h": 60
+    }
+  ]
+}
