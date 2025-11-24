@@ -1,402 +1,179 @@
-LAGKAGE – CORE FUNCTIONALITY EXAMPLES (v2)
-========================================
-
-Program:
-    lagkage  (Videobeaux)
-
-Base usage pattern:
-    videobeaux -P lagkage -i media/base.mp4 -o out/NAME.mp4 --layout-json lagkage_layouts/LAYOUT.json --force
-
-This file contains 20+ examples demonstrating:
-- place vs free positioning
-- images / videos / GIFs
-- sequence_direction variations
-- per-layer zoom
-- per-layer crop
-- combinations of the above
-
-
-------------------------------------------------------------
-EXAMPLE 01 – Minimal logo + sticker (place + free)
-------------------------------------------------------------
-
-Layout:
-  lagkage_layouts/layout_minimal.json
-
-Description:
-  - Top-right logo bug using place mode
-  - Free-position looping GIF sticker at lower-left area
-
-Command:
-  videobeaux -P lagkage -i media/base.mp4 \
-    -o out/ex01_minimal_logo_sticker.mp4 \
-    --layout-json lagkage_layouts/layout_minimal.json \
-    --force
-
-
-------------------------------------------------------------
-EXAMPLE 02 – Same layout, different base
-------------------------------------------------------------
-
-Layout:
-  lagkage_layouts/layout_minimal.json
-
-Description:
-  - Reuses the same layout with a different base video (e.g. a show cut)
-
-Command:
-  videobeaux -P lagkage -i media/base_show.mp4 \
-    -o out/ex02_minimal_logo_sticker_show.mp4 \
-    --layout-json lagkage_layouts/layout_minimal.json \
-    --force
-
-
-------------------------------------------------------------
-EXAMPLE 03 – Dual PIP + logo + lower third
-------------------------------------------------------------
-
-Layout:
-  lagkage_layouts/layout_pip_dual.json
-
-Description:
-  - Logo in top-left
-  - Left and right PIP cameras using free mode
-  - Image lower-third band
-
-Command:
-  videobeaux -P lagkage -i media/base.mp4 \
-    -o out/ex03_pip_dual_show.mp4 \
-    --layout-json lagkage_layouts/layout_pip_dual.json \
-    --force
-
-
-------------------------------------------------------------
-EXAMPLE 04 – Dual PIP, backward stacking
-------------------------------------------------------------
-
-Layout:
-  lagkage_layouts/layout_pip_dual.json
-  (Edit JSON: "sequence_direction": "backward")
-
-Description:
-  - Same positions as Example 03
-  - Backward stacking puts higher layer_number on top
-  - Good for making sure logo always ends above other overlays
-
-Command:
-  videobeaux -P lagkage -i media/base.mp4 \
-    -o out/ex04_pip_dual_backward.mp4 \
-    --layout-json lagkage_layouts/layout_pip_dual.json \
-    --force
-
-
-------------------------------------------------------------
-EXAMPLE 05 – Stickers + VHS noise overlay
-------------------------------------------------------------
-
-Layout:
-  lagkage_layouts/layout_stickers.json
-
-Description:
-  - Full-frame looping VHS noise (low opacity)
-  - Circus and bunny GIF stickers
-  - Floating logo
-
-Command:
-  videobeaux -P lagkage -i media/base.mp4 \
-    -o out/ex05_stickers_vhs_noise.mp4 \
-    --layout-json lagkage_layouts/layout_stickers.json \
-    --force
-
-
-------------------------------------------------------------
-EXAMPLE 06 – Freeform showcase (cams, gifs, masks, noise)
-------------------------------------------------------------
-
-Layout:
-  lagkage_layouts/layout_freeform_showcase.json
-
-Description:
-  - Multiple layers:
-    - top-right logo, top-left screen
-    - left/right PIP cams, mask on edge, lower band
-    - circus & bunny GIFs, center VHS noise
-  - All positioned using free mode coordinates
-
-Command:
-  videobeaux -P lagkage -i media/base.mp4 \
-    -o out/ex06_freeform_showcase.mp4 \
-    --layout-json lagkage_layouts/layout_freeform_showcase.json \
-    --force
-
-
-------------------------------------------------------------
-EXAMPLE 07 – 3-up horizontal video grid
-------------------------------------------------------------
-
-Layout:
-  lagkage_layouts/layout_grid_3up.json
-
-Description:
-  - Three video tiles left/center/right
-  - Small logo in top-left
-  - Good for side-by-side comparison or triptych views
-
-Command:
-  videobeaux -P lagkage -i media/base.mp4 \
-    -o out/ex07_grid_3up.mp4 \
-    --layout-json lagkage_layouts/layout_grid_3up.json \
-    --force
-
-
-------------------------------------------------------------
-EXAMPLE 08 – 4-up grid (quad cam)
-------------------------------------------------------------
-
-Layout:
-  lagkage_layouts/layout_grid_4up.json
-
-Description:
-  - Four camera feeds in a 2x2 grid
-  - Classic multi-cam surveillance / gallery layout
-
-Command:
-  videobeaux -P lagkage -i media/base.mp4 \
-    -o out/ex08_grid_4up.mp4 \
-    --layout-json lagkage_layouts/layout_grid_4up.json \
-    --force
-
-
-------------------------------------------------------------
-EXAMPLE 09 – Heavy VHS wash + mask + logo
-------------------------------------------------------------
-
-Layout:
-  lagkage_layouts/layout_vhs_heavy.json
-
-Description:
-  - VHS noise strongly overlayed (higher opacity)
-  - Center mask image
-  - Top-center logo
-
-Command:
-  videobeaux -P lagkage -i media/base.mp4 \
-    -o out/ex09_vhs_heavy_mask_logo.mp4 \
-    --layout-json lagkage_layouts/layout_vhs_heavy.json \
-    --force
-
-
-------------------------------------------------------------
-EXAMPLE 10 – Logo wall + mid screens
-------------------------------------------------------------
-
-Layout:
-  lagkage_layouts/layout_logo_wall.json
-
-Description:
-  - Logos in all four corners using place mode
-  - Two mid-frame screen images using free mode
-  - Good for brand-heavy overlays
-
-Command:
-  videobeaux -P lagkage -i media/base.mp4 \
-    -o out/ex10_logo_wall.mp4 \
-    --layout-json lagkage_layouts/layout_logo_wall.json \
-    --force
-
-
-------------------------------------------------------------
-EXAMPLE 11 – Random spray of gifs + center logo
-------------------------------------------------------------
-
-Layout:
-  lagkage_layouts/layout_random_spray.json
-  (sequence_direction set to "random")
-
-Description:
-  - Circus and bunny GIFs in four corners/edges
-  - Logo in center
-  - Randomized stacking order each run (depending on code behavior)
-
-Command:
-  videobeaux -P lagkage -i media/base.mp4 \
-    -o out/ex11_random_spray.mp4 \
-    --layout-json lagkage_layouts/layout_random_spray.json \
-    --force
-
-
-------------------------------------------------------------
-EXAMPLE 12 – Story mode: lower third + mask + tiny PIP
-------------------------------------------------------------
-
-Layout:
-  lagkage_layouts/layout_story_mode.json
-
-Description:
-  - Wide lower-third band defined via free mode
-  - Side mask element
-  - Small corner PIP video + logo
-
-Command:
-  videobeaux -P lagkage -i media/base.mp4 \
-    -o out/ex12_story_mode_package.mp4 \
-    --layout-json lagkage_layouts/layout_story_mode.json \
-    --force
-
-
-------------------------------------------------------------
-EXAMPLE 13 – Freeform scatter demo
-------------------------------------------------------------
-
-Layout:
-  lagkage_layouts/layout_freeform_showcase.json
-
-Description:
-  - Same freeform layout as Example 06
-  - Emphasis on scattered positioning to test boundaries
-  - Demonstrates partially off-screen elements
-
-Command:
-  videobeaux -P lagkage -i media/base.mp4 \
-    -o out/ex13_freeform_scatter.mp4 \
-    --layout-json lagkage_layouts/layout_freeform_showcase.json \
-    --force
-
-
-------------------------------------------------------------
-EXAMPLE 14 – Minimal zoom-only sticker
-------------------------------------------------------------
-
-Layout:
-  lagkage_layouts/layout_minimal_zoomcrop.json
-  (Create JSON from README example)
-
-Description:
-  - Corner logo
-  - One GIF sticker with zoom > 1.0 but no crop, so content is pushed in
-  - Demonstrates per-layer zoom inside fixed box
-
-Command:
-  videobeaux -P lagkage -i media/base.mp4 \
-    -o out/ex14_minimal_zoom_sticker.mp4 \
-    --layout-json lagkage_layouts/layout_minimal_zoomcrop.json \
-    --force
-
-
-------------------------------------------------------------
-EXAMPLE 15 – Center-cropped GIF in the corner
-------------------------------------------------------------
-
-Layout:
-  lagkage_layouts/layout_cropped_gif_corner.json
-  (GIF layer has crop_x/crop_y/crop_w/crop_h set to central 50%)
-
-Description:
-  - Uses only the core of a noisy or busy GIF
-  - Placed bottom-right as a cropped badge
-
-Command:
-  videobeaux -P lagkage -i media/base.mp4 \
-    -o out/ex15_cropped_gif_corner.mp4 \
-    --layout-json lagkage_layouts/layout_cropped_gif_corner.json \
-    --force
-
-
-------------------------------------------------------------
-EXAMPLE 16 – Zoomed-in PIP camera box
-------------------------------------------------------------
-
-Layout:
-  lagkage_layouts/layout_zoomed_pip.json
-  (PIP layer has zoom > 1.0)
-
-Description:
-  - Small PIP box, but content is zoomed in
-  - Good for focusing on a region of the camera feed without changing frame size
-
-Command:
-  videobeaux -P lagkage -i media/base.mp4 \
-    -o out/ex16_zoomed_pip_box.mp4 \
-    --layout-json lagkage_layouts/layout_zoomed_pip.json \
-    --force
-
-
-------------------------------------------------------------
-EXAMPLE 17 – Combined crop + zoom (GIF)
-------------------------------------------------------------
-
-Layout:
-  lagkage_layouts/layout_crop_zoom_gif.json
-
-Description:
-  - Layer crops to middle 60% of GIF
-  - Then applies zoom=1.8 inside overlay box
-  - Great for punching into the “interesting” part of the animation
-
-Command:
-  videobeaux -P lagkage -i media/base.mp4 \
-    -o out/ex17_crop_zoom_gif.mp4 \
-    --layout-json lagkage_layouts/layout_crop_zoom_gif.json \
-    --force
-
-
-------------------------------------------------------------
-EXAMPLE 18 – Split-screen: left static, right zoom+crop
-------------------------------------------------------------
-
-Layout:
-  lagkage_layouts/layout_splitscreen_zoomcrop.json
-
-Description:
-  - Left side: standard PIP video
-  - Right side: same video source but with crop+zoom on a different region
-  - Demonstrates comparative views of the same source file
-
-Command:
-  videobeaux -P lagkage -i media/base.mp4 \
-    -o out/ex18_splitscreen_zoomcrop.mp4 \
-    --layout-json lagkage_layouts/layout_splitscreen_zoomcrop.json \
-    --force
-
-
-------------------------------------------------------------
-EXAMPLE 19 – Multi-logo scatter + zoomed center logo
-------------------------------------------------------------
-
-Layout:
-  lagkage_layouts/layout_logo_scatter_zoom_center.json
-
-Description:
-  - Logos in corners and midpoints using place + free
-  - Center logo uses zoom to feel larger within a fixed box
-
-Command:
-  videobeaux -P lagkage -i media/base.mp4 \
-    -o out/ex19_logo_scatter_zoom_center.mp4 \
-    --layout-json lagkage_layouts/layout_logo_scatter_zoom_center.json \
-    --force
-
-
-------------------------------------------------------------
-EXAMPLE 20 – Full package: PIPs, stickers, crop+zoom, noise
-------------------------------------------------------------
-
-Layout:
-  lagkage_layouts/layout_full_package_showcase.json
-
-Description:
-  - Combines:
-    - Base logo
-    - Dual PIPs
-    - Multiple GIF stickers (some cropped, some zoomed)
-    - VHS noise layer at low opacity
-  - Designed as an “everything on” stress test for lagkage
-
-Command:
-  videobeaux -P lagkage -i media/base.mp4 \
-    -o out/ex20_full_package_showcase.mp4 \
-    --layout-json lagkage_layouts/layout_full_package_showcase.json \
-    --force
-
-
-END
+1) Logo in top-right corner
+----------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex01_layout_ex01_logo_corner.mp4 \
+  --layout-json lagkage_layouts/layout_ex01_logo_corner.json \
+  --audio-mode base \
+  --force
+
+2) Center GIF sticker
+----------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex02_layout_ex02_gif_center_sticker.mp4 \
+  --layout-json lagkage_layouts/layout_ex02_gif_center_sticker.json \
+  --audio-mode base \
+  --force
+
+3) Dual PIP videos with per-layer gains (all audio)
+----------------------------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex03_layout_ex03_dual_pip_videos.mp4 \
+  --layout-json lagkage_layouts/layout_ex03_dual_pip_videos.json \
+  --audio-mode all \
+  --force
+
+4) Lower-third band from image
+-------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex04_layout_ex04_lower_third_band.mp4 \
+  --layout-json lagkage_layouts/layout_ex04_lower_third_band.json \
+  --audio-mode base \
+  --force
+
+5) Center zoomed crop PIP
+--------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex05_layout_ex05_center_zoom_crop_pip.mp4 \
+  --layout-json lagkage_layouts/layout_ex05_center_zoom_crop_pip.json \
+  --audio-mode all \
+  --force
+
+6) Scatter GIFs + logo (random sequence)
+-----------------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex06_layout_ex06_scatter_gifs_logo.mp4 \
+  --layout-json lagkage_layouts/layout_ex06_scatter_gifs_logo.json \
+  --audio-mode base \
+  --force
+
+7) Logo grid around edges
+--------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex07_layout_ex07_logo_grid_edges.mp4 \
+  --layout-json lagkage_layouts/layout_ex07_logo_grid_edges.json \
+  --audio-mode base \
+  --force
+
+8) Story mode: band + PIP + logo (external audio)
+--------------------------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex08_layout_ex08_story_mode_external_audio.mp4 \
+  --layout-json lagkage_layouts/layout_ex08_story_mode_external_audio.json \
+  --audio-mode external --audio-src media/music_track.wav \
+  --force
+
+9) Split screen: left zoomed, right normal (all audio)
+-------------------------------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex09_layout_ex09_split_screen.mp4 \
+  --layout-json lagkage_layouts/layout_ex09_split_screen.json \
+  --audio-mode all \
+  --force
+
+10) Full showcase: GIFs + videos + logo (all audio)
+---------------------------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex10_layout_ex10_full_showcase.mp4 \
+  --layout-json lagkage_layouts/layout_ex10_full_showcase.json \
+  --audio-mode all \
+  --force
+
+11) Silent graphics-only output
+-------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex11_layout_ex11_silent_graphics_only.mp4 \
+  --layout-json lagkage_layouts/layout_ex11_silent_graphics_only.json \
+  --audio-mode none \
+  --force
+
+12) JSON-only audio with different linear gains
+-----------------------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex12_layout_ex12_json_only_audio_gains.mp4 \
+  --layout-json lagkage_layouts/layout_ex12_json_only_audio_gains.json \
+  --audio-mode json_only \
+  --force
+
+13) Backward sequence stacked logos
+-----------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex13_layout_ex13_backward_stack.mp4 \
+  --layout-json lagkage_layouts/layout_ex13_backward_stack.json \
+  --audio-mode base \
+  --force
+
+14) Place mode quadrants with different sizes
+---------------------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex14_layout_ex14_place_quadrants.mp4 \
+  --layout-json lagkage_layouts/layout_ex14_place_quadrants.json \
+  --audio-mode base \
+  --force
+
+15) UI-style small stickers around center
+-----------------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex15_layout_ex15_ui_stickers.mp4 \
+  --layout-json lagkage_layouts/layout_ex15_ui_stickers.json \
+  --audio-mode base \
+  --force
+
+16) Zoom showcase at multiple levels (all audio)
+------------------------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex16_layout_ex16_zoom_showcase.mp4 \
+  --layout-json lagkage_layouts/layout_ex16_zoom_showcase.json \
+  --audio-mode all \
+  --force
+
+17) Crop focus 'face cam' PIP
+-----------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex17_layout_ex17_crop_focus.mp4 \
+  --layout-json lagkage_layouts/layout_ex17_crop_focus.json \
+  --audio-mode all \
+  --force
+
+18) Off-screen pushes (half visible)
+------------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex18_layout_ex18_offscreen_push.mp4 \
+  --layout-json lagkage_layouts/layout_ex18_offscreen_push.json \
+  --audio-mode base \
+  --force
+
+19) Media path using 'media/' root
+----------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex19_layout_ex19_media_path_root.mp4 \
+  --layout-json lagkage_layouts/layout_ex19_media_path_root.json \
+  --audio-mode base \
+  --force
+
+20) Many audio clips premixed with different gains
+--------------------------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex20_layout_ex20_audio_premix.mp4 \
+  --layout-json lagkage_layouts/layout_ex20_audio_premix.json \
+  --audio-mode all \
+  --force

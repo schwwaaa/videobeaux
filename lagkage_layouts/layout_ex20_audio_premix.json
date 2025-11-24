@@ -1,0 +1,41 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "clip1_bg",
+      "filename": "../media/schwwaaa.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 80,
+      "pos_y": 180,
+      "size": 22,
+      "opacity": 1.0,
+      "audio_gain_db": -12
+    },
+    {
+      "layer_number": 2,
+      "name": "clip2_mid",
+      "filename": "../media/faith.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 600,
+      "pos_y": 220,
+      "size": 22,
+      "opacity": 1.0,
+      "audio_gain_db": -6
+    },
+    {
+      "layer_number": 3,
+      "name": "clip3_fg",
+      "filename": "../media/faith.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 1120,
+      "pos_y": 260,
+      "size": 22,
+      "opacity": 1.0,
+      "audio_gain_db": -3
+    }
+  ]
+}

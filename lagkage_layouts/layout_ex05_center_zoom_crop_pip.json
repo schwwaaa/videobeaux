@@ -1,0 +1,21 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "zoom_crop_pip",
+      "filename": "../media/faith.mp4",
+      "type": "video",
+      "mode": "place",
+      "place": "center",
+      "size": 35,
+      "opacity": 1.0,
+      "zoom": 1.8,
+      "crop_x": 25,
+      "crop_y": 25,
+      "crop_w": 50,
+      "crop_h": 50,
+      "audio_gain_db": -6
+    }
+  ]
+}

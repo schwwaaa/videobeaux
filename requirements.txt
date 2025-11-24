@@ -18,7 +18,7 @@ srt==3.5.3
 tqdm==4.67.1
 typing_extensions==4.14.1
 urllib3==2.5.0
--e git+ssh://git@github.com/vondas-network/videobeaux.git@09684ac5b5173f312d59b780e03c3ad5f1bf25e9#egg=videobeaux
+videobeaux @ file:///Users/tgm/Documents/SPLASH/videobeaux
 videogrep==2.3.0
 vosk==0.3.44
 websockets==15.0.1

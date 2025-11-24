@@ -1,0 +1,29 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "clip_soft",
+      "filename": "../media/schwwaaa.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 120,
+      "pos_y": 200,
+      "size": 30,
+      "opacity": 1.0,
+      "audio_gain": 0.5
+    },
+    {
+      "layer_number": 2,
+      "name": "clip_loud",
+      "filename": "../media/faith.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 980,
+      "pos_y": 200,
+      "size": 30,
+      "opacity": 1.0,
+      "audio_gain": 2.0
+    }
+  ]
+}

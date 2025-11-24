@@ -1,0 +1,22 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "crop_focus",
+      "filename": "../media/schwwaaa.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 1400,
+      "pos_y": 500,
+      "size": 18,
+      "opacity": 1.0,
+      "crop_x": 35,
+      "crop_y": 20,
+      "crop_w": 30,
+      "crop_h": 40,
+      "zoom": 1.2,
+      "audio_gain_db": -8
+    }
+  ]
+}

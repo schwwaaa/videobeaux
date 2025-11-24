@@ -1,0 +1,43 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "lower_band",
+      "filename": "../media/reem.png",
+      "type": "img",
+      "mode": "free",
+      "pos_x": 120,
+      "pos_y": 780,
+      "size": 70,
+      "opacity": 0.9,
+      "crop_x": 0,
+      "crop_y": 50,
+      "crop_w": 100,
+      "crop_h": 50
+    },
+    {
+      "layer_number": 2,
+      "name": "pip_story",
+      "filename": "../media/schwwaaa.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 80,
+      "pos_y": 160,
+      "size": 30,
+      "opacity": 1.0,
+      "zoom": 1.2,
+      "audio_gain_db": -9
+    },
+    {
+      "layer_number": 3,
+      "name": "logo_corner",
+      "filename": "../media/reem.png",
+      "type": "img",
+      "mode": "place",
+      "place": "top_left",
+      "size": 14,
+      "opacity": 0.95
+    }
+  ]
+}

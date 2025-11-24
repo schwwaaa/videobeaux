@@ -1,0 +1,44 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "zoom1",
+      "filename": "../media/faith.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 200,
+      "pos_y": 150,
+      "size": 24,
+      "opacity": 1.0,
+      "zoom": 1.0,
+      "audio_gain_db": -6
+    },
+    {
+      "layer_number": 2,
+      "name": "zoom2",
+      "filename": "../media/faith.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 600,
+      "pos_y": 150,
+      "size": 24,
+      "opacity": 1.0,
+      "zoom": 1.5,
+      "audio_gain_db": -12
+    },
+    {
+      "layer_number": 3,
+      "name": "zoom3",
+      "filename": "../media/faith.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 1000,
+      "pos_y": 150,
+      "size": 24,
+      "opacity": 1.0,
+      "zoom": 2.0,
+      "audio_gain_db": -18
+    }
+  ]
+}

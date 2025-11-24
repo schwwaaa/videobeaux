@@ -1,0 +1,15 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "logo_corner",
+      "filename": "../media/reem.png",
+      "type": "img",
+      "mode": "place",
+      "place": "top_right",
+      "size": 18,
+      "opacity": 0.95
+    }
+  ]
+}

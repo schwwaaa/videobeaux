@@ -1,0 +1,15 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "gif_center",
+      "filename": "../media/circus.gif",
+      "type": "gif",
+      "mode": "place",
+      "place": "center",
+      "size": 30,
+      "opacity": 1.0
+    }
+  ]
+}

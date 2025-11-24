@@ -1,0 +1,16 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "example",
+      "filename": "../media/sample.png",
+      "type": "img",
+      "mode": "free",
+      "pos_x": 100,
+      "pos_y": 200,
+      "size": 20,
+      "opacity": 1.0
+    }
+  ]
+}

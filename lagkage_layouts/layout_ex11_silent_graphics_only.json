@@ -1,0 +1,26 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "logo_center",
+      "filename": "../media/reem.png",
+      "type": "img",
+      "mode": "place",
+      "place": "center",
+      "size": 25,
+      "opacity": 0.9
+    },
+    {
+      "layer_number": 2,
+      "name": "gif_bottom",
+      "filename": "../media/circus.gif",
+      "type": "gif",
+      "mode": "free",
+      "pos_x": 400,
+      "pos_y": 700,
+      "size": 22,
+      "opacity": 1.0
+    }
+  ]
+}
