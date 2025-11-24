@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - experimental
+      - master
       # add other branches if you want
 
 jobs:
