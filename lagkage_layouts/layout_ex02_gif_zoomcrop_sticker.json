@@ -1,0 +1,21 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "gif_zoomcrop_sticker",
+      "filename": "../media/circus.gif",
+      "type": "gif",
+      "mode": "free",
+      "pos_x": 150,
+      "pos_y": 420,
+      "size": 18,
+      "opacity": 1.0,
+      "zoom": 1.8,
+      "crop_x": 10,
+      "crop_y": 10,
+      "crop_w": 80,
+      "crop_h": 80
+    }
+  ]
+}

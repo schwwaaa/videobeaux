@@ -3,7 +3,7 @@ name = "videobeaux"
 version = "0.1.0"
 description = "Your friendly multilateral video toolkit built for artists by artists. \n It's your best friend!"
 authors = [
-    { name = "Vondas Software", email = "schwwaaa@gmail.com" }
+    { name = "schwwaaa", email = "schwwaaa@gmail.com" }
 ]
 requires-python = ">=3.8"
 

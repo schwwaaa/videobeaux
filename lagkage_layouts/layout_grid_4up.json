@@ -1,0 +1,53 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "cam_tl",
+      "filename": "../media/schwwaaa.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 80,
+      "pos_y": 80,
+      "size": 40,
+      "opacity": 1.0,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 2,
+      "name": "cam_tr",
+      "filename": "../media/faith.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 1040,
+      "pos_y": 80,
+      "size": 40,
+      "opacity": 1.0,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 3,
+      "name": "cam_bl",
+      "filename": "../media/schwwaaa.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 80,
+      "pos_y": 540,
+      "size": 40,
+      "opacity": 1.0,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 4,
+      "name": "cam_br",
+      "filename": "../media/faith.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 1040,
+      "pos_y": 540,
+      "size": 40,
+      "opacity": 1.0,
+      "blend_mode": "normal"
+    }
+  ]
+}

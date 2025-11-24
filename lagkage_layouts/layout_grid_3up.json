@@ -1,0 +1,52 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "logo_top_left_small",
+      "filename": "../media/logo.png",
+      "type": "img",
+      "mode": "place",
+      "place": "top_left",
+      "size": 10,
+      "opacity": 0.9,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 2,
+      "name": "tile_left",
+      "filename": "../media/schwwaaa.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 80,
+      "pos_y": 160,
+      "size": 28,
+      "opacity": 1.0,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 3,
+      "name": "tile_center",
+      "filename": "../media/faith.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 640,
+      "pos_y": 160,
+      "size": 28,
+      "opacity": 1.0,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 4,
+      "name": "tile_right",
+      "filename": "../media/schwwaaa.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 1200,
+      "pos_y": 160,
+      "size": 28,
+      "opacity": 1.0,
+      "blend_mode": "normal"
+    }
+  ]
+}

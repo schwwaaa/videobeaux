@@ -1,0 +1,28 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "pip_left_normal",
+      "filename": "../media/schwwaaa.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 80,
+      "pos_y": 160,
+      "size": 28,
+      "opacity": 1.0
+    },
+    {
+      "layer_number": 2,
+      "name": "pip_right_zoomed",
+      "filename": "../media/faith.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 1180,
+      "pos_y": 160,
+      "size": 28,
+      "opacity": 1.0,
+      "zoom": 1.7
+    }
+  ]
+}

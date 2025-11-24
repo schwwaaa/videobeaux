@@ -1,0 +1,112 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "top_right_logo_floating",
+      "filename": "media/reem.png",
+      "type": "img",
+      "mode": "free",
+      "pos_x": 1430,
+      "pos_y": 70,
+      "size": 14,
+      "opacity": 0.95,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 2,
+      "name": "offset_corner_bug",
+      "filename": "media/screen.png",
+      "type": "img",
+      "mode": "free",
+      "pos_x": 90,
+      "pos_y": 40,
+      "size": 12,
+      "opacity": 0.8,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 3,
+      "name": "pip_camera_a_small_top",
+      "filename": "media/schwwaaa.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 260,
+      "pos_y": 120,
+      "size": 22,
+      "opacity": 1.0,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 4,
+      "name": "pip_camera_b_large_bottom",
+      "filename": "media/faith.mp4",
+      "type": "video",
+      "mode": "free",
+      "pos_x": 1080,
+      "pos_y": 530,
+      "size": 36,
+      "opacity": 0.95,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 5,
+      "name": "angled_mask_mid_left",
+      "filename": "media/mask1.png",
+      "type": "img",
+      "mode": "free",
+      "pos_x": 160,
+      "pos_y": 360,
+      "size": 26,
+      "opacity": 0.9,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 6,
+      "name": "lower_third_plate_offset",
+      "filename": "media/gross.png",
+      "type": "img",
+      "mode": "free",
+      "pos_x": 260,
+      "pos_y": 780,
+      "size": 54,
+      "opacity": 0.95,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 7,
+      "name": "looping_sticker_left_mid",
+      "filename": "media/circus.gif",
+      "type": "gif",
+      "mode": "free",
+      "pos_x": 220,
+      "pos_y": 260,
+      "size": 18,
+      "opacity": 1.0,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 8,
+      "name": "looping_sticker_right_high",
+      "filename": "media/bunny.gif",
+      "type": "gif",
+      "mode": "free",
+      "pos_x": 1380,
+      "pos_y": 180,
+      "size": 11,
+      "opacity": 1.0,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 9,
+      "name": "full_frame_vhs_noise_soft",
+      "filename": "media/media.gif",
+      "type": "gif",
+      "mode": "place",
+      "place": "center",
+      "size": 115,
+      "opacity": 0.3,
+      "blend_mode": "normal"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "corner_logo",
+      "filename": "../media/logo.png",
+      "type": "img",
+      "mode": "place",
+      "place": "top_right",
+      "size": 12,
+      "opacity": 0.9,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 2,
+      "name": "looping_sticker",
+      "filename": "../media/sticker.gif",
+      "type": "gif",
+      "mode": "free",
+      "pos_x": 160,
+      "pos_y": 420,
+      "size": 18,
+      "opacity": 1.0,
+      "blend_mode": "normal"
+    }
+  ]
+}

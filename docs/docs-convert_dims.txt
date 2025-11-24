@@ -1,0 +1,41 @@
+# videobeaux: convert_dims
+
+## Description
+`convert_dims` resizes videos according to standardized or platform-specific aspect ratio presets.  
+It supports direct scaling, padding to maintain aspect ratio, and an optional “translate/stretch” mode to fill target dimensions exactly.
+
+## Features
+- Dozens of predefined presets: HD, 4K, Instagram Reels, YouTube Shorts, TikTok, etc.
+- Stretch (`--translate yes`) or maintain aspect ratio (`--translate no`).
+- New "fill" mode allows uniform scaling with crop to fill the target frame.
+- Automatically sets safe `setdar` and `setsar` filters.
+- Optional forced overwrite with `-F`.
+
+## Parameters
+| Flag | Type | Description |
+|------|------|--------------|
+| `-i, --input` | str | Input video file |
+| `--output-format` | str | Output format (e.g. mp4, mov) |
+| `--preset` | str | Target dimension preset (e.g. 1080p, instagram_reels) |
+| `--translate` | yes/no | Stretch to fit or preserve aspect ratio with padding |
+| `--fill` | yes/no | Crop to fill the target frame (centered) |
+| `-F, --force` | flag | Overwrite output file |
+
+## Example Usage
+```bash
+# Resize to 1080p maintaining aspect ratio
+videobeaux -P convert_dims -i ./media/bbb.mov --output-format mp4 --preset 1080p -F
+
+# Force exact stretch to TikTok format (9:16)
+videobeaux -P convert_dims -i ./media/bbb.mov --output-format mp4 --preset tiktok_video --translate yes -F
+
+# Maintain ratio with letterboxing to square
+videobeaux -P convert_dims -i ./media/bbb.mov --output-format mp4 --preset square1080 --translate no -F
+
+# Fill target aspect ratio (crop edges to fit)
+videobeaux -P convert_dims -i ./media/bbb.mov --output-format mp4 --preset instagram_reels --fill yes -F
+```
+
+## Output
+- Produces scaled MP4 or MOV with proper aspect ratio metadata.
+- Compatible with social platforms and web delivery.

@@ -1,0 +1,47 @@
+name: Notify Discord on Push
+
+on:
+  push:
+    branches:
+      - main
+      - experimental
+      # add other branches if you want
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get last commit info
+        id: last_commit
+        run: |
+          echo "message=$(echo '${{ github.event.head_commit.message }}' | sed 's/"/'\''/g')" >> $GITHUB_OUTPUT
+
+      - name: Send notification to Discord
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          repo="${{ github.repository }}"
+          pusher="${{ github.actor }}"
+          branch="${{ github.ref_name }}"
+          commit_url="${{ github.event.head_commit.url }}"
+          commit_msg="${{ steps.last_commit.outputs.message }}"
+
+          payload=$(cat <<EOF
+          {
+            "content": "**${repo}** updated on branch **${branch}** by **${pusher}**",
+            "embeds": [
+              {
+                "title": "UPDATE!",
+                "description": "${commit_msg}",
+                "url": "${commit_url}"
+              }
+            ]
+          }
+          EOF
+          )
+
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -d "$payload" \
+            "$DISCORD_WEBHOOK"

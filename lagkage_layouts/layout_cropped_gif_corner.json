@@ -1,0 +1,31 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "corner_logo",
+      "filename": "../media/logo.png",
+      "type": "img",
+      "mode": "place",
+      "place": "top_left",
+      "size": 10,
+      "opacity": 0.9,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 2,
+      "name": "cropped_circus_corner",
+      "filename": "../media/circus.gif",
+      "type": "gif",
+      "mode": "place",
+      "place": "bottom_right",
+      "size": 20,
+      "opacity": 1.0,
+      "crop_x": 25,
+      "crop_y": 25,
+      "crop_w": 50,
+      "crop_h": 50,
+      "blend_mode": "normal"
+    }
+  ]
+}

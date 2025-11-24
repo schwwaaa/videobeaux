@@ -1,0 +1,85 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "logo_tl",
+      "filename": "../media/reem.png",
+      "type": "img",
+      "mode": "place",
+      "place": "top_left",
+      "size": 10,
+      "opacity": 0.9,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 2,
+      "name": "logo_tr",
+      "filename": "../media/reem.png",
+      "type": "img",
+      "mode": "place",
+      "place": "top_right",
+      "size": 10,
+      "opacity": 0.9,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 3,
+      "name": "logo_bl",
+      "filename": "../media/reem.png",
+      "type": "img",
+      "mode": "place",
+      "place": "bottom_left",
+      "size": 10,
+      "opacity": 0.9,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 4,
+      "name": "logo_br",
+      "filename": "../media/reem.png",
+      "type": "img",
+      "mode": "place",
+      "place": "bottom_right",
+      "size": 10,
+      "opacity": 0.9,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 5,
+      "name": "logo_mid_left",
+      "filename": "../media/reem.png",
+      "type": "img",
+      "mode": "free",
+      "pos_x": 220,
+      "pos_y": 360,
+      "size": 10,
+      "opacity": 0.9,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 6,
+      "name": "logo_mid_right",
+      "filename": "../media/reem.png",
+      "type": "img",
+      "mode": "free",
+      "pos_x": 1400,
+      "pos_y": 360,
+      "size": 10,
+      "opacity": 0.9,
+      "blend_mode": "normal"
+    },
+    {
+      "layer_number": 7,
+      "name": "logo_center_zoomed",
+      "filename": "../media/reem.png",
+      "type": "img",
+      "mode": "place",
+      "place": "center",
+      "size": 18,
+      "opacity": 0.95,
+      "zoom": 1.6,
+      "blend_mode": "normal"
+    }
+  ]
+}
