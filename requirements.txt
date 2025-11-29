@@ -5,7 +5,8 @@ charset-normalizer==3.4.2
 decorator==4.4.2
 idna==3.10
 imageio==2.37.0
-imageio-ffmpeg==0.6.0
+imageio-ffmpeg==0.6.0 
+mkdocs-material==9.5.3
 moviepy==1.0.3
 numpy==2.2.6
 pillow==11.3.0
