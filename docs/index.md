@@ -1,3 +1,9 @@
+---
+layout: default
+title: Home
+nav_order: 1
+---
+
 <p align="center">
   <img width="45%" height="45%" src="https://github.com/schwwaaa/videobeaux/blob/main/img/videobeaux-1.png?raw=true"/>  
 </p>

@@ -1,0 +1,12 @@
+title: ""
+description: "The friendly multilateral video toolkit built for artists by artists."
+theme: jekyll-theme-cayman
+
+# Base URL for project site
+baseurl: "/videobeaux"
+
+# (optional) enable search
+search_enabled: true
+
+# Navigation structure (we'll wire pages to these)
+nav_order: 1
