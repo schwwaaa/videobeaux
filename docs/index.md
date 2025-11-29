@@ -3,3 +3,14 @@
 </p>
 
 <p align="center"><em>The friendly multilateral video toolkit built for artists by artists. It's your best friend.</em></p> 
+
+## Getting Started
+
+- [Installation](getting-started.md)
+- [Getting Started](getting-started.md)
+- [Programs](programs.md)
+
+## Programs
+
+- [effects](programs/effects.md)
+- [utilities](programs/utilities.md)
