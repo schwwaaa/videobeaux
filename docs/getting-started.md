@@ -4,6 +4,8 @@ title: Getting Started
 nav_order: 2
 ---
 
+{% include videobeaux-header.html %}
+
 ## Project dependencies
 ### macOS/Linux
 
