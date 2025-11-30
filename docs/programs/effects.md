@@ -1,4 +1,8 @@
-An overview of each program can be find in this [YouTube playlist](https://www.youtube.com/watch?v=7i-WaDgBkcI&list=PLmyETqg8KgDcwV3-JnGoAiQyjR764sBI_).
+---
+layout: default
+title: Effects
+nav_order: 5
+---
 
 | Program | Description | Arguments |
 | -------- | ------- | ------- | 
