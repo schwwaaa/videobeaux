@@ -1,3 +1,9 @@
+---
+layout: default
+title: num_edits
+nav_order: 2
+---
+
 # num_edits
 
 ## Description

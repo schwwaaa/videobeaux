@@ -1,3 +1,9 @@
+---
+layout: default
+title: gamma_fix
+nav_order: 2
+---
+
 # gamma_fix
 
 ## Description

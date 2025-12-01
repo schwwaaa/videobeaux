@@ -1,3 +1,9 @@
+---
+layout: default
+title: qwikchop
+nav_order: 2
+---
+
 # qwikchop
 
 ## Description

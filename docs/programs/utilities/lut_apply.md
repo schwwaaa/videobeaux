@@ -1,3 +1,9 @@
+---
+layout: default
+title: lut_apply
+nav_order: 2
+---
+
 # lut_apply
 
 ## Description

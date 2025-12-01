@@ -1,3 +1,9 @@
+---
+layout: default
+title: tonemap_hdr_sdr
+nav_order: 2
+---
+
 # tonemap_hdr_sdr
 
 ## Description

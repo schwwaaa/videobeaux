@@ -1,3 +1,9 @@
+---
+layout: default
+title: thumbs
+nav_order: 2
+---
+
 # thumbs
 
 ## Description

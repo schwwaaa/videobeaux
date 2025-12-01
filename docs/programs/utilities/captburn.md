@@ -1,3 +1,9 @@
+---
+layout: default
+title: captburn
+nav_order: 2
+---
+
 # captburn
 
 ## Description

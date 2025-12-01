@@ -1,3 +1,9 @@
+---
+layout: default
+title: frame_interpolate
+nav_order: 2
+---
+
 # frame_interpolate
 
 ## Description

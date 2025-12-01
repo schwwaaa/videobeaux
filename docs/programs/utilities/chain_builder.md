@@ -1,3 +1,9 @@
+---
+layout: default
+title: chain_builder
+nav_order: 2
+---
+
 # chain_builder
 
 ## Description

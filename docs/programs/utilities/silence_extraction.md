@@ -1,3 +1,9 @@
+---
+layout: default
+title: silence_extraction
+nav_order: 2
+---
+
 # silence_extraction
 
 ## Description

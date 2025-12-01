@@ -1,3 +1,9 @@
+---
+layout: default
+title: wipe_transitions
+nav_order: 2
+---
+
 # wipe_transitions
 
 ## Description

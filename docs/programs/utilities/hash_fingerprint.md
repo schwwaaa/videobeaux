@@ -1,3 +1,9 @@
+---
+layout: default
+title: hash_fingerprint
+nav_order: 2
+---
+
 # hash_fingerprint
 
 ## Description
