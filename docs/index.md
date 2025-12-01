@@ -6,8 +6,7 @@ nav_order: 1
 
 # Directory
 
-- [Installation](getting-started.md)
-- [Getting Started](getting-started.md)
+- [Installation](installation.md)
 - [Programs](programs.md)
 - [Examples](examples.md)
 
