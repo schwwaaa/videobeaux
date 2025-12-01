@@ -4,33 +4,6 @@ title: Getting Started
 nav_order: 2
 ---
 
-## Project dependencies
-### macOS/Linux
-
-In the shell prompt, go to the place where you want the project to live. Paste that in a macOS Terminal or Linux shell prompt & run it.
-
-``` bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/schwwaaa/videobeaux/refs/heads/main/install.sh)"
-```
-
-### Windows
-
-``` powershell 
-choco install ffmpeg
-setx VIDEOBEAUX_PATH "C:\videobeaux"
-```
-
-## Usage
-
-### Activate virtual environment
-This will activate your virtual environment. Immediately, you will notice that your terminal path includes env, signifying an activated virtual environment.
-``` bash
-source env/bin/activate
-```
-
-### Check the installation
-
-### Get help and find out more about videobeaux
 ``` bash
 videobeaux --help
 ```
