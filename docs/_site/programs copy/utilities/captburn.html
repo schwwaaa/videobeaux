@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>captburn</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="captburn" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="The friendly multilateral video toolkit built for artists by artists." />
+<meta property="og:description" content="The friendly multilateral video toolkit built for artists by artists." />
+<link rel="canonical" href="http://localhost:4000/videobeaux/programs%20copy/utilities/captburn.html" />
+<meta property="og:url" content="http://localhost:4000/videobeaux/programs%20copy/utilities/captburn.html" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="captburn" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"captburn","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs%20copy/utilities/captburn.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/videobeaux/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1><a href="http://localhost:4000/videobeaux/">videobeaux</a></h1>
+
+        
+          <img src="/videobeaux/assets/img/videobeaux.png" alt="Logo" />
+        
+
+        <p>The friendly multilateral video toolkit built for artists by artists.</p>
+
+        
+        <p class="view"><a href="https://github.com/schwwaaa/videobeaux">View the Project on GitHub <small>schwwaaa/videobeaux</small></a></p>
+        
+
+        
+
+        
+      </header>
+      <section>
+
+      <h1 id="captburn">captburn</h1>
+
+<h2 id="description">Description</h2>
+
+<p>Burns subtitles, captions, or transcript text directly into the video with precise styling, timing, and layout control</p>
+
+<h2 id="arguments">Arguments</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">caption</code></li>
+  <li><code class="language-plaintext highlighter-rouge">style</code></li>
+  <li><code class="language-plaintext highlighter-rouge">rollup_lines</code></li>
+  <li><code class="language-plaintext highlighter-rouge">words_per_line</code></li>
+  <li><code class="language-plaintext highlighter-rouge">font</code></li>
+  <li><code class="language-plaintext highlighter-rouge">font_size</code></li>
+  <li><code class="language-plaintext highlighter-rouge">bold</code></li>
+  <li><code class="language-plaintext highlighter-rouge">italic</code></li>
+  <li><code class="language-plaintext highlighter-rouge">primary</code></li>
+  <li><code class="language-plaintext highlighter-rouge">outline</code></li>
+  <li><code class="language-plaintext highlighter-rouge">outline_width</code></li>
+  <li><code class="language-plaintext highlighter-rouge">shadow</code></li>
+  <li><code class="language-plaintext highlighter-rouge">back</code></li>
+  <li><code class="language-plaintext highlighter-rouge">back_opacity</code></li>
+  <li><code class="language-plaintext highlighter-rouge">scale_x</code></li>
+  <li><code class="language-plaintext highlighter-rouge">scale_y</code></li>
+  <li><code class="language-plaintext highlighter-rouge">spacing</code></li>
+  <li><code class="language-plaintext highlighter-rouge">rotate</code></li>
+  <li><code class="language-plaintext highlighter-rouge">margin_l</code></li>
+  <li><code class="language-plaintext highlighter-rouge">margin_r</code></li>
+  <li><code class="language-plaintext highlighter-rouge">margin_v</code></li>
+  <li><code class="language-plaintext highlighter-rouge">align</code></li>
+  <li><code class="language-plaintext highlighter-rouge">border_style</code></li>
+  <li><code class="language-plaintext highlighter-rouge">x</code></li>
+  <li><code class="language-plaintext highlighter-rouge">y</code></li>
+  <li><code class="language-plaintext highlighter-rouge">move</code></li>
+  <li><code class="language-plaintext highlighter-rouge">vcodec</code></li>
+  <li><code class="language-plaintext highlighter-rouge">crf</code></li>
+  <li><code class="language-plaintext highlighter-rouge">preset</code></li>
+</ul>
+
+<h2 id="program-template">Program Template</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> captburn <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4 <span class="nt">--caption</span> VALUE <span class="nt">--style</span> VALUE <span class="nt">--rollup_lines</span> VALUE <span class="nt">--words_per_line</span> VALUE <span class="nt">--font</span> VALUE <span class="nt">--font_size</span> VALUE <span class="nt">--bold</span> VALUE <span class="nt">--italic</span> VALUE <span class="nt">--primary</span> VALUE <span class="nt">--outline</span> VALUE <span class="nt">--outline_width</span> VALUE <span class="nt">--shadow</span> VALUE <span class="nt">--back</span> VALUE <span class="nt">--back_opacity</span> VALUE <span class="nt">--scale_x</span> VALUE <span class="nt">--scale_y</span> VALUE <span class="nt">--spacing</span> VALUE <span class="nt">--rotate</span> VALUE <span class="nt">--margin_l</span> VALUE <span class="nt">--margin_r</span> VALUE <span class="nt">--margin_v</span> VALUE <span class="nt">--align</span> VALUE <span class="nt">--border_style</span> VALUE <span class="nt">--x</span> VALUE <span class="nt">--y</span> VALUE <span class="nt">--move</span> VALUE <span class="nt">--vcodec</span> VALUE <span class="nt">--crf</span> VALUE <span class="nt">--preset</span> VALUE
+</code></pre></div></div>
+
+<h2 id="real-world-example">Real World Example</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> captburn <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> captburn_styled.mp4 <span class="nt">--caption</span> EXAMPLE <span class="nt">--style</span> EXAMPLE <span class="nt">--rollup_lines</span> EXAMPLE <span class="nt">--words_per_line</span> EXAMPLE <span class="nt">--font</span> EXAMPLE <span class="nt">--font_size</span> EXAMPLE <span class="nt">--bold</span> EXAMPLE <span class="nt">--italic</span> EXAMPLE <span class="nt">--primary</span> EXAMPLE <span class="nt">--outline</span> EXAMPLE <span class="nt">--outline_width</span> EXAMPLE <span class="nt">--shadow</span> EXAMPLE <span class="nt">--back</span> EXAMPLE <span class="nt">--back_opacity</span> EXAMPLE <span class="nt">--scale_x</span> EXAMPLE <span class="nt">--scale_y</span> EXAMPLE <span class="nt">--spacing</span> EXAMPLE <span class="nt">--rotate</span> EXAMPLE <span class="nt">--margin_l</span> EXAMPLE <span class="nt">--margin_r</span> EXAMPLE <span class="nt">--margin_v</span> EXAMPLE <span class="nt">--align</span> EXAMPLE <span class="nt">--border_style</span> EXAMPLE <span class="nt">--x</span> EXAMPLE <span class="nt">--y</span> EXAMPLE <span class="nt">--move</span> EXAMPLE <span class="nt">--vcodec</span> EXAMPLE <span class="nt">--crf</span> EXAMPLE <span class="nt">--preset</span> EXAMPLE
+</code></pre></div></div>
+
+
+      </section>
+      <footer>
+        
+        <p>This project is maintained by <a href="https://github.com/schwwaaa">schwwaaa</a></p>
+        
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="/videobeaux/assets/js/scale.fix.js"></script>
+  </body>
+</html>

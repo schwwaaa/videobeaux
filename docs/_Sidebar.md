@@ -1,0 +1,5 @@
+- [Home](/)
+- [Getting Started](getting-started.md)
+- [Programs]
+  - [Effects](programs/effects.md)
+  - [Utilities](programs/utilities.md)

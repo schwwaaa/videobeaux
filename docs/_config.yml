@@ -1,0 +1,20 @@
+title: ""
+description: "The friendly multilateral video toolkit built for artists by artists."
+
+# however you’re activating the theme; either of these is fine:
+
+# If GitHub wrote this for you:
+remote_theme: pages-themes/minimal@v0.2.0
+plugins:
+  - jekyll-remote-theme
+
+# OR if you’re using the plain theme line instead:
+# theme: jekyll-theme-minimal
+
+baseurl: "/videobeaux"   # (project site; you probably already have this)
+
+logo: "/assets/img/videobeaux.png"  # 👈 THIS is the important line
+show_downloads: false     # optional, hides the ZIP/TAR buttons
+
+include:
+  - assets/css/custom.css

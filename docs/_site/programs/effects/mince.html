@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>mince</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="mince" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="The friendly multilateral video toolkit built for artists by artists." />
+<meta property="og:description" content="The friendly multilateral video toolkit built for artists by artists." />
+<link rel="canonical" href="http://localhost:4000/videobeaux/programs/effects/mince.html" />
+<meta property="og:url" content="http://localhost:4000/videobeaux/programs/effects/mince.html" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="mince" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"mince","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/mince.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/videobeaux/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1><a href="http://localhost:4000/videobeaux/">videobeaux</a></h1>
+
+        
+          <img src="/videobeaux/assets/img/videobeaux.png" alt="Logo" />
+        
+
+        <p>The friendly multilateral video toolkit built for artists by artists.</p>
+
+        
+        <p class="view"><a href="https://github.com/schwwaaa/videobeaux">View the Project on GitHub <small>schwwaaa/videobeaux</small></a></p>
+        
+
+        
+
+        
+      </header>
+      <section>
+
+      <h1 id="mince">mince</h1>
+
+<h2 id="description">Description</h2>
+
+<p>A fast, lossless segment-extractor and concatenator that slices videos into parts and recombines them with precision</p>
+
+<h2 id="arguments">Arguments</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">mode</code></li>
+  <li><code class="language-plaintext highlighter-rouge">seed</code></li>
+  <li><code class="language-plaintext highlighter-rouge">engine</code></li>
+  <li><code class="language-plaintext highlighter-rouge">normalize</code></li>
+  <li><code class="language-plaintext highlighter-rouge">size</code></li>
+  <li><code class="language-plaintext highlighter-rouge">fit</code></li>
+  <li><code class="language-plaintext highlighter-rouge">fps</code></li>
+  <li><code class="language-plaintext highlighter-rouge">pixfmt</code></li>
+  <li><code class="language-plaintext highlighter-rouge">ar</code></li>
+  <li><code class="language-plaintext highlighter-rouge">ac</code></li>
+  <li><code class="language-plaintext highlighter-rouge">norm_vcodec</code></li>
+  <li><code class="language-plaintext highlighter-rouge">norm_crf</code></li>
+  <li><code class="language-plaintext highlighter-rouge">norm_preset</code></li>
+  <li><code class="language-plaintext highlighter-rouge">vcodec</code></li>
+  <li><code class="language-plaintext highlighter-rouge">acodec</code></li>
+  <li><code class="language-plaintext highlighter-rouge">crf</code></li>
+  <li><code class="language-plaintext highlighter-rouge">preset</code></li>
+  <li><code class="language-plaintext highlighter-rouge">faststart</code></li>
+  <li><code class="language-plaintext highlighter-rouge">fallback_reencode</code></li>
+  <li><code class="language-plaintext highlighter-rouge">decode_tolerant</code></li>
+  <li><code class="language-plaintext highlighter-rouge">hard_trim</code></li>
+</ul>
+
+<h2 id="program-template">Program Template</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> mince <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4 <span class="nt">--mode</span> VALUE <span class="nt">--seed</span> VALUE <span class="nt">--engine</span> VALUE <span class="nt">--normalize</span> VALUE <span class="nt">--size</span> VALUE <span class="nt">--fit</span> VALUE <span class="nt">--fps</span> VALUE <span class="nt">--pixfmt</span> VALUE <span class="nt">--ar</span> VALUE <span class="nt">--ac</span> VALUE <span class="nt">--norm_vcodec</span> VALUE <span class="nt">--norm_crf</span> VALUE <span class="nt">--norm_preset</span> VALUE <span class="nt">--vcodec</span> VALUE <span class="nt">--acodec</span> VALUE <span class="nt">--crf</span> VALUE <span class="nt">--preset</span> VALUE <span class="nt">--faststart</span> VALUE <span class="nt">--fallback_reencode</span> VALUE <span class="nt">--decode_tolerant</span> VALUE <span class="nt">--hard_trim</span> VALUE
+</code></pre></div></div>
+
+<h2 id="real-world-example">Real World Example</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> mince <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> mince_styled.mp4 <span class="nt">--mode</span> EXAMPLE <span class="nt">--seed</span> EXAMPLE <span class="nt">--engine</span> EXAMPLE <span class="nt">--normalize</span> EXAMPLE <span class="nt">--size</span> EXAMPLE <span class="nt">--fit</span> EXAMPLE <span class="nt">--fps</span> EXAMPLE <span class="nt">--pixfmt</span> EXAMPLE <span class="nt">--ar</span> EXAMPLE <span class="nt">--ac</span> EXAMPLE <span class="nt">--norm_vcodec</span> EXAMPLE <span class="nt">--norm_crf</span> EXAMPLE <span class="nt">--norm_preset</span> EXAMPLE <span class="nt">--vcodec</span> EXAMPLE <span class="nt">--acodec</span> EXAMPLE <span class="nt">--crf</span> EXAMPLE <span class="nt">--preset</span> EXAMPLE <span class="nt">--faststart</span> EXAMPLE <span class="nt">--fallback_reencode</span> EXAMPLE <span class="nt">--decode_tolerant</span> EXAMPLE <span class="nt">--hard_trim</span> EXAMPLE
+</code></pre></div></div>
+
+<h2 id="program-output">Program Output</h2>
+
+<p><em>Program output video not yet linked.</em></p>
+
+
+      </section>
+      <footer>
+        
+        <p>This project is maintained by <a href="https://github.com/schwwaaa">schwwaaa</a></p>
+        
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="/videobeaux/assets/js/scale.fix.js"></script>
+  </body>
+</html>

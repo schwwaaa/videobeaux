@@ -5,7 +5,8 @@ charset-normalizer==3.4.2
 decorator==4.4.2
 idna==3.10
 imageio==2.37.0
-imageio-ffmpeg==0.6.0
+imageio-ffmpeg==0.6.0 
+mkdocs-material==9.5.3
 moviepy==1.0.3
 numpy==2.2.6
 pillow==11.3.0
@@ -18,7 +19,7 @@ srt==3.5.3
 tqdm==4.67.1
 typing_extensions==4.14.1
 urllib3==2.5.0
--e git+ssh://git@github.com/vondas-network/videobeaux.git@09684ac5b5173f312d59b780e03c3ad5f1bf25e9#egg=videobeaux
+videobeaux @ file:///Users/tgm/Documents/SPLASH/videobeaux
 videogrep==2.3.0
 vosk==0.3.44
 websockets==15.0.1

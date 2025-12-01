@@ -1,0 +1,284 @@
+triptych_examples.txt
+======================
+
+1) Basic horizontal triptych, audio from video 1
+------------------------------------------------
+videobeaux -P triptych \
+  -i media/base.mp4 \
+  -o out/triptych_hstack_v1_audio.mp4 \
+  --input2 media/faith.mp4 \
+  --input3 media/menino.mp4 \
+  --layout hstack \
+  --zoom1 1.0 --zoom2 1.0 --zoom3 1.0 \
+  --audio-mode 1 \
+  --vol1 1.0 --vol2 1.0 --vol3 1.0 \
+  --force
+
+2) Horizontal triptych, audio from video 2 only
+-----------------------------------------------
+videobeaux -P triptych \
+  -i media/base.mp4 \
+  -o out/triptych_hstack_v2_audio.mp4 \
+  --input2 media/faith.mp4 \
+  --input3 media/menino.mp4 \
+  --layout hstack \
+  --zoom1 1.0 --zoom2 1.0 --zoom3 1.0 \
+  --audio-mode 2 \
+  --vol1 1.0 --vol2 1.0 --vol3 1.0 \
+  --force
+
+3) Horizontal triptych, audio from video 3 only
+-----------------------------------------------
+videobeaux -P triptych \
+  -i media/base.mp4 \
+  -o out/triptych_hstack_v3_audio.mp4 \
+  --input2 media/faith.mp4 \
+  --input3 media/menino.mp4 \
+  --layout hstack \
+  --zoom1 1.0 --zoom2 1.0 --zoom3 1.0 \
+  --audio-mode 3 \
+  --vol1 1.0 --vol2 1.0 --vol3 1.0 \
+  --force
+
+4) Horizontal triptych, mix all 3 audio tracks equally
+------------------------------------------------------
+videobeaux -P triptych \
+  -i media/base.mp4 \
+  -o out/triptych_hstack_mix_equal.mp4 \
+  --input2 media/faith.mp4 \
+  --input3 media/menino.mp4 \
+  --layout hstack \
+  --zoom1 1.0 --zoom2 1.0 --zoom3 1.0 \
+  --audio-mode 4 \
+  --vol1 1.0 --vol2 1.0 --vol3 1.0 \
+  --force
+
+5) Horizontal triptych, base loud / others quiet (mix)
+------------------------------------------------------
+videobeaux -P triptych \
+  -i media/base.mp4 \
+  -o out/triptych_hstack_mix_weighted.mp4 \
+  --input2 media/faith.mp4 \
+  --input3 media/menino.mp4 \
+  --layout hstack \
+  --zoom1 1.0 --zoom2 1.0 --zoom3 1.0 \
+  --audio-mode 4 \
+  --vol1 1.0 --vol2 0.4 --vol3 0.2 \
+  --force
+
+6) Horizontal triptych, completely muted (no audio track)
+---------------------------------------------------------
+videobeaux -P triptych \
+  -i media/base.mp4 \
+  -o out/triptych_hstack_mute.mp4 \
+  --input2 media/faith.mp4 \
+  --input3 media/menino.mp4 \
+  --layout hstack \
+  --zoom1 1.0 --zoom2 1.0 --zoom3 1.0 \
+  --audio-mode 5 \
+  --force
+
+7) Horizontal triptych with external soundtrack
+-----------------------------------------------
+videobeaux -P triptych \
+  -i media/base.mp4 \
+  -o out/triptych_hstack_external_audio.mp4 \
+  --input2 media/faith.mp4 \
+  --input3 media/menino.mp4 \
+  --layout hstack \
+  --zoom1 1.0 --zoom2 1.0 --zoom3 1.0 \
+  --audio-mode 6 \
+  --audio-external media/audio.wav \
+  --force
+
+8) Horizontal triptych, zoom into center panel
+----------------------------------------------
+videobeaux -P triptych \
+  -i media/base.mp4 \
+  -o out/triptych_hstack_center_zoom.mp4 \
+  --input2 media/faith.mp4 \
+  --input3 media/menino.mp4 \
+  --layout hstack \
+  --zoom1 1.0 --zoom2 1.5 --zoom3 1.0 \
+  --audio-mode 2 \
+  --vol1 0.5 --vol2 1.0 --vol3 0.5 \
+  --force
+
+9) Horizontal triptych, zoom into all three differently
+-------------------------------------------------------
+videobeaux -P triptych \
+  -i media/base.mp4 \
+  -o out/triptych_hstack_multi_zoom.mp4 \
+  --input2 media/faith.mp4 \
+  --input3 media/menino.mp4 \
+  --layout hstack \
+  --zoom1 1.2 --zoom2 1.4 --zoom3 1.6 \
+  --audio-mode 4 \
+  --vol1 0.8 --vol2 0.8 --vol3 0.8 \
+  --force
+
+10) Vertical triptych, audio from video 1 only
+----------------------------------------------
+videobeaux -P triptych \
+  -i media/base.mp4 \
+  -o out/triptych_vstack_v1_audio.mp4 \
+  --input2 media/faith.mp4 \
+  --input3 media/menino.mp4 \
+  --layout vstack \
+  --zoom1 1.0 --zoom2 1.0 --zoom3 1.0 \
+  --audio-mode 1 \
+  --vol1 1.0 --vol2 1.0 --vol3 1.0 \
+  --force
+
+*11) Vertical triptych, audio from video 2 with slight zoom on all
+-----------------------------------------------------------------
+videobeaux -P triptych \
+  -i media/base.mp4 \
+  -o out/triptych_vstack_v2_audio_zoomed.mp4 \
+  --input2 media/faith.mp4 \
+  --input3 media/menino.mp4 \
+  --layout vstack \
+  --zoom1 1.1 --zoom2 1.1 --zoom3 1.1 \
+  --audio-mode 2 \
+  --vol1 0.7 --vol2 1.0 --vol3 0.7 \
+  --force
+
+12) Vertical triptych, mixed audio with top dominant
+----------------------------------------------------
+videobeaux -P triptych \
+  -i media/base.mp4 \
+  -o out/triptych_vstack_mix_top_lead.mp4 \
+  --input2 media/faith.mp4 \
+  --input3 media/menino.mp4 \
+  --layout vstack \
+  --zoom1 1.0 --zoom2 0.9 --zoom3 0.9 \
+  --audio-mode 4 \
+  --vol1 1.0 --vol2 0.3 --vol3 0.3 \
+  --force
+
+13) Vertical triptych, external ambient audio only
+--------------------------------------------------
+videobeaux -P triptych \
+  -i media/base.mp4 \
+  -o out/triptych_vstack_external_ambience.mp4 \
+  --input2 media/faith.mp4 \
+  --input3 media/menino.mp4 \
+  --layout vstack \
+  --zoom1 1.0 --zoom2 1.0 --zoom3 1.0 \
+  --audio-mode 6 \
+  --audio-external media/audio.wav \
+  --force
+
+14) Diagonal triptych, audio from center (video 2)
+--------------------------------------------------
+videobeaux -P triptych \
+  -i media/base.mp4 \
+  -o out/triptych_diag_center_audio.mp4 \
+  --input2 media/faith.mp4 \
+  --input3 media/menino.mp4 \
+  --layout diag \
+  --zoom1 1.0 --zoom2 0.8 --zoom3 0.6 \
+  --audio-mode 2 \
+  --vol1 0.5 --vol2 1.0 --vol3 0.5 \
+  --force
+
+15) Diagonal triptych, audio from all three (slightly quieter overlays)
+----------------------------------------------------------------------
+videobeaux -P triptych \
+  -i media/base.mp4 \
+  -o out/triptych_diag_mix_subtle.mp4 \
+  --input2 media/faith.mp4 \
+  --input3 media/menino.mp4 \
+  --layout diag \
+  --zoom1 1.0 --zoom2 0.9 --zoom3 0.9 \
+  --audio-mode 4 \
+  --vol1 1.0 --vol2 0.6 --vol3 0.6 \
+  --force
+
+*16) Diagonal triptych, no audio (for later DAW sync)
+----------------------------------------------------
+videobeaux -P triptych \
+  -i media/base.mp4 \
+  -o out/triptych_diag_picture_only.mp4 \
+  --input2 media/faith.mp4 \
+  --input3 media/menino.mp4 \
+  --layout diag \
+  --zoom1 1.3 --zoom2 1.0 --zoom3 1.0 \
+  --audio-mode 5 \
+  --force
+
+17) Horizontal triptych, background music external
+--------------------------------------------------
+videobeaux -P triptych \
+  -i media/base.mp4 \
+  -o out/triptych_hstack_music_lead.mp4 \
+  --input2 media/faith.mp4 \
+  --input3 media/menino.mp4 \
+  --layout hstack \
+  --zoom1 1.0 --zoom2 1.0 --zoom3 1.0 \
+  --audio-mode 6 \
+  --audio-external media/audio.wav \
+  --force
+
+18) Horizontal triptych, dialogue from video 1, faint textures from 2 and 3
+---------------------------------------------------------------------------
+videobeaux -P triptych \
+  -i media/base.mp4 \
+  -o out/triptych_hstack_dialogue_plus_textures.mp4 \
+  --input2 media/faith.mp4 \
+  --input3 media/menino.mp4 \
+  --layout hstack \
+  --zoom1 1.0 --zoom2 1.0 --zoom3 1.0 \
+  --audio-mode 4 \
+  --vol1 1.0 --vol2 0.2 --vol3 0.2 \
+  --force
+
+19) Vertical triptych, just video 3's audio & heavy zoom into bottom panel
+--------------------------------------------------------------------------
+videobeaux -P triptych \
+  -i media/base.mp4 \
+  -o out/triptych_vstack_bottom_focus.mp4 \
+  --input2 media/faith.mp4 \
+  --input3 media/menino.mp4 \
+  --layout vstack \
+  --zoom1 1.0 --zoom2 1.0 --zoom3 1.6 \
+  --audio-mode 3 \
+  --vol1 0.3 --vol2 0.3 --vol3 1.0 \
+  --force
+
+20) Diagonal triptych, zoom into all, external audio, slower preset & higher CRF
+-------------------------------------------------------------------------------
+videobeaux -P triptych \
+  -i media/base.mp4 \
+  -o out/triptych_diag_glaze.mp4 \
+  --input2 media/faith.mp4 \
+  --input3 media/menino.mp4 \
+  --layout diag \
+  --zoom1 1.2 --zoom2 1.4 --zoom3 1.3 \
+  --audio-mode 6 \
+  --audio-external media/score_glaze.wav \
+  --x264-preset slow \
+  --crf 20 \
+  --force
+
+videobeaux -P triptych \
+  -i media/base.mp4 \
+  -o out/triptych_hstack_v1_audio.mp4 \
+  --input2 media/faith.mp4 \
+  --input3 media/menino.mp4 \
+  --layout hstack \
+  --zoom1 1.0 --zoom2 1.0 --zoom3 1.0 \
+  --audio-mode 1 \
+  --vol1 1.0 --vol2 1.0 --vol3 1.0 \
+  --force
+
+videobeaux -P triptych \
+  -i media/base.mp4 \
+  -o out/triptych_hstack_v2_audio.mp4 \
+  --input2 media/faith.mp4 \
+  --input3 media/menino.mp4 \
+  --layout hstack \
+  --zoom1 1.0 --zoom2 1.0 --zoom3 1.0 \
+  --audio-mode 2 \
+  --vol1 1.0 --vol2 1.0 --vol3 1.0 \
+  --force

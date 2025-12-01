@@ -1,0 +1,45 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "tl_small",
+      "filename": "../media/reem.png",
+      "type": "img",
+      "mode": "place",
+      "place": "top_left",
+      "size": 8,
+      "opacity": 0.9
+    },
+    {
+      "layer_number": 2,
+      "name": "tr_medium",
+      "filename": "../media/reem.png",
+      "type": "img",
+      "mode": "place",
+      "place": "top_right",
+      "size": 12,
+      "opacity": 0.9
+    },
+    {
+      "layer_number": 3,
+      "name": "bl_big",
+      "filename": "../media/reem.png",
+      "type": "img",
+      "mode": "place",
+      "place": "bottom_left",
+      "size": 20,
+      "opacity": 0.9
+    },
+    {
+      "layer_number": 4,
+      "name": "br_huge",
+      "filename": "../media/reem.png",
+      "type": "img",
+      "mode": "place",
+      "place": "bottom_right",
+      "size": 26,
+      "opacity": 0.9
+    }
+  ]
+}

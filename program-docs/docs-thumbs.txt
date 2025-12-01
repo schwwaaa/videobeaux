@@ -1,0 +1,131 @@
+videobeaux — thumbs (Thumbnail / Contact Sheet)
+===============================================
+
+## Overview
+
+`thumbs` automatically extracts representative frames and (optionally) assembles them into a single **contact sheet** image. It’s ideal for catalog previews, editorial reference, QC, and web galleries.
+
+Two output modes:
+1) **Contact Sheet** — a single tiled image with evenly spaced or scene-based thumbnails.
+2) **Frame Sequence** — a directory of individual thumbnail images (e.g., for galleries or further processing).
+
+---
+
+## Why This Matters
+
+- **Preview at a glance**: Summarize a clip’s content without scrubbing.
+- **Editorial assistance**: Visual guide for cut points and pacing.
+- **QC**: Spot exposure shifts, black frames, or artifacts quickly.
+- **Web/social**: Ready-made storyboards or strips for sharing.
+
+---
+
+## Flags & Behavior
+
+### Sampling
+- `--fps <float>`: Sample rate in frames per second. Example: `0.5` → one frame every 2 seconds.
+- `--scene`: Enable scene-based selection (uses FFmpeg scene change detection).
+- `--scene-threshold <float>`: Sensitivity for `--scene`. Lower finds more cuts. Typical range: `0.3–0.6` (default: 0.4).
+
+### Layout & Appearance
+- `--tile CxR`: Grid columns x rows for contact sheet (e.g., `6x4`). If omitted, the module can auto-fit based on sample count.
+- `--scale WxH`: Scale each thumbnail. Use `-1` to preserve aspect for one dimension (e.g., `320:-1`). Use fixed values for square tiles (e.g., `320:320`).
+- `--timestamps`: Overlay a timestamp on each tile (`hh:mm:ss`).
+- `--label`: Add a footer label with filename and duration.
+- `--bg '#RRGGBB'`: Sheet background color (default `#000000`).
+- `--margin <px>`: Margin around the full sheet (default `12`).
+- `--padding <px>`: Spacing between tiles (default `6`).
+- `--fontfile <ttf>`: Custom font path for drawtext (optional). If omitted, system default is used.
+
+### Outputs
+- `--contactsheet <path>`: Write a single image (PNG/JPG recommended).
+- `--outdir <folder>`: Write a sequence of thumbnails (`frame_0001.jpg` etc.).
+- If you provide **both**, both products are generated.
+- If you only use global `-o`, it is treated as the contact sheet path.
+
+### Defaults
+- If neither `--contactsheet` nor `--outdir` is provided, the module will **require** either global `-o` or one of those flags.
+
+---
+
+## Examples
+
+**1) Contact sheet, 5x4 grid, timestamps**
+```bash
+videobeaux -P thumbs -i ./media/bbb.mov -o ./out/bbb_contact_5x4.jpg   --fps 0.5 --tile 5x4 --scale 320:-1 --timestamps --label -F
+```
+
+**2) Scene-based sheet (5x5) with timestamps**
+```bash
+videobeaux -P thumbs -i ./media/bbb.mov -o ./out/bbb_contact_scenes_5x5.jpg   --scene --scene-threshold 0.35 --tile 5x5 --scale 320:-1 --timestamps --label -F
+```
+
+**3) Frame sequence only (no contact sheet)**
+```bash
+videobeaux -P thumbs -i ./media/bbb.mov   --fps 1.0 --scale 480:-1 --outdir ./out/bbb_frames -F
+```
+
+**4) Contact sheet + frame sequence, custom font**
+```bash
+videobeaux -P thumbs -i ./media/bbb.mov -o ./out/bbb_contact_font.jpg   --fps 0.5 --tile 6x4 --scale 360:-1 --timestamps   --fontfile ./fonts/Inter-SemiBold.ttf   --outdir ./out/bbb_frames2 -F
+```
+
+**5) Minimal (uses defaults)**
+```bash
+videobeaux -P thumbs -i ./media/bbb.mov -o ./out/bbb_contact_min.jpg -F
+```
+
+---
+
+## Under the Hood
+
+- **Frame sampling** uses `fps` or `select='gt(scene,THRESH)'` in FFmpeg filtergraphs.
+- **Timestamp overlay** uses `drawtext=text='%{pts\:hms}'` positioned near the bottom of each tile.
+- **Tiling** uses FFmpeg’s `tile=CxR` filter after scaling. Padding/margins can be done with `pad` and `tmpl` layer offsets.
+- **Scene detection** leverages FFmpeg’s scene filter and selects frames with deltas above the threshold.
+
+**Conceptual FFmpeg filter chain (contact sheet):**
+```
+-vf "fps=0.5,scale=320:-1,tile=5x4"
+```
+or for scenes:
+```
+-vf "select='gt(scene,0.4)',scale=320:-1,tile=5x4"
+```
+
+**Timestamp (drawtext) example:**
+```
+drawtext=text='%{pts\:hms}':x=10:y=h-th-10:fontsize=20:fontcolor=white
+```
+
+---
+
+## Performance Notes
+
+- Lower `--fps` or higher `--scene-threshold` → fewer frames → faster.
+- Large grids and high `--scale` values increase memory and processing time.
+- Prefer JPG for large sheets (smaller files), PNG for lossless or text-heavy overlays.
+
+---
+
+## Best Practices
+
+- For long clips, start with `--fps 0.33` or `--scene --scene-threshold 0.4` to avoid massive sheets.
+- Keep `--scale` widths around `320–480` for practical sheet sizes.
+- Use `--label` when sending to clients—adds filename and duration context.
+
+---
+
+## Troubleshooting
+
+- **Text rendering errors**: Provide a `--fontfile` to guarantee glyph availability.
+- **Sheet too huge**: Reduce `--scale`, tighten `--fps`, or reduce `--tile` dimensions.
+- **Colors look off**: Ensure correct quoting for hex colors (`'#101010'`).
+
+---
+
+## Future Enhancements
+
+- Optional scene clustering and caption under tiles (shot length).
+- Border styles (rounded corners, drop shadow).
+- Multi-row storyboards per chapter or per detected scene.

@@ -1,0 +1,179 @@
+1) Logo in top-right corner
+----------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex01_layout_ex01_logo_corner.mp4 \
+  --layout-json lagkage_layouts/layout_ex01_logo_corner.json \
+  --audio-mode base \
+  --force
+
+2) Center GIF sticker
+----------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex02_layout_ex02_gif_center_sticker.mp4 \
+  --layout-json lagkage_layouts/layout_ex02_gif_center_sticker.json \
+  --audio-mode base \
+  --force
+
+3) Dual PIP videos with per-layer gains (all audio)
+----------------------------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex03_layout_ex03_dual_pip_videos.mp4 \
+  --layout-json lagkage_layouts/layout_ex03_dual_pip_videos.json \
+  --audio-mode all \
+  --force
+
+4) Lower-third band from image
+-------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex04_layout_ex04_lower_third_band.mp4 \
+  --layout-json lagkage_layouts/layout_ex04_lower_third_band.json \
+  --audio-mode base \
+  --force
+
+5) Center zoomed crop PIP
+--------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex05_layout_ex05_center_zoom_crop_pip.mp4 \
+  --layout-json lagkage_layouts/layout_ex05_center_zoom_crop_pip.json \
+  --audio-mode all \
+  --force
+
+6) Scatter GIFs + logo (random sequence)
+-----------------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex06_layout_ex06_scatter_gifs_logo.mp4 \
+  --layout-json lagkage_layouts/layout_ex06_scatter_gifs_logo.json \
+  --audio-mode base \
+  --force
+
+7) Logo grid around edges
+--------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex07_layout_ex07_logo_grid_edges.mp4 \
+  --layout-json lagkage_layouts/layout_ex07_logo_grid_edges.json \
+  --audio-mode base \
+  --force
+
+8) Story mode: band + PIP + logo (external audio)
+--------------------------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex08_layout_ex08_story_mode_external_audio.mp4 \
+  --layout-json lagkage_layouts/layout_ex08_story_mode_external_audio.json \
+  --audio-mode external --audio-src media/music_track.wav \
+  --force
+
+9) Split screen: left zoomed, right normal (all audio)
+-------------------------------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex09_layout_ex09_split_screen.mp4 \
+  --layout-json lagkage_layouts/layout_ex09_split_screen.json \
+  --audio-mode all \
+  --force
+
+10) Full showcase: GIFs + videos + logo (all audio)
+---------------------------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex10_layout_ex10_full_showcase.mp4 \
+  --layout-json lagkage_layouts/layout_ex10_full_showcase.json \
+  --audio-mode all \
+  --force
+
+11) Silent graphics-only output
+-------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex11_layout_ex11_silent_graphics_only.mp4 \
+  --layout-json lagkage_layouts/layout_ex11_silent_graphics_only.json \
+  --audio-mode none \
+  --force
+
+12) JSON-only audio with different linear gains
+-----------------------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex12_layout_ex12_json_only_audio_gains.mp4 \
+  --layout-json lagkage_layouts/layout_ex12_json_only_audio_gains.json \
+  --audio-mode json_only \
+  --force
+
+13) Backward sequence stacked logos
+-----------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex13_layout_ex13_backward_stack.mp4 \
+  --layout-json lagkage_layouts/layout_ex13_backward_stack.json \
+  --audio-mode base \
+  --force
+
+14) Place mode quadrants with different sizes
+---------------------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex14_layout_ex14_place_quadrants.mp4 \
+  --layout-json lagkage_layouts/layout_ex14_place_quadrants.json \
+  --audio-mode base \
+  --force
+
+15) UI-style small stickers around center
+-----------------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex15_layout_ex15_ui_stickers.mp4 \
+  --layout-json lagkage_layouts/layout_ex15_ui_stickers.json \
+  --audio-mode base \
+  --force
+
+16) Zoom showcase at multiple levels (all audio)
+------------------------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex16_layout_ex16_zoom_showcase.mp4 \
+  --layout-json lagkage_layouts/layout_ex16_zoom_showcase.json \
+  --audio-mode all \
+  --force
+
+17) Crop focus 'face cam' PIP
+-----------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex17_layout_ex17_crop_focus.mp4 \
+  --layout-json lagkage_layouts/layout_ex17_crop_focus.json \
+  --audio-mode all \
+  --force
+
+18) Off-screen pushes (half visible)
+------------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex18_layout_ex18_offscreen_push.mp4 \
+  --layout-json lagkage_layouts/layout_ex18_offscreen_push.json \
+  --audio-mode base \
+  --force
+
+19) Media path using 'media/' root
+----------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex19_layout_ex19_media_path_root.mp4 \
+  --layout-json lagkage_layouts/layout_ex19_media_path_root.json \
+  --audio-mode base \
+  --force
+
+20) Many audio clips premixed with different gains
+--------------------------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex20_layout_ex20_audio_premix.mp4 \
+  --layout-json lagkage_layouts/layout_ex20_audio_premix.json \
+  --audio-mode all \
+  --force

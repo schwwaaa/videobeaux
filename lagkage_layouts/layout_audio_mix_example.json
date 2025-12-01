@@ -1,0 +1,28 @@
+{
+    "sequence_direction": "forward",
+    "layers": [{
+            "layer_number": 1,
+            "name": "loud_clip",
+            "filename": "../media/base.mp4",
+            "type": "video",
+            "mode": "free",
+            "pos_x": 200,
+            "pos_y": 250,
+            "size": 30,
+            "opacity": 1.0,
+            "audio_gain_db": -1
+        },
+        {
+            "layer_number": 2,
+            "name": "quiet_clip",
+            "filename": "../media/schwwaaa.mp4",
+            "type": "video",
+            "mode": "free",
+            "pos_x": 100,
+            "pos_y": 150,
+            "size": 30,
+            "opacity": 1.0,
+            "audio_gain_db": 0
+        }
+    ]
+}

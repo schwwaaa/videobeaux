@@ -1,0 +1,27 @@
+{
+  "sequence_direction": "forward",
+  "layers": [
+    {
+      "layer_number": 1,
+      "name": "left_half_off",
+      "filename": "../media/reem.png",
+      "type": "img",
+      "mode": "free",
+      "pos_x": -200,
+      "pos_y": 300,
+      "size": 40,
+      "opacity": 0.9
+    },
+    {
+      "layer_number": 2,
+      "name": "right_half_off",
+      "filename": "../media/reem.png",
+      "type": "img",
+      "mode": "free",
+      "pos_x": 1600,
+      "pos_y": 300,
+      "size": 40,
+      "opacity": 0.9
+    }
+  ]
+}

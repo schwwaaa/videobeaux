@@ -3,14 +3,15 @@
 # Compose multiple visual layers (images/gifs/videos) on top of a base video
 # using a single JSON layout file.
 #
-# GIF layers are preprocessed into finite videos that loop for roughly the base
-# video duration, so the main overlay graph stays simple and stable.
+# GIF layers are preprocessed into finite-length videos that loop for roughly
+# the base video duration, so the main overlay graph stays simple and stable.
 
 import json
 import os
 import random
 import subprocess
 import tempfile
+import math
 from pathlib import Path
 
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
@@ -35,9 +36,38 @@ def register_arguments(parser):
         default=None,
         help="Override sequence_direction from JSON (forward|backward|random).",
     )
+    parser.add_argument(
+        "--audio-mode",
+        dest="audio_mode",
+        choices=["base", "all", "json_only", "external", "none"],
+        default="base",
+        help=(
+            "How to build the audio track: "
+            "base (default base video audio only), "
+            "all (base + all JSON media audio mixed), "
+            "json_only (only JSON media audio), "
+            "external (use --audio-src), "
+            "none (no audio)."
+        ),
+    )
+    parser.add_argument(
+        "--audio-src",
+        dest="audio_src",
+        type=str,
+        help="External audio file when --audio-mode=external.",
+    )
 
 
 # ----------------- ffprobe helpers -----------------
+
+
+def _run_ffprobe(cmd):
+    proc = subprocess.run(cmd, capture_output=True, text=True)
+    if proc.returncode != 0:
+        raise RuntimeError(
+            f"ffprobe failed (code {proc.returncode}): {proc.stderr.strip()}"
+        )
+    return proc.stdout
 
 
 def _probe_base_info(path: str):
@@ -58,14 +88,17 @@ def _probe_base_info(path: str):
         "json",
         path,
     ]
-    proc = subprocess.run(cmd, capture_output=True, text=True)
-    if proc.returncode != 0:
-        raise RuntimeError(f"ffprobe failed for base {path}: {proc.stderr}")
-    info = json.loads(proc.stdout)
+    out = _run_ffprobe(cmd)
+    data = json.loads(out)
 
-    width = int(info["streams"][0]["width"])
-    height = int(info["streams"][0]["height"])
-    duration = float(info["format"]["duration"])
+    streams = data.get("streams") or []
+    if not streams:
+        raise RuntimeError(f"No video stream found in {path!r}")
+
+    s0 = streams[0]
+    width = int(s0.get("width") or 0)
+    height = int(s0.get("height") or 0)
+    duration = float(data["format"].get("duration") or 0.0)
     return width, height, duration
 
 
@@ -85,14 +118,32 @@ def _probe_video_size(path: str):
         "csv=s=x:p=0",
         path,
     ]
-    proc = subprocess.run(cmd, capture_output=True, text=True)
-    if proc.returncode != 0:
-        raise RuntimeError(f"ffprobe size failed for {path}: {proc.stderr}")
-    line = proc.stdout.strip()
+    out = _run_ffprobe(cmd)
+    line = out.strip()
     if not line:
         raise RuntimeError(f"ffprobe size returned empty output for {path}")
     w_str, h_str = line.split("x")
     return int(w_str), int(h_str)
+
+
+def _probe_has_audio(path: str) -> bool:
+    """
+    Return True if the file has at least one audio stream.
+    """
+    cmd = [
+        "ffprobe",
+        "-v",
+        "error",
+        "-select_streams",
+        "a:0",
+        "-show_entries",
+        "stream=index",
+        "-of",
+        "csv=p=0",
+        path,
+    ]
+    proc = subprocess.run(cmd, capture_output=True, text=True)
+    return proc.returncode == 0 and proc.stdout.strip() != ""
 
 
 # ----------------- small helpers -----------------
@@ -196,6 +247,54 @@ def _compute_overlay_box(base_w: int, src_w: int, src_h: int, size_pct: float):
     return target_w, target_h
 
 
+def _resolve_layer_path(filename: str, layout_path: Path) -> str:
+    """
+    Resolve the media path for a layer in a way that:
+    - Leaves absolute paths and URLs alone.
+    - Treats '../media/...' as project-root 'media/...'.
+    - Treats 'media/...' as-is (relative to current working dir).
+    - For simple basenames, keeps layout-relative behavior.
+    """
+    # URLs
+    if "://" in filename:
+        return filename
+
+    # Absolute path
+    if os.path.isabs(filename):
+        return filename
+
+    # Special-case ../media/... -> media/...
+    if filename.startswith("../media/"):
+        return os.path.normpath("media/" + filename[len("../media/"):])
+
+    # Special-case media/... -> as-is (cwd-relative)
+    if filename.startswith("media/"):
+        return filename
+
+    # Everything else: layout-relative
+    return str((layout_path.parent / filename).resolve())
+
+
+def _load_layout(layout_path: Path):
+    data = json.loads(layout_path.read_text())
+    if "layers" not in data or not data["layers"]:
+        raise ValueError("Layout JSON has no 'layers' array or it's empty.")
+    return data
+
+
+def _resolve_sequence(layout: dict, cli_seq: str):
+    seq = cli_seq or layout.get("sequence_direction") or "forward"
+    if seq not in ("forward", "backward", "random"):
+        seq = "forward"
+
+    layers = sorted(layout["layers"], key=lambda L: L.get("layer_number", 0))
+    if seq == "backward":
+        layers = list(reversed(layers))
+    elif seq == "random":
+        layers = random.sample(layers, len(layers))
+    return seq, layers
+
+
 # ----------------- main entry -----------------
 
 
@@ -204,53 +303,39 @@ def run(args):
     if not layout_path.exists():
         raise FileNotFoundError(f"Layout JSON not found: {layout_path}")
 
-    # Load layout JSON
-    layout = json.loads(layout_path.read_text())
-    layers = layout.get("layers", [])
-    if not isinstance(layers, list) or not layers:
-        raise ValueError("Layout JSON has no 'layers' array or it's empty.")
+    audio_mode = getattr(args, "audio_mode", "base") or "base"
+    audio_src = getattr(args, "audio_src", None)
 
-    # Determine sequence direction
-    seq_dir = args.sequence_direction or layout.get("sequence_direction", "forward")
-    if seq_dir not in ("forward", "backward", "random"):
-        seq_dir = "forward"
+    if audio_mode == "external" and not audio_src:
+        raise ValueError("--audio-mode=external requires --audio-src")
 
-    # Order layers by layer_number, then adjust sequence if needed
-    ordered_layers = sorted(layers, key=lambda L: L.get("layer_number", 0))
-    if seq_dir == "backward":
-        ordered_layers = list(reversed(ordered_layers))
-    elif seq_dir == "random":
-        ordered_layers = random.sample(ordered_layers, len(ordered_layers))
+    layout = _load_layout(layout_path)
+    seq, ordered_layers = _resolve_sequence(layout, args.sequence_direction)
 
     base_input = args.input
     if not base_input:
         raise ValueError("Global --input (base video) is required for lagkage.")
 
-    # Probe base
+    # 1) Probe base video info once
     base_w, base_h, base_duration = _probe_base_info(base_input)
+    base_has_audio = _probe_has_audio(base_input)
 
-    # Temp dir for GIF preprocess
+    # 2) Prepare inputs for main ffmpeg call
     tmp_dir = Path(tempfile.mkdtemp(prefix="lagkage_gifs_"))
 
-    # 1) Build input list for ffmpeg
-    # input 0 = base, 1..N = overlays
-    input_files = [base_input]
-    overlay_specs = []  # (input_index, layer_dict, src_w, src_h)
+    input_files = [base_input]  # index 0 = base
+    overlay_specs = []          # (input_index, layer_dict, src_w, src_h)
+    overlay_audio_indices = []  # which overlay inputs actually have audio
+    audio_vol_db_by_index = {}  # per-input gain in dB
 
     for idx, layer in enumerate(ordered_layers, start=1):
         filename = layer.get("filename")
         if not filename:
             raise ValueError(f"Layer missing 'filename': {layer}")
 
-        # Relative paths are relative to the layout JSON directory.
-        if not os.path.isabs(filename):
-            src = str(layout_path.parent / filename)
-        else:
-            src = filename
-
+        src = _resolve_layer_path(filename, layout_path)
         layer_type = (layer.get("type") or "").lower()
 
-        # If GIF, pre-process to finite-length video that loops to base duration
         if layer_type == "gif":
             overlay_src = _preprocess_gif(src, base_duration, tmp_dir, idx)
         else:
@@ -262,10 +347,51 @@ def run(args):
         in_index = len(input_files) - 1
         overlay_specs.append((in_index, layer, src_w, src_h))
 
-    # 2) Build filter_complex
+        if _probe_has_audio(overlay_src):
+            overlay_audio_indices.append(in_index)
+
+            # Per-layer audio gain: audio_gain_db or audio_gain (linear)
+            gain_db = None
+            if "audio_gain_db" in layer:
+                try:
+                    gain_db = float(layer["audio_gain_db"])
+                except Exception:
+                    gain_db = None
+            elif "audio_gain" in layer:
+                try:
+                    g = float(layer["audio_gain"])
+                    if g > 0:
+                        gain_db = 20.0 * math.log10(g)
+                except Exception:
+                    gain_db = None
+
+            if gain_db is not None:
+                audio_vol_db_by_index[in_index] = gain_db
+
+    # external audio as extra input
+    external_audio_index = None
+    if audio_mode == "external":
+        if not os.path.isabs(audio_src):
+            audio_src_resolved = audio_src  # cwd-relative
+        else:
+            audio_src_resolved = audio_src
+        input_files.append(audio_src_resolved)
+        external_audio_index = len(input_files) - 1
+
+    # figure out which indices feed audio mix
+    audio_mix_indices = []
+    if audio_mode == "all":
+        if base_has_audio:
+            audio_mix_indices.append(0)
+        audio_mix_indices.extend(overlay_audio_indices)
+    elif audio_mode == "json_only":
+        audio_mix_indices.extend(overlay_audio_indices)
+    # base/external/none handled later
+
+    # 3) Build filter_complex (video + optional audio mix)
     filter_parts = []
 
-    # Start with base video
+    # video chain: start from base
     current_label = "[0:v]"
 
     for idx, (in_index, layer, src_w, src_h) in enumerate(overlay_specs, start=1):
@@ -280,16 +406,15 @@ def run(args):
         if zoom < 1.0:
             zoom = 1.0
 
-        # Compute final overlay box size on the base
+        # compute overlay box size
         box_w, box_h = _compute_overlay_box(base_w, src_w, src_h, size_pct)
 
         mode = (layer.get("mode") or "place").lower()
-
         if mode == "free":
             x_expr = str(int(layer.get("pos_x", 0)))
             y_expr = str(int(layer.get("pos_y", 0)))
         else:
-            place = layer.get("place", "center")
+            place = (layer.get("place") or "center").lower()
             px, py = _compute_place_coordinates(place, base_w, base_h, box_w, box_h)
             x_expr, y_expr = str(px), str(py)
 
@@ -299,7 +424,7 @@ def run(args):
 
         layer_filters = []
 
-        # Optional crop (percent of source, BEFORE zoom/scale)
+        # optional crop (percent of source BEFORE zoom/scale)
         cx = layer.get("crop_x")
         cy = layer.get("crop_y")
         cw = layer.get("crop_w")
@@ -317,7 +442,7 @@ def run(args):
                 # If parsing fails, skip cropping instead of blowing up.
                 pass
 
-        # Zoom INSIDE fixed box:
+        # zoom inside fixed box:
         # 1) scale up to zoom * box size
         # 2) crop center back down to box_w x box_h
         scaled_w = _even(int(box_w * zoom))
@@ -338,11 +463,9 @@ def run(args):
         layer_filters.append("format=rgba")
         layer_filters.append(f"colorchannelmixer=aa={opacity}")
 
-        filter_parts.append(
-            f"{in_label}{','.join(layer_filters)}{layer_label}"
-        )
+        filter_parts.append(f"{in_label}{','.join(layer_filters)}{layer_label}")
 
-        # Overlay on top of current composite
+        # overlay
         filter_parts.append(
             f"{current_label}{layer_label}"
             f"overlay=x={x_expr}:y={y_expr}:format=auto"
@@ -351,29 +474,97 @@ def run(args):
 
         current_label = next_label
 
-    out_label = "[out_v]"
-    filter_parts.append(f"{current_label}format=yuv420p{out_label}")
+    out_v_label = "[out_v]"
+    filter_parts.append(f"{current_label}format=yuv420p{out_v_label}")
+
+    # audio mix (for all/json_only + per-layer gain)
+    audio_filter_output = None
+
+    if audio_mode in ("all", "json_only") and len(audio_mix_indices) >= 1:
+        if len(audio_mix_indices) == 1:
+            # Single audio source: optionally apply volume, no amix needed
+            idx = audio_mix_indices[0]
+            gain_db = audio_vol_db_by_index.get(idx)
+            if gain_db is not None:
+                audio_filter_output = "[out_a]"
+                filter_parts.append(
+                    f"[{idx}:a]volume={gain_db}dB{audio_filter_output}"
+                )
+            else:
+                # direct map of the input's audio stream
+                audio_filter_output = f"{idx}:a"
+        else:
+            # Multiple sources: per-input volume (if any), then amix
+            audio_inputs = []
+            for idx in audio_mix_indices:
+                gain_db = audio_vol_db_by_index.get(idx)
+                if gain_db is not None:
+                    lbl = f"[av{idx}]"
+                    filter_parts.append(
+                        f"[{idx}:a]volume={gain_db}dB{lbl}"
+                    )
+                    audio_inputs.append(lbl)
+                else:
+                    audio_inputs.append(f"[{idx}:a]")
+
+            audio_filter_output = "[out_a]"
+            filter_parts.append(
+                "".join(audio_inputs)
+                + f"amix=inputs={len(audio_mix_indices)}:normalize=0{audio_filter_output}"
+            )
 
     filter_complex = ";".join(filter_parts)
 
-    # 3) Build main ffmpeg command
+    # 4) Build main ffmpeg command
     command = ["ffmpeg", "-hide_banner", "-loglevel", "error"]
 
     for path in input_files:
         command.extend(["-i", path])
 
-    command.extend([
-        "-filter_complex", filter_complex,
-        "-map", out_label,
-        "-map", "0:a?",
-        "-c:v", "libx264",
-        "-profile:v", "high",
-        "-level:v", "4.2",
-        "-pix_fmt", "yuv420p",
-        "-movflags", "+faststart",
-        "-c:a", "aac",
-        args.output,
-    ])
+    command.extend(["-filter_complex", filter_complex, "-map", out_v_label])
+
+    # audio mapping according to mode
+    if audio_mode == "base":
+        command.extend(["-map", "0:a?"])
+    elif audio_mode in ("all", "json_only"):
+        if len(audio_mix_indices) == 0:
+            # no audio
+            pass
+        elif len(audio_mix_indices) == 1:
+            if audio_filter_output == "[out_a]":
+                command.extend(["-map", audio_filter_output])
+            else:
+                # audio_filter_output is like "N:a"
+                command.extend(["-map", audio_filter_output])
+        else:
+            command.extend(["-map", audio_filter_output or "0:a?"])
+    elif audio_mode == "external":
+        if external_audio_index is not None:
+            command.extend(["-map", f"{external_audio_index}:a?"])
+    elif audio_mode == "none":
+        command.append("-an")
+
+    # video codec settings
+    command.extend(
+        [
+            "-c:v",
+            "libx264",
+            "-profile:v",
+            "high",
+            "-level:v",
+            "4.2",
+            "-pix_fmt",
+            "yuv420p",
+            "-movflags",
+            "+faststart",
+        ]
+    )
+
+    # audio codec if not explicitly disabled
+    if audio_mode != "none":
+        command.extend(["-c:a", "aac"])
+
+    command.append(args.output)
 
     final_cmd = (command[:1] + ["-y"] + command[1:]) if args.force else command
     run_ffmpeg_with_progress(final_cmd, args.input, args.output)
