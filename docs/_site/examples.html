@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Examples</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Examples" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="The friendly multilateral video toolkit built for artists by artists." />
+<meta property="og:description" content="The friendly multilateral video toolkit built for artists by artists." />
+<link rel="canonical" href="http://localhost:4000/videobeaux/examples.html" />
+<meta property="og:url" content="http://localhost:4000/videobeaux/examples.html" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Examples" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"Examples","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/examples.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/videobeaux/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1><a href="http://localhost:4000/videobeaux/">videobeaux</a></h1>
+
+        
+          <img src="/videobeaux/assets/img/videobeaux.png" alt="Logo" />
+        
+
+        <p>The friendly multilateral video toolkit built for artists by artists.</p>
+
+        
+        <p class="view"><a href="https://github.com/schwwaaa/videobeaux">View the Project on GitHub <small>schwwaaa/videobeaux</small></a></p>
+        
+
+        
+
+        
+      </header>
+      <section>
+
+      <h1 id="examples">Examples</h1>
+
+<h2 id="running-a-program-that-does-not-have-additional-arguments">Running a program that does not have additional arguments</h2>
+
+<h3 id="check-if-the-program-needs-additional-arguments">Check if the program needs additional arguments</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>       _     _            _
+__   _<span class="o">(</span>_<span class="o">)</span> __| | ___  ___ | |__   ___  __ _ _   ___  __
+<span class="se">\ \ </span>/ / |/ _<span class="sb">`</span> |/ _ <span class="se">\/</span> _ <span class="se">\|</span> <span class="s1">'_ \ / _ \/ _` | | | \ \/ /
+ \ V /| | (_| |  __/ (_) | |_) |  __/ (_| | |_| |&gt;  &lt;
+  \_/ |_|\__,_|\___|\___/|_.__/ \___|\__,_|\__,_/_/\_\
+
+
+Your friendly multilateral video toolkit built for artists by artists.
+https://schwwaaa.net
+--------------------------------------------------
+Selected program mode: bad_predator
+✅ This program mode does not require additional arguments
+usage: python3 -m videobeaux.cli --program PROGRAM [global options] [program options]
+
+📺 Your friendly multilateral video toolkit built for artists by artists.
+ It'</span>s your best friend!
+https://schwwaaa.net
+
+options:
+  <span class="nt">-P</span> PROGRAM, <span class="nt">--program</span> PROGRAM
+                        Name of the effect program to run <span class="o">(</span>e.g. convert, glitch<span class="o">)</span>
+  <span class="nt">-i</span> INPUT, <span class="nt">--input</span> INPUT
+                        Input video file - mp4 only
+  <span class="nt">-o</span> OUTPUT, <span class="nt">--output</span> OUTPUT
+                        Output file name, no extension. Output will be saved as mp4.
+  <span class="nt">-F</span>, <span class="nt">--force</span>           Force overwrite output file
+  <span class="nt">-h</span>, <span class="nt">--help</span>            Show <span class="nb">help </span>message and <span class="nb">exit</span>
+
+ 👁️ 👇 Additional <span class="nb">help </span><span class="k">for </span>program mode 👇 👁️
+usage: videobeaux <span class="nt">--program</span> bad_predator <span class="o">[</span><span class="nt">-h</span><span class="o">]</span>
+
+Apply bad Predator heat vision effect
+
+options:
+  <span class="nt">-h</span>, <span class="nt">--help</span>  show this <span class="nb">help </span>message and <span class="nb">exit</span>
+</code></pre></div></div>
+<h3 id="run-the-program">Run the program</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">--program</span> PROGRAM <span class="nt">--input</span> INPUT_FILE <span class="nt">--output</span> OUTPUT_FILE
+</code></pre></div></div>
+<p>… translates to …</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">--program</span> bad_predator <span class="nt">--input</span> example.mp4 <span class="nt">--output</span> example_bp.mp4
+</code></pre></div></div>
+<h3 id="output-of-the-program">Output of the program</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>       _     _            _
+__   _<span class="o">(</span>_<span class="o">)</span> __| | ___  ___ | |__   ___  __ _ _   ___  __
+<span class="se">\ \ </span>/ / |/ _<span class="sb">`</span> |/ _ <span class="se">\/</span> _ <span class="se">\|</span> <span class="s1">'_ \ / _ \/ _` | | | \ \/ /
+ \ V /| | (_| |  __/ (_) | |_) |  __/ (_| | |_| |&gt;  &lt;
+  \_/ |_|\__,_|\___|\___/|_.__/ \___|\__,_|\__,_/_/\_\
+
+
+Your friendly multilateral video toolkit built for artists by artists.
+https://schwwaaa.net
+--------------------------------------------------
+Selected program mode: bad_predator
+✅ This program mode does not require additional arguments
+Input duration: 10.01 seconds
+🔨 Processing example.mp4: 100%|██████████████████████████████████████████████████████ | 10.01/10.01s [00:04&lt;00:00]
+
+📺 Process Complete: example_bp.mp4
+</span></code></pre></div></div>
+
+<video controls="" preload="metadata" style="max-width:100%; border-radius:8px; margin:1em 0;">
+  <source src="https://github.com/user-attachments/assets/fe45aa80-9878-4d15-bc64-87dd25071855" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+<h2 id="running-a-program-that-does-have-additional-arguments">Running a program that does have additional arguments</h2>
+
+<h3 id="check-if-the-program-needs-additional-arguments-1">Check if the program needs additional arguments</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>       _     _            _
+__   _<span class="o">(</span>_<span class="o">)</span> __| | ___  ___ | |__   ___  __ _ _   ___  __
+<span class="se">\ \ </span>/ / |/ _<span class="sb">`</span> |/ _ <span class="se">\/</span> _ <span class="se">\|</span> <span class="s1">'_ \ / _ \/ _` | | | \ \/ /
+ \ V /| | (_| |  __/ (_) | |_) |  __/ (_| | |_| |&gt;  &lt;
+  \_/ |_|\__,_|\___|\___/|_.__/ \___|\__,_|\__,_/_/\_\
+
+
+Your friendly multilateral video toolkit built for artists by artists.
+https://schwwaaa.net
+--------------------------------------------------
+Selected program mode: stutter_pro
+usage: python3 -m videobeaux.cli --program PROGRAM [global options] [program options]
+
+📺 Your friendly multilateral video toolkit built for artists by artists.
+ It'</span>s your best friend!
+https://schwwaaa.net
+
+options:
+  <span class="nt">-P</span> PROGRAM, <span class="nt">--program</span> PROGRAM
+                        Name of the effect program to run <span class="o">(</span>e.g. convert, glitch<span class="o">)</span>
+  <span class="nt">-i</span> INPUT, <span class="nt">--input</span> INPUT
+                        Input video file - mp4 only
+  <span class="nt">-o</span> OUTPUT, <span class="nt">--output</span> OUTPUT
+                        Output file name, no extension. Output will be saved as mp4.
+  <span class="nt">-F</span>, <span class="nt">--force</span>           Force overwrite output file
+  <span class="nt">-h</span>, <span class="nt">--help</span>            Show <span class="nb">help </span>message and <span class="nb">exit</span>
+
+ 👁️ 👇 Additional <span class="nb">help </span><span class="k">for </span>program mode 👇 👁️
+usage: videobeaux <span class="nt">--program</span> stutter_pro <span class="o">[</span><span class="nt">-h</span><span class="o">]</span> <span class="nt">--stutter</span> STUTTER
+
+Imagine watching a video where random frames are played instead of a smooth progression.
+
+options:
+  <span class="nt">-h</span>, <span class="nt">--help</span>         show this <span class="nb">help </span>message and <span class="nb">exit</span>
+  <span class="nt">--stutter</span> STUTTER  Replaces the current video frame with a randomly selected one from the most recent N frames.The larger the value, the larger the variation.
+</code></pre></div></div>
+
+<h3 id="run-the-program-1">Run the program</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">--program</span> PROGRAM <span class="nt">--input</span> INPUT_FILE <span class="nt">--output</span> OUTPUT_FILE <span class="nt">--args</span> ARGUMENTS
+</code></pre></div></div>
+
+<p>… translates to …</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">--program</span> stutter_pro <span class="nt">-i</span> example.mp4 <span class="nt">-o</span> stutter_example.mp4 <span class="nt">--stutter</span> 2
+</code></pre></div></div>
+<h3 id="output-of-the-program-1">Output of the program</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>       _     _            _
+__   _<span class="o">(</span>_<span class="o">)</span> __| | ___  ___ | |__   ___  __ _ _   ___  __
+<span class="se">\ \ </span>/ / |/ _<span class="sb">`</span> |/ _ <span class="se">\/</span> _ <span class="se">\|</span> <span class="s1">'_ \ / _ \/ _` | | | \ \/ /
+ \ V /| | (_| |  __/ (_) | |_) |  __/ (_| | |_| |&gt;  &lt;
+  \_/ |_|\__,_|\___|\___/|_.__/ \___|\__,_|\__,_/_/\_\
+
+
+Your friendly multilateral video toolkit built for artists by artists.
+https://schwwaaa.net
+--------------------------------------------------
+Selected program mode: stutter_pro
+Input duration: 10.01 seconds
+🔨 Processing example.mp4: 100%|██████████████████████████████████████████████████████████ | 10.01/10.01s [00:00&lt;00:00]
+
+📺 Process Complete: stutter_example.mp4
+</span></code></pre></div></div>
+
+<video controls="" preload="metadata" style="max-width:100%; border-radius:8px; margin:1em 0;">
+  <source src="https://github.com/user-attachments/assets/fec22179-8e40-49e5-b591-c9d5fb07e31b" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+<h2 id="running-a-program-to-chain-process-a-video">Running a program to chain process a video</h2>
+<h3 id="find-out-more-information-about-the-program">Find out more information about the program</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>       _     _            _
+__   _<span class="o">(</span>_<span class="o">)</span> __| | ___  ___ | |__   ___  __ _ _   ___  __
+<span class="se">\ \ </span>/ / |/ _<span class="sb">`</span> |/ _ <span class="se">\/</span> _ <span class="se">\|</span> <span class="s1">'_ \ / _ \/ _` | | | \ \/ /
+ \ V /| | (_| |  __/ (_) | |_) |  __/ (_| | |_| |&gt;  &lt;
+  \_/ |_|\__,_|\___|\___/|_.__/ \___|\__,_|\__,_/_/\_\
+
+
+Your friendly multilateral video toolkit built for artists by artists.
+https://schwwaaa.net
+--------------------------------------------------
+Selected program mode: chain_builder
+usage: python3 -m videobeaux.cli --program PROGRAM [global options] [program options]
+
+📺 Your friendly multilateral video toolkit built for artists by artists.
+ It'</span>s your best friend!
+https://schwwaaa.net
+
+options:
+  <span class="nt">-P</span> PROGRAM, <span class="nt">--program</span> PROGRAM
+                        Name of the effect program to run <span class="o">(</span>e.g. convert, glitch<span class="o">)</span>
+  <span class="nt">-i</span> INPUT, <span class="nt">--input</span> INPUT
+                        Input video file - mp4 only
+  <span class="nt">-o</span> OUTPUT, <span class="nt">--output</span> OUTPUT
+                        Output file name, no extension. Output will be saved as mp4.
+  <span class="nt">-F</span>, <span class="nt">--force</span>           Force overwrite output file
+  <span class="nt">-h</span>, <span class="nt">--help</span>            Show <span class="nb">help </span>message and <span class="nb">exit</span>
+
+ 👁️ 👇 Additional <span class="nb">help </span><span class="k">for </span>program mode 👇 👁️
+usage: videobeaux <span class="nt">--program</span> chain_builder <span class="o">[</span><span class="nt">-h</span><span class="o">]</span> <span class="nt">--chain</span> CHAIN
+
+The output of the first will be used as the input <span class="k">for </span>the next, and so on.
+Only supports program modes that <span class="k">do </span>not require their own specific arguments.
+
+options:
+  <span class="nt">-h</span>, <span class="nt">--help</span>     show this <span class="nb">help </span>message and <span class="nb">exit</span>
+  <span class="nt">--chain</span> CHAIN  A comma separated list of programs to run.
+</code></pre></div></div>
+<h3 id="run-the-program-2">Run the program</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">--program</span> PROGRAM <span class="nt">--input</span> INPUT_FILE <span class="nt">--output</span> OUTPUT_FILE <span class="nt">--chain</span> CHAIN
+</code></pre></div></div>
+<p>… translates to …</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">--program</span> chain_builder <span class="nt">--input</span> example.mp4 <span class="nt">--output</span> chainedoutput.mp4 <span class="nt">--chain</span> rb_blur,soapblind,lsd_feedback <span class="nt">--force</span>
+</code></pre></div></div>
+
+<h3 id="output-of-the-program-2">Output of the program</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>       _     _            _
+__   _<span class="o">(</span>_<span class="o">)</span> __| | ___  ___ | |__   ___  __ _ _   ___  __
+<span class="se">\ \ </span>/ / |/ _<span class="sb">`</span> |/ _ <span class="se">\/</span> _ <span class="se">\|</span> <span class="s1">'_ \ / _ \/ _` | | | \ \/ /
+ \ V /| | (_| |  __/ (_) | |_) |  __/ (_| | |_| |&gt;  &lt;
+  \_/ |_|\__,_|\___|\___/|_.__/ \___|\__,_|\__,_/_/\_\
+
+
+Your friendly multilateral video toolkit built for artists by artists.
+https://schwwaaa.net
+--------------------------------------------------
+Selected program mode: chain_builder
+🔁 Running step 1/3: rb_blur
+Input duration: 10.01 seconds
+🔨 Processing example.mp4: 100%|██████████████████████████████████████████████████████ | 10.01/10.01s [00:00&lt;00:00]
+
+📺 Process Complete: /var/folders/jv/lp20pdtn4jsgjpxw710m0vkm0000gn/T/videobeaux_chain_z7ixo5cs/step_0_rb_blur.mp4
+
+🔁 Running step 2/3: soapblind
+Input duration: 10.03 seconds
+🔨 Processing step_0_rb_blur.mp4: 100%|███████████████████████████████████████████████ | 10.03/10.03s [00:46&lt;00:00]
+
+📺 Process Complete: /var/folders/jv/lp20pdtn4jsgjpxw710m0vkm0000gn/T/videobeaux_chain_z7ixo5cs/step_1_soapblind.mp4
+
+🔁 Running step 3/3: lsd_feedback
+Input duration: 10.03 seconds
+🔨 Processing step_1_soapblind.mp4: 100%|█████████████████████████████████████████████ | 10.03/10.03s [00:03&lt;00:00]
+
+📺 Process Complete: /var/folders/jv/lp20pdtn4jsgjpxw710m0vkm0000gn/T/videobeaux_chain_z7ixo5cs/step_2_lsd_feedback.mp4
+
+✅ Final output written to chainedoutput.mp4
+</span></code></pre></div></div>
+
+<video controls="" preload="metadata" style="max-width:100%; border-radius:8px; margin:1em 0;">
+  <source src="https://github.com/user-attachments/assets/ac321c77-4757-4846-b838-6847472e7e09" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+
+
+      </section>
+      <footer>
+        
+        <p>This project is maintained by <a href="https://github.com/schwwaaa">schwwaaa</a></p>
+        
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="/videobeaux/assets/js/scale.fix.js"></script>
+  </body>
+</html>
