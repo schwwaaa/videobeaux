@@ -5,7 +5,7 @@
 <p align="center"><em>The friendly multilateral video toolkit built for artists by artists. It's your best friend.</em></p> 
 
 <p align="center">
-  :rocket: <a href="https://schwwaaa.github.io/videobeaux/getting-started.html">Getting Started</a><br/>
-  <a href="https://schwwaaa.github.io/videobeaux/programs.html">Programs</a><br/>
-  <a href="https://schwwaaa.github.io/videobeaux/examples.html">Examples</a>
+  :rocket: <a href="https://schwwaaa.github.io/videobeaux/getting-started.html">Getting Started</a> :rocket: <br/>
+  :floppy_disk: <a href="https://schwwaaa.github.io/videobeaux/programs.html">Programs</a> :floppy_disk: <br/> 
+ :wrench: <a href="https://schwwaaa.github.io/videobeaux/examples.html">Examples</a> :wrench:
 </p>
