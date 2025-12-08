@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"wbflare","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/wbflare.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,31 +61,79 @@
       <h1 id="wbflare">wbflare</h1>
 
 <h2 id="description">Description</h2>
+<p>Applies a blown-out white-balance flare that washes the frame in bright, overexposed warmth.<br />
+The effect simulates a camera whose white balance has catastrophically failed, producing harsh brightness spikes, color melt, and an unstable exposure cast.</p>
 
-<p>Apply filter with a blown out white-balance flare</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">wbflare</code> is designed for creators who want:</p>
+<ul>
+  <li>intense, flared overexposure resembling broken auto-WB,</li>
+  <li>cinematic whiteouts and warm, blooming flare pulses,</li>
+  <li>chaotic light wash reminiscent of damaged DSLR sensors,</li>
+  <li>a stylized flare aesthetic for music videos, montage, or collage,</li>
+  <li>a single-command solution with no configuration required.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>White Balance Miscalibration Simulation</strong><br />
+The image is shifted toward overly warm, blown-out values.</li>
+  <li><strong>Flare Bloom</strong><br />
+Bright areas bloom outward aggressively, swallowing surrounding detail.</li>
+  <li><strong>Exposure Push</strong><br />
+Midtones and highlights ascend toward near-white, creating clip-heavy transitions.</li>
+  <li><strong>Encoding</strong><br />
+Output is encoded using Videobeaux global CRF, codec, and pixel-format settings.</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> wbflare <span class="se">\</span>
+  <span class="nt">-i</span> input.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> output.mp4
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
-
 <ul>
   <li><em>(No additional program-specific arguments; uses global videobeaux options only.)</em></li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> wbflare <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> wbflare <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> wbflare_styled.mp4
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> wbflare <span class="se">\</span>
+  <span class="nt">-i</span> myvideo.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> wbflare_styled.mp4
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
-
 <video controls="" preload="metadata" style="max-width:100%; border-radius:8px; margin:1em 0;">
   <source src="https://github.com/user-attachments/assets/e2a5f065-163e-4bb9-8fd3-1edbfbdbab2a" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Flare intensity is influenced by scene brightness—high-key footage becomes extremely washed out.</li>
+  <li>Skin tones may lose detail entirely as white balance collapses.</li>
+  <li>Compression interacts strongly with blown highlights; higher CRF introduces chaotic flare grit.</li>
+  <li>Works well as a transition or emotional accent, especially during musical peaks.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Music-video chorus drops or emotional surges.</li>
+  <li>Stylized whiteouts in experimental film or collage.</li>
+  <li>Dreamlike or transcendental sequences.</li>
+  <li>Grungy digital “camera malfunction” aesthetics.</li>
+  <li>Transitional flare blasts between scenes.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Lower CRF preserves cleaner bloom gradients.</li>
+  <li>Higher CRF produces gritty, noisy flare textures.</li>
+  <li>Pair with <code class="language-plaintext highlighter-rouge">overexposed_stutter</code> for extreme blown-out instability.</li>
+  <li>Combine with <code class="language-plaintext highlighter-rouge">bad_contrast</code> to deepen shadows beneath the flare.</li>
+  <li>Apply before LUTs for LUT-reactive highlights; apply after LUTs for a uniform whiteout.</li>
+</ul>
 
 
 

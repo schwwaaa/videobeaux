@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"thumbs","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/utilities/thumbs.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,38 +61,140 @@
       <h1 id="thumbs">thumbs</h1>
 
 <h2 id="description">Description</h2>
+<p>Generates thumbnails or contact sheets by sampling frames at chosen intervals for previews, galleries, or QC review.</p>
 
-<p>Generates thumbnails or contact sheets by sampling frames at chosen intervals for previews, galleries, or QC review</p>
+<h2 id="purpose">Purpose</h2>
+<p>The <code class="language-plaintext highlighter-rouge">thumbs</code> program creates frame-based preview images from video sources.<br />
+It can generate:</p>
+<ul>
+  <li>evenly spaced thumbnails,</li>
+  <li>scene-change–based extractions,</li>
+  <li>tiled contact sheets,</li>
+  <li>annotated or timestamped frames for analysis,<br />
+making it ideal for QC, archives, design references, and preview libraries.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Frame Sampling</strong><br />
+Choose between:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">fps</code> sampling (uniform intervals), or</li>
+      <li><code class="language-plaintext highlighter-rouge">scene</code> detection (generate thumbnails where major scene changes occur).</li>
+    </ul>
+  </li>
+  <li><strong>Scene Thresholding</strong><br />
+<code class="language-plaintext highlighter-rouge">scene_threshold</code> determines sensitivity to cuts, edits, or brightness shifts.</li>
+  <li><strong>Layout &amp; Tiling</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">tile</code> controls grid layout (e.g., <code class="language-plaintext highlighter-rouge">5x5</code> contact sheets).</li>
+      <li><code class="language-plaintext highlighter-rouge">scale</code> sets thumbnail size.</li>
+    </ul>
+  </li>
+  <li><strong>Labels &amp; Timestamps</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">timestamps</code> includes frame timestamps.</li>
+      <li><code class="language-plaintext highlighter-rouge">label</code> adds custom text per thumbnail.</li>
+    </ul>
+  </li>
+  <li><strong>Styling Options</strong><br />
+Background color, margins, padding, and font selection allow branding/QC annotation.</li>
+  <li><strong>Export Options</strong>
+    <ul>
+      <li>Output directory (<code class="language-plaintext highlighter-rouge">outdir</code>)</li>
+      <li>Output filename (<code class="language-plaintext highlighter-rouge">outputfile</code>)</li>
+      <li>Image format (JPEG/PNG)</li>
+      <li>JPEG quality control</li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P thumbs \
+  -i input.mp4 \
+  -o output.mp4 \
+  --fps VALUE \
+  --scene VALUE \
+  --scene_threshold VALUE \
+  --tile VALUE \
+  --scale VALUE \
+  --timestamps VALUE \
+  --label VALUE \
+  --fontfile VALUE \
+  --bg VALUE \
+  --margin VALUE \
+  --padding VALUE \
+  --outdir VALUE \
+  --outputfile VALUE \
+  --image_format VALUE \
+  --jpeg_quality VALUE
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">fps</code></li>
-  <li><code class="language-plaintext highlighter-rouge">scene</code></li>
-  <li><code class="language-plaintext highlighter-rouge">scene_threshold</code></li>
-  <li><code class="language-plaintext highlighter-rouge">tile</code></li>
-  <li><code class="language-plaintext highlighter-rouge">scale</code></li>
-  <li><code class="language-plaintext highlighter-rouge">timestamps</code></li>
-  <li><code class="language-plaintext highlighter-rouge">label</code></li>
-  <li><code class="language-plaintext highlighter-rouge">fontfile</code></li>
-  <li><code class="language-plaintext highlighter-rouge">bg</code></li>
-  <li><code class="language-plaintext highlighter-rouge">margin</code></li>
-  <li><code class="language-plaintext highlighter-rouge">padding</code></li>
-  <li><code class="language-plaintext highlighter-rouge">outdir</code></li>
-  <li><code class="language-plaintext highlighter-rouge">outputfile</code></li>
-  <li><code class="language-plaintext highlighter-rouge">image_format</code></li>
-  <li><code class="language-plaintext highlighter-rouge">jpeg_quality</code></li>
+  <li><strong>fps</strong> — Frames per second to sample for thumbnail extraction.</li>
+  <li><strong>scene</strong> — Enables scene-detection-based thumbnail generation (<code class="language-plaintext highlighter-rouge">true/false</code>).</li>
+  <li><strong>scene_threshold</strong> — Sensitivity for detecting scene cuts. Lower = more cuts detected.</li>
+  <li><strong>tile</strong> — Contact sheet layout (e.g., <code class="language-plaintext highlighter-rouge">4x4</code>, <code class="language-plaintext highlighter-rouge">6x8</code>).</li>
+  <li><strong>scale</strong> — Size of each thumbnail (percentage or pixel dimension).</li>
+  <li><strong>timestamps</strong> — Adds timestamps onto each thumbnail (<code class="language-plaintext highlighter-rouge">true/false</code>).</li>
+  <li><strong>label</strong> — Custom label text rendered onto each frame.</li>
+  <li><strong>fontfile</strong> — Path to a custom font file for labels.</li>
+  <li><strong>bg</strong> — Background color for contact sheets (CSS-style hex or color name).</li>
+  <li><strong>margin</strong> — Outer margin around thumbnails or the full sheet.</li>
+  <li><strong>padding</strong> — Spacing between individual thumbnails.</li>
+  <li><strong>outdir</strong> — Directory where generated images will be saved.</li>
+  <li><strong>outputfile</strong> — Base name for the contact sheet or exported images.</li>
+  <li><strong>image_format</strong> — Output format (<code class="language-plaintext highlighter-rouge">jpg</code>, <code class="language-plaintext highlighter-rouge">png</code>, etc.).</li>
+  <li><strong>jpeg_quality</strong> — JPEG quality (0–100).</li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> thumbs <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4 <span class="nt">--fps</span> VALUE <span class="nt">--scene</span> VALUE <span class="nt">--scene_threshold</span> VALUE <span class="nt">--tile</span> VALUE <span class="nt">--scale</span> VALUE <span class="nt">--timestamps</span> VALUE <span class="nt">--label</span> VALUE <span class="nt">--fontfile</span> VALUE <span class="nt">--bg</span> VALUE <span class="nt">--margin</span> VALUE <span class="nt">--padding</span> VALUE <span class="nt">--outdir</span> VALUE <span class="nt">--outputfile</span> VALUE <span class="nt">--image_format</span> VALUE <span class="nt">--jpeg_quality</span> VALUE
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> thumbs <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> thumbs_styled.mp4 <span class="nt">--fps</span> EXAMPLE <span class="nt">--scene</span> EXAMPLE <span class="nt">--scene_threshold</span> EXAMPLE <span class="nt">--tile</span> EXAMPLE <span class="nt">--scale</span> EXAMPLE <span class="nt">--timestamps</span> EXAMPLE <span class="nt">--label</span> EXAMPLE <span class="nt">--fontfile</span> EXAMPLE <span class="nt">--bg</span> EXAMPLE <span class="nt">--margin</span> EXAMPLE <span class="nt">--padding</span> EXAMPLE <span class="nt">--outdir</span> EXAMPLE <span class="nt">--outputfile</span> EXAMPLE <span class="nt">--image_format</span> EXAMPLE <span class="nt">--jpeg_quality</span> EXAMPLE
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P thumbs \
+  -i myvideo.mp4 \
+  -o thumbs_styled.mp4 \
+  --fps 1 \
+  --scene false \
+  --scene_threshold 0.4 \
+  --tile 5x5 \
+  --scale 320 \
+  --timestamps true \
+  --label "Preview Sheet" \
+  --fontfile /path/to/font.ttf \
+  --bg "#000000" \
+  --margin 20 \
+  --padding 10 \
+  --outdir thumbs_output \
+  --outputfile contactsheet \
+  --image_format jpg \
+  --jpeg_quality 90
 </code></pre></div></div>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Scene detection uses FFmpeg’s <code class="language-plaintext highlighter-rouge">select='gt(scene,threshold)'</code> filter logic.</li>
+  <li>High <code class="language-plaintext highlighter-rouge">tile</code> counts produce dense sheets but increase render time.</li>
+  <li><code class="language-plaintext highlighter-rouge">scale</code> affects memory usage when generating many thumbnails.</li>
+  <li>Custom fonts must be accessible to ffmpeg’s <code class="language-plaintext highlighter-rouge">drawtext</code> filter.</li>
+  <li>Using PNG avoids compression artifacts; JPEG is faster &amp; smaller.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>QC review workflows to quickly scan for artifacts.</li>
+  <li>Preview libraries for editors, designers, or curators.</li>
+  <li>Thumbnail generation for apps, web galleries, or dataset creation.</li>
+  <li>Scene-change visualization for film analysis.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>For clean contact sheets, use PNG for lossless quality.</li>
+  <li>For large batches, use JPEG (quality 80–90) for faster export.</li>
+  <li>Adjust <code class="language-plaintext highlighter-rouge">scene_threshold</code> to balance between too many vs. too few scene hits.</li>
+  <li>Use higher <code class="language-plaintext highlighter-rouge">scale</code> values for detailed thumbnails, smaller for overview sheets.</li>
+</ul>
 
 
       </section>

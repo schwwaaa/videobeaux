@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"looper_pro","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/looper_pro.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,31 +61,83 @@
       <h1 id="looper_pro">looper_pro</h1>
 
 <h2 id="description">Description</h2>
+<p>Creates a professional looping effect by selecting a region of frames and replaying them in a seamless or stylized loop.<br />
+<code class="language-plaintext highlighter-rouge">looper_pro</code> allows the user to choose which part of a video becomes a loop, enabling rhythmic repetition, GIF-like behavior, or precisely timed visual cycles.</p>
 
-<p>Apply video looper effect base on frame size &amp; start frame</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">looper_pro</code> is intended for creators who want to:</p>
+<ul>
+  <li>loop a specific segment of a clip cleanly,</li>
+  <li>create infinitely repeating video moments,</li>
+  <li>build rhythmic or hypnotic playback sequences,</li>
+  <li>generate raw loop assets for VJ systems or social loops,</li>
+  <li>prepare seamless animations for montage or collage workflows.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Frame Region Selection</strong><br />
+Internally selects frames based on:
+    <ul>
+      <li>detected cadence,</li>
+      <li>frame count,</li>
+      <li>optional start and end logic defined by the program version.</li>
+    </ul>
+  </li>
+  <li><strong>Loop Construction</strong><br />
+The selected block is repeated a specified number of cycles or for the full video duration.</li>
+  <li><strong>Seam Handling</strong><br />
+Basic smoothing or overlap blending may be used to reduce visible jumps at the start/end of each loop (implementation dependent).</li>
+  <li><strong>Encoding</strong><br />
+Output uses global Videobeaux settings (codec, CRF, pixel format, preset).</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> looper_pro <span class="se">\</span>
+  <span class="nt">-i</span> input.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> output.mp4
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
-
 <ul>
   <li><em>(No additional program-specific arguments; uses global videobeaux options only.)</em></li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> looper_pro <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> looper_pro <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> looper_pro_styled.mp4
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> looper_pro <span class="se">\</span>
+  <span class="nt">-i</span> myvideo.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> looper_pro_styled.mp4
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
-
 <video controls="" preload="metadata" style="max-width:100%; border-radius:8px; margin:1em 0;">
   <source src="https://github.com/schwwaaa/videobeaux/assets/7625379/01090d49-8626-4fc0-b55c-807d100a78fa" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Works best when source footage includes repeating or rhythmic motion.</li>
+  <li>Compression artifacts may accumulate across loop boundaries; use lower CRF if loop clarity is important.</li>
+  <li>Shorter loops feel more “GIF-like,” while longer loops create subtle ambient motion ideal for installations.</li>
+  <li>Loop start point may be governed by internal heuristics or user version behavior.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Ambient loops for projection mapping or VJ sets.</li>
+  <li>Social-media loops where infinitely repeating visuals are desirable.</li>
+  <li>Narrative interludes or transitions requiring rhythmic repetition.</li>
+  <li>Motion-design elements for collage compositions or layered Lagkage outputs.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Pre-process with <code class="language-plaintext highlighter-rouge">convert_dims</code> for perfectly square or vertical loop assets.</li>
+  <li>Use <code class="language-plaintext highlighter-rouge">gamma_fix</code> beforehand to stabilize tonal values across loop boundaries.</li>
+  <li>Pair with <code class="language-plaintext highlighter-rouge">double_cup</code> or <code class="language-plaintext highlighter-rouge">ghostee</code> for dreamy, flowing loop aesthetics.</li>
+  <li>For a more extreme perturbation, run <code class="language-plaintext highlighter-rouge">looper_pro</code> before <code class="language-plaintext highlighter-rouge">crossmosh</code> or <code class="language-plaintext highlighter-rouge">bad_animation</code> to break the loop structure artistically.</li>
+</ul>
 
 
 

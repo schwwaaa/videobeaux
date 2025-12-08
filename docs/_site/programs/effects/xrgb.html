@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"xrgb","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/xrgb.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,31 +61,85 @@
       <h1 id="xrgb">xrgb</h1>
 
 <h2 id="description">Description</h2>
+<p>Applies an extreme RGB color treatment that aggressively remixes channel intensity, contrast, and chromatic balance.<br />
+This effect pushes the video into hyper-saturated, unnatural, or neon-driven territory — producing explosive color distortions ideal for glitch, psychedelia, or high-impact stylization.</p>
 
-<p>Extreme RGB adjustment</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">xrgb</code> is designed for creators who want:</p>
+<ul>
+  <li>radical RGB manipulation with a single command,</li>
+  <li>intense chromatic shifts far beyond standard grading,</li>
+  <li>neon, glitch, or chemically warped color palettes,</li>
+  <li>an exaggerated look that feels synthetic and electrified,</li>
+  <li>a quick way to break naturalistic color and enter surreal aesthetics.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>RGB Channel Rebalancing</strong><br />
+Each color channel (R, G, B) is amplified, crushed, or redistributed.</li>
+  <li><strong>Color Explosion</strong><br />
+Standard hues may break apart into aggressively tinted regions.</li>
+  <li><strong>Chromatic Distortion</strong><br />
+Highlights and shadows may shift toward extreme primaries, producing:
+    <ul>
+      <li>glowing neon edges</li>
+      <li>warped color bands</li>
+      <li>digital-chemical tonality</li>
+    </ul>
+  </li>
+  <li><strong>Encoding</strong><br />
+Output is encoded using Videobeaux global settings for codec, CRF, and pixel format.</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> xrgb <span class="se">\</span>
+  <span class="nt">-i</span> input.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> output.mp4
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
-
 <ul>
   <li><em>(No additional program-specific arguments; uses global videobeaux options only.)</em></li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> xrgb <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> xrgb <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> xrgb_styled.mp4
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> xrgb <span class="se">\</span>
+  <span class="nt">-i</span> myvideo.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> xrgb_styled.mp4
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
-
 <video controls="" preload="metadata" style="max-width:100%; border-radius:8px; margin:1em 0;">
   <source src="https://github.com/user-attachments/assets/c9644cd5-a584-4f0d-ada3-13046e6938a5" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Bright, high-contrast footage produces the most dramatic RGB explosions.</li>
+  <li>Low-saturation footage transforms into hard-edged neon fields.</li>
+  <li>Compression interacts strongly with extreme channel imbalance; high CRF yields noisy rainbowing.</li>
+  <li>Works exceptionally well before glitch modules such as <code class="language-plaintext highlighter-rouge">crossmosh</code> or <code class="language-plaintext highlighter-rouge">lsd_feedback</code>.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Psychedelic music videos.</li>
+  <li>Glitch-art edits requiring aggressive color disruption.</li>
+  <li>Abstract collage or RGB-driven montage.</li>
+  <li>Visualizer loops with electric chromatic energy.</li>
+  <li>Maximalist stylization pipelines that reject naturalistic color.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Lower CRF helps maintain smooth gradients inside extreme color zones.</li>
+  <li>Higher CRF introduces chaotic grain — useful for grunge or noisy RGB corruption.</li>
+  <li>Combine with <code class="language-plaintext highlighter-rouge">slight_smear</code> for neon-blooming distortion.</li>
+  <li>Apply <code class="language-plaintext highlighter-rouge">blur_pix</code> afterward for soft neon haze; apply beforehand for sharpened RGB breaks.</li>
+  <li>For a colder palette, chain <code class="language-plaintext highlighter-rouge">steel_wash</code> after xrgb; for warmer neon, chain <code class="language-plaintext highlighter-rouge">wbflare</code>.</li>
+</ul>
 
 
 

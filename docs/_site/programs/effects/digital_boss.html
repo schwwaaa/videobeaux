@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"digital_boss","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/digital_boss.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,32 +61,81 @@
       <h1 id="digital_boss">digital_boss</h1>
 
 <h2 id="description">Description</h2>
+<p>Applies a “busted Game Boy–style digital boss” effect to the video — producing harsh bitmap artifacts, limited 8-bit tonal mapping, flicker, false edges, and unstable block transitions reminiscent of corrupted handheld-console graphics.<br />
+The effect aims to evoke a glitched, retro, boss-fight visual language.</p>
 
-<p>Apply busted gameboy style digital boss effect</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">digital_boss</code> is intended for creators who want to:</p>
+<ul>
+  <li>simulate broken handheld-console graphics,</li>
+  <li>add 8-bit or pseudo-Game-Boy stylistic decay,</li>
+  <li>impose limited palettes, blocky edges, or sprite-like motion,</li>
+  <li>create glitchy boss-battle ambience,</li>
+  <li>stylize footage for music videos, live visuals, or retro-digital art.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Palette Reduction</strong><br />
+The image is remapped into a restricted tonal palette similar to classic handheld consoles.</li>
+  <li><strong>Block Artifacting</strong><br />
+Block-based distortions mimic corrupted tiles or unstable frame buffer graphics.</li>
+  <li><strong>Edge Reinforcement</strong><br />
+Contours are emphasized in a way similar to sprite outlines or tile boundaries.</li>
+  <li><strong>Temporal Instability</strong><br />
+Slight flicker or jitter introduces the feel of a malfunctioning digital system.</li>
+  <li><strong>Encoding</strong><br />
+Output uses global Videobeaux encoding settings (codec, CRF, pixel format, presets).</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P digital_boss \
+  -i input.mp4 \
+  -o output.mp4
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
-
 <ul>
   <li><em>(No additional program-specific arguments; uses global videobeaux options only.)</em></li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> digital_boss <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> digital_boss <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> digital_boss_styled.mp4
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P digital_boss \
+  -i myvideo.mp4 \
+  -o digital_boss_styled.mp4
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
-
 <video controls="" preload="metadata" style="max-width:100%; border-radius:8px; margin:1em 0;">
   <source src="https://github.com/user-attachments/assets/23958066-f384-4801-9d91-5b2df6081a31" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Compression interacts strongly with this effect — higher CRF may enhance the gritty retro look.</li>
+  <li>Because the effect uses hard palette steps, gradients may posterize or flicker dramatically.</li>
+  <li>Best used on footage with strong shapes, characters, or silhouettes.</li>
+  <li>High-motion content will exaggerate jitter and tile instability.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Retro boss-fight sequences or video-game-themed edits.</li>
+  <li>Concert visuals or projection loops with digital-grunge aesthetics.</li>
+  <li>Glitch-art animation, collage, and experimental video.</li>
+  <li>Stylized narrative inserts to break realism.</li>
+  <li>Layering with <code class="language-plaintext highlighter-rouge">bad_predator</code>, <code class="language-plaintext highlighter-rouge">blur_pix</code>, or <code class="language-plaintext highlighter-rouge">hash_fingerprint</code> for extreme digital corruption.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Lower CRF (higher quality) preserves cleaner tile boundaries; higher CRF increases noisy decay.</li>
+  <li>Combine with <code class="language-plaintext highlighter-rouge">convert_dims</code> to produce Game-Boy-like square aspect ratios.</li>
+  <li>Pre-apply <code class="language-plaintext highlighter-rouge">gamma_fix</code> for more even tonal distribution before palette reduction.</li>
+  <li>If the effect feels too clean, pair with <code class="language-plaintext highlighter-rouge">bad_animation</code> for extra jitter or cadence disruption.</li>
+  <li>Chain before heavy compression if you want the compression to participate in the aesthetic.</li>
+</ul>
 
 
       </section>

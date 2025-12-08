@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"convert_mux","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/utilities/convert_mux.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,43 +61,248 @@
       <h1 id="convert_mux">convert_mux</h1>
 
 <h2 id="description">Description</h2>
+<p>Rewraps or converts media streams while copying or re-encoding video/audio.<br />
+Useful for repairing containers, adjusting codecs, changing formats, resolving sync issues, or preparing files for specific platforms or pipelines.</p>
 
-<p>Rewraps or converts media streams while copying or re-encoding video/audio, ideal for fixing containers, codecs, or sync issues.</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">convert_mux</code> is Videobeaux’s advanced container/codec remuxing and transcoding utility.<br />
+Compared to the simpler <code class="language-plaintext highlighter-rouge">convert</code> program, <code class="language-plaintext highlighter-rouge">convert_mux</code> offers:</p>
+<ul>
+  <li>deeper codec configuration,</li>
+  <li>container formatting,</li>
+  <li>bitrate and rate-control management,</li>
+  <li>GOP and frame-rate control,</li>
+  <li>filter pass-through (<code class="language-plaintext highlighter-rouge">vf</code>),</li>
+  <li>audio stream shaping,</li>
+  <li>curated presets via <code class="language-plaintext highlighter-rouge">--profile</code>.</li>
+</ul>
+
+<p>This makes it ideal for delivery specifications, pipeline normalization, or technical media prep.</p>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Container Selection (<code class="language-plaintext highlighter-rouge">--format</code>)</strong><br />
+Determines the output container/muxer hint (mp4, mov, webm, matroska, mxf, gif, image2, avi).</li>
+  <li><strong>Profile-Based Presets (<code class="language-plaintext highlighter-rouge">--profile</code>)</strong><br />
+Selecting a profile automatically applies a curated list of FFmpeg flags (codec, pix_fmt, bitrate/quality, audio format, etc.).</li>
+  <li><strong>Manual Codecs and Quality</strong><br />
+If <code class="language-plaintext highlighter-rouge">--profile</code> is not used, you can explicitly specify:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">--vcodec</code>, <code class="language-plaintext highlighter-rouge">--acodec</code>,</li>
+      <li><code class="language-plaintext highlighter-rouge">--crf</code>, <code class="language-plaintext highlighter-rouge">--bitrate</code>, <code class="language-plaintext highlighter-rouge">--maxrate</code>, <code class="language-plaintext highlighter-rouge">--bufsize</code>, <code class="language-plaintext highlighter-rouge">--preset</code>,</li>
+      <li><code class="language-plaintext highlighter-rouge">--pix-fmt</code>, <code class="language-plaintext highlighter-rouge">--gop</code>, <code class="language-plaintext highlighter-rouge">-r</code>, <code class="language-plaintext highlighter-rouge">--vf</code>, <code class="language-plaintext highlighter-rouge">--tagv</code>, etc.</li>
+    </ul>
+  </li>
+  <li><strong>Stream Copy Mode</strong><br />
+<code class="language-plaintext highlighter-rouge">--copy</code> bypasses re-encoding and performs a container-level remux where streams are compatible.</li>
+  <li><strong>FFmpeg Passthrough</strong><br />
+Extra arguments after <code class="language-plaintext highlighter-rouge">--</code> are passed directly to FFmpeg (<code class="language-plaintext highlighter-rouge">ffmpeg_args</code>).</li>
+  <li><strong>Execution</strong><br />
+A command is built and run through <code class="language-plaintext highlighter-rouge">run_ffmpeg_with_progress</code>, echoing the FFmpeg command for transparency.</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P convert_mux \
+  -i input.mp4 \
+  -o output.mp4 \
+  --format VALUE \
+  --profile VALUE \
+  --vcodec VALUE \
+  --acodec VALUE \
+  --crf VALUE \
+  --bitrate VALUE \
+  --maxrate VALUE \
+  --bufsize VALUE \
+  --preset VALUE \
+  --profile-v VALUE \
+  --level VALUE \
+  --pix-fmt VALUE \
+  --gop VALUE \
+  -r VALUE \
+  --vf VALUE \
+  --tagv VALUE \
+  --abitrate VALUE \
+  --ac VALUE \
+  --ar VALUE \
+  --copy \
+  -- FFMPPEG_ARGS...
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">format</code></li>
-  <li><code class="language-plaintext highlighter-rouge">profile</code></li>
-  <li><code class="language-plaintext highlighter-rouge">vcodec</code></li>
-  <li><code class="language-plaintext highlighter-rouge">acodec</code></li>
-  <li><code class="language-plaintext highlighter-rouge">crf</code></li>
-  <li><code class="language-plaintext highlighter-rouge">bitrate</code></li>
-  <li><code class="language-plaintext highlighter-rouge">maxrate</code></li>
-  <li><code class="language-plaintext highlighter-rouge">bufsize</code></li>
-  <li><code class="language-plaintext highlighter-rouge">preset</code></li>
-  <li><code class="language-plaintext highlighter-rouge">profile_v</code></li>
-  <li><code class="language-plaintext highlighter-rouge">level</code></li>
-  <li><code class="language-plaintext highlighter-rouge">pix_fmt</code></li>
-  <li><code class="language-plaintext highlighter-rouge">gop</code></li>
-  <li><code class="language-plaintext highlighter-rouge">r</code></li>
-  <li><code class="language-plaintext highlighter-rouge">vf</code></li>
-  <li><code class="language-plaintext highlighter-rouge">tagv</code></li>
-  <li><code class="language-plaintext highlighter-rouge">abitrate</code></li>
-  <li><code class="language-plaintext highlighter-rouge">ac</code></li>
-  <li><code class="language-plaintext highlighter-rouge">ar</code></li>
-  <li><code class="language-plaintext highlighter-rouge">copy</code></li>
+  <li><strong>format</strong> — Force container/muxer hint (<code class="language-plaintext highlighter-rouge">mp4</code>, <code class="language-plaintext highlighter-rouge">mov</code>, <code class="language-plaintext highlighter-rouge">webm</code>, <code class="language-plaintext highlighter-rouge">matroska</code>, <code class="language-plaintext highlighter-rouge">mxf</code>, <code class="language-plaintext highlighter-rouge">gif</code>, <code class="language-plaintext highlighter-rouge">image2</code>, <code class="language-plaintext highlighter-rouge">avi</code>, etc.).</li>
+  <li><strong>profile</strong> — Apply a curated preset (see <strong>Available Profiles</strong> below).</li>
+  <li><strong>vcodec</strong> — Video codec (e.g., <code class="language-plaintext highlighter-rouge">libx264</code>, <code class="language-plaintext highlighter-rouge">libx265</code>, <code class="language-plaintext highlighter-rouge">libaom-av1</code>, <code class="language-plaintext highlighter-rouge">prores_ks</code>, <code class="language-plaintext highlighter-rouge">dnxhd</code>, <code class="language-plaintext highlighter-rouge">mpeg2video</code>, <code class="language-plaintext highlighter-rouge">mpeg4</code>, <code class="language-plaintext highlighter-rouge">mjpeg</code>).</li>
+  <li><strong>acodec</strong> — Audio codec (e.g., <code class="language-plaintext highlighter-rouge">aac</code>, <code class="language-plaintext highlighter-rouge">libopus</code>, <code class="language-plaintext highlighter-rouge">libmp3lame</code>, <code class="language-plaintext highlighter-rouge">mp3</code>, <code class="language-plaintext highlighter-rouge">pcm_s16le</code>).</li>
+  <li><strong>crf</strong> — Constant Rate Factor for quality control (lower = higher quality).</li>
+  <li><strong>bitrate</strong> — Target video bitrate (e.g., <code class="language-plaintext highlighter-rouge">5M</code>).</li>
+  <li><strong>maxrate</strong> — Maximum video bitrate for rate control.</li>
+  <li><strong>bufsize</strong> — VBV buffer size to pair with <code class="language-plaintext highlighter-rouge">maxrate</code>.</li>
+  <li><strong>preset</strong> — Codec speed/efficiency preset (e.g., <code class="language-plaintext highlighter-rouge">ultrafast</code>, <code class="language-plaintext highlighter-rouge">fast</code>, <code class="language-plaintext highlighter-rouge">slow</code>).</li>
+  <li><strong>profile-v</strong> (<code class="language-plaintext highlighter-rouge">profile_v</code>) — Video codec profile (e.g., <code class="language-plaintext highlighter-rouge">high</code>, <code class="language-plaintext highlighter-rouge">main</code>, <code class="language-plaintext highlighter-rouge">baseline</code>, or ProRes profile index).</li>
+  <li><strong>level</strong> — Video level (e.g., <code class="language-plaintext highlighter-rouge">4.1</code>) for device compatibility.</li>
+  <li><strong>pix-fmt</strong> (<code class="language-plaintext highlighter-rouge">pix_fmt</code>) — Pixel format (e.g., <code class="language-plaintext highlighter-rouge">yuv420p</code>, <code class="language-plaintext highlighter-rouge">yuv422p10le</code>, <code class="language-plaintext highlighter-rouge">yuva444p10le</code>).</li>
+  <li><strong>gop</strong> — GOP/keyframe interval in frames.</li>
+  <li><strong>-r</strong> — Output frame rate (<code class="language-plaintext highlighter-rouge">30000/1001</code>, <code class="language-plaintext highlighter-rouge">25</code>, <code class="language-plaintext highlighter-rouge">24</code>, etc.).</li>
+  <li><strong>vf</strong> — Video filtergraph string.</li>
+  <li><strong>tagv</strong> — Force video FourCC/tag (e.g., <code class="language-plaintext highlighter-rouge">hvc1</code>).</li>
+  <li><strong>abitrate</strong> — Audio bitrate (e.g., <code class="language-plaintext highlighter-rouge">192k</code>).</li>
+  <li><strong>ac</strong> — Audio channel count (e.g., <code class="language-plaintext highlighter-rouge">2</code>).</li>
+  <li><strong>ar</strong> — Audio sample rate (e.g., <code class="language-plaintext highlighter-rouge">48000</code>).</li>
+  <li><strong>copy</strong> — When set, stream copy all streams (no re-encode) if compatible.</li>
+  <li><strong>ffmpeg_args</strong> — Raw arguments after <code class="language-plaintext highlighter-rouge">--</code> passed directly to FFmpeg.</li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
+<h3 id="available-profiles">Available Profiles</h3>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> convert_mux <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4 <span class="nt">--format</span> VALUE <span class="nt">--profile</span> VALUE <span class="nt">--vcodec</span> VALUE <span class="nt">--acodec</span> VALUE <span class="nt">--crf</span> VALUE <span class="nt">--bitrate</span> VALUE <span class="nt">--maxrate</span> VALUE <span class="nt">--bufsize</span> VALUE <span class="nt">--preset</span> VALUE <span class="nt">--profile_v</span> VALUE <span class="nt">--level</span> VALUE <span class="nt">--pix_fmt</span> VALUE <span class="nt">--gop</span> VALUE <span class="nt">--r</span> VALUE <span class="nt">--vf</span> VALUE <span class="nt">--tagv</span> VALUE <span class="nt">--abitrate</span> VALUE <span class="nt">--ac</span> VALUE <span class="nt">--ar</span> VALUE <span class="nt">--copy</span> VALUE
-</code></pre></div></div>
+<p>These are the curated <code class="language-plaintext highlighter-rouge">--profile</code> options defined in the code, with their intent:</p>
+
+<ul>
+  <li><strong>mp4_h264</strong><br />
+H.264 in MP4 for general web/delivery.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">libx264</code>, <code class="language-plaintext highlighter-rouge">-preset veryfast</code>, <code class="language-plaintext highlighter-rouge">-crf 18</code>, <code class="language-plaintext highlighter-rouge">yuv420p</code>, <code class="language-plaintext highlighter-rouge">+faststart</code>, AAC 192k stereo.</li>
+    </ul>
+  </li>
+  <li><strong>mp4_hevc</strong><br />
+HEVC/H.265 in MP4 for higher compression at similar quality.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">libx265</code>, <code class="language-plaintext highlighter-rouge">-preset medium</code>, <code class="language-plaintext highlighter-rouge">-crf 22</code>, <code class="language-plaintext highlighter-rouge">-tag:v hvc1</code>, <code class="language-plaintext highlighter-rouge">yuv420p</code>, <code class="language-plaintext highlighter-rouge">+faststart</code>, AAC 192k stereo.</li>
+    </ul>
+  </li>
+  <li><strong>mp4_av1</strong><br />
+AV1 in MP4 for very efficient modern web delivery.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">libaom-av1</code>, <code class="language-plaintext highlighter-rouge">-crf 28</code>, <code class="language-plaintext highlighter-rouge">-b:v 0</code>, <code class="language-plaintext highlighter-rouge">yuv420p</code>, <code class="language-plaintext highlighter-rouge">+faststart</code>, AAC 192k stereo.</li>
+    </ul>
+  </li>
+  <li><strong>webm_vp9</strong><br />
+VP9-based WebM for web platforms supporting WebM.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">libvpx-vp9</code>, <code class="language-plaintext highlighter-rouge">-b:v 0</code>, <code class="language-plaintext highlighter-rouge">-crf 30</code>, row-mt enabled, <code class="language-plaintext highlighter-rouge">yuv420p</code>, Opus 160k stereo.</li>
+    </ul>
+  </li>
+  <li><strong>webm_av1</strong><br />
+AV1 in WebM with Opus audio.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">libaom-av1</code>, <code class="language-plaintext highlighter-rouge">-crf 32</code>, <code class="language-plaintext highlighter-rouge">-b:v 0</code>, <code class="language-plaintext highlighter-rouge">yuv420p</code>, Opus 160k stereo.</li>
+    </ul>
+  </li>
+  <li><strong>prores_422</strong><br />
+ProRes 422 mezzanine for professional workflows.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">prores_ks</code>, <code class="language-plaintext highlighter-rouge">-profile:v 2</code>, <code class="language-plaintext highlighter-rouge">yuv422p10le</code>, PCM s16le audio.</li>
+    </ul>
+  </li>
+  <li><strong>prores_4444</strong><br />
+ProRes 4444 mezzanine with alpha support.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">prores_ks</code>, <code class="language-plaintext highlighter-rouge">-profile:v 4</code>, <code class="language-plaintext highlighter-rouge">yuva444p10le</code>, PCM s24le audio.</li>
+    </ul>
+  </li>
+  <li><strong>dnxhr_hq</strong><br />
+DNxHR HQ mezzanine for Avid / pro pipelines.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">dnxhd</code>, <code class="language-plaintext highlighter-rouge">-profile:v dnxhr_hq</code>, <code class="language-plaintext highlighter-rouge">yuv422p</code>, PCM s16le audio.</li>
+    </ul>
+  </li>
+  <li><strong>mxf_xdcamhd50_1080i59</strong><br />
+Broadcast MXF OP1a XDCAM HD 50, 1080i59.94.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">mpeg2video</code> at 50M CBR, interlaced, top field first, <code class="language-plaintext highlighter-rouge">yuv422p</code>, PCM s24le 48k stereo, <code class="language-plaintext highlighter-rouge">-f mxf</code>.</li>
+    </ul>
+  </li>
+  <li><strong>lossless_ffv1</strong><br />
+FFV1 lossless archival video.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">ffv1</code> level 3, intra (g=1), slice CRC, PCM s24le audio.</li>
+    </ul>
+  </li>
+  <li><strong>gif</strong><br />
+GIF export preset (via palettegen/paletteuse pipeline).
+    <ul>
+      <li>Uses <code class="language-plaintext highlighter-rouge">fps=15,scale=iw:-2:flags=lanczos</code> in a filter_complex chain.</li>
+    </ul>
+  </li>
+  <li><strong>png_seq</strong><br />
+PNG image sequence output.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">-c:v png</code>.</li>
+    </ul>
+  </li>
+  <li><strong>jpg_seq</strong><br />
+JPEG image sequence output.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">-qscale:v 2</code> (high quality JPEG).</li>
+    </ul>
+  </li>
+  <li><strong>mp3_320</strong><br />
+Audio-only MP3 at 320 kbps.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">-vn</code>, <code class="language-plaintext highlighter-rouge">libmp3lame</code>, <code class="language-plaintext highlighter-rouge">-b:a 320k</code>.</li>
+    </ul>
+  </li>
+  <li><strong>aac_192</strong><br />
+Audio-only AAC at 192 kbps.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">-vn</code>, <code class="language-plaintext highlighter-rouge">aac</code>, <code class="language-plaintext highlighter-rouge">-b:a 192k</code>.</li>
+    </ul>
+  </li>
+  <li><strong>flac</strong><br />
+Audio-only FLAC lossless.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">-vn</code>, <code class="language-plaintext highlighter-rouge">flac</code>.</li>
+    </ul>
+  </li>
+  <li><strong>avi_mjpeg_fast</strong><br />
+AVI with MJPEG video for fast, edit-friendly intermediates.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">mjpeg</code> with <code class="language-plaintext highlighter-rouge">-q:v 3</code>, PCM s16le audio.</li>
+    </ul>
+  </li>
+  <li><strong>avi_mpeg4_fast</strong><br />
+AVI with MPEG-4 video tuned for speed.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">mpeg4</code>, <code class="language-plaintext highlighter-rouge">-qscale:v 3</code>, <code class="language-plaintext highlighter-rouge">-bf 0</code>, <code class="language-plaintext highlighter-rouge">-mbd 0</code>, MP3 192k audio.</li>
+    </ul>
+  </li>
+</ul>
 
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> convert_mux <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> convert_mux_styled.mp4 <span class="nt">--format</span> EXAMPLE <span class="nt">--profile</span> EXAMPLE <span class="nt">--vcodec</span> EXAMPLE <span class="nt">--acodec</span> EXAMPLE <span class="nt">--crf</span> EXAMPLE <span class="nt">--bitrate</span> EXAMPLE <span class="nt">--maxrate</span> EXAMPLE <span class="nt">--bufsize</span> EXAMPLE <span class="nt">--preset</span> EXAMPLE <span class="nt">--profile_v</span> EXAMPLE <span class="nt">--level</span> EXAMPLE <span class="nt">--pix_fmt</span> EXAMPLE <span class="nt">--gop</span> EXAMPLE <span class="nt">--r</span> EXAMPLE <span class="nt">--vf</span> EXAMPLE <span class="nt">--tagv</span> EXAMPLE <span class="nt">--abitrate</span> EXAMPLE <span class="nt">--ac</span> EXAMPLE <span class="nt">--ar</span> EXAMPLE <span class="nt">--copy</span> EXAMPLE
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P convert_mux \
+  -i myvideo.mp4 \
+  -o convert_mux_styled.mp4 \
+  --format mp4 \
+  --profile mp4_h264
 </code></pre></div></div>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Profiles apply <strong>after</strong> basic container inference and can override many manually specified arguments.</li>
+  <li>When output ends with <code class="language-plaintext highlighter-rouge">.mp4</code>, certain profiles that expect non-MP4 containers (<code class="language-plaintext highlighter-rouge">webm_…</code>, <code class="language-plaintext highlighter-rouge">mxf_…</code>, <code class="language-plaintext highlighter-rouge">gif</code>, etc.) will cause a fail-fast error to avoid confusing FFmpeg errors.</li>
+  <li><code class="language-plaintext highlighter-rouge">--copy</code> disables most encoding options and simply remuxes streams when possible.</li>
+  <li>GIF and image-sequence profiles bypass typical video/audio handling and use specialized pipelines.</li>
+  <li>Additional raw FFmpeg flags can be appended after <code class="language-plaintext highlighter-rouge">--</code> if you need something not exposed via named arguments.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Preparing web deliverables using <code class="language-plaintext highlighter-rouge">mp4_h264</code>, <code class="language-plaintext highlighter-rouge">mp4_hevc</code>, or <code class="language-plaintext highlighter-rouge">mp4_av1</code>.</li>
+  <li>Making pro intermediates in <code class="language-plaintext highlighter-rouge">prores_422</code>, <code class="language-plaintext highlighter-rouge">prores_4444</code>, or <code class="language-plaintext highlighter-rouge">dnxhr_hq</code> for editing, grading, or VFX.</li>
+  <li>Building broadcast MXF files with <code class="language-plaintext highlighter-rouge">mxf_xdcamhd50_1080i59</code>.</li>
+  <li>Generating GIFs, PNG/JPEG sequences, or audio-only MP3/AAC/FLAC assets.</li>
+  <li>Using <code class="language-plaintext highlighter-rouge">--copy</code> to remux without re-encoding when container changes are sufficient.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>For H.264/H.265, tune CRF and preset if not relying solely on profiles.</li>
+  <li>Use the ProRes and DNxHR profiles for grading/VFX workflows where multi-gen quality matters.</li>
+  <li>AV1 profiles (<code class="language-plaintext highlighter-rouge">mp4_av1</code>, <code class="language-plaintext highlighter-rouge">webm_av1</code>) are slower to encode but very efficient for distribution.</li>
+  <li>For archival, prefer <code class="language-plaintext highlighter-rouge">lossless_ffv1</code> in Matroska with PCM audio.</li>
+  <li>Always inspect container + codec compatibility for your target platform before finalizing a profile.</li>
+</ul>
 
 
       </section>

@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"ghostee","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/ghostee.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,31 +61,79 @@
       <h1 id="ghostee">ghostee</h1>
 
 <h2 id="description">Description</h2>
+<p>Applies a soft, subtle ghosting effect to the video by blending frames over time.<br />
+This creates a trailing, dreamy afterimage that lightly smears motion and adds a supernatural or ethereal visual mood.</p>
 
-<p>Apply a slight ghost effect</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">ghostee</code> is designed for artists who want:</p>
+<ul>
+  <li>a gentle afterimage effect instead of heavy motion smearing,</li>
+  <li>soft motion trails without strong distortion,</li>
+  <li>a dreamy, floating, or spectral visual tone,</li>
+  <li>an atmospheric layer for music videos and ambient visuals,</li>
+  <li>a minimal, elegant ghost effect that doesn’t overwhelm the footage.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Frame Blending</strong><br />
+Consecutive frames are blended with diminishing influence, producing a light optical-ghost effect.</li>
+  <li><strong>Subtle Persistence</strong><br />
+Motion appears to leave a soft residue rather than a strong smear or echo.</li>
+  <li><strong>Minimal Contrast Disruption</strong><br />
+Highlights, shadows, and midtones maintain structure—only motion is affected.</li>
+  <li><strong>Encoding</strong><br />
+Output uses global Videobeaux codec settings (CRF, pixel format, preset).</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P ghostee \
+  -i input.mp4 \
+  -o output.mp4
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
-
 <ul>
   <li><em>(No additional program-specific arguments; uses global videobeaux options only.)</em></li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> ghostee <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> ghostee <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> ghostee_styled.mp4
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P ghostee \
+  -i myvideo.mp4 \
+  -o ghostee_styled.mp4
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
-
 <video controls="" preload="metadata" style="max-width:100%; border-radius:8px; margin:1em 0;">
   <source src="https://github.com/user-attachments/assets/87c8b569-5165-485d-ae09-7a8bbbe74051" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Produces mild persistence, unlike <code class="language-plaintext highlighter-rouge">frame_delay_pro1</code> or <code class="language-plaintext highlighter-rouge">frame_delay_pro2</code>, which provide more extreme temporal manipulation.</li>
+  <li>Works especially well on slow-motion or atmospheric footage.</li>
+  <li>Compression settings influence ghost smoothness—higher CRF may increase noise within the trail.</li>
+  <li>High-motion shots will produce noticeable yet still delicate ghost trails.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Dreamlike music videos or ambient visualizers.</li>
+  <li>Supernatural, memory-like, or nostalgic sequences.</li>
+  <li>Layered VJ and projection-mapped installations.</li>
+  <li>Subtle aesthetic enhancement for drone shots or slow pans.</li>
+  <li>Mixing into a visual chain with stronger distortions for hybrid textures.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>For smoother trails, lower CRF to reduce compression breakup.</li>
+  <li>Combine with <code class="language-plaintext highlighter-rouge">double_cup</code> for syrupy dream visuals.</li>
+  <li>Pair with <code class="language-plaintext highlighter-rouge">blur_pix</code> to soften structure while keeping ghost trails intact.</li>
+  <li>For more pronounced trails, run <code class="language-plaintext highlighter-rouge">ghostee</code> multiple times or chain with <code class="language-plaintext highlighter-rouge">frame_delay_pro1</code>.</li>
+  <li>Use on well-lit footage for cleanest ghost silhouettes.</li>
+</ul>
 
 
 

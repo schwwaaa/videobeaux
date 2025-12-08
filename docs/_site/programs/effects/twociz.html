@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"twociz","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/twociz.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,28 +61,77 @@
       <h1 id="twociz">twociz</h1>
 
 <h2 id="description">Description</h2>
+<p>Applies a distorted, delirious visual effect meant to simulate the hallucinated perspective of a zombie under the fictional TC-1 compound.<br />
+The aesthetic is disoriented, chemically corrupted, semi-conscious, and grotesquely vivid — combining abnormal color shifts, lurching motion, and sensory confusion.</p>
 
-<p>Apply filter from the perspective of a zombie on TC-1 hallucinogens</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">twociz</code> is designed for creators who want:</p>
+<ul>
+  <li>a surreal, undead, chemically warped visual tone,</li>
+  <li>heavily altered perception aesthetics (swaying, drifting, disoriented),</li>
+  <li>toxic, bruised, unnatural color bleed,</li>
+  <li>a cinematic “drug-trip-from-the-grave” interpretation,</li>
+  <li>a one-command surreal filter requiring no tweaking.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Toxic Color Distortion</strong><br />
+Colors skew toward bruised greens, rotting purples, and necrotic yellows — evoking a zombified visual palette.</li>
+  <li><strong>Hallucinogenic Drift</strong><br />
+Subtle geometric warping, temporal wobble, or disproportionate scaling may occur to mimic unstable perception.</li>
+  <li><strong>Consciousness Fade Simulation</strong><br />
+Highlights bloom erratically; shadows collapse unexpectedly, resembling moments of slipping awareness.</li>
+  <li><strong>Encoding</strong><br />
+Output is encoded using global Videobeaux codec settings (CRF, pixel format, preset).</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> twociz <span class="se">\</span>
+  <span class="nt">-i</span> input.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> output.mp4
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
-
 <ul>
   <li><em>(No additional program-specific arguments; uses global videobeaux options only.)</em></li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> twociz <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> twociz <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> twociz_styled.mp4
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> twociz <span class="se">\</span>
+  <span class="nt">-i</span> myvideo.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> twociz_styled.mp4
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
-
 <p><em>Program output video omitted due to size; see repository for reference clips.</em></p>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Works extremely well on footage with faces or skin tones, which become grotesquely reinterpreted under the effect.</li>
+  <li>High-contrast movement exaggerates the chemical hallucination look.</li>
+  <li>Compression artifacts interact unpredictably with the warped palette — often desirable for this aesthetic.</li>
+  <li>Stability varies depending on input content: calm scenes look feverish; chaotic scenes look apocalyptic.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Horror or undead-themed sequences.</li>
+  <li>Music videos requiring surreal, lurching, toxic hallucinations.</li>
+  <li>Psychological visualizations of decay, delirium, intoxication, or inner collapse.</li>
+  <li>Glitch-art or experimental montage with a corrupted-organic tone.</li>
+  <li>Any sequence where a “rotting consciousness POV” enhances storytelling.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Lower CRF yields clearer hallucination layers; higher CRF introduces gritty decay that suits the undead theme.</li>
+  <li>Pair with <code class="language-plaintext highlighter-rouge">septic</code> for medical-shock surrealism.</li>
+  <li>Combine with <code class="language-plaintext highlighter-rouge">bad_contrast</code> for a bruised, collapsing palette.</li>
+  <li>Layer with <code class="language-plaintext highlighter-rouge">lsd_feedback</code> for intensifying delirium loops.</li>
+  <li>Apply before <code class="language-plaintext highlighter-rouge">overexposed_stutter</code> for a chemically panicked final effect.</li>
+</ul>
+
 
 
       </section>

@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"mince","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/mince.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,48 +61,159 @@
       <h1 id="mince">mince</h1>
 
 <h2 id="description">Description</h2>
+<p>A fast, precise segment extractor and reassembler that slices video into parts and recombines them with frame accuracy.<br />
+<code class="language-plaintext highlighter-rouge">mince</code> can cut, shuffle, normalize, re-encode, or stitch segments while preserving sync, enabling procedural editing, glitch slicing, and automated timeline reconstruction.</p>
 
-<p>A fast, lossless segment-extractor and concatenator that slices videos into parts and recombines them with precision</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">mince</code> is designed for creators who want to:</p>
+<ul>
+  <li>cut videos into segments deterministically or randomly,</li>
+  <li>shuffle or rearrange cuts with predictable results,</li>
+  <li>normalize segment formats for consistent downstream processing,</li>
+  <li>create procedural micro-edits, stutters, or rhythmic staccato patterns,</li>
+  <li>apply glitch, jump-cut, or timeline–reconstruction workflows at scale,</li>
+  <li>extract or trim clips with high accuracy while choosing how to re-encode.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Mode Selection (<code class="language-plaintext highlighter-rouge">--mode</code>)</strong><br />
+Defines how segments are generated or chosen:
+    <ul>
+      <li>deterministic slicing,</li>
+      <li>random slicing controlled by seed,</li>
+      <li>engine-based segmentation strategies.</li>
+    </ul>
+  </li>
+  <li><strong>Randomization (<code class="language-plaintext highlighter-rouge">--seed</code>)</strong><br />
+Ensures reproducibility of shuffled or randomized edits.</li>
+  <li><strong>Engine (<code class="language-plaintext highlighter-rouge">--engine</code>)</strong><br />
+Different engines may determine how cuts are generated (e.g., time-based, detection-based, algorithmic).</li>
+  <li><strong>Normalization (<code class="language-plaintext highlighter-rouge">--normalize</code> + related options)</strong><br />
+If enabled, each segment is re-encoded using:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">norm_vcodec</code></li>
+      <li><code class="language-plaintext highlighter-rouge">norm_crf</code></li>
+      <li><code class="language-plaintext highlighter-rouge">norm_preset</code><br />
+ensuring consistent dimensions, codecs, and quality levels.</li>
+    </ul>
+  </li>
+  <li><strong>Reconstruction</strong><br />
+Segments are concatenated in the final order (based on engine or mode).</li>
+  <li><strong>Output Encoding</strong><br />
+After assembly, the final output is encoded using user-selected codecs, presets, and flags.</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> mince <span class="se">\</span>
+  <span class="nt">-i</span> input.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> output.mp4 <span class="se">\</span>
+  <span class="nt">--mode</span> VALUE <span class="se">\</span>
+  <span class="nt">--seed</span> VALUE <span class="se">\</span>
+  <span class="nt">--engine</span> VALUE <span class="se">\</span>
+  <span class="nt">--normalize</span> VALUE <span class="se">\</span>
+  <span class="nt">--size</span> VALUE <span class="se">\</span>
+  <span class="nt">--fit</span> VALUE <span class="se">\</span>
+  <span class="nt">--fps</span> VALUE <span class="se">\</span>
+  <span class="nt">--pixfmt</span> VALUE <span class="se">\</span>
+  <span class="nt">--ar</span> VALUE <span class="se">\</span>
+  <span class="nt">--ac</span> VALUE <span class="se">\</span>
+  <span class="nt">--norm_vcodec</span> VALUE <span class="se">\</span>
+  <span class="nt">--norm_crf</span> VALUE <span class="se">\</span>
+  <span class="nt">--norm_preset</span> VALUE <span class="se">\</span>
+  <span class="nt">--vcodec</span> VALUE <span class="se">\</span>
+  <span class="nt">--acodec</span> VALUE <span class="se">\</span>
+  <span class="nt">--crf</span> VALUE <span class="se">\</span>
+  <span class="nt">--preset</span> VALUE <span class="se">\</span>
+  <span class="nt">--faststart</span> VALUE <span class="se">\</span>
+  <span class="nt">--fallback_reencode</span> VALUE <span class="se">\</span>
+  <span class="nt">--decode_tolerant</span> VALUE <span class="se">\</span>
+  <span class="nt">--hard_trim</span> VALUE
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">mode</code></li>
-  <li><code class="language-plaintext highlighter-rouge">seed</code></li>
-  <li><code class="language-plaintext highlighter-rouge">engine</code></li>
-  <li><code class="language-plaintext highlighter-rouge">normalize</code></li>
-  <li><code class="language-plaintext highlighter-rouge">size</code></li>
-  <li><code class="language-plaintext highlighter-rouge">fit</code></li>
-  <li><code class="language-plaintext highlighter-rouge">fps</code></li>
-  <li><code class="language-plaintext highlighter-rouge">pixfmt</code></li>
-  <li><code class="language-plaintext highlighter-rouge">ar</code></li>
-  <li><code class="language-plaintext highlighter-rouge">ac</code></li>
-  <li><code class="language-plaintext highlighter-rouge">norm_vcodec</code></li>
-  <li><code class="language-plaintext highlighter-rouge">norm_crf</code></li>
-  <li><code class="language-plaintext highlighter-rouge">norm_preset</code></li>
-  <li><code class="language-plaintext highlighter-rouge">vcodec</code></li>
-  <li><code class="language-plaintext highlighter-rouge">acodec</code></li>
-  <li><code class="language-plaintext highlighter-rouge">crf</code></li>
-  <li><code class="language-plaintext highlighter-rouge">preset</code></li>
-  <li><code class="language-plaintext highlighter-rouge">faststart</code></li>
-  <li><code class="language-plaintext highlighter-rouge">fallback_reencode</code></li>
-  <li><code class="language-plaintext highlighter-rouge">decode_tolerant</code></li>
-  <li><code class="language-plaintext highlighter-rouge">hard_trim</code></li>
+  <li><strong>mode</strong> — Defines slicing/assembly logic (deterministic, random, pattern-based).</li>
+  <li><strong>seed</strong> — Ensures reproducible random operations.</li>
+  <li><strong>engine</strong> — Selects segmentation strategy.</li>
+  <li><strong>normalize</strong> — Enables re-encoding of each segment for consistency.</li>
+  <li><strong>size</strong> — Target resolution for normalized clips.</li>
+  <li><strong>fit</strong> — Fit behavior for scaling (e.g., pad, fill, stretch).</li>
+  <li><strong>fps</strong> — Override frame rate during normalization.</li>
+  <li><strong>pixfmt</strong> — Pixel format used in normalized output.</li>
+  <li><strong>ar</strong> — Audio sample rate.</li>
+  <li><strong>ac</strong> — Number of audio channels.</li>
+  <li><strong>norm_vcodec</strong> — Video codec for normalization step.</li>
+  <li><strong>norm_crf</strong> — CRF quality for normalized clips.</li>
+  <li><strong>norm_preset</strong> — Encoding speed for normalization.</li>
+  <li><strong>vcodec</strong> — Codec for final output render.</li>
+  <li><strong>acodec</strong> — Audio codec for final output.</li>
+  <li><strong>crf</strong> — CRF for final encoding quality.</li>
+  <li><strong>preset</strong> — Encoding speed for final output.</li>
+  <li><strong>faststart</strong> — Enables MP4 faststart flag when applicable.</li>
+  <li><strong>fallback_reencode</strong> — Re-encode segments if passthrough fails.</li>
+  <li><strong>decode_tolerant</strong> — Allow lenient decoding of problematic segments.</li>
+  <li><strong>hard_trim</strong> — Enforce exact cut boundaries rather than safe cutting.</li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> mince <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4 <span class="nt">--mode</span> VALUE <span class="nt">--seed</span> VALUE <span class="nt">--engine</span> VALUE <span class="nt">--normalize</span> VALUE <span class="nt">--size</span> VALUE <span class="nt">--fit</span> VALUE <span class="nt">--fps</span> VALUE <span class="nt">--pixfmt</span> VALUE <span class="nt">--ar</span> VALUE <span class="nt">--ac</span> VALUE <span class="nt">--norm_vcodec</span> VALUE <span class="nt">--norm_crf</span> VALUE <span class="nt">--norm_preset</span> VALUE <span class="nt">--vcodec</span> VALUE <span class="nt">--acodec</span> VALUE <span class="nt">--crf</span> VALUE <span class="nt">--preset</span> VALUE <span class="nt">--faststart</span> VALUE <span class="nt">--fallback_reencode</span> VALUE <span class="nt">--decode_tolerant</span> VALUE <span class="nt">--hard_trim</span> VALUE
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> mince <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> mince_styled.mp4 <span class="nt">--mode</span> EXAMPLE <span class="nt">--seed</span> EXAMPLE <span class="nt">--engine</span> EXAMPLE <span class="nt">--normalize</span> EXAMPLE <span class="nt">--size</span> EXAMPLE <span class="nt">--fit</span> EXAMPLE <span class="nt">--fps</span> EXAMPLE <span class="nt">--pixfmt</span> EXAMPLE <span class="nt">--ar</span> EXAMPLE <span class="nt">--ac</span> EXAMPLE <span class="nt">--norm_vcodec</span> EXAMPLE <span class="nt">--norm_crf</span> EXAMPLE <span class="nt">--norm_preset</span> EXAMPLE <span class="nt">--vcodec</span> EXAMPLE <span class="nt">--acodec</span> EXAMPLE <span class="nt">--crf</span> EXAMPLE <span class="nt">--preset</span> EXAMPLE <span class="nt">--faststart</span> EXAMPLE <span class="nt">--fallback_reencode</span> EXAMPLE <span class="nt">--decode_tolerant</span> EXAMPLE <span class="nt">--hard_trim</span> EXAMPLE
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> mince <span class="se">\</span>
+  <span class="nt">-i</span> myvideo.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> mince_styled.mp4 <span class="se">\</span>
+  <span class="nt">--mode</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--seed</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--engine</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--normalize</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--size</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--fit</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--fps</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--pixfmt</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--ar</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--ac</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--norm_vcodec</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--norm_crf</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--norm_preset</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--vcodec</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--acodec</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--crf</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--preset</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--faststart</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--fallback_reencode</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--decode_tolerant</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--hard_trim</span> EXAMPLE
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
-
 <p><em>Program output video not yet linked.</em></p>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">mince</code> can create either chaotic glitch edits or clean, broadcast-ready trims depending on parameters.</li>
+  <li>Normalization ensures all segments share identical codec and dimensions, avoiding concat failures.</li>
+  <li>Engines may behave differently depending on content—some may be time-based, others content-aware.</li>
+  <li>Overusing hard trimming may create audio pops or stray frames depending on source structure.</li>
+  <li><code class="language-plaintext highlighter-rouge">fallback_reencode</code> prevents pipeline breaks when encountering incompatible segments.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Procedural micro-edits for music videos.</li>
+  <li>Rapid stutter-cut effects.</li>
+  <li>Timeline reordering and random jump edits.</li>
+  <li>Creating equal-length slices for collage systems like Lagkage.</li>
+  <li>Extracting reusable clip banks in normalized formats.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Use a consistent <code class="language-plaintext highlighter-rouge">norm_vcodec</code> + <code class="language-plaintext highlighter-rouge">norm_crf</code> to avoid codec mismatch in concat operations.</li>
+  <li>For heavy glitch aesthetics, set high randomness with a fixed seed to remain reproducible.</li>
+  <li>For broadcast-safe trimming, disable randomness and use exact timing with <code class="language-plaintext highlighter-rouge">hard_trim</code>.</li>
+  <li>Lower CRF and high-quality presets yield smoother normalized segments for recomposition.</li>
+  <li>Use <code class="language-plaintext highlighter-rouge">decode_tolerant</code> when working with damaged or odd-format inputs.</li>
+</ul>
+
 
 
       </section>

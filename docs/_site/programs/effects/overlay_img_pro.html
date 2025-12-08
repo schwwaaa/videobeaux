@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"overlay_img_pro","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/overlay_img_pro.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,35 +61,107 @@
       <h1 id="overlay_img_pro">overlay_img_pro</h1>
 
 <h2 id="description">Description</h2>
+<p>Overlays an external image onto the input video with explicit control over image position and dimensions.<br />
+<code class="language-plaintext highlighter-rouge">overlay_img_pro</code> allows precise placement, scaling, and compositing of static images (PNG, JPG, etc.) on top of a video layer.</p>
 
-<p>Overlay an image with location &amp; dimension control</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">overlay_img_pro</code> is intended for creators who want to:</p>
+<ul>
+  <li>add logos, watermarks, stickers, UI elements, or graphic marks,</li>
+  <li>precisely place images using pixel coordinates,</li>
+  <li>scale images to specific dimensions for uniform branding,</li>
+  <li>composite image layers as part of a stylized or functional pipeline,</li>
+  <li>automate graphic overlays without using a traditional editor.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Image Loading</strong><br />
+The external image defined by <code class="language-plaintext highlighter-rouge">--overlay_img</code> is loaded into the FFmpeg filtergraph.</li>
+  <li><strong>Scaling</strong><br />
+The image is resized to the dimensions specified by:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">img_width</code></li>
+      <li><code class="language-plaintext highlighter-rouge">img_height</code></li>
+    </ul>
+  </li>
+  <li><strong>Positioning</strong><br />
+The overlay image is placed at:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">x_pos</code> (horizontal placement)</li>
+      <li><code class="language-plaintext highlighter-rouge">y_pos</code> (vertical placement)</li>
+    </ul>
+  </li>
+  <li><strong>Compositing</strong><br />
+The resized and positioned image is blended over the source video.</li>
+  <li><strong>Encoding</strong><br />
+Final output is encoded using global Videobeaux codec, pixel-format, and CRF settings.</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> overlay_img_pro <span class="se">\</span>
+  <span class="nt">-i</span> input.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> output.mp4 <span class="se">\</span>
+  <span class="nt">--overlay_img</span> VALUE <span class="se">\</span>
+  <span class="nt">--x_pos</span> VALUE <span class="se">\</span>
+  <span class="nt">--y_pos</span> VALUE <span class="se">\</span>
+  <span class="nt">--img_height</span> VALUE <span class="se">\</span>
+  <span class="nt">--img_width</span> VALUE
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">overlay_img</code></li>
-  <li><code class="language-plaintext highlighter-rouge">x_pos</code></li>
-  <li><code class="language-plaintext highlighter-rouge">y_pos</code></li>
-  <li><code class="language-plaintext highlighter-rouge">img_height</code></li>
-  <li><code class="language-plaintext highlighter-rouge">img_width</code></li>
+  <li><strong>overlay_img</strong> — Path to the image to overlay (PNG, JPG, etc.).</li>
+  <li><strong>x_pos</strong> — Horizontal position of the top-left corner of the overlay (in pixels).</li>
+  <li><strong>y_pos</strong> — Vertical position of the top-left corner of the overlay (in pixels).</li>
+  <li><strong>img_height</strong> — Height of the overlay image after scaling.</li>
+  <li><strong>img_width</strong> — Width of the overlay image after scaling.</li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> overlay_img_pro <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4 <span class="nt">--overlay_img</span> VALUE <span class="nt">--x_pos</span> VALUE <span class="nt">--y_pos</span> VALUE <span class="nt">--img_height</span> VALUE <span class="nt">--img_width</span> VALUE
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> overlay_img_pro <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> overlay_img_pro_styled.mp4 <span class="nt">--overlay_img</span> EXAMPLE <span class="nt">--x_pos</span> EXAMPLE <span class="nt">--y_pos</span> EXAMPLE <span class="nt">--img_height</span> EXAMPLE <span class="nt">--img_width</span> EXAMPLE
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> overlay_img_pro <span class="se">\</span>
+  <span class="nt">-i</span> myvideo.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> overlay_img_pro_styled.mp4 <span class="se">\</span>
+  <span class="nt">--overlay_img</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--x_pos</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--y_pos</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--img_height</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--img_width</span> EXAMPLE
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
-
 <video controls="" preload="metadata" style="max-width:100%; border-radius:8px; margin:1em 0;">
   <source src="https://github.com/schwwaaa/videobeaux/assets/7625379/3932d910-b898-4ed7-ba3a-288a708c0d83" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>PNG images with alpha channels will respect transparency automatically.</li>
+  <li>Extremely large overlays may impact performance or produce scaling artifacts.</li>
+  <li>For best results, use high-resolution images when scaling down rather than up.</li>
+  <li>The overlay is applied top-left–anchored; centering must be done manually using math for <code class="language-plaintext highlighter-rouge">x_pos</code> / <code class="language-plaintext highlighter-rouge">y_pos</code>.</li>
+  <li>Works on any resolution or aspect ratio, including portrait, square, and ultrawide.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Watermarks, logos, and branding elements.</li>
+  <li>Titles or lower-third graphics generated externally.</li>
+  <li>UI overlays for mockups or stylized edits.</li>
+  <li>Layer-based collage compositions when combined with other Videobeaux programs.</li>
+  <li>Automated batch rendering where graphics must appear in consistent positions.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Pre-scale the external image to your target size to avoid unnecessary interpolation.</li>
+  <li>Use PNG for overlays requiring clean edges or transparency.</li>
+  <li>Combine with <code class="language-plaintext highlighter-rouge">convert_dims</code> beforehand to ensure predictable placement on varying aspect ratios.</li>
+  <li>For multi-image overlays, use <code class="language-plaintext highlighter-rouge">lagkage</code> instead for complex composite pipelines.</li>
+  <li>Lower CRF values keep overlay edges crisp after encoding.</li>
+</ul>
 
 
 

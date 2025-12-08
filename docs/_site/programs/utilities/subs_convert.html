@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"subs_convert","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/utilities/subs_convert.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,33 +61,104 @@
       <h1 id="subs_convert">subs_convert</h1>
 
 <h2 id="description">Description</h2>
+<p>Converts subtitle files between formats (e.g., SRT, VTT, ASS) while preserving timing, text, and (where possible) style metadata.</p>
 
-<p>Converts subtitle files between formats (e.g., SRT, VTT, ASS), preserving timing, text, and style metadata</p>
+<h2 id="purpose">Purpose</h2>
+<p>The <code class="language-plaintext highlighter-rouge">subs_convert</code> program standardizes subtitle workflows by:</p>
+<ul>
+  <li>Listing available subtitle tracks in a media file.</li>
+  <li>Extracting specific subtitle tracks by index or language.</li>
+  <li>Converting them to a desired output format.</li>
+  <li>Optionally cleaning or shifting them in time.</li>
+</ul>
+
+<p>It is especially helpful when preparing subtitles for caption-burning, translations, or multi-version deliverables.</p>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Input Inspection</strong><br />
+Reads subtitle streams from the input media file (or compatible subtitle sources).</li>
+  <li><strong>Track Selection</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">list</code> shows all available subtitle tracks with indices and metadata.</li>
+      <li><code class="language-plaintext highlighter-rouge">indexes</code> selects specific tracks by index.</li>
+      <li><code class="language-plaintext highlighter-rouge">langs</code> filters tracks by language codes (e.g., <code class="language-plaintext highlighter-rouge">eng</code>, <code class="language-plaintext highlighter-rouge">spa</code>).</li>
+      <li><code class="language-plaintext highlighter-rouge">all</code> overrides filters and selects every subtitle track.</li>
+    </ul>
+  </li>
+  <li><strong>Filtering &amp; Cleaning</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">forced_only</code> restricts output to forced subtitles only (e.g., foreign-language dialogue).</li>
+      <li><code class="language-plaintext highlighter-rouge">exclude_hi</code> strips hearing-impaired (HI) descriptors like sound effects or music tags.</li>
+    </ul>
+  </li>
+  <li><strong>Format Conversion</strong><br />
+Converts the selected tracks into the requested output format (SRT, VTT, ASS, etc.).</li>
+  <li><strong>Timing Adjustment</strong><br />
+Applies an optional <code class="language-plaintext highlighter-rouge">time_shift</code> so subtitles can be nudged earlier or later to stay in sync.</li>
+  <li><strong>Output Writing</strong><br />
+Writes one or more subtitle files to an output directory or a specific <code class="language-plaintext highlighter-rouge">outputfile</code> path.</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P subs_convert \
+  -i input.mp4 \
+  -o output.mp4 \
+  --list VALUE \
+  --indexes VALUE \
+  --langs VALUE \
+  --all VALUE \
+  --forced_only VALUE \
+  --exclude_hi VALUE \
+  --format VALUE \
+  --outdir VALUE \
+  --outputfile VALUE \
+  --time_shift VALUE
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">list</code></li>
-  <li><code class="language-plaintext highlighter-rouge">indexes</code></li>
-  <li><code class="language-plaintext highlighter-rouge">langs</code></li>
-  <li><code class="language-plaintext highlighter-rouge">all</code></li>
-  <li><code class="language-plaintext highlighter-rouge">forced_only</code></li>
-  <li><code class="language-plaintext highlighter-rouge">exclude_hi</code></li>
-  <li><code class="language-plaintext highlighter-rouge">format</code></li>
-  <li><code class="language-plaintext highlighter-rouge">outdir</code></li>
-  <li><code class="language-plaintext highlighter-rouge">outputfile</code></li>
-  <li><code class="language-plaintext highlighter-rouge">time_shift</code></li>
+  <li><strong>list</strong> — List all subtitle tracks in the input with indexes, languages, and basic metadata. Useful as a first step to see what is available.</li>
+  <li><strong>indexes</strong> — One or more subtitle track indexes to extract/convert (e.g., <code class="language-plaintext highlighter-rouge">0</code>, <code class="language-plaintext highlighter-rouge">1,2</code>). Accepts a comma-separated list.</li>
+  <li><strong>langs</strong> — Filter tracks by language codes (e.g., <code class="language-plaintext highlighter-rouge">eng</code>, <code class="language-plaintext highlighter-rouge">spa</code>). Accepts one or more languages, usually as a comma-separated list, depending on implementation.</li>
+  <li><strong>all</strong> — Select all subtitle tracks, ignoring <code class="language-plaintext highlighter-rouge">indexes</code> and <code class="language-plaintext highlighter-rouge">langs</code> filters.</li>
+  <li><strong>forced_only</strong> — Restrict output to subtitle events marked as “forced” (e.g., foreign-language dialogue or plot-critical on-screen text).</li>
+  <li><strong>exclude_hi</strong> — Attempt to remove hearing-impaired (HI) descriptors such as <code class="language-plaintext highlighter-rouge">[MUSIC]</code>, <code class="language-plaintext highlighter-rouge">(LAUGHTER)</code>, and other non-dialogue notes.</li>
+  <li><strong>format</strong> — Output format for converted subtitles, such as <code class="language-plaintext highlighter-rouge">srt</code>, <code class="language-plaintext highlighter-rouge">vtt</code>, or <code class="language-plaintext highlighter-rouge">ass</code>. The exact set of valid formats depends on the underlying subtitle tooling.</li>
+  <li><strong>outdir</strong> — Directory where the converted subtitle files should be written. Filenames are usually derived from the input and track metadata.</li>
+  <li><strong>outputfile</strong> — Explicit path and filename for the converted subtitle file when you only want a single, known output file location.</li>
+  <li><strong>time_shift</strong> — Apply a timing offset to all subtitle cues. Positive values delay subtitles; negative values make them appear earlier (e.g., <code class="language-plaintext highlighter-rouge">-0.25</code> shifts cues 250ms earlier).</li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> subs_convert <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4 <span class="nt">--list</span> VALUE <span class="nt">--indexes</span> VALUE <span class="nt">--langs</span> VALUE <span class="nt">--all</span> VALUE <span class="nt">--forced_only</span> VALUE <span class="nt">--exclude_hi</span> VALUE <span class="nt">--format</span> VALUE <span class="nt">--outdir</span> VALUE <span class="nt">--outputfile</span> VALUE <span class="nt">--time_shift</span> VALUE
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> subs_convert <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> subs_convert_styled.mp4 <span class="nt">--list</span> EXAMPLE <span class="nt">--indexes</span> EXAMPLE <span class="nt">--langs</span> EXAMPLE <span class="nt">--all</span> EXAMPLE <span class="nt">--forced_only</span> EXAMPLE <span class="nt">--exclude_hi</span> EXAMPLE <span class="nt">--format</span> EXAMPLE <span class="nt">--outdir</span> EXAMPLE <span class="nt">--outputfile</span> EXAMPLE <span class="nt">--time_shift</span> EXAMPLE
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P subs_convert \
+  -i documentary.mp4 \
+  -o documentary_fixed.mp4 \
+  --langs eng \
+  --exclude_hi \
+  --format vtt \
+  --time_shift -0.25 \
+  --outdir subs_output
 </code></pre></div></div>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">list</code> is often used alone to inspect subtitle tracks before running a full conversion.</li>
+  <li>If both <code class="language-plaintext highlighter-rouge">indexes</code> and <code class="language-plaintext highlighter-rouge">langs</code> are provided, explicit <code class="language-plaintext highlighter-rouge">indexes</code> typically take priority.</li>
+  <li><code class="language-plaintext highlighter-rouge">all</code> supersedes both <code class="language-plaintext highlighter-rouge">indexes</code> and <code class="language-plaintext highlighter-rouge">langs</code>, ensuring every subtitle track is processed.</li>
+  <li><code class="language-plaintext highlighter-rouge">time_shift</code> expects a value in seconds and can be fractional for fine-grained adjustment.</li>
+  <li>Some formats (like ASS) support styling; preservation depends on how much style data exists in the source.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Start with <code class="language-plaintext highlighter-rouge">list</code> to discover track indices and language tags.</li>
+  <li>Use <code class="language-plaintext highlighter-rouge">langs</code> when targeting a specific language for translation or distribution.</li>
+  <li>Use <code class="language-plaintext highlighter-rouge">exclude_hi</code> for clean, dialogue-only subtitle deliveries.</li>
+  <li>Use <code class="language-plaintext highlighter-rouge">format ass</code> when preparing styled subtitles for tools like <code class="language-plaintext highlighter-rouge">captburn</code>.</li>
+  <li>Use <code class="language-plaintext highlighter-rouge">time_shift</code> after trimming or re-cutting your video to quickly re-align subtitles without manual editing.</li>
+</ul>
 
 
       </section>

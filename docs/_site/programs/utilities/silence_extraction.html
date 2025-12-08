@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"silence_extraction","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/utilities/silence_extraction.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,26 +61,84 @@
       <h1 id="silence_extraction">silence_extraction</h1>
 
 <h2 id="description">Description</h2>
+<p>Extracts sections of silence from a video’s audio track based on duration thresholds.<br />
+Useful for identifying dead air, isolating non-dialogue segments, or preparing silence-aware edits and analysis.</p>
 
-<p>Extracting the silence out of a video file</p>
+<h2 id="purpose">Purpose</h2>
+<p>The <code class="language-plaintext highlighter-rouge">silence_extraction</code> program is designed to detect, isolate, or extract moments of silence within a video’s audio.<br />
+This is useful for:</p>
+<ul>
+  <li>cutting silent gaps out of recordings,</li>
+  <li>analyzing pacing or speech density,</li>
+  <li>preparing regions for time compression,</li>
+  <li>generating metadata for editors or automation pipelines.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Silence Detection</strong><br />
+FFmpeg’s silence detection logic identifies quiet sections based on amplitude thresholds.</li>
+  <li><strong>Duration Filtering</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">min_d</code> defines the minimum silence duration to be considered meaningful.</li>
+      <li><code class="language-plaintext highlighter-rouge">max_d</code> defines the longest segment to extract or label.</li>
+    </ul>
+  </li>
+  <li><strong>Adjuster Logic</strong>
+The <code class="language-plaintext highlighter-rouge">adjuster</code> parameter allows tuning how tolerant the detection should be, adjusting thresholds or trimming surrounding audio depending on implementation.</li>
+  <li><strong>Output Behavior</strong><br />
+Extracted silence segments may be exported individually, compiled, or used to generate metadata depending on how videobeaux handles downstream processing.</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P silence_extraction \
+  -i input.mp4 \
+  -o output.mp4 \
+  --min_d VALUE \
+  --max_d VALUE \
+  --adjuster VALUE
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">min_d</code></li>
-  <li><code class="language-plaintext highlighter-rouge">max_d</code></li>
-  <li><code class="language-plaintext highlighter-rouge">adjuster</code></li>
+  <li><strong>min_d</strong> — Minimum silence duration (in seconds) to count as a silence event.</li>
+  <li><strong>max_d</strong> — Maximum silence duration to extract or annotate.</li>
+  <li><strong>adjuster</strong> — Fine-tuning parameter for silence threshold sensitivity or trimming behavior.</li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> silence_extraction <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4 <span class="nt">--min_d</span> VALUE <span class="nt">--max_d</span> VALUE <span class="nt">--adjuster</span> VALUE
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> silence_extraction <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> silence_extraction_styled.mp4 <span class="nt">--min_d</span> EXAMPLE <span class="nt">--max_d</span> EXAMPLE <span class="nt">--adjuster</span> EXAMPLE
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P silence_extraction \
+  -i myvideo.mp4 \
+  -o silence_extraction_styled.mp4 \
+  --min_d 1.5 \
+  --max_d 12.0 \
+  --adjuster medium
 </code></pre></div></div>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Silence detection is typically amplitude-based using FFmpeg filters (e.g., <code class="language-plaintext highlighter-rouge">silencedetect</code>).</li>
+  <li><code class="language-plaintext highlighter-rouge">min_d</code> is useful for ignoring tiny pauses or breath sounds.</li>
+  <li>Very large <code class="language-plaintext highlighter-rouge">max_d</code> values may capture irrelevant long stretches; tune for your content.</li>
+  <li><code class="language-plaintext highlighter-rouge">adjuster</code> may influence thresholding; examples include “strict,” “medium,” or “loose” depending on your implementation.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Removing silent gaps in interviews or podcasts.</li>
+  <li>Locating pauses in lectures for automatic chaptering.</li>
+  <li>Creating pacing analytics (speech vs silence ratio).</li>
+  <li>Identifying dead air in archival footage.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Use smaller <code class="language-plaintext highlighter-rouge">min_d</code> values (0.3–0.7s) for fast speech.</li>
+  <li>Use larger <code class="language-plaintext highlighter-rouge">min_d</code> (1–2s) for natural conversations or interviews.</li>
+  <li>Fine-tune <code class="language-plaintext highlighter-rouge">adjuster</code> to avoid misclassifying quiet music or soft ambience as silence.</li>
+  <li>Always review extracted segments before batch processing removal or compression.</li>
+</ul>
 
 
       </section>

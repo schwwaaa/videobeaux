@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"meta_extraction","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/utilities/meta_extraction.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,31 +61,110 @@
       <h1 id="meta_extraction">meta_extraction</h1>
 
 <h2 id="description">Description</h2>
+<p>Extracts detailed metadata—such as codecs, bitrates, dimensions, color information, loudness, black-frame metrics, and stream structure—from any media file.</p>
 
-<p>Extracts detailed metadata—including codecs, bitrates, dimensions, color info, and stream structure—from any media file</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">meta_extraction</code> is designed to provide deep insight into media characteristics for:</p>
+<ul>
+  <li>archival workflows,</li>
+  <li>QC diagnostics,</li>
+  <li>automated processing pipelines,</li>
+  <li>research or analytics tasks,</li>
+  <li>downstream editing or transcoding decisions.</li>
+</ul>
+
+<p>It can scan frames, detect black segments, analyze loudness, and output structured metadata for additional tools.</p>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Stream Inspection</strong><br />
+Reads the container and stream-level metadata (codec, resolution, color space, duration, bitrates, etc.).</li>
+  <li><strong>Frame Sampling</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">sample_frames</code> sets how many frames to analyze.</li>
+      <li><code class="language-plaintext highlighter-rouge">sample_stride</code> controls spacing between sampled frames.</li>
+      <li><code class="language-plaintext highlighter-rouge">sample_limit</code> prevents excessive scanning on long videos.</li>
+    </ul>
+  </li>
+  <li><strong>Black Frame Detection</strong><br />
+If enabled, black detection evaluates frames for luminance thresholds.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">black_pic_th</code> tunes sensitivity.</li>
+      <li><code class="language-plaintext highlighter-rouge">black_dur_min</code> sets minimum black duration to report.</li>
+      <li><code class="language-plaintext highlighter-rouge">blackdetect</code> toggles the feature.</li>
+    </ul>
+  </li>
+  <li><strong>Loudness Analysis</strong><br />
+When enabled, checks LU, LRA, and peak values for broadcast loudness compliance.</li>
+  <li><strong>Output</strong><br />
+Metadata is written to a structured file (JSON or text depending on implementation).</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P meta_extraction \
+  -i input.mp4 \
+  -o output.mp4 \
+  --outputfile VALUE \
+  --sample_frames VALUE \
+  --sample_stride VALUE \
+  --sample_limit VALUE \
+  --blackdetect VALUE \
+  --black_pic_th VALUE \
+  --black_dur_min VALUE \
+  --loudness VALUE
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">outputfile</code></li>
-  <li><code class="language-plaintext highlighter-rouge">sample_frames</code></li>
-  <li><code class="language-plaintext highlighter-rouge">sample_stride</code></li>
-  <li><code class="language-plaintext highlighter-rouge">sample_limit</code></li>
-  <li><code class="language-plaintext highlighter-rouge">blackdetect</code></li>
-  <li><code class="language-plaintext highlighter-rouge">black_pic_th</code></li>
-  <li><code class="language-plaintext highlighter-rouge">black_dur_min</code></li>
-  <li><code class="language-plaintext highlighter-rouge">loudness</code></li>
+  <li><strong>outputfile</strong> — Name of the metadata output file produced by the scan.</li>
+  <li><strong>sample_frames</strong> — Total number of frames to sample for inspection.</li>
+  <li><strong>sample_stride</strong> — Number of frames skipped between each analyzed frame.</li>
+  <li><strong>sample_limit</strong> — Maximum frame count allowed during sampling.</li>
+  <li><strong>blackdetect</strong> — Enables detection of black frames and black segments.</li>
+  <li><strong>black_pic_th</strong> — Pixel-level threshold for determining whether a frame is considered black.</li>
+  <li><strong>black_dur_min</strong> — Minimum duration (seconds) of black required to register as a black segment.</li>
+  <li><strong>loudness</strong> — Enables loudness analysis (LUFS, LRA, true peak).</li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> meta_extraction <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4 <span class="nt">--outputfile</span> VALUE <span class="nt">--sample_frames</span> VALUE <span class="nt">--sample_stride</span> VALUE <span class="nt">--sample_limit</span> VALUE <span class="nt">--blackdetect</span> VALUE <span class="nt">--black_pic_th</span> VALUE <span class="nt">--black_dur_min</span> VALUE <span class="nt">--loudness</span> VALUE
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> meta_extraction <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> meta_extraction_styled.mp4 <span class="nt">--outputfile</span> EXAMPLE <span class="nt">--sample_frames</span> EXAMPLE <span class="nt">--sample_stride</span> EXAMPLE <span class="nt">--sample_limit</span> EXAMPLE <span class="nt">--blackdetect</span> EXAMPLE <span class="nt">--black_pic_th</span> EXAMPLE <span class="nt">--black_dur_min</span> EXAMPLE <span class="nt">--loudness</span> EXAMPLE
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P meta_extraction \
+  -i myvideo.mp4 \
+  -o meta_extraction_styled.mp4 \
+  --outputfile EXAMPLE \
+  --sample_frames EXAMPLE \
+  --sample_stride EXAMPLE \
+  --sample_limit EXAMPLE \
+  --blackdetect EXAMPLE \
+  --black_pic_th EXAMPLE \
+  --black_dur_min EXAMPLE \
+  --loudness EXAMPLE
 </code></pre></div></div>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Metadata extraction is extremely fast because only sampled frames are examined.</li>
+  <li>Excessive <code class="language-plaintext highlighter-rouge">sample_frames</code> or low <code class="language-plaintext highlighter-rouge">sample_stride</code> may increase scan time.</li>
+  <li>Black detection is luminance-based; noisy or low-light footage may require adjusted thresholds.</li>
+  <li>Loudness metrics follow broadcast-standard measurement curves.</li>
+  <li>Great for building metadata catalogs or dashboards.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Preflight analysis before encoding or delivery.</li>
+  <li>QC checks for broadcast, festival, or archival compliance.</li>
+  <li>Automated pipelines needing structural insight into media files.</li>
+  <li>Generating metadata for UI previews, asset managers, or machine-learning datasets.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Use <code class="language-plaintext highlighter-rouge">black_pic_th</code> between <strong>0.05–0.10</strong> for most SDR footage.</li>
+  <li>Increase <code class="language-plaintext highlighter-rouge">sample_stride</code> to speed up scans on long files.</li>
+  <li>Keep <code class="language-plaintext highlighter-rouge">sample_limit</code> reasonable to avoid unnecessary overhead.</li>
+  <li>Enable <code class="language-plaintext highlighter-rouge">loudness</code> for interview, dialog, or broadcast deliverables.</li>
+</ul>
 
 
       </section>

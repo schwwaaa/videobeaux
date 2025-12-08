@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"download_yt","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/utilities/download_yt.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -59,26 +59,73 @@
       <section>
 
       <h1 id="download_yt">download_yt</h1>
+<p>:contentReference[oaicite:1]{index=1}</p>
 
 <h2 id="description">Description</h2>
+<p>Downloads or rips video and audio content from YouTube (or other compatible platforms) and prepares it for processing inside Videobeaux workflows.</p>
 
-<p>Video ripper</p>
-
-<h2 id="arguments">Arguments</h2>
-
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">download_yt</code> is a quick-ingest utility that brings online source media into your local Videobeaux environment.<br />
+This is useful when you need:</p>
 <ul>
-  <li><em>(No additional program-specific arguments; uses global videobeaux options only.)</em></li>
+  <li>reference clips for editing or remixing,</li>
+  <li>footage for analysis or research,</li>
+  <li>material for glitch, collage, or experimental video art,</li>
+  <li>assets for transformation inside other Videobeaux programs.</li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>URL Retrieval</strong><br />
+Videobeaux (via external download tools) fetches the highest-available quality or a configured preferred resolution/format.</li>
+  <li><strong>Muxing &amp; Cleanup</strong><br />
+Audio and video streams are combined into a standardized container suitable for immediate downstream processing.</li>
+  <li><strong>Global Output Handling</strong><br />
+Because <code class="language-plaintext highlighter-rouge">download_yt</code> has no program-specific arguments, all settings (filename, codecs, mapping, etc.) follow Videobeaux global defaults.</li>
+  <li><strong>Output</strong><br />
+The resulting video file is written to the path specified with <code class="language-plaintext highlighter-rouge">-o</code>.</li>
+</ol>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> download_yt <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4
+<h2 id="program-template">Program Template</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P download_yt \
+  -i input.mp4 \
+  -o output.mp4
 </code></pre></div></div>
+
+<h2 id="arguments">Arguments</h2>
+<ul>
+  <li><em>(No program-specific arguments — this program relies entirely on global Videobeaux input/output configuration and downloader behavior.)</em></li>
+</ul>
 
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> download_yt <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> download_yt_styled.mp4
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P download_yt \
+  -i myvideo.mp4 \
+  -o download_yt_styled.mp4
 </code></pre></div></div>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Quality of the downloaded media depends on what the source service provides (YouTube DASH streams, format variants, etc.).</li>
+  <li>If separate audio/video streams are delivered by the platform, Videobeaux muxes them into a single file.</li>
+  <li>Output format is determined by your global settings — typically MP4 unless changed.</li>
+  <li>For archival purposes, consider remuxing into MKV to preserve metadata.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Bringing online clips into your Videobeaux workflow for editing, glitching, or processing.</li>
+  <li>Preparing material for LUT application, tonemapping, interpolation, or compositing.</li>
+  <li>Rapid prototyping of creative projects using found or reference footage.</li>
+  <li>Downloading assets for offline study or frame-by-frame analysis.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Always inspect resolution and bitrate of the downloaded file before high-end processing.</li>
+  <li>If audio quality matters, check whether the source provides separate high-quality audio tracks.</li>
+  <li>Consider transcoding to a mezzanine codec (e.g., ProRes) for grading or VFX workflows.</li>
+  <li>Large downloads benefit from using SSD storage to avoid bottlenecks.</li>
+</ul>
 
 
       </section>

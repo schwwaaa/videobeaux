@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"frame_delay_pro2","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/frame_delay_pro2.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,24 +61,63 @@
       <h1 id="frame_delay_pro2">frame_delay_pro2</h1>
 
 <h2 id="description">Description</h2>
+<p>Applies an advanced analytical frame-delay effect that shifts image planes (luma/chroma) independently while applying temporal decay.<br />
+This creates ghost trails, chromatic drifts, smeared movement, and layered motion persistence that evolves across time.</p>
 
-<p>Apply frame delay effect with parameter input</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">frame_delay_pro2</code> is for creators seeking:</p>
+<ul>
+  <li>stylized multi-layer temporal drift,</li>
+  <li>independent per-plane delay effects,</li>
+  <li>psychedelic color smearing,</li>
+  <li>glitchy ghost-motion artifacts,</li>
+  <li>experimental video feedback behaviors.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Plane Selection (<code class="language-plaintext highlighter-rouge">--plane</code>)</strong><br />
+The effect can target:
+    <ul>
+      <li>luma only,</li>
+      <li>chroma channels only,</li>
+      <li>or all combined planes depending on implementation.</li>
+    </ul>
+  </li>
+  <li><strong>Temporal Decay (<code class="language-plaintext highlighter-rouge">--decay</code>)</strong><br />
+The decay parameter controls how strongly old frames persist:
+    <ul>
+      <li>Higher decay → longer, more persistent trails</li>
+      <li>Lower decay → quick falloff and lighter ghosting</li>
+    </ul>
+  </li>
+  <li><strong>Frame Buffering</strong><br />
+Past frames are stored and blended forward according to decay rules.</li>
+  <li><strong>Encoding</strong><br />
+Final output is encoded via global Videobeaux settings (codec, CRF, pixel format).</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P frame_delay_pro2 \
+  -i input.mp4 \
+  -o output.mp4 \
+  --decay VALUE \
+  --plane VALUE
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">decay</code></li>
-  <li><code class="language-plaintext highlighter-rouge">plane</code></li>
+  <li><strong>decay</strong> — Controls the strength and longevity of the delay trail. Higher values produce smearier, more persistent echoes.</li>
+  <li><strong>plane</strong> — Defines which image plane(s) the delay is applied to (e.g., <code class="language-plaintext highlighter-rouge">luma</code>, <code class="language-plaintext highlighter-rouge">chroma</code>, or combined modes depending on implementation).</li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> frame_delay_pro2 <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4 <span class="nt">--decay</span> VALUE <span class="nt">--plane</span> VALUE
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> frame_delay_pro2 <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> frame_delay_pro2_styled.mp4 <span class="nt">--decay</span> EXAMPLE <span class="nt">--plane</span> EXAMPLE
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P frame_delay_pro2 \
+  -i myvideo.mp4 \
+  -o frame_delay_pro2_styled.mp4 \
+  --decay EXAMPLE \
+  --plane EXAMPLE
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
@@ -97,6 +136,33 @@
   <source src="https://github.com/schwwaaa/videobeaux/assets/7625379/f717d419-687b-4cc3-ac07-64f45c763531" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Applying delay to <strong>chroma only</strong> creates psychedelic color trails while keeping shapes sharp.</li>
+  <li>Applying delay to <strong>luma</strong> creates ghost silhouettes without heavy color bleeding.</li>
+  <li>Large decay values can produce painterly smear effects resembling long-exposure photography.</li>
+  <li>Interaction with compression can intensify chromatic distortion.</li>
+  <li>Works well with footage involving movement, light streaks, neon scenes, or high-contrast subjects.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Music videos needing rhythmic or drifting trail effects.</li>
+  <li>Abstract animations or temporal collage art.</li>
+  <li>Footage where separating luma and chroma drift enhances surrealism.</li>
+  <li>Layered VJ compositions and live performance visuals.</li>
+  <li>Slow, ambient sequences that benefit from temporal echo.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>For strong color-drift effects, use <code class="language-plaintext highlighter-rouge">plane=chroma</code> with moderate decay.</li>
+  <li>For ghost silhouettes, use <code class="language-plaintext highlighter-rouge">plane=luma</code> with high decay.</li>
+  <li>For clean results, keep CRF low; for gritty smear artifacts, use higher CRF.</li>
+  <li>Combine with <code class="language-plaintext highlighter-rouge">frame_delay_pro1</code> for multi-layer delay stacks.</li>
+  <li>Chain before heavy color grading if you want grading to affect the echoed trails.</li>
+</ul>
 
 
 

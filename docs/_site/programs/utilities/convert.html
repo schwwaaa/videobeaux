@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"convert","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/utilities/convert.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -59,26 +59,81 @@
       <section>
 
       <h1 id="convert">convert</h1>
+<p>:contentReference[oaicite:1]{index=1}</p>
 
 <h2 id="description">Description</h2>
+<p>Performs a simple video file conversion using global Videobeaux encoding settings.<br />
+Useful for remuxing, transcoding, codec changes, rewrapping containers, or generating standardized media versions.</p>
 
-<p>Simple video file convert</p>
-
-<h2 id="arguments">Arguments</h2>
-
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">convert</code> exists as a lightweight, universal tool for turning one media container or codec into another.<br />
+This is ideal for:</p>
 <ul>
-  <li><em>(No additional program-specific arguments; uses global videobeaux options only.)</em></li>
+  <li>converting incompatible formats into editing-friendly files,</li>
+  <li>rewrapping media without re-encoding,</li>
+  <li>transcoding to delivery-safe formats,</li>
+  <li>preparing videos for downstream Videobeaux programs,</li>
+  <li>batch normalization of mixed-file libraries.</li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Input Decoding</strong><br />
+The source file is decoded as needed, depending on global codec options.</li>
+  <li><strong>Re-encode or Stream Copy</strong>
+    <ul>
+      <li>If no codec is specified, Videobeaux uses its global defaults.</li>
+      <li>If codecs are set globally (<code class="language-plaintext highlighter-rouge">vcodec</code>, <code class="language-plaintext highlighter-rouge">acodec</code>), <code class="language-plaintext highlighter-rouge">convert</code> applies them here.</li>
+      <li>If settings allow stream copy, the video may be remuxed without re-encoding.</li>
+    </ul>
+  </li>
+  <li><strong>Output Writing</strong><br />
+The converted or rewrapped video is written to the path specified via <code class="language-plaintext highlighter-rouge">-o</code>.</li>
+  <li><strong>No Additional Logic</strong><br />
+This program intentionally provides a pure conversion operation, without filtering or modification.</li>
+</ol>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> convert <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4
+<h2 id="program-template">Program Template</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P convert \
+  -i input.mp4 \
+  -o output.mp4
 </code></pre></div></div>
+
+<h2 id="arguments">Arguments</h2>
+<ul>
+  <li><em>(No program-specific arguments — this module relies entirely on Videobeaux global encoding settings.)</em></li>
+</ul>
 
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> convert <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> convert_styled.mp4
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P convert \
+  -i myvideo.mp4 \
+  -o convert_styled.mp4
 </code></pre></div></div>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Rewrapping (e.g., MKV → MP4) is extremely fast when using stream copy.</li>
+  <li>Full transcoding (e.g., H.264 → ProRes, AAC → WAV) depends on global audio/video codec settings.</li>
+  <li>File size and transcoding time are directly impacted by CRF, bitrate, and preset settings.</li>
+  <li>Useful for generating clean, uniform input files before applying more complex Videobeaux processes.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Normalizing transcoded footage from varied sources.</li>
+  <li>Preparing content for editing systems that dislike certain containers/codecs.</li>
+  <li>Creating proxy versions for offline workflows.</li>
+  <li>Converting videos to universally compatible formats for distribution, archive, or broadcast.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Use a low CRF (14–18) for high-quality archival intermediates.</li>
+  <li>If the goal is speed, choose faster presets (e.g., <code class="language-plaintext highlighter-rouge">faster</code>, <code class="language-plaintext highlighter-rouge">fast</code>).</li>
+  <li>For maximum compatibility, output H.264 + AAC in MP4.</li>
+  <li>For high-end workflows, output ProRes or another mezzanine codec.</li>
+  <li>Always verify that audio channel layouts survive the conversion correctly.</li>
+</ul>
 
 
       </section>

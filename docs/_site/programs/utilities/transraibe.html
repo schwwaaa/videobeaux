@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"transraibe","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/utilities/transraibe.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,24 +61,68 @@
       <h1 id="transraibe">transraibe</h1>
 
 <h2 id="description">Description</h2>
+<p>AI-based transcription tool for converting spoken audio within video files into text using configurable speech-to-text models.</p>
 
-<p>AI-based transcription tool</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">transraibe</code> provides automated transcription capabilities inside the videobeaux workflow.<br />
+It enables creators to generate subtitles, caption files, analysis transcripts, or searchable text from any video containing dialogue or narration.<br />
+The tool is optimized for quick turnaround and supports multiple STT (speech-to-text) model options.</p>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Model Selection</strong><br />
+You choose the speech-to-text engine via <code class="language-plaintext highlighter-rouge">--stt_model</code>.</li>
+  <li><strong>Audio Extraction</strong><br />
+The program extracts the audio track from the input video.</li>
+  <li><strong>Transcription Stage</strong><br />
+The extracted audio is processed using the selected model, producing text output.</li>
+  <li><strong>Encoding &amp; Output</strong><br />
+The final transcription is embedded or exported depending on the videobeaux pipelines you pair with it (captburn, metadata storage, etc.).</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P transraibe \
+  -i input.mp4 \
+  -o output.mp4 \
+  --stt_model VALUE
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">stt_model</code></li>
+  <li><strong>stt_model</strong> — Speech-to-text model used for transcription (e.g., whisper-small, whisper-medium, whisper-large, or any model supported by your environment).</li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> transraibe <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4 <span class="nt">--stt_model</span> VALUE
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> transraibe <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> transraibe_styled.mp4 <span class="nt">--stt_model</span> EXAMPLE
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P transraibe \
+  -i myvideo.mp4 \
+  -o transraibe_styled.mp4 \
+  --stt_model whisper-medium
 </code></pre></div></div>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>The accuracy of transcription depends heavily on the <code class="language-plaintext highlighter-rouge">stt_model</code> chosen.</li>
+  <li>Larger models produce better understanding of accents, noisy audio, and complex phrasing, but require more resources.</li>
+  <li>The input audio is automatically normalized and extracted before processing.</li>
+  <li>Output format compatibility (SRT, VTT, raw text) may depend on additional videobeaux tooling layered on top of transraibe.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Generating transcript files for interviews, podcasts, and voice-driven content.</li>
+  <li>Preparing subtitle text for later burning (via captburn).</li>
+  <li>Producing searchable metadata for archival or indexing systems.</li>
+  <li>Replacing manual transcription workflows in post-production.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Use higher-tier models (e.g., whisper-large) for best accuracy on challenging audio.</li>
+  <li>For clean studio audio, smaller models are often sufficient and much faster.</li>
+  <li>If the transcription seems off, pre-clean audio (denoise, normalize) before running transraibe.</li>
+  <li>Consider pairing with captburn to immediately generate styled subtitles.</li>
+</ul>
 
 
       </section>

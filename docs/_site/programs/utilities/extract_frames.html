@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"extract_frames","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/utilities/extract_frames.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -59,26 +59,76 @@
       <section>
 
       <h1 id="extract_frames">extract_frames</h1>
+<p>:contentReference[oaicite:1]{index=1}</p>
 
 <h2 id="description">Description</h2>
+<p>Extracts individual frames from a video file and saves them as image files (typically PNG).<br />
+Ideal for analysis, archival, animation workflows, visual debugging, and creating frame-based artwork.</p>
 
-<p>Extract individual frames from a video file as PNGs</p>
-
-<h2 id="arguments">Arguments</h2>
-
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">extract_frames</code> gives creators a fast and predictable way to output every frame (or selected frames via global videobeaux options) as standalone image files.<br />
+This is useful for:</p>
 <ul>
-  <li><em>(No additional program-specific arguments; uses global videobeaux options only.)</em></li>
+  <li>animation and rotoscoping workflows,</li>
+  <li>ML dataset preparation,</li>
+  <li>glitch-art and frame-painting processes,</li>
+  <li>shot-by-shot inspection or QC,</li>
+  <li>archival still-frame extraction.</li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Frame Decoding</strong><br />
+Video frames are decoded sequentially.</li>
+  <li><strong>Image Export</strong><br />
+Each frame is exported as its own image file using the globally configured pixel format and image output settings.</li>
+  <li><strong>Naming Convention</strong><br />
+Frames are typically numbered sequentially (e.g., <code class="language-plaintext highlighter-rouge">000001.png</code>, <code class="language-plaintext highlighter-rouge">000002.png</code>, etc.), depending on videobeaux output rules.</li>
+  <li><strong>Output Directory</strong><br />
+The destination directory is defined by global videobeaux settings (<code class="language-plaintext highlighter-rouge">--outfile</code>, mapping rules, etc.).</li>
+</ol>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> extract_frames <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4
+<h2 id="program-template">Program Template</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P extract_frames \
+  -i input.mp4 \
+  -o output.mp4
 </code></pre></div></div>
+
+<h2 id="arguments">Arguments</h2>
+<ul>
+  <li><em>(No program-specific arguments — this tool relies entirely on global videobeaux settings such as image format, numbering, and frame selection.)</em></li>
+</ul>
 
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> extract_frames <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> extract_frames_styled.mp4
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P extract_frames \
+  -i myvideo.mp4 \
+  -o extract_frames_styled.mp4
 </code></pre></div></div>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>PNG is the default format due to lossless quality, but other formats may be used depending on global configuration.</li>
+  <li>Large videos may produce thousands of frames; ensure adequate disk space.</li>
+  <li>Frame extraction is decode-limited — higher-resolution videos take longer per frame.</li>
+  <li>If frames are dropped or duplicated in the source video stream, extraction will preserve exactly what the decoder receives.</li>
+  <li>Good for use ahead of per-frame manipulation tools, compositing, or generative workflows.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Creating frame sequences for animation, compositing, or painting.</li>
+  <li>Building datasets for computer vision or machine learning.</li>
+  <li>Inspecting motion continuity, exposure behavior, or compression artifacts.</li>
+  <li>Generating image sequences for later re-import into editing or FX tools.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Use PNG for archival quality; JPG for lightweight previews.</li>
+  <li>If color accuracy is critical, set a high-bit-depth pixel format globally (e.g., <code class="language-plaintext highlighter-rouge">rgb48le</code>).</li>
+  <li>Use SSD storage for significantly faster write speeds on large sequences.</li>
+  <li>When extracting for VFX, ensure your project frame rate matches the video’s native frame rate to avoid timing mismatch.</li>
+</ul>
 
 
       </section>

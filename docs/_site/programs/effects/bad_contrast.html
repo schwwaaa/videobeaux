@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"bad_contrast","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/bad_contrast.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,32 +61,80 @@
       <h1 id="bad_contrast">bad_contrast</h1>
 
 <h2 id="description">Description</h2>
+<p>Applies a “bad contrast” visual effect to the video, intentionally degrading tonal balance, highlight rolloff, shadow separation, and midtone neutrality.<br />
+The result simulates low-quality analog transfers, misconfigured broadcast equipment, degraded VHS dubs, or broken grading pipelines.</p>
 
-<p>Apply a bad constrast effect</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">bad_contrast</code> exists as a lightweight, stylized degradation tool for artists who want to:</p>
+<ul>
+  <li>introduce tonal instability or harsh contrast,</li>
+  <li>mimic analog-era video duplication artifacts,</li>
+  <li>add mood through blown-out highlights or crushed shadows,</li>
+  <li>create an intentionally incorrect exposure/contrast aesthetic,</li>
+  <li>emphasize “bad video” texture in music videos, glitch art, or experimental film.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Contrast Manipulation</strong><br />
+The module applies an internally defined filter chain that exaggerates or distorts normal contrast response.</li>
+  <li><strong>Highlight / Shadow Distortion</strong><br />
+Highlights may appear clipped or harsh; shadows may compress or posterize.</li>
+  <li><strong>Midtone Bias</strong><br />
+The effect may introduce incorrect gamma or uneven tonal mapping to create a “broken” look.</li>
+  <li><strong>Encoding</strong><br />
+Final output uses global Videobeaux codec, pixel format, and CRF settings.</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P bad_contrast \
+  -i input.mp4 \
+  -o output.mp4
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
-
 <ul>
   <li><em>(No additional program-specific arguments; uses global videobeaux options only.)</em></li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> bad_contrast <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> bad_contrast <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> bad_contrast_styled.mp4
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P bad_contrast \
+  -i myvideo.mp4 \
+  -o bad_contrast_styled.mp4
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
-
 <video controls="" preload="metadata" style="max-width:100%; border-radius:8px; margin:1em 0;">
   <source src="https://github.com/schwwaaa/videobeaux/assets/7625379/9ba59b08-79a8-4a09-8b18-c0fe90a6c5e2" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>The exact look depends partly on global Videobeaux encoding settings.</li>
+  <li>Output may exhibit blown-out whites, crushed blacks, or tonal banding.</li>
+  <li>Not intended for corrective workflows — this is a purely stylistic degradation.</li>
+  <li>Works particularly well on motion-heavy or color-rich footage.</li>
+  <li>As with all destructive effects, applying <code class="language-plaintext highlighter-rouge">bad_contrast</code> early in a pipeline will influence all later operations.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Broken-TV or analog-digital hybrid aesthetics.</li>
+  <li>Glitch art, experimental cinema, and abstract video installations.</li>
+  <li>Distressing otherwise clean digital footage.</li>
+  <li>Music videos seeking stylized degradation.</li>
+  <li>As an “imperfection layer” paired with other Videobeaux modules (e.g., <code class="language-plaintext highlighter-rouge">bad_animation</code>, <code class="language-plaintext highlighter-rouge">hash_fingerprint</code>).</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Apply at the end of a chain to maximize visible distortion.</li>
+  <li>Pair with lower CRF values if you want compression artifacts to interact with tonal distortion.</li>
+  <li>Use on footage with clear highlight/shadow separation for the strongest effect.</li>
+  <li>Combine with LUTs or <code class="language-plaintext highlighter-rouge">lut_apply</code> to push contrast into more extreme color spaces.</li>
+  <li>For a VHS-like aesthetic, consider pairing with <code class="language-plaintext highlighter-rouge">bad_contrast</code> + <code class="language-plaintext highlighter-rouge">convert_dims</code> (480p or 720hd presets).</li>
+</ul>
 
 
       </section>

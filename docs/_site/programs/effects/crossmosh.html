@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"crossmosh","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/crossmosh.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,37 +61,126 @@
       <h1 id="crossmosh">crossmosh</h1>
 
 <h2 id="description">Description</h2>
+<p>A controlled datamoshing engine that manipulates motion vectors, frame ordering, and predictive compression structures to create stylized glitch-drift distortions.<br />
+Unlike chaotic or accidental datamoshing, <code class="language-plaintext highlighter-rouge">crossmosh</code> provides intentional control over how macroblocks bleed, drift, smear, or desynchronize across frames.</p>
 
-<p>A controlled datamoshing engine that manipulates motion vectors and frame order to create stylized glitch-drift distortions</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">crossmosh</code> is designed for artists who want to:</p>
+<ul>
+  <li>create predictable or semi-controlled datamosh effects,</li>
+  <li>push temporal motion-vector corruption while avoiding full-stream collapse,</li>
+  <li>blend A/B sources for hybrid glitch states,</li>
+  <li>generate drifting smear artifacts characteristic of broken P-frames and missing I-frames,</li>
+  <li>build glitch art sequences without external tools or hand-edited GOP destruction.</li>
+</ul>
+
+<p>It is ideal for music videos, experimental film, VJ loops, and any stylized glitch aesthetic.</p>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Input Streams</strong><br />
+Two sources may be involved:
+    <ul>
+      <li><strong>primary input</strong> via <code class="language-plaintext highlighter-rouge">-i</code></li>
+      <li><strong>secondary / cross-input</strong> via <code class="language-plaintext highlighter-rouge">--b_input</code></li>
+    </ul>
+  </li>
+  <li><strong>Predictive Frame Manipulation</strong><br />
+The module alters GOP structure, destroys or delays keyframes, or selectively reuses motion vectors from one stream to infect the other.</li>
+  <li><strong>Mode-Based Behavior</strong><br />
+<code class="language-plaintext highlighter-rouge">--mode</code> defines the style of the mosh:
+    <ul>
+      <li>smearing,</li>
+      <li>drift,</li>
+      <li>cross-pollination,</li>
+      <li>decay-driven glitch propagation.</li>
+    </ul>
+  </li>
+  <li><strong>Decay &amp; Blending</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">--decay</code> controls how long corrupted vectors persist.</li>
+      <li><code class="language-plaintext highlighter-rouge">--blend</code> controls how heavily A and B frames influence each other.</li>
+    </ul>
+  </li>
+  <li><strong>GOP / Codec Control</strong><br />
+The choice of codec and GOP size directly impacts artifact shape and stability.</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P crossmosh \
+  -i input.mp4 \
+  -o output.mp4 \
+  --b_input VALUE \
+  --outfile VALUE \
+  --codec VALUE \
+  --qscale VALUE \
+  --gop VALUE \
+  --keep_temp VALUE \
+  --mode VALUE \
+  --frames VALUE \
+  --decay VALUE \
+  --blend VALUE
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">b_input</code></li>
-  <li><code class="language-plaintext highlighter-rouge">outfile</code></li>
-  <li><code class="language-plaintext highlighter-rouge">codec</code></li>
-  <li><code class="language-plaintext highlighter-rouge">qscale</code></li>
-  <li><code class="language-plaintext highlighter-rouge">gop</code></li>
-  <li><code class="language-plaintext highlighter-rouge">keep_temp</code></li>
-  <li><code class="language-plaintext highlighter-rouge">mode</code></li>
-  <li><code class="language-plaintext highlighter-rouge">frames</code></li>
-  <li><code class="language-plaintext highlighter-rouge">decay</code></li>
-  <li><code class="language-plaintext highlighter-rouge">blend</code></li>
+  <li><strong>b_input</strong> — Optional secondary video input used for cross-mapping and motion-vector grafting.</li>
+  <li><strong>outfile</strong> — Output filename created during temporary processing.</li>
+  <li><strong>codec</strong> — Codec used for mosh-friendly transcoding (e.g., MPEG-4, H.264 with low keyframe frequency).</li>
+  <li><strong>qscale</strong> — Quantizer scale value; lower = cleaner blocks, higher = more chaotic degradation.</li>
+  <li><strong>gop</strong> — Keyframe interval. Long GOPs enable long drifting smears; short GOPs reset more frequently.</li>
+  <li><strong>keep_temp</strong> — If enabled, preserves intermediate files for debugging or reuse.</li>
+  <li><strong>mode</strong> — Defines the moshing behavior (drift, smear, cross-infect, or other available styles).</li>
+  <li><strong>frames</strong> — Number of frames to process or extend during the mosh.</li>
+  <li><strong>decay</strong> — Controls how motion-vector corruption fades or persists.</li>
+  <li><strong>blend</strong> — Controls mixing strength between A and B inputs during crossmosh operations.</li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> crossmosh <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4 <span class="nt">--b_input</span> VALUE <span class="nt">--outfile</span> VALUE <span class="nt">--codec</span> VALUE <span class="nt">--qscale</span> VALUE <span class="nt">--gop</span> VALUE <span class="nt">--keep_temp</span> VALUE <span class="nt">--mode</span> VALUE <span class="nt">--frames</span> VALUE <span class="nt">--decay</span> VALUE <span class="nt">--blend</span> VALUE
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> crossmosh <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> crossmosh_styled.mp4 <span class="nt">--b_input</span> EXAMPLE <span class="nt">--outfile</span> EXAMPLE <span class="nt">--codec</span> EXAMPLE <span class="nt">--qscale</span> EXAMPLE <span class="nt">--gop</span> EXAMPLE <span class="nt">--keep_temp</span> EXAMPLE <span class="nt">--mode</span> EXAMPLE <span class="nt">--frames</span> EXAMPLE <span class="nt">--decay</span> EXAMPLE <span class="nt">--blend</span> EXAMPLE
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P crossmosh \
+  -i myvideo.mp4 \
+  -o crossmosh_styled.mp4 \
+  --b_input EXAMPLE \
+  --outfile EXAMPLE \
+  --codec EXAMPLE \
+  --qscale EXAMPLE \
+  --gop EXAMPLE \
+  --keep_temp EXAMPLE \
+  --mode EXAMPLE \
+  --frames EXAMPLE \
+  --decay EXAMPLE \
+  --blend EXAMPLE
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
-
 <p><em>Program output video not yet linked.</em></p>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Datamoshing behavior is extremely sensitive to codec and GOP selection — MPEG-4 with long GOPs typically produces more dramatic artifacts.</li>
+  <li>If using a second input (<code class="language-plaintext highlighter-rouge">--b_input</code>), mismatched resolutions may create unpredictable smear patterns.</li>
+  <li><code class="language-plaintext highlighter-rouge">qscale</code> strongly influences macroblock deformation and drift persistence.</li>
+  <li>Temporary files may be required for multi-stage moshing; use <code class="language-plaintext highlighter-rouge">--keep_temp</code> to preserve them for debugging.</li>
+  <li>Excessive decay or extreme blending may cause full frame collapse — this can be desirable depending on your aesthetic.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Music videos requiring controlled glitch cascades.</li>
+  <li>VJ loops and live visual sets that leverage drifting corruption.</li>
+  <li>Collage work blending two unrelated videos via motion-vector infection.</li>
+  <li>Experimental films exploring digital decay, compression failure, and structural distortion.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Lower <code class="language-plaintext highlighter-rouge">qscale</code> (e.g., 2–5) for smoother block smearing; higher (10–20) for chaotic chunking.</li>
+  <li>Longer GOPs (100–300+) produce dramatic streak-based artifacts across many frames.</li>
+  <li>Use <code class="language-plaintext highlighter-rouge">blend</code> modestly when incorporating a B-source; too high can obliterate A-source contours.</li>
+  <li>For highly controllable decay, adjust both <code class="language-plaintext highlighter-rouge">frames</code> and <code class="language-plaintext highlighter-rouge">decay</code> interactively while testing small clips.</li>
+  <li>For sharp outlines within a glitch, pre-process with <code class="language-plaintext highlighter-rouge">gamma_fix</code> or <code class="language-plaintext highlighter-rouge">lut_apply</code> before moshing.</li>
+</ul>
 
 
       </section>

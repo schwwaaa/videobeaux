@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"convert_dims","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/utilities/convert_dims.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,24 +61,197 @@
       <h1 id="convert_dims">convert_dims</h1>
 
 <h2 id="description">Description</h2>
+<p>Converts the dimensions of a video to a chosen preset (e.g., 1080p, instagram_reels, tiktok_video) and applies a configurable aspect-ratio handling mode (pad, fit, fill, fill_crop, stretch).<br />
+Supports portrait overrides, crop/pad anchoring, custom pad color, and scaling kernel selection.</p>
 
-<p>Video file dimensions converter based on industry standards</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">convert_dims</code> provides a predictable, explicit way to resize video assets into standardized resolutions for:</p>
+<ul>
+  <li>social platforms (Reels, Shorts, TikTok, Stories),</li>
+  <li>broadcast or web delivery,</li>
+  <li>square or portrait exports,</li>
+  <li>ultrawide and cinema formats,</li>
+  <li>archival normalization.</li>
+</ul>
+
+<p>It gives direct control over <strong>how</strong> the aspect ratio is treated: padded, stretched, cropped, or fit.</p>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Preset Selection</strong><br />
+<code class="language-plaintext highlighter-rouge">--preset</code> chooses a named dimension from a predefined list (e.g., <code class="language-plaintext highlighter-rouge">1080p</code>, <code class="language-plaintext highlighter-rouge">square1080</code>, <code class="language-plaintext highlighter-rouge">instagram_reels</code>, <code class="language-plaintext highlighter-rouge">portrait4k</code>, <code class="language-plaintext highlighter-rouge">ultrawide1440</code>, etc.).<br />
+Each preset maps to a fixed width/height pair.</li>
+  <li><strong>Portrait Override</strong><br />
+<code class="language-plaintext highlighter-rouge">--portrait-full</code> forces a 9:16 portrait output based on the preset’s larger side, using a full-frame cover + crop (fill_crop behavior).</li>
+  <li><strong>Mode Handling</strong><br />
+<code class="language-plaintext highlighter-rouge">--mode</code> controls aspect-ratio handling:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">pad</code> – keep AR, fit inside target, pad with color as needed.</li>
+      <li><code class="language-plaintext highlighter-rouge">fit</code> – keep AR, fit inside target, no padding (may not fill entire frame).</li>
+      <li><code class="language-plaintext highlighter-rouge">fill</code> / <code class="language-plaintext highlighter-rouge">fill_crop</code> – cover the frame and center-crop to the target size.</li>
+      <li><code class="language-plaintext highlighter-rouge">stretch</code> – ignore AR, stretch directly to target dimensions.</li>
+    </ul>
+
+    <p>If <code class="language-plaintext highlighter-rouge">--mode</code> is not set, <code class="language-plaintext highlighter-rouge">--translate</code> (deprecated) chooses between:</p>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">yes</code> → <code class="language-plaintext highlighter-rouge">stretch</code></li>
+      <li><code class="language-plaintext highlighter-rouge">no</code>  → <code class="language-plaintext highlighter-rouge">pad</code></li>
+    </ul>
+  </li>
+  <li><strong>Anchor &amp; Padding</strong><br />
+<code class="language-plaintext highlighter-rouge">--anchor</code> biases <strong>where</strong> crop or pad happens (<code class="language-plaintext highlighter-rouge">center</code>, <code class="language-plaintext highlighter-rouge">top</code>, <code class="language-plaintext highlighter-rouge">bottom</code>, <code class="language-plaintext highlighter-rouge">left</code>, <code class="language-plaintext highlighter-rouge">right</code>, <code class="language-plaintext highlighter-rouge">top_left</code>, etc.).<br />
+<code class="language-plaintext highlighter-rouge">--pad-color</code> defines the color of any added borders.</li>
+  <li><strong>Scaling Quality</strong><br />
+<code class="language-plaintext highlighter-rouge">--scale-flags</code> selects the FFmpeg scale kernel (<code class="language-plaintext highlighter-rouge">lanczos</code>, <code class="language-plaintext highlighter-rouge">bicubic</code>, <code class="language-plaintext highlighter-rouge">bilinear</code>, <code class="language-plaintext highlighter-rouge">neighbor</code>), affecting sharpness and performance.</li>
+  <li><strong>Encoding &amp; Output</strong>
+    <ul>
+      <li>Output filename is resolved to match <code class="language-plaintext highlighter-rouge">--output-format</code> extension.</li>
+      <li>Video is encoded via libx264 (<code class="language-plaintext highlighter-rouge">yuv420p</code>, ~5000k, <code class="language-plaintext highlighter-rouge">medium</code> preset) with AAC audio and <code class="language-plaintext highlighter-rouge">+faststart</code> for streaming-friendly MP4/MOV.</li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P convert_dims \
+  -i input.mp4 \
+  -o output.mp4 \
+  --output-format VALUE \
+  --preset VALUE \
+  --mode VALUE \
+  --translate VALUE \
+  --anchor VALUE \
+  --pad-color VALUE \
+  --scale-flags VALUE \
+  --portrait-full
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
 
 <ul>
-  <li><em>(No additional program-specific arguments; uses global videobeaux options only.)</em></li>
+  <li><strong>output-format</strong> — Required. Output file format/extension (e.g., <code class="language-plaintext highlighter-rouge">mp4</code>, <code class="language-plaintext highlighter-rouge">mov</code>). If the <code class="language-plaintext highlighter-rouge">-o</code> path has a different suffix, it is replaced with this.</li>
+  <li><strong>preset</strong> — Required. Named dimension preset (e.g., <code class="language-plaintext highlighter-rouge">1080p</code>, <code class="language-plaintext highlighter-rouge">square1080</code>, <code class="language-plaintext highlighter-rouge">instagram_reels</code>, <code class="language-plaintext highlighter-rouge">tiktok_video</code>, <code class="language-plaintext highlighter-rouge">ultrawide1440</code>, etc.). Each maps to a specific width/height.</li>
+  <li><strong>mode</strong> — Aspect-ratio handling mode:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">pad</code> – maintain AR, fit inside target, pad with color.</li>
+      <li><code class="language-plaintext highlighter-rouge">fit</code> – maintain AR, fit inside target, no padding.</li>
+      <li><code class="language-plaintext highlighter-rouge">fill</code>, <code class="language-plaintext highlighter-rouge">fill_crop</code> – cover target and center-crop based on <code class="language-plaintext highlighter-rouge">anchor</code>.</li>
+      <li><code class="language-plaintext highlighter-rouge">stretch</code> – ignore AR and stretch to the exact width/height.</li>
+    </ul>
+  </li>
+  <li><strong>translate</strong> — Deprecated compatibility flag. When <code class="language-plaintext highlighter-rouge">--mode</code> is not set:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">yes</code> → behaves like <code class="language-plaintext highlighter-rouge">stretch</code>.</li>
+      <li><code class="language-plaintext highlighter-rouge">no</code>  → behaves like <code class="language-plaintext highlighter-rouge">pad</code>.</li>
+    </ul>
+  </li>
+  <li><strong>anchor</strong> — Crop/pad bias position:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">center</code>, <code class="language-plaintext highlighter-rouge">top</code>, <code class="language-plaintext highlighter-rouge">bottom</code>, <code class="language-plaintext highlighter-rouge">left</code>, <code class="language-plaintext highlighter-rouge">right</code>,</li>
+      <li><code class="language-plaintext highlighter-rouge">top_left</code>, <code class="language-plaintext highlighter-rouge">top_right</code>, <code class="language-plaintext highlighter-rouge">bottom_left</code>, <code class="language-plaintext highlighter-rouge">bottom_right</code>.<br />
+Affects where the image sits when padding or cropping.</li>
+    </ul>
+  </li>
+  <li><strong>pad-color</strong> — Hex color for padding borders in <code class="language-plaintext highlighter-rouge">pad</code> mode (e.g., <code class="language-plaintext highlighter-rouge">#000000</code>, <code class="language-plaintext highlighter-rouge">#FFFFFF</code>).</li>
+  <li><strong>scale-flags</strong> — Scaling kernel: <code class="language-plaintext highlighter-rouge">lanczos</code>, <code class="language-plaintext highlighter-rouge">bicubic</code>, <code class="language-plaintext highlighter-rouge">bilinear</code>, or <code class="language-plaintext highlighter-rouge">neighbor</code>. Controls quality vs speed.</li>
+  <li><strong>portrait-full</strong> — When present, forces a 9:16 full-frame portrait output using the preset’s larger dimension as height and a derived width, then uses a cover + crop mode (effectively <code class="language-plaintext highlighter-rouge">fill_crop</code>).</li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
+<h3 id="available-presets">Available Presets</h3>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> convert_dims <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4
-</code></pre></div></div>
+<p>Each preset maps to a <code class="language-plaintext highlighter-rouge">(width, height)</code> pair:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">sd</code> – 320×240</li>
+  <li><code class="language-plaintext highlighter-rouge">720hd</code> – 640×360</li>
+  <li><code class="language-plaintext highlighter-rouge">1080hd</code> – 960×540</li>
+  <li><code class="language-plaintext highlighter-rouge">widescreen</code> – 320×180</li>
+  <li><code class="language-plaintext highlighter-rouge">portrait1080</code> – 1080×1620</li>
+  <li><code class="language-plaintext highlighter-rouge">480p</code> – 640×480</li>
+  <li><code class="language-plaintext highlighter-rouge">576p</code> – 720×576</li>
+  <li><code class="language-plaintext highlighter-rouge">720p</code> – 1280×720</li>
+  <li><code class="language-plaintext highlighter-rouge">1080p</code> – 1920×1080</li>
+  <li><code class="language-plaintext highlighter-rouge">1440p</code> – 2560×1440</li>
+  <li><code class="language-plaintext highlighter-rouge">4k</code> – 3840×2160</li>
+  <li><code class="language-plaintext highlighter-rouge">8k</code> – 7680×4320</li>
+  <li><code class="language-plaintext highlighter-rouge">vga</code> – 640×480</li>
+  <li><code class="language-plaintext highlighter-rouge">qvga</code> – 320×240</li>
+  <li><code class="language-plaintext highlighter-rouge">wvga</code> – 800×480</li>
+  <li><code class="language-plaintext highlighter-rouge">svga</code> – 800×600</li>
+  <li><code class="language-plaintext highlighter-rouge">xga</code> – 1024×768</li>
+  <li><code class="language-plaintext highlighter-rouge">wxga</code> – 1280×800</li>
+  <li><code class="language-plaintext highlighter-rouge">sxga</code> – 1280×1024</li>
+  <li><code class="language-plaintext highlighter-rouge">uxga</code> – 1600×1200</li>
+  <li><code class="language-plaintext highlighter-rouge">wuxga</code> – 1920×1200</li>
+  <li><code class="language-plaintext highlighter-rouge">qwxga</code> – 2048×1152</li>
+  <li><code class="language-plaintext highlighter-rouge">qhd</code> – 2560×1440</li>
+  <li><code class="language-plaintext highlighter-rouge">wqxga</code> – 2560×1600</li>
+  <li><code class="language-plaintext highlighter-rouge">5k</code> – 5120×2880</li>
+  <li><code class="language-plaintext highlighter-rouge">portrait720</code> – 720×1280</li>
+  <li><code class="language-plaintext highlighter-rouge">portrait4k</code> – 2160×3840</li>
+  <li><code class="language-plaintext highlighter-rouge">square1080</code> – 1080×1080</li>
+  <li><code class="language-plaintext highlighter-rouge">square720</code> – 720×720</li>
+  <li><code class="language-plaintext highlighter-rouge">cinema4k</code> – 4096×2160</li>
+  <li><code class="language-plaintext highlighter-rouge">ultrawide1080</code> – 2560×1080</li>
+  <li><code class="language-plaintext highlighter-rouge">ultrawide1440</code> – 3440×1440</li>
+  <li><code class="language-plaintext highlighter-rouge">instagram_feed</code> – 1080×1080</li>
+  <li><code class="language-plaintext highlighter-rouge">instagram_reels</code> – 1080×1920</li>
+  <li><code class="language-plaintext highlighter-rouge">instagram_stories</code> – 1080×1920</li>
+  <li><code class="language-plaintext highlighter-rouge">tiktok_video</code> – 1080×1920</li>
+  <li><code class="language-plaintext highlighter-rouge">youtube_standard</code> – 1920×1080</li>
+  <li><code class="language-plaintext highlighter-rouge">youtube_shorts</code> – 1080×1920</li>
+  <li><code class="language-plaintext highlighter-rouge">facebook_feed</code> – 1080×1080</li>
+  <li><code class="language-plaintext highlighter-rouge">facebook_stories</code> – 1080×1920</li>
+  <li><code class="language-plaintext highlighter-rouge">twitter_video</code> – 1280×720</li>
+  <li><code class="language-plaintext highlighter-rouge">twitter_square</code> – 1080×1080</li>
+  <li><code class="language-plaintext highlighter-rouge">linkedin_video</code> – 1920×1080</li>
+  <li><code class="language-plaintext highlighter-rouge">linkedin_square</code> – 1080×1080</li>
+  <li><code class="language-plaintext highlighter-rouge">snapchat_video</code> – 1080×1920</li>
+  <li><code class="language-plaintext highlighter-rouge">pinterest_video</code> – 1080×1920</li>
+  <li><code class="language-plaintext highlighter-rouge">pinterest_square</code> – 1000×1000</li>
+</ul>
 
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> convert_dims <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> convert_dims_styled.mp4
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P convert_dims \
+  -i myvideo.mp4 \
+  -o convert_dims_instareel.mp4 \
+  --output-format mp4 \
+  --preset instagram_reels \
+  --mode fill_crop \
+  --anchor center \
+  --pad-color "#000000" \
+  --scale-flags lanczos \
+  --portrait-full
 </code></pre></div></div>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Dimensions are always adjusted to even values to remain codec-safe.</li>
+  <li><code class="language-plaintext highlighter-rouge">portrait-full</code> effectively overrides <code class="language-plaintext highlighter-rouge">mode</code> to a full-frame, cover-style portrait crop while honoring the preset’s size.</li>
+  <li><code class="language-plaintext highlighter-rouge">scale-flags=lanczos</code> offers high-quality resizing at the cost of some speed.</li>
+  <li>FFmpeg is called with:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">-c:v libx264</code>, <code class="language-plaintext highlighter-rouge">-b:v 5000k</code>, <code class="language-plaintext highlighter-rouge">-pix_fmt yuv420p</code>, <code class="language-plaintext highlighter-rouge">-preset medium</code></li>
+      <li><code class="language-plaintext highlighter-rouge">-c:a aac</code>, <code class="language-plaintext highlighter-rouge">-b:a 160k</code>, <code class="language-plaintext highlighter-rouge">-ar 48000</code>, <code class="language-plaintext highlighter-rouge">-movflags +faststart</code></li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">--force</code> (global Videobeaux argument) controls overwrite; if not set, existing files cause an error.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Generating social-media-optimized versions (Reels, Shorts, Stories, TikTok).</li>
+  <li>Converting to square or portrait outputs while controlling crop bias via <code class="language-plaintext highlighter-rouge">anchor</code>.</li>
+  <li>Quickly standardizing deliverables to 1080p, 4K, or other common presets.</li>
+  <li>Converting landscape footage into vertical 9:16 promo clips using <code class="language-plaintext highlighter-rouge">--portrait-full</code>.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Use <code class="language-plaintext highlighter-rouge">mode=pad</code> with a neutral <code class="language-plaintext highlighter-rouge">pad-color</code> when you want to preserve entire frames without cropping.</li>
+  <li>Use <code class="language-plaintext highlighter-rouge">mode=fill_crop</code> for platform-native aspect ratios where filling the frame is more important than preserving the entire source frame.</li>
+  <li>Set <code class="language-plaintext highlighter-rouge">anchor=top</code> or <code class="language-plaintext highlighter-rouge">anchor=bottom</code> for content where the action is biased toward one edge (e.g., heads near the top).</li>
+  <li>Keep <code class="language-plaintext highlighter-rouge">scale-flags=lanczos</code> for master/delivery renders; drop to <code class="language-plaintext highlighter-rouge">bicubic</code> or <code class="language-plaintext highlighter-rouge">bilinear</code> for faster, iterative tests.</li>
+  <li>Always verify the final AR and framing visually after using <code class="language-plaintext highlighter-rouge">stretch</code> to avoid unwanted distortion.</li>
+</ul>
 
 
       </section>

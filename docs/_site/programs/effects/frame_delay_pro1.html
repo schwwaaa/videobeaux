@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"frame_delay_pro1","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/frame_delay_pro1.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,24 +61,65 @@
       <h1 id="frame_delay_pro1">frame_delay_pro1</h1>
 
 <h2 id="description">Description</h2>
+<p>Applies an advanced frame-delay effect using a customizable number of delayed frames and weighted blending.<br />
+This produces echoing motion trails, temporal smearing, ghosted motion artifacts, and stylized feedback-like delay effects.</p>
 
-<p>Apply frame delay effect with parameter input</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">frame_delay_pro1</code> is designed for creators who want:</p>
+<ul>
+  <li>multi-frame echo trails,</li>
+  <li>weighted motion smears,</li>
+  <li>ghosting and afterimage effects,</li>
+  <li>rhythmic temporal pulses,</li>
+  <li>experimental or abstract motion distortion.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Frame Buffering</strong><br />
+A buffer of past frames is maintained according to <code class="language-plaintext highlighter-rouge">frame_quantity</code>.</li>
+  <li><strong>Weighted Blending</strong><br />
+<code class="language-plaintext highlighter-rouge">frame_weights</code> determines how strongly each delayed frame contributes to the output.
+    <ul>
+      <li>Higher weights = stronger visibility</li>
+      <li>Lower weights = subtle fading trails</li>
+    </ul>
+  </li>
+  <li><strong>Temporal Synthesis</strong><br />
+The module blends the weighted frames to create:
+    <ul>
+      <li>motion smears</li>
+      <li>streaking</li>
+      <li>ghost trails</li>
+      <li>rhythmic pulses resembling analog video feedback</li>
+    </ul>
+  </li>
+  <li><strong>Encoding</strong><br />
+Output is written using global Videobeaux settings (codec, CRF, pixel format).</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P frame_delay_pro1 \
+  -i input.mp4 \
+  -o output.mp4 \
+  --frame_quantity VALUE \
+  --frame_weights VALUE
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">frame_quantity</code></li>
-  <li><code class="language-plaintext highlighter-rouge">frame_weights</code></li>
+  <li><strong>frame_quantity</strong> — Number of delayed frames to include in the temporal buffer. Larger values produce longer trails or more complex smears.</li>
+  <li><strong>frame_weights</strong> — Comma-separated list of blend weights (e.g., <code class="language-plaintext highlighter-rouge">1,0.8,0.5,0.2</code>).<br />
+The number of weights should match <code class="language-plaintext highlighter-rouge">frame_quantity</code>, and values determine the intensity of each delay layer.</li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> frame_delay_pro1 <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4 <span class="nt">--frame_quantity</span> VALUE <span class="nt">--frame_weights</span> VALUE
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> frame_delay_pro1 <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> frame_delay_pro1_styled.mp4 <span class="nt">--frame_quantity</span> EXAMPLE <span class="nt">--frame_weights</span> EXAMPLE
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P frame_delay_pro1 \
+  -i myvideo.mp4 \
+  -o frame_delay_pro1_styled.mp4 \
+  --frame_quantity EXAMPLE \
+  --frame_weights EXAMPLE
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
@@ -98,6 +139,31 @@
   Your browser does not support the video tag.
 </video>
 
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Weight values can exceed 1.0 for extreme ghosting or bloom-like smearing.</li>
+  <li>Uneven or irregular weight lists produce unpredictable but interesting temporal textures.</li>
+  <li>Using very high <code class="language-plaintext highlighter-rouge">frame_quantity</code> may increase render time depending on resolution and codec.</li>
+  <li>Works exceptionally well on footage with fast motion, strobing lights, or repetitive movement patterns.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Music video trails and rhythmic pulse effects.</li>
+  <li>Rotoscoped animations requiring smeared or echoed movement.</li>
+  <li>Live VJ feedback systems and performance visuals.</li>
+  <li>Psychedelic edits and temporal collage art.</li>
+  <li>Slow-motion sequences where motion trails add emotional or surreal tone.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Normalize weights so the sum stays below ~2.0 if you want clean blending without clipping.</li>
+  <li>Use descending weights (e.g., <code class="language-plaintext highlighter-rouge">1,0.8,0.6,0.4</code>) for smooth decays.</li>
+  <li>Use chaotic weights (e.g., <code class="language-plaintext highlighter-rouge">1,0,1,0.2</code>) for glitchy motion inconsistencies.</li>
+  <li>Combine with <code class="language-plaintext highlighter-rouge">double_cup</code> or <code class="language-plaintext highlighter-rouge">bad_animation</code> for hallucination-like layered visuals.</li>
+  <li>Pair with a clean source and low CRF to preserve subtle trail gradations.</li>
+</ul>
 
 
       </section>

@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"ball_point_pen","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/ball_point_pen.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,32 +61,79 @@
       <h1 id="ball_point_pen">ball_point_pen</h1>
 
 <h2 id="description">Description</h2>
+<p>Applies a ball-point-pen illustration effect to the input video, simulating hand-drawn line textures, monochrome ink shading, and stylized pen-stroke contrast.<br />
+The result evokes sketchbook drawings, technical notebook diagrams, or lo-fi comic-style renderings.</p>
 
-<p>Apply a ball point pen style effect</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">ball_point_pen</code> is intended for artists who want to:</p>
+<ul>
+  <li>transform footage into a drawn, pen-sketched look,</li>
+  <li>reduce photographic realism while retaining motion,</li>
+  <li>create stylized rotoscope-like results,</li>
+  <li>mimic ink illustrations or doodle-style animation,</li>
+  <li>apply a minimalistic or DIY illustration aesthetic.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Edge Extraction</strong><br />
+The effect identifies major contours and turns them into pen-like strokes.</li>
+  <li><strong>Ink Shading Simulation</strong><br />
+Midtones and shadows are reinterpreted as sparse or dense ink hatching.</li>
+  <li><strong>Monochrome / Limited Palette Rendering</strong><br />
+The image is reduced to a pen-like tonal range, often high-contrast and desaturated.</li>
+  <li><strong>Encoding</strong><br />
+The processed frames are written using global Videobeaux output settings (codec, CRF, pixel format).</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P ball_point_pen \
+  -i input.mp4 \
+  -o output.mp4
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
-
 <ul>
   <li><em>(No additional program-specific arguments; uses global videobeaux options only.)</em></li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> ball_point_pen <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> ball_point_pen <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> ball_point_pen_styled.mp4
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P ball_point_pen \
+  -i myvideo.mp4 \
+  -o ball_point_pen_styled.mp4
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
-
 <video controls="" preload="metadata" style="max-width:100%; border-radius:8px; margin:1em 0;">
   <source src="https://github.com/user-attachments/assets/10e703a5-5036-4c3e-83f6-be04476ad089" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>The final aesthetic depends on global pixel format and compression parameters.</li>
+  <li>Works especially well on footage with strong edges, clean lighting, or high motion.</li>
+  <li>Since the process reduces tonal detail, compression artifacts may become more noticeable — sometimes adding to the hand-drawn look.</li>
+  <li>Best results may come from source footage with minimal noise.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Rotoscope-style animation sequences.</li>
+  <li>Comic-inspired music videos or narrative interludes.</li>
+  <li>Experimental art filtering where realism is intentionally minimized.</li>
+  <li>Educational or technical visualization with a “diagram” aesthetic.</li>
+  <li>Mixed-media projects combining live-action with hand-drawn elements.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Consider pairing with <code class="language-plaintext highlighter-rouge">convert_dims</code> (square formats like 1080×1080) for Instagram-style sketch loops.</li>
+  <li>Use a lower CRF (higher quality) to preserve line fidelity.</li>
+  <li>Pair with <code class="language-plaintext highlighter-rouge">gamma_fix</code> or <code class="language-plaintext highlighter-rouge">lut_apply</code> before applying the pen effect for clearer edges.</li>
+  <li>Apply final sharpening or embossing in a later step if you want more aggressive pen stroke definition.</li>
+  <li>Rotoscoped motion reads best when frame rate is preserved — avoid additional frame dropping unless stylistically intentional.</li>
+</ul>
 
 
       </section>

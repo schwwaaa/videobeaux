@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"chain_builder","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/utilities/chain_builder.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -59,26 +59,79 @@
       <section>
 
       <h1 id="chain_builder">chain_builder</h1>
+<p>:contentReference[oaicite:1]{index=1}</p>
 
 <h2 id="description">Description</h2>
+<p>Assembles a sequence of Videobeaux program steps into a single automated workflow, chaining multiple transformations into one output.<br />
+Allows creators to design multi-stage processing pipelines without running several commands manually.</p>
 
-<p>Assembles a sequence of videobeaux program steps into a single automated workflow, chaining multiple transformations into one output</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">chain_builder</code> enables complex, multi-step Videobeaux workflows such as:</p>
+<ul>
+  <li>running tonemap → gamma_fix → lut_apply → watermark in one sequence,</li>
+  <li>preparing media through multiple normalization steps,</li>
+  <li>automating creative pipelines for repeatable results,</li>
+  <li>building advanced transformations without shell scripts,</li>
+  <li>simplifying batch workflows across large media libraries.</li>
+</ul>
+
+<p>This tool acts as a meta-controller that executes multiple Videobeaux programs in the specified order.</p>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Chain Input</strong><br />
+The <code class="language-plaintext highlighter-rouge">chain</code> argument accepts a structured definition of steps, typically referencing individual Videobeaux modules.</li>
+  <li><strong>Sequential Execution</strong><br />
+Each step in the chain is executed in the order provided—output from one step becomes input for the next.</li>
+  <li><strong>Intermediate Handling</strong><br />
+Temporary outputs may be generated (depending on implementation) before the final render is written.</li>
+  <li><strong>Final Output</strong><br />
+The result of the last program in the sequence is written to <code class="language-plaintext highlighter-rouge">-o</code>.</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P chain_builder \
+  -i input.mp4 \
+  -o output.mp4 \
+  --chain VALUE
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">chain</code></li>
+  <li><strong>chain</strong> — A structured representation of the ordered programs to run (e.g., a serialized list or JSON-like definition).</li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> chain_builder <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4 <span class="nt">--chain</span> VALUE
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> chain_builder <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> chain_builder_styled.mp4 <span class="nt">--chain</span> EXAMPLE
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P chain_builder \
+  -i myvideo.mp4 \
+  -o chain_builder_styled.mp4 \
+  --chain EXAMPLE
 </code></pre></div></div>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Each chained step operates exactly as if run individually via Videobeaux.</li>
+  <li>Temporary intermediate files may be used depending on the complexity of the pipeline.</li>
+  <li>Errors in any step cause the chain to halt unless fault-tolerance logic is implemented.</li>
+  <li>Useful for combining CPU/GPU-heavy operations into one reproducible pipeline.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Full preprocessing pipelines (denoise → gamma fix → resize → LUT).</li>
+  <li>Automated delivery formatting for episodic or batch workflows.</li>
+  <li>Creative chains applying several stylizations in sequence.</li>
+  <li>Rapid prototyping of multi-step effects before writing scripts.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Keep chains readable and modular; long chains are easier to maintain when broken into logical groups.</li>
+  <li>Validate each step independently before adding it to a chain.</li>
+  <li>Store commonly used chains in version control to maintain consistency.</li>
+  <li>Ensure your intermediate steps output in a high-quality format to avoid cumulative degradation.</li>
+</ul>
 
 
       </section>

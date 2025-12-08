@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"steel_wash","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/steel_wash.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,31 +61,79 @@
       <h1 id="steel_wash">steel_wash</h1>
 
 <h2 id="description">Description</h2>
+<p>Applies a cool steel-blue wash across the entire video image.<br />
+The effect evokes the feel of industrial lighting, cold metal surfaces, or desaturated cinematic palettes often seen in sci-fi, dystopian, and neo-noir aesthetics.</p>
 
-<p>Apply steel blue filter to video</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">steel_wash</code> is designed for creators who want:</p>
+<ul>
+  <li>a clean, cool-toned chromatic shift,</li>
+  <li>a desaturated metallic aesthetic,</li>
+  <li>a simple and reliable grading filter with no parameters,</li>
+  <li>a cohesive blue wash to unify mismatched footage,</li>
+  <li>a subtle but distinctive look that enhances atmosphere and mood.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Global Blue Bias</strong><br />
+Shadows, midtones, and highlights are shifted toward cold steel-blue coloration.</li>
+  <li><strong>Desaturation Layer</strong><br />
+Other hues are reduced, allowing the steel tone to dominate.</li>
+  <li><strong>Contrast Conditioning</strong><br />
+Mild tonal shaping prevents the image from becoming flat while maintaining the cold aesthetic.</li>
+  <li><strong>Encoding</strong><br />
+Final output is encoded using global Videobeaux codec, CRF, and pixel-format settings.</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> steel_wash <span class="se">\</span>
+  <span class="nt">-i</span> input.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> output.mp4
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
-
 <ul>
   <li><em>(No additional program-specific arguments; uses global videobeaux options only.)</em></li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> steel_wash <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> steel_wash <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> steel_wash_styled.mp4
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> steel_wash <span class="se">\</span>
+  <span class="nt">-i</span> myvideo.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> steel_wash_styled.mp4
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
-
 <video controls="" preload="metadata" style="max-width:100%; border-radius:8px; margin:1em 0;">
   <source src="https://github.com/schwwaaa/videobeaux/assets/7625379/eea99448-9352-48f1-a1ec-b2cac6ad056d" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Works particularly well with nighttime, industrial, mechanical, or urban footage.</li>
+  <li>Skin tones take on a stylized, pale-blue cast — ideal for sci-fi or dystopian moods.</li>
+  <li>High-saturation footage will be subdued; low-saturation footage becomes more cohesive.</li>
+  <li>Compression interacts minimally with the wash due to its uniformity.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Neo-noir or cyberpunk scenes.</li>
+  <li>Cold, metallic grading for music videos.</li>
+  <li>Industrial montage or mechanical close-ups.</li>
+  <li>Consistent color unification before collage or Lagkage layouts.</li>
+  <li>Atmospheric shifting before applying more intense glitch effects.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Lower CRF preserves subtle gradients in blue-toned areas.</li>
+  <li>Higher CRF introduces grit that enhances industrial textures.</li>
+  <li>Combine with <code class="language-plaintext highlighter-rouge">bad_contrast</code> for harsher, high-impact steel tones.</li>
+  <li>Pair with <code class="language-plaintext highlighter-rouge">ghostee</code> or <code class="language-plaintext highlighter-rouge">slight_smear</code> for dreamy industrial softness.</li>
+  <li>Apply before LUTs to let your LUT react to the steel wash; apply after to preserve LUT integrity.</li>
+</ul>
 
 
 

@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"qwikchop","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/utilities/qwikchop.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,33 +61,112 @@
       <h1 id="qwikchop">qwikchop</h1>
 
 <h2 id="description">Description</h2>
+<p>Rapidly slices videos into precise segments based on timecodes or cut lists, optimized for speed and batch operations.</p>
 
-<p>Rapidly slices videos into precise segments based on timecodes or cut lists, optimized for speed and batch operations</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">qwikchop</code> is built for extremely fast segment extraction, allowing you to cut a video into many pieces without re-encoding.<br />
+It supports:</p>
+<ul>
+  <li>cut lists,</li>
+  <li>recursive directory processing,</li>
+  <li>black-frame trimming,</li>
+  <li>segment cleanup rules,<br />
+making it ideal for large workflows like commercial removal, archive splitting, and automated editing pipelines.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Piece Definition</strong><br />
+The <code class="language-plaintext highlighter-rouge">pieces</code> argument defines cut points—either explicit timecodes or references to external lists.</li>
+  <li><strong>Recursive Mode</strong><br />
+If <code class="language-plaintext highlighter-rouge">recurse</code> is enabled, the tool processes all media files inside a directory tree.</li>
+  <li><strong>Black Frame Detection</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">trim_black_front</code> removes silent/black leader.</li>
+      <li><code class="language-plaintext highlighter-rouge">black_scan</code>, <code class="language-plaintext highlighter-rouge">black_thresh</code>, and <code class="language-plaintext highlighter-rouge">black_pict</code> tune detection sensitivity.</li>
+    </ul>
+  </li>
+  <li><strong>Padding Controls</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">edge_pad_pre</code> and <code class="language-plaintext highlighter-rouge">edge_pad_post</code> adjust segment timing to avoid cutting too close to transitions.</li>
+    </ul>
+  </li>
+  <li><strong>Minimum Edit Length</strong><br />
+<code class="language-plaintext highlighter-rouge">min_edit</code> prevents creation of fragment edits that are too short to be meaningful.</li>
+  <li><strong>Output</strong><br />
+Segments are exported into the destination directory with predictable sequential naming.</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P qwikchop \
+  -i input.mp4 \
+  -o output.mp4 \
+  --pieces VALUE \
+  --recurse VALUE \
+  --keep_temp VALUE \
+  --trim_black_front VALUE \
+  --black_scan VALUE \
+  --black_thresh VALUE \
+  --black_pict VALUE \
+  --edge_pad_pre VALUE \
+  --edge_pad_post VALUE \
+  --min_edit VALUE
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">pieces</code></li>
-  <li><code class="language-plaintext highlighter-rouge">recurse</code></li>
-  <li><code class="language-plaintext highlighter-rouge">keep_temp</code></li>
-  <li><code class="language-plaintext highlighter-rouge">trim_black_front</code></li>
-  <li><code class="language-plaintext highlighter-rouge">black_scan</code></li>
-  <li><code class="language-plaintext highlighter-rouge">black_thresh</code></li>
-  <li><code class="language-plaintext highlighter-rouge">black_pict</code></li>
-  <li><code class="language-plaintext highlighter-rouge">edge_pad_pre</code></li>
-  <li><code class="language-plaintext highlighter-rouge">edge_pad_post</code></li>
-  <li><code class="language-plaintext highlighter-rouge">min_edit</code></li>
+  <li><strong>pieces</strong> — Defines segment boundaries; may be timecodes or an external list.</li>
+  <li><strong>recurse</strong> — Enables directory recursion for batch processing.</li>
+  <li><strong>keep_temp</strong> — When true, preserves intermediate working files.</li>
+  <li><strong>trim_black_front</strong> — Removes black/silent leader at beginning.</li>
+  <li><strong>black_scan</strong> — Duration scanned for determining black-frame presence.</li>
+  <li><strong>black_thresh</strong> — Threshold used to classify frames as black.</li>
+  <li><strong>black_pict</strong> — Pictorial threshold for more advanced black-frame evaluation.</li>
+  <li><strong>edge_pad_pre</strong> — Time (seconds) added before segment boundaries.</li>
+  <li><strong>edge_pad_post</strong> — Time (seconds) added after segment boundaries.</li>
+  <li><strong>min_edit</strong> — Minimum allowed edit duration; prevents overly short segments.</li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> qwikchop <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4 <span class="nt">--pieces</span> VALUE <span class="nt">--recurse</span> VALUE <span class="nt">--keep_temp</span> VALUE <span class="nt">--trim_black_front</span> VALUE <span class="nt">--black_scan</span> VALUE <span class="nt">--black_thresh</span> VALUE <span class="nt">--black_pict</span> VALUE <span class="nt">--edge_pad_pre</span> VALUE <span class="nt">--edge_pad_post</span> VALUE <span class="nt">--min_edit</span> VALUE
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> qwikchop <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> qwikchop_styled.mp4 <span class="nt">--pieces</span> EXAMPLE <span class="nt">--recurse</span> EXAMPLE <span class="nt">--keep_temp</span> EXAMPLE <span class="nt">--trim_black_front</span> EXAMPLE <span class="nt">--black_scan</span> EXAMPLE <span class="nt">--black_thresh</span> EXAMPLE <span class="nt">--black_pict</span> EXAMPLE <span class="nt">--edge_pad_pre</span> EXAMPLE <span class="nt">--edge_pad_post</span> EXAMPLE <span class="nt">--min_edit</span> EXAMPLE
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P qwikchop \
+  -i myvideo.mp4 \
+  -o qwikchop_styled.mp4 \
+  --pieces EXAMPLE \
+  --recurse false \
+  --keep_temp false \
+  --trim_black_front true \
+  --black_scan 0.5 \
+  --black_thresh 0.10 \
+  --black_pict 0.10 \
+  --edge_pad_pre 0.25 \
+  --edge_pad_post 0.25 \
+  --min_edit 1.0
 </code></pre></div></div>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Segmenting is performed without re-encoding, making it extremely fast.</li>
+  <li>Black trimming uses FFmpeg’s blackdetect logic; thresholds may require tuning based on source material.</li>
+  <li><code class="language-plaintext highlighter-rouge">edge_pad_pre</code> and <code class="language-plaintext highlighter-rouge">edge_pad_post</code> are helpful for avoiding letterboxing artifacts or abrupt audio cuts.</li>
+  <li>Very small values for <code class="language-plaintext highlighter-rouge">min_edit</code> may create unusable micro-clips.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Cutting commercials or interstitials from broadcast recordings.</li>
+  <li>Building structured archives from long-form footage.</li>
+  <li>Automatically splitting lecture or surveillance videos into events.</li>
+  <li>Preparing clips for machine-learning datasets.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Increase <code class="language-plaintext highlighter-rouge">edge_pad_pre/post</code> slightly to avoid accidental content clipping.</li>
+  <li>Adjust <code class="language-plaintext highlighter-rouge">black_thresh</code> based on the luminance characteristics of your footage.</li>
+  <li>Use recursive mode (<code class="language-plaintext highlighter-rouge">recurse=true</code>) when processing large folder trees.</li>
+  <li>Keep <code class="language-plaintext highlighter-rouge">min_edit</code> above 0.5–1.0 seconds for stable outputs.</li>
+</ul>
 
 
       </section>

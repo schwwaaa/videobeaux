@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"blur_pix","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/blur_pix.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,32 +61,81 @@
       <h1 id="blur_pix">blur_pix</h1>
 
 <h2 id="description">Description</h2>
+<p>Applies a pixelated blur effect to the input video, producing a blocky, low-resolution softening reminiscent of censored footage, retro 8-bit graphics, or lo-fi compression artifacts.<br />
+This effect blends coarse pixelation with smooth blur, creating a stylized, abstracted visual aesthetic.</p>
 
-<p>Extracting the silence out of a video file</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">blur_pix</code> is designed for artists who want to:</p>
+<ul>
+  <li>intentionally degrade detail in a stylized way,</li>
+  <li>anonymize or obscure shapes without traditional Gaussian blur,</li>
+  <li>evoke retro-game pixelation,</li>
+  <li>add a surreal soft-block look to motion and texture,</li>
+  <li>produce a hybrid blur–pixelation effect ideal for glitch, collage, or experimental works.</li>
+</ul>
+
+<p>Because the module has <strong>no program-specific arguments</strong>, it is simple to use and highly compatible with all Videobeaux pipelines.</p>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Pixel Block Generation</strong><br />
+The input frame is reduced to coarse pixel clusters using an internal scaling or mosaic-based algorithm.</li>
+  <li><strong>Softening Pass</strong><br />
+A smoothing filter blends block edges to create a soft, dreamy, broken-resolution aesthetic.</li>
+  <li><strong>Unified Blur-Pixel Layer</strong><br />
+The combined effect emphasizes abstraction over clarity, often producing painterly motion.</li>
+  <li><strong>Encoding</strong><br />
+The final output is encoded using global Videobeaux codec settings (CRF, preset, pixel format, etc.).</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P blur_pix \
+  -i input.mp4 \
+  -o output.mp4
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
-
 <ul>
   <li><em>(No additional program-specific arguments; uses global videobeaux options only.)</em></li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> blur_pix <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> blur_pix <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> blur_pix_styled.mp4
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P blur_pix \
+  -i myvideo.mp4 \
+  -o blur_pix_styled.mp4
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
-
 <video controls="" preload="metadata" style="max-width:100%; border-radius:8px; margin:1em 0;">
   <source src="https://github.com/schwwaaa/videobeaux/assets/7625379/65403294-3e34-4ff8-816a-5de7c80c811d" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Pixelated blur behaves differently from Gaussian or box blur — detail is removed structurally, not just softened.</li>
+  <li>Compression interacts strongly with this effect, sometimes enhancing the aesthetic.</li>
+  <li>Works consistently regardless of resolution, though higher-resolution source footage yields more visible block abstraction.</li>
+  <li>Global Videobeaux settings (CRF, pixel format) can shift how “clean” or “dirty” the blocks appear.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Music videos needing stylized abstraction.</li>
+  <li>Identity-obscuring or anonymization with artistic flair.</li>
+  <li>Retro-inspired or video-game-like sequences.</li>
+  <li>Experimental cinema, collage art, and painterly motion effects.</li>
+  <li>Background layers in VJ, projection, or live visual systems.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Lower CRF (higher quality) preserves cleaner block edges.</li>
+  <li>Higher CRF increases compression noise — sometimes desirable for a gritty aesthetic.</li>
+  <li>Pair with <code class="language-plaintext highlighter-rouge">hash_fingerprint</code> or <code class="language-plaintext highlighter-rouge">bad_contrast</code> to stack analog/digital degradation.</li>
+  <li>Combine with <code class="language-plaintext highlighter-rouge">convert_dims</code> (square or portrait presets) for platform-optimized stylized loops.</li>
+  <li>Pre-processing with <code class="language-plaintext highlighter-rouge">gamma_fix</code> can improve highlight/midtone visibility inside blocky regions.</li>
+</ul>
 
 
       </section>

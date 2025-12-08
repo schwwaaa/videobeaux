@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"repainting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/repainting.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,31 +61,77 @@
       <h1 id="repainting">repainting</h1>
 
 <h2 id="description">Description</h2>
+<p>Applies an artistic “repainted” effect that makes each frame appear as if it has been smeared, redrawn, or blurred by an alcohol-washed brush.<br />
+The result resembles wet ink, soft smudging, streaked pigment, or repeated overpainting — giving the footage a tactile, analog, hand-altered feel.</p>
 
-<p>Apply filter like repainting the same image while smudged with alcohol</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">repainting</code> is designed for creators who want:</p>
+<ul>
+  <li>a painterly, reworked, or smeared aesthetic,</li>
+  <li>a hand-drawn or alcohol-wet look without using frame-by-frame animation,</li>
+  <li>soft organic distortion that feels handmade rather than digital,</li>
+  <li>degraded yet artistic texture for music videos or collage,</li>
+  <li>a simple effect that produces expressive motion smearing.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Frame Reinterpretation</strong><br />
+Each frame is processed as if it were being redrawn or wiped over with semi-wet pigment.</li>
+  <li><strong>Smudge + Alcohol-Wash Simulation</strong><br />
+Highlights bloom, shadows soften, and edges blur as if dissolved by solvent.</li>
+  <li><strong>Temporal Softening</strong><br />
+Minor streaks or trailing may appear due to repeated repainting across frames.</li>
+  <li><strong>Encoding</strong><br />
+Output is encoded using global Videobeaux settings (codec, CRF, pixel format).</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> repainting <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
-
 <ul>
   <li><em>(No additional program-specific arguments; uses global videobeaux options only.)</em></li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> repainting <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> repainting <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> repainting_styled.mp4
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> repainting <span class="se">\</span>
+  <span class="nt">-i</span> myvideo.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> repainting_styled.mp4
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
-
 <video controls="" preload="metadata" style="max-width:100%; border-radius:8px; margin:1em 0;">
   <source src="https://github.com/user-attachments/assets/1770144d-4448-4719-8ef3-e44b720ec857" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Works especially well on footage with bold shapes, faces, or brush-like motion paths.</li>
+  <li>High-contrast imagery yields more pronounced smearing.</li>
+  <li>Compression may increase the “wet paint” feel by interacting with soft, blended regions.</li>
+  <li>Repainting is non-destructive in timing — cadence stays intact even while textures distort.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Abstract or painterly music videos.</li>
+  <li>Alcohol-ink inspired motion design.</li>
+  <li>Narrative moments needing dreamlike or smeared transitions.</li>
+  <li>Experimental cinema and visual collage.</li>
+  <li>Live VJ loops that benefit from organic, evolving texture.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Lower CRF values maintain smooth, fluid repainted strokes.</li>
+  <li>Higher CRF adds grit, giving the effect a rougher, stained appearance.</li>
+  <li>Combine with <code class="language-plaintext highlighter-rouge">double_cup</code> for a liquified wash; combine with <code class="language-plaintext highlighter-rouge">blur_pix</code> for soft surface blending.</li>
+  <li>Apply before LUTs if you want the grade to unify the smear colors; apply after LUTs if you want the smear to distort the grade itself.</li>
+  <li>Up-scaling beforehand using <code class="language-plaintext highlighter-rouge">convert_dims</code> can produce smoother brush-like textures.</li>
+</ul>
 
 
 

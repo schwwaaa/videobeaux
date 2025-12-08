@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"nostalgic_stutter","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/nostalgic_stutter.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,32 +61,85 @@
       <h1 id="nostalgic_stutter">nostalgic_stutter</h1>
 
 <h2 id="description">Description</h2>
+<p>Applies a retro, analog-inspired frame-stutter effect reminiscent of corrupted home movies, aging videotape playback, or dropped-frame digital artifacts.<br />
+<code class="language-plaintext highlighter-rouge">nostalgic_stutter</code> intentionally disrupts cadence to evoke glitchy playback, uneven frame advancement, or mechanical jitter from vintage camcorders.</p>
 
-<p>Apply frame stutter akin to a corrupted file</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">nostalgic_stutter</code> is designed for creators who want to:</p>
+<ul>
+  <li>recreate the feel of deteriorating VHS or Hi8 footage,</li>
+  <li>add jittery temporal artifacts to modern footage,</li>
+  <li>evoke “memory footage” aesthetics,</li>
+  <li>simulate dropped frames or unstable playback,</li>
+  <li>build nostalgic glitch energy into cuts, transitions, or loops.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Cadence Disruption</strong><br />
+The module duplicates, skips, or replays frames to break smooth motion.</li>
+  <li><strong>Irregular Frame Rhythm</strong><br />
+The visual tempo becomes unpredictable, simulating:
+    <ul>
+      <li>dropped frames,</li>
+      <li>slight temporal hiccups,</li>
+      <li>uneven tape playback.</li>
+    </ul>
+  </li>
+  <li><strong>Analog Wear Simulation</strong><br />
+Visual timing irregularities mimic mechanical imperfections in older recording hardware.</li>
+  <li><strong>Encoding</strong><br />
+Output is written using global Videobeaux codec and quality settings.</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> nostalgic_stutter <span class="se">\</span>
+  <span class="nt">-i</span> input.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> output.mp4
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
-
 <ul>
   <li><em>(No additional program-specific arguments; uses global videobeaux options only.)</em></li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> nostalgic_stutter <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> nostalgic_stutter <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> nostalgic_stutter_styled.mp4
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> nostalgic_stutter <span class="se">\</span>
+  <span class="nt">-i</span> myvideo.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> nostalgic_stutter_styled.mp4
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
-
 <video controls="" preload="metadata" style="max-width:100%; border-radius:8px; margin:1em 0;">
   <source src="https://github.com/schwwaaa/videobeaux/assets/7625379/3cef37d9-093f-4bd9-850c-4b163e8a3e01" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Best applied to footage with visible movement; minimal motion yields minimal stutter effect.</li>
+  <li>Compression artifacts may amplify the “retro glitch” feeling, especially at higher CRF.</li>
+  <li>Sequences with panning, walking, or motion across diagonals exhibit the strongest nostalgic distortions.</li>
+  <li>Works consistently at any resolution; scaling before or after does not break the effect.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Vintage-style edits or memory sequences.</li>
+  <li>Music videos needing lo-fi temporal distortion.</li>
+  <li>Glitch-montage transitions and staccato cuts.</li>
+  <li>Found-footage aesthetics, home-video recreations, or archival simulation.</li>
+  <li>Social-media loops aiming for an intentionally imperfect vibe.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Lower CRF retains clarity while still allowing stutter artifacts to read cleanly.</li>
+  <li>Higher CRF adds noise that can enhance the “old tape” feel.</li>
+  <li>Combine with <code class="language-plaintext highlighter-rouge">bad_contrast</code> or <code class="language-plaintext highlighter-rouge">double_cup</code> for stylized aging or dreamy deterioration.</li>
+  <li>For heavier cadence destruction, stack with <code class="language-plaintext highlighter-rouge">bad_animation</code> or <code class="language-plaintext highlighter-rouge">frame_delay_pro1</code>.</li>
+  <li>Use <code class="language-plaintext highlighter-rouge">convert_dims</code> beforehand if building platform-specific loops (square, reels, stories).</li>
+</ul>
 
 
       </section>

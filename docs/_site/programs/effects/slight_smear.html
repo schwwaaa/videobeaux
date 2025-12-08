@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"slight_smear","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/slight_smear.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,31 +61,79 @@
       <h1 id="slight_smear">slight_smear</h1>
 
 <h2 id="description">Description</h2>
+<p>Applies a subtle RGB smear effect, gently shifting and bleeding color channels to create a soft distortion.<br />
+The look resembles mild chromatic drift, analog smudge, or a barely-there color echo — perfect for adding texture without overwhelming the original image.</p>
 
-<p>Slightly smearing RGB color space</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">slight_smear</code> is designed for creators who want:</p>
+<ul>
+  <li>gentle color separation without strong glitch artifacts,</li>
+  <li>soft smearing suitable for dreamy or nostalgic aesthetics,</li>
+  <li>analog-feeling color drift reminiscent of old CRT or lens aberration,</li>
+  <li>a lightweight effect that enhances motion without heavy distortion,</li>
+  <li>a minimal, no-argument filter that always behaves consistently.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>RGB Channel Offset</strong><br />
+Red, green, and blue channels are shifted by micro-amounts, producing a soft separation.</li>
+  <li><strong>Low-Intensity Smear</strong><br />
+Instead of fully duplicating edges, the smear gently blooms color outward.</li>
+  <li><strong>Motion Enhancement</strong><br />
+Moving subjects gain soft trails, giving the impression of mild persistence.</li>
+  <li><strong>Encoding</strong><br />
+The final output is encoded using global Videobeaux CRF, codec, and pixel format.</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> slight_smear <span class="se">\</span>
+  <span class="nt">-i</span> input.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> output.mp4
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
-
 <ul>
   <li><em>(No additional program-specific arguments; uses global videobeaux options only.)</em></li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> slight_smear <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> slight_smear <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> slight_smear_styled.mp4
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> slight_smear <span class="se">\</span>
+  <span class="nt">-i</span> myvideo.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> slight_smear_styled.mp4
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
-
 <video controls="" preload="metadata" style="max-width:100%; border-radius:8px; margin:1em 0;">
   <source src="https://github.com/schwwaaa/videobeaux/assets/7625379/a7bca4c5-46b5-4b51-a827-6b8137d0117d" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Because the smear is subtle, it works well even on footage with delicate details.</li>
+  <li>High-contrast edges reveal the effect most clearly.</li>
+  <li>Compression can either soften or exaggerate the smear depending on CRF.</li>
+  <li>Suitable as a pre-effect before heavier glitch or temporal filters.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Music videos needing gentle stylistic color bloom.</li>
+  <li>Dreamy ambience sequences and soft-focus aesthetics.</li>
+  <li>Collage art where slight distortion adds cohesion.</li>
+  <li>Retro or analog-inspired edits without heavy degradation.</li>
+  <li>As a smoothing layer before applying <code class="language-plaintext highlighter-rouge">lsd_feedback</code>, <code class="language-plaintext highlighter-rouge">crossmosh</code>, or <code class="language-plaintext highlighter-rouge">double_cup</code>.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Lower CRF gives cleaner, smoother smear edges.</li>
+  <li>Higher CRF makes the smear grainier and more textured.</li>
+  <li>Combine with <code class="language-plaintext highlighter-rouge">gamma_fix</code> beforehand for more stable channel balancing.</li>
+  <li>Add <code class="language-plaintext highlighter-rouge">blur_pix</code> afterward for a painterly, soft-focus expansion.</li>
+  <li>Use <code class="language-plaintext highlighter-rouge">convert_dims</code> before smearing if resizing footage for a platform-specific format.</li>
+</ul>
 
 
 

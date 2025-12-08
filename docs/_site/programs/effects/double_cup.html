@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"double_cup","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/double_cup.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -59,34 +59,82 @@
       <section>
 
       <h1 id="double_cup">double_cup</h1>
+<p>:contentReference[oaicite:1]{index=1}</p>
 
 <h2 id="description">Description</h2>
+<p>Applies a syrupy, slowed, woozy audiovisual effect reminiscent of “purple drank” aesthetics.<br />
+The look emphasizes heavy color bleeding, slowed-feeling motion, chromatic haze, and a dreamlike viscosity often associated with chopped-and-screwed culture or psychedelic video distortion.</p>
 
-<p>Apply the effect of purple drank</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">double_cup</code> is ideal for creators who want to:</p>
+<ul>
+  <li>introduce trippy, codeine-inspired visual atmosphere,</li>
+  <li>slow or drag the <em>feeling</em> of motion without modifying frame rate,</li>
+  <li>add soft-focus color diffusion with deep purples and magentas,</li>
+  <li>evoke vaporwave, cloud-rap, chopped/screwed, or intoxicated digital moods,</li>
+  <li>distort clarity into a smeared, syrup-soaked texture.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Color Drenching</strong><br />
+Highlights and midtones are pushed toward purple, pink, and magenta tones.</li>
+  <li><strong>Soft Haze / Bloom</strong><br />
+The image takes on a velvety, low-contrast haze that reduces sharp edges.</li>
+  <li><strong>Viscous Motion Sensation</strong><br />
+Motion may <em>feel</em> slower due to subtle temporal diffusion and blending, even if FPS remains constant.</li>
+  <li><strong>Contrast Flattening</strong><br />
+Dark areas may lift while bright areas smear into a syrup-glow.</li>
+  <li><strong>Encoding</strong><br />
+Output is written using global Videobeaux codec and quality settings.</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P double_cup \
+  -i input.mp4 \
+  -o output.mp4
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
-
 <ul>
   <li><em>(No additional program-specific arguments; uses global videobeaux options only.)</em></li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> double_cup <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> double_cup <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> double_cup_styled.mp4
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P double_cup \
+  -i myvideo.mp4 \
+  -o double_cup_styled.mp4
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
-
 <video controls="" preload="metadata" style="max-width:100%; border-radius:8px; margin:1em 0;">
   <source src="https://github.com/schwwaaa/videobeaux/assets/7625379/83d30a18-40d1-42e4-aff3-dbd50d67a7d1" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>The effect pairs best with footage containing midtone gradients or neon lighting.</li>
+  <li>Compression interacts strongly with this aesthetic — higher CRF values intensify smearing and color wash.</li>
+  <li>Strong purples and pinks may clip if global gamma settings are aggressive; consider pre-processing with <code class="language-plaintext highlighter-rouge">gamma_fix</code>.</li>
+  <li>Works especially well in music video contexts.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Vaporwave, cloud rap, chopped-and-screwed visuals.</li>
+  <li>Psychedelic edits and dream-sequence overlays.</li>
+  <li>Live VJ loops and projection-mapped environments.</li>
+  <li>Mood-setting transitions between high-energy and slow-motion scenes.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Use a lower CRF (higher quality) to retain smooth haze gradients.</li>
+  <li>Combine with <code class="language-plaintext highlighter-rouge">blur_pix</code> or <code class="language-plaintext highlighter-rouge">bad_contrast</code> for more degraded, syrup-soaked textures.</li>
+  <li>For extreme purple saturation, apply <code class="language-plaintext highlighter-rouge">lut_apply</code> with a magenta-heavy LUT before this effect.</li>
+  <li>If the image feels too dark, pair with <code class="language-plaintext highlighter-rouge">gamma_fix</code> for lifted midtones before applying <code class="language-plaintext highlighter-rouge">double_cup</code>.</li>
+</ul>
 
 
       </section>

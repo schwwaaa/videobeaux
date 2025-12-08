@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"reverse","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/reverse.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -59,33 +59,79 @@
       <section>
 
       <h1 id="reverse">reverse</h1>
+<p>:contentReference[oaicite:1]{index=1}</p>
 
 <h2 id="description">Description</h2>
+<p>Reverses the playback of the input video, producing a backward-motion effect.<br />
+This simple but powerful manipulation can completely change the emotional or aesthetic tone of footage, turning ordinary actions into surreal rewinds, resets, or temporal loops.</p>
 
-<p>Reverse video file</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">reverse</code> is designed for creators who want to:</p>
+<ul>
+  <li>flip time direction for stylistic emphasis,</li>
+  <li>generate rewind moments or temporal reversals,</li>
+  <li>create looping effects by combining forward and reverse sequences,</li>
+  <li>enhance glitch, montage, or collage workflows,</li>
+  <li>build playful or cinematic transformations by reversing motion.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Frame Order Inversion</strong><br />
+All frames in the source video stream are read, then written backwards.</li>
+  <li><strong>Audio Handling</strong><br />
+Depending on global Videobeaux settings and FFmpeg behavior, audio may be reversed or muted.<br />
+(Many workflows intentionally mute or replace audio for reverse sequences.)</li>
+  <li><strong>Encoding</strong><br />
+The final reversed output is encoded using global Videobeaux codec, CRF, and pixel-format settings.</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> reverse <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
-
 <ul>
   <li><em>(No additional program-specific arguments; uses global videobeaux options only.)</em></li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> reverse <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> reverse <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> reverse_styled.mp4
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> reverse <span class="se">\</span>
+  <span class="nt">-i</span> myvideo.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> reverse_styled.mp4
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
-
 <video controls="" preload="metadata" style="max-width:100%; border-radius:8px; margin:1em 0;">
   <source src="https://github.com/schwwaaa/videobeaux/assets/7625379/74367227-6fee-455f-af36-804a1e6d6cb6" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Perfect for reversible motion such as walking, pouring, splashing, spinning, or transitions.</li>
+  <li>Some codecs do not allow efficient reverse seeking; full decoding may be required.</li>
+  <li>Audio reversal is often undesirable unless explicitly intended, so many pipelines mute or replace the audio after reversing.</li>
+  <li>Large files may require significant memory or disk usage during reverse operations.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Rewind effects in music videos or narrative sequences.</li>
+  <li>Loop creation by combining forward + reversed versions of the same clip.</li>
+  <li>Glitch-art assemblies where time feels elastic or broken.</li>
+  <li>Transitions or visual punctuation in experimental edits.</li>
+  <li>Montage moments where reverse motion provides humor, shock, or surreal tone.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>For crisp reversed motion, use lower CRF values.</li>
+  <li>Pair with <code class="language-plaintext highlighter-rouge">looper_pro</code> to generate seamless mirrored loops.</li>
+  <li>Combine with <code class="language-plaintext highlighter-rouge">bad_contrast</code> or <code class="language-plaintext highlighter-rouge">double_cup</code> for stylized retro or dreamy rewinds.</li>
+  <li>Apply <code class="language-plaintext highlighter-rouge">reverse</code> before heavy effects if you want the <em>effects themselves</em> to accumulate in reverse order.</li>
+  <li>Apply <code class="language-plaintext highlighter-rouge">reverse</code> after stylistic effects if you want the look preserved but motion reversed.</li>
+</ul>
 
 
 

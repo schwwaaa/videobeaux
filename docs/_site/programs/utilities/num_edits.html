@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"num_edits","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/utilities/num_edits.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,24 +61,73 @@
       <h1 id="num_edits">num_edits</h1>
 
 <h2 id="description">Description</h2>
+<p>Analyzes a timeline or cut structure to count edits, transitions, or shot boundaries for editorial statistics, QC, or structural analysis.</p>
 
-<p>Analyzes a timeline or cut structure to count edits, transitions, or shot boundaries for editorial statistics or QC</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">num_edits</code> provides fast editorial metrics by identifying the number of cuts, transitions, or shot boundaries in a video.<br />
+This helps with:</p>
+<ul>
+  <li>QC validation,</li>
+  <li>editorial pacing analysis,</li>
+  <li>archive metadata generation,</li>
+  <li>automated editing metrics,</li>
+  <li>machine-learning dataset preparation.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Shot Boundary Detection</strong><br />
+Uses visual or luminance-based thresholds to detect edits between shots.</li>
+  <li><strong>Event Counting</strong><br />
+Each boundary event increments the edit count.</li>
+  <li><strong>Reporting</strong><br />
+The final count is embedded or returned based on videobeaux pipeline logic.</li>
+  <li><strong>Speed-Optimized</strong><br />
+Designed for rapid scanning across long-form footage or batch libraries.</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P num_edits \
+  -i input.mp4 \
+  -o output.mp4 \
+  --count VALUE
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">count</code></li>
+  <li><strong>count</strong> — Enables or configures the edit-counting logic. Usually <code class="language-plaintext highlighter-rouge">true</code> or a mode such as <code class="language-plaintext highlighter-rouge">basic</code> vs <code class="language-plaintext highlighter-rouge">detailed</code> depending on implementation.</li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> num_edits <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4 <span class="nt">--count</span> VALUE
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> num_edits <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> num_edits_styled.mp4 <span class="nt">--count</span> EXAMPLE
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P num_edits \
+  -i myvideo.mp4 \
+  -o num_edits_styled.mp4 \
+  --count true
 </code></pre></div></div>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Detection may use pixel-wise difference, histogram deltas, or scene-change detection filters under the hood.</li>
+  <li>Thresholds vary with footage type; high-motion sequences may generate more detected edits.</li>
+  <li>The tool does not modify video; it only analyzes structure.</li>
+  <li>Useful in workflows that require edit-density analytics or QC verification.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Counting edits in commercials, music videos, or high-cut-rate content.</li>
+  <li>Generating metadata for cataloging systems or research datasets.</li>
+  <li>Automated QC workflows to detect unexpected edit patterns.</li>
+  <li>Comparing pacing between cuts or across versions of an edit.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Use higher thresholds for shaky or handheld footage to avoid false positives.</li>
+  <li>Use lower thresholds when analyzing animation or motion-poor material.</li>
+  <li>For statistical studies, run the tool consistently with identical settings across all sources.</li>
+</ul>
 
 
       </section>

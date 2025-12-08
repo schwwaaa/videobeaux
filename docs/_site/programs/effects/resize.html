@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"resize","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/resize.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,29 +61,87 @@
       <h1 id="resize">resize</h1>
 
 <h2 id="description">Description</h2>
+<p>Resizes the dimensions of a video to a specified width and height.<br />
+This module performs a direct scale transformation, producing clean, predictable results for platform formatting, layout prep, or visual uniformity.</p>
 
-<p>Resizing the dimensions of a video file</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">resize</code> is designed for creators who want to:</p>
+<ul>
+  <li>convert videos into specific resolution targets,</li>
+  <li>prepare assets for social platforms (square, vertical, widescreen),</li>
+  <li>normalize input dimensions before compositing in Lagkage,</li>
+  <li>upscale or downscale footage with direct pixel precision,</li>
+  <li>create clean formatting pipelines without aspect-ratio tricks.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Dimension Override</strong><br />
+The user specifies:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">new_width</code></li>
+      <li><code class="language-plaintext highlighter-rouge">new_height</code></li>
+    </ul>
+  </li>
+  <li><strong>Scaling Filter</strong><br />
+FFmpeg’s scaler processes each frame to the requested resolution.</li>
+  <li><strong>Output Encoding</strong><br />
+The final resized image is encoded using global Videobeaux settings (CRF, codec, pixel format, preset).</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> resize <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4 <span class="nt">--new_height</span> VALUE <span class="nt">--new_width</span> VALUE
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">new_height</code></li>
-  <li><code class="language-plaintext highlighter-rouge">new_width</code></li>
+  <li><strong>new_height</strong> — Target output height in pixels.</li>
+  <li><strong>new_width</strong> — Target output width in pixels.</li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> resize <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4 <span class="nt">--new_height</span> VALUE <span class="nt">--new_width</span> VALUE
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> resize <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> resize_styled.mp4 <span class="nt">--new_height</span> EXAMPLE <span class="nt">--new_width</span> EXAMPLE
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> resize <span class="se">\</span>
+  <span class="nt">-i</span> myvideo.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> resize_styled.mp4 <span class="se">\</span>
+  <span class="nt">--new_height</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--new_width</span> EXAMPLE
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
-
 <p><em>Program output video not yet linked.</em></p>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>This module <strong>does not</strong> enforce aspect-ratio preservation.</li>
+  <li>If the provided width and height do not match the original aspect ratio, the result will be stretched or squished — which may be desirable for stylized distortion.</li>
+  <li>For clean upscaling, combine with high-quality pixel formats (e.g., yuv444p or 10-bit formats) if your pipeline supports them.</li>
+  <li>Works well as a preprocessing step for LUTs, Lagkage, overlays, or dimension-specific delivery outputs.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Creating platform-targeted versions:
+    <ul>
+      <li>1080×1920 (reels/stories/shorts)</li>
+      <li>1080×1080 (square grid formats)</li>
+      <li>1920×1080 (landscape)</li>
+    </ul>
+  </li>
+  <li>Normalizing assets before multi-layer compositing.</li>
+  <li>Preparing clips for generative art pipelines where exact sizes matter.</li>
+  <li>Upscaling stylized effects (e.g., painterly, glitch, smear) for high-res exports.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>For crisp results, resize <strong>before</strong> applying heavy effects and grading.</li>
+  <li>For a degraded or lo-fi look, resize <strong>after</strong>, which amplifies artifacts.</li>
+  <li>Use exact values that match your layout or platform’s requirements.</li>
+  <li>Pair with <code class="language-plaintext highlighter-rouge">convert_dims</code> when you want aspect-ratio intelligence; use <code class="language-plaintext highlighter-rouge">resize</code> when you want exact pixel control.</li>
+  <li>For upscaling beyond 2×, consider preprocessing with <code class="language-plaintext highlighter-rouge">gamma_fix</code> or <code class="language-plaintext highlighter-rouge">tonemap_hdr_sdr</code> to stabilize tonal fidelity before scaling.</li>
+</ul>
+
 
 
       </section>

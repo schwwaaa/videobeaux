@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"splitting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/splitting.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,31 +61,79 @@
       <h1 id="splitting">splitting</h1>
 
 <h2 id="description">Description</h2>
+<p>A simple segmentation utility that divides a video into evenly timed chunks or scene-based fragments for modular editing.<br />
+Unlike <code class="language-plaintext highlighter-rouge">splitting_pro</code>, which slices <strong>spatial</strong> regions of the frame, <code class="language-plaintext highlighter-rouge">splitting</code> operates purely in the <strong>time domain</strong>, cutting the clip into temporal sections that can be reused, rearranged, or processed individually.</p>
 
-<p>A simple segmentation utility that divides a video into evenly timed chunks or scene-based fragments for modular editing</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">splitting</code> is designed for creators who want:</p>
+<ul>
+  <li>evenly sized time slices for procedural editing,</li>
+  <li>modular clip fragments for collage or Lagkage workflows,</li>
+  <li>timed intervals for repeatable pattern-based assembly,</li>
+  <li>simple temporal segmentation with no configuration,</li>
+  <li>consistent chunking for downstream effects or batch operations.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Temporal Chunking</strong><br />
+The video is divided into equal-length sections or scene-based fragments depending on internal logic.</li>
+  <li><strong>Frame-Accurate Slicing</strong><br />
+Cuts occur at precise timestamps, ensuring reliable recomposition.</li>
+  <li><strong>Independent Segment Handling</strong><br />
+Segments may be saved, recombined, or used as modular inputs for further editing steps.</li>
+  <li><strong>Encoding</strong><br />
+Output is assembled and encoded using global Videobeaux settings.</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> splitting <span class="se">\</span>
+  <span class="nt">-i</span> input.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> output.mp4
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
-
 <ul>
   <li><em>(No additional program-specific arguments; uses global videobeaux options only.)</em></li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> splitting <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> splitting <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> splitting_styled.mp4
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> splitting <span class="se">\</span>
+  <span class="nt">-i</span> myvideo.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> splitting_styled.mp4
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
-
 <video controls="" preload="metadata" style="max-width:100%; border-radius:8px; margin:1em 0;">
   <source src="https://github.com/user-attachments/assets/b6c13707-aaa8-416e-9f80-5ca6a386cd0f" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Ideal for building modular editing systems where each temporal block is reused.</li>
+  <li>Works cleanly regardless of resolution, codec, or aspect ratio.</li>
+  <li>Output chunk boundaries depend on internal segmentation logic; exact block timing may vary by implementation.</li>
+  <li>Can be paired with normalization tools if segments will be concatenated later.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Procedural editing pipelines.</li>
+  <li>Video collage systems that reassemble timelines randomly.</li>
+  <li>Creating modular “building blocks” for generative video art.</li>
+  <li>Preparing assets for Lagkage layouts or multi-layer structures.</li>
+  <li>Segmenting long recordings into manageable sections for stylized processing.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Use lower CRF if you intend to recombine slices later to avoid generational loss.</li>
+  <li>For glitch workflows, higher CRF can introduce desirable texture into cut boundaries.</li>
+  <li>Apply <code class="language-plaintext highlighter-rouge">convert_dims</code> first if you want uniformity across all segments.</li>
+  <li>Combine with <code class="language-plaintext highlighter-rouge">reverse</code>, <code class="language-plaintext highlighter-rouge">speed</code>, or <code class="language-plaintext highlighter-rouge">nostalgic_stutter</code> to add temporal variation to each slice.</li>
+  <li>Pre-trim your source before splitting to ensure perfect timing alignment.</li>
+</ul>
 
 
 

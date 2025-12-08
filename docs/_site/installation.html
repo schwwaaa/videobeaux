@@ -6,19 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>Getting Started</title>
 <meta name="generator" content="Jekyll v3.10.0" />
-<meta property="og:title" content="Getting Started" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="The friendly multilateral video toolkit built for artists by artists." />
 <meta property="og:description" content="The friendly multilateral video toolkit built for artists by artists." />
-<link rel="canonical" href="http://localhost:4000/videobeaux/getting-started.html" />
-<meta property="og:url" content="http://localhost:4000/videobeaux/getting-started.html" />
+<link rel="canonical" href="http://localhost:4000/videobeaux/installation.html" />
+<meta property="og:url" content="http://localhost:4000/videobeaux/installation.html" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Getting Started" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"Getting Started","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/getting-started.html"}</script>
+{"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/installation.html"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
@@ -58,7 +55,36 @@
       </header>
       <section>
 
-      <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">--help</span>
+      
+<hr />
+<p>layout: default
+title: Installation
+nav_order: 4
+—</p>
+
+<h1 id="macoslinux">macOS/Linux</h1>
+
+<p>In the shell prompt, go to the place where you want the project to live. Paste that in a macOS Terminal or Linux shell prompt &amp; run it.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/bin/bash <span class="nt">-c</span> <span class="s2">"</span><span class="si">$(</span>curl <span class="nt">-fsSL</span> https://raw.githubusercontent.com/schwwaaa/videobeaux/refs/heads/main/install.sh<span class="si">)</span><span class="s2">"</span>
+</code></pre></div></div>
+
+<h1 id="windows">Windows</h1>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">choco</span><span class="w"> </span><span class="nx">install</span><span class="w"> </span><span class="nx">ffmpeg</span><span class="w">
+</span><span class="n">setx</span><span class="w"> </span><span class="nx">VIDEOBEAUX_PATH</span><span class="w"> </span><span class="s2">"C:\videobeaux"</span><span class="w">
+</span></code></pre></div></div>
+
+<h1 id="usage">Usage</h1>
+
+<h2 id="activate-virtual-environment">Activate virtual environment</h2>
+<p>This will activate your virtual environment. Immediately, you will notice that your terminal path includes env, signifying an activated virtual environment.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">source env</span>/bin/activate
+<span class="c">### Check the installation</span>
+
+<span class="c">### Get help and find out more about videobeaux</span>
+<span class="sb">```</span> bash
+videobeaux <span class="nt">--help</span>
 </code></pre></div></div>
 <p>… outputs the following …</p>
 

@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"speed","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/speed.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,31 +61,93 @@
       <h1 id="speed">speed</h1>
 
 <h2 id="description">Description</h2>
+<p>Changes the playback speed of the input video and audio simultaneously.<br />
+This module is useful for slow motion, fast motion, timelapse, rhythmic edits, and any effect requiring temporal compression or expansion.</p>
 
-<p>Change the video and audio speed of a file</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">speed</code> is designed for creators who want to:</p>
+<ul>
+  <li>increase or decrease playback speed uniformly,</li>
+  <li>generate slow-motion or fast-motion stylization,</li>
+  <li>build rhythmic visual edits synced to music,</li>
+  <li>create timelapse effects without external tools,</li>
+  <li>maintain audio pitch relationship unless later reprocessed.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Timebase Adjustment</strong><br />
+Video frames are retimed according to the provided speed factor.</li>
+  <li><strong>Audio Resampling</strong><br />
+Audio is also sped up or slowed down to match the new video duration.</li>
+  <li><strong>Encoding</strong><br />
+The resulting retimed clip is encoded using global Videobeaux settings (codec, CRF, pixel format).</li>
+</ol>
+
+<h3 id="notes">Notes</h3>
+<ul>
+  <li>Speed values <strong>greater than 1.0</strong> = faster playback.</li>
+  <li>Speed values <strong>less than 1.0</strong> = slower playback.</li>
+</ul>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> speed <span class="se">\</span>
+  <span class="nt">-i</span> input.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> output.mp4 <span class="se">\</span>
+  <span class="nt">--speed_factor</span> VALUE
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">speed_factor</code></li>
+  <li><strong>speed_factor</strong> — Multiplier for playback speed.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">0.5</code> → half-speed (slow motion)</li>
+      <li><code class="language-plaintext highlighter-rouge">2.0</code> → double-speed (fast motion)</li>
+      <li><code class="language-plaintext highlighter-rouge">0.25</code> → quarter-speed</li>
+      <li><code class="language-plaintext highlighter-rouge">4.0</code> → 4× speed</li>
+    </ul>
+  </li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> speed <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4 <span class="nt">--speed_factor</span> VALUE
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> speed <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> speed_styled.mp4 <span class="nt">--speed_factor</span> EXAMPLE
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> speed <span class="se">\</span>
+  <span class="nt">-i</span> myvideo.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> speed_styled.mp4 <span class="se">\</span>
+  <span class="nt">--speed_factor</span> EXAMPLE
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
-
 <video controls="" preload="metadata" style="max-width:100%; border-radius:8px; margin:1em 0;">
   <source src="https://github.com/schwwaaa/videobeaux/assets/7625379/c27efdb1-ae81-4d8d-a153-de6294b7fedf" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Audio pitch will shift unless processed later with an external pitch-correction tool.</li>
+  <li>High speed factors may expose motion judder depending on frame rate.</li>
+  <li>Very slow speeds may require additional interpolation if smooth motion is desired (use <code class="language-plaintext highlighter-rouge">frame_interpolate</code> first).</li>
+  <li>Retime operations do not introduce new frames; they only alter timing unless combined with interpolation.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Music video edits synced to rhythmic patterns.</li>
+  <li>Timelapse creation.</li>
+  <li>Slow-motion mood sequences.</li>
+  <li>Fast-motion montage, humor, or surreal pacing.</li>
+  <li>Preprocessing before LUTs or effects when timing matters.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>For the cleanest slow motion, run <code class="language-plaintext highlighter-rouge">frame_interpolate</code> before <code class="language-plaintext highlighter-rouge">speed</code> to create missing frames.</li>
+  <li>Use lower CRF for crisp motion edges when speeding up footage.</li>
+  <li>Use higher CRF for intentionally grittier motion artifacts.</li>
+  <li>Pair with <code class="language-plaintext highlighter-rouge">looper_pro</code> for smooth motion loops.</li>
+  <li>Combine with <code class="language-plaintext highlighter-rouge">nostalgic_stutter</code> or <code class="language-plaintext highlighter-rouge">bad_animation</code> for stylized cadence distortion.</li>
+</ul>
 
 
 

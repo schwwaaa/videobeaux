@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"watermark","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/utilities/watermark.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,35 +61,127 @@
       <h1 id="watermark">watermark</h1>
 
 <h2 id="description">Description</h2>
+<p>Applies image or text watermarks onto video with configurable positioning, scaling, opacity, and blend style.</p>
 
-<p>Applies image or text watermarks onto video with configurable positioning, scaling, opacity, and blend style</p>
+<h2 id="purpose">Purpose</h2>
+<p>The <code class="language-plaintext highlighter-rouge">watermark</code> program allows creators to apply branding, artist signatures, copyright marks, or aesthetic overlays to video.<br />
+It supports dynamic placement, scaling, opacity control, looping behavior for animated watermarks, and optional spinning for stylized effects.<br />
+This tool is designed for flexible, production-ready watermark rendering in both subtle and bold presentation styles.</p>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Watermark Source</strong><br />
+Accepts PNG (with alpha), static images, GIFs, or video files as the watermark.</li>
+  <li><strong>Placement Logic</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">placement</code> sets anchor position (<code class="language-plaintext highlighter-rouge">top-left</code>, <code class="language-plaintext highlighter-rouge">top-right</code>, <code class="language-plaintext highlighter-rouge">center</code>, etc.).</li>
+      <li><code class="language-plaintext highlighter-rouge">margin</code> offsets the watermark inward from edges.</li>
+    </ul>
+  </li>
+  <li><strong>Scaling &amp; Opacity</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">scale</code> determines size relative to the input video.</li>
+      <li><code class="language-plaintext highlighter-rouge">opacity</code> controls transparency for subtle or strong branding.</li>
+    </ul>
+  </li>
+  <li><strong>Animated Watermarks</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">wm_loop</code> determines whether GIF/video watermarks loop.</li>
+      <li><code class="language-plaintext highlighter-rouge">ignore_loop</code> overrides embedded loop metadata for continuous playback.</li>
+    </ul>
+  </li>
+  <li><strong>Timing Controls</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">start</code> and <code class="language-plaintext highlighter-rouge">end</code> specify when the watermark appears.</li>
+    </ul>
+  </li>
+  <li><strong>Optional Spin</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">spin</code> rotates the watermark (<code class="language-plaintext highlighter-rouge">none</code>, <code class="language-plaintext highlighter-rouge">slow</code>, <code class="language-plaintext highlighter-rouge">medium</code>, <code class="language-plaintext highlighter-rouge">fast</code>).</li>
+    </ul>
+  </li>
+  <li><strong>Encoding</strong><br />
+Output uses the provided CRF and preset options for consistent quality.</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P watermark \
+  -i input.mp4 \
+  -o output.mp4 \
+  --watermark VALUE \
+  --placement VALUE \
+  --margin VALUE \
+  --scale VALUE \
+  --opacity VALUE \
+  --spin VALUE \
+  --start VALUE \
+  --end VALUE \
+  --wm_loop VALUE \
+  --ignore_loop VALUE \
+  --video_crf VALUE \
+  --video_preset VALUE
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">watermark</code></li>
-  <li><code class="language-plaintext highlighter-rouge">placement</code></li>
-  <li><code class="language-plaintext highlighter-rouge">margin</code></li>
-  <li><code class="language-plaintext highlighter-rouge">scale</code></li>
-  <li><code class="language-plaintext highlighter-rouge">opacity</code></li>
-  <li><code class="language-plaintext highlighter-rouge">spin</code></li>
-  <li><code class="language-plaintext highlighter-rouge">start</code></li>
-  <li><code class="language-plaintext highlighter-rouge">end</code></li>
-  <li><code class="language-plaintext highlighter-rouge">wm_loop</code></li>
-  <li><code class="language-plaintext highlighter-rouge">ignore_loop</code></li>
-  <li><code class="language-plaintext highlighter-rouge">video_crf</code></li>
-  <li><code class="language-plaintext highlighter-rouge">video_preset</code></li>
+  <li><strong>watermark</strong> — Path to the watermark image/video file.</li>
+  <li><strong>placement</strong> — Anchor location (<code class="language-plaintext highlighter-rouge">top-left</code>, <code class="language-plaintext highlighter-rouge">top-right</code>, <code class="language-plaintext highlighter-rouge">center</code>, etc.).</li>
+  <li><strong>margin</strong> — Pixel offset from edges, applied to chosen placement.</li>
+  <li><strong>scale</strong> — Watermark size as a percentage of video resolution.</li>
+  <li><strong>opacity</strong> — Transparency level (0.0–1.0).</li>
+  <li><strong>spin</strong> — Rotation behavior (<code class="language-plaintext highlighter-rouge">none</code>, <code class="language-plaintext highlighter-rouge">slow</code>, etc.).</li>
+  <li><strong>start</strong> — Timestamp when watermark begins appearing.</li>
+  <li><strong>end</strong> — Timestamp when watermark stops appearing.</li>
+  <li><strong>wm_loop</strong> — Controls looping behavior of animated watermarks.</li>
+  <li><strong>ignore_loop</strong> — Forces continuous play, overriding GIF/video loop metadata.</li>
+  <li><strong>video_crf</strong> — CRF controlling overall visual quality.</li>
+  <li><strong>video_preset</strong> — Encoder preset adjusting render speed vs. compression.</li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> watermark <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4 <span class="nt">--watermark</span> VALUE <span class="nt">--placement</span> VALUE <span class="nt">--margin</span> VALUE <span class="nt">--scale</span> VALUE <span class="nt">--opacity</span> VALUE <span class="nt">--spin</span> VALUE <span class="nt">--start</span> VALUE <span class="nt">--end</span> VALUE <span class="nt">--wm_loop</span> VALUE <span class="nt">--ignore_loop</span> VALUE <span class="nt">--video_crf</span> VALUE <span class="nt">--video_preset</span> VALUE
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> watermark <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> watermark_styled.mp4 <span class="nt">--watermark</span> EXAMPLE <span class="nt">--placement</span> EXAMPLE <span class="nt">--margin</span> EXAMPLE <span class="nt">--scale</span> EXAMPLE <span class="nt">--opacity</span> EXAMPLE <span class="nt">--spin</span> EXAMPLE <span class="nt">--start</span> EXAMPLE <span class="nt">--end</span> EXAMPLE <span class="nt">--wm_loop</span> EXAMPLE <span class="nt">--ignore_loop</span> EXAMPLE <span class="nt">--video_crf</span> EXAMPLE <span class="nt">--video_preset</span> EXAMPLE
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P watermark \
+  -i myvideo.mp4 \
+  -o watermark_styled.mp4 \
+  --watermark logo.png \
+  --placement bottom-right \
+  --margin 48 \
+  --scale 22 \
+  --opacity 0.85 \
+  --spin none \
+  --start 0 \
+  --end 99999 \
+  --wm_loop true \
+  --ignore_loop false \
+  --video_crf 18 \
+  --video_preset medium
 </code></pre></div></div>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>PNG or WebP with alpha produces the cleanest transparency.</li>
+  <li>Scaling above 40–50% may reveal softness depending on watermark resolution.</li>
+  <li>GIFs can be heavy; consider converting animated watermarks to WebM.</li>
+  <li>High opacity (&gt;0.9) can dominate imagery; branding often prefers 0.35–0.75.</li>
+  <li>Spinning overlays increase rendering time due to per-frame transformations.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Artist signatures, branding marks, portfolio reels.</li>
+  <li>Subtle watermarks for social media videos.</li>
+  <li>Bold center overlays for drafts, screeners, and pre-release content.</li>
+  <li>Animated or stylized overlays for creative/motion-design aesthetics.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Use CRF <strong>16–20</strong> for high-quality, lightweight renders.</li>
+  <li>Keep watermark assets at <strong>2× resolution</strong> for sharp results after scaling.</li>
+  <li>For subtle looks: lower opacity, small scale, bottom-right placement.</li>
+  <li>For strong visibility: center placement, moderate opacity, optional spin.</li>
+  <li>Animated overlays work best at ~12–18fps to optimize encoding performance.</li>
+</ul>
 
 
       </section>

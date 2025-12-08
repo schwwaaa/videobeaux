@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"splitting_pro","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/splitting_pro.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,29 +61,85 @@
       <h1 id="splitting_pro">splitting_pro</h1>
 
 <h2 id="description">Description</h2>
+<p>A precise segmentation tool that slices a source video into reusable chunks based on positional slicing rules.<br />
+<code class="language-plaintext highlighter-rouge">splitting_pro</code> allows creators to extract vertical or horizontal bands of the frame, enabling compositing, collage workflows, displacement patterns, and region-based editing.</p>
 
-<p>Precise segmentation tool that slices a source video into reusable chunks based on time, count, or scene-style rules for downstream editing and recombination.</p>
+<p>Unlike timeline slicing tools, <code class="language-plaintext highlighter-rouge">splitting_pro</code> manipulates <strong>spatial</strong> slices of a single frame, carving out portions of the video image for recombination or further processing.</p>
+
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">splitting_pro</code> is designed for creators who want:</p>
+<ul>
+  <li>spatial slicing rather than temporal cutting,</li>
+  <li>vertical or horizontal extraction of visual regions,</li>
+  <li>inputs for collage, displacement, glitch layering, or geometric composition,</li>
+  <li>deterministic cropping that can be repeated across clips,</li>
+  <li>simple region control with only two parameters.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Define Slice Width</strong><br />
+The <code class="language-plaintext highlighter-rouge">width</code> parameter determines how large the slice is (in pixels or proportional units depending on implementation).</li>
+  <li><strong>Define Slice Position</strong><br />
+The <code class="language-plaintext highlighter-rouge">position</code> parameter determines where the slice begins — allowing sliding-window or fixed-region extraction.</li>
+  <li><strong>Spatial Cropping</strong><br />
+The module extracts that region from every frame, maintaining spatial consistency across the entire clip.</li>
+  <li><strong>Output Encoding</strong><br />
+The slice is encoded using global Videobeaux settings (codec, CRF, pixel format).</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> splitting_pro <span class="se">\</span>
+  <span class="nt">-i</span> input.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> output.mp4 <span class="se">\</span>
+  <span class="nt">--width</span> VALUE <span class="se">\</span>
+  <span class="nt">--position</span> VALUE
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">width</code></li>
-  <li><code class="language-plaintext highlighter-rouge">position</code></li>
+  <li><strong>width</strong> — The thickness of the slice extracted from the frame.</li>
+  <li><strong>position</strong> — Where the slice begins relative to the frame’s coordinate system.</li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> splitting_pro <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4 <span class="nt">--width</span> VALUE <span class="nt">--position</span> VALUE
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> splitting_pro <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> splitting_pro_styled.mp4 <span class="nt">--width</span> EXAMPLE <span class="nt">--position</span> EXAMPLE
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> splitting_pro <span class="se">\</span>
+  <span class="nt">-i</span> myvideo.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> splitting_pro_styled.mp4 <span class="se">\</span>
+  <span class="nt">--width</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--position</span> EXAMPLE
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
-
 <p><em>Program output video not yet linked.</em></p>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Useful for creating moving-window effects when paired with scrolling modules.</li>
+  <li>To extract a centered region, calculate <code class="language-plaintext highlighter-rouge">position</code> based on <code class="language-plaintext highlighter-rouge">(frame_size - width) / 2</code>.</li>
+  <li>Thin slices work well for displacement maps and glitch-strip compositions.</li>
+  <li>Slicing can be directional; depending on implementation, <code class="language-plaintext highlighter-rouge">width</code> may represent horizontal or vertical dimension.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Split-screen collage layouts.</li>
+  <li>Creating stripe-based glitch effects.</li>
+  <li>Feeding sliced layers into Lagkage for recombination.</li>
+  <li>Region extraction for stylized cropping, masks, or compositing.</li>
+  <li>Generating displacement textures from narrow video bands.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Lower CRF for sharp edges on the sliced boundary.</li>
+  <li>Higher CRF for grittier, more distorted slices.</li>
+  <li>Pair with <code class="language-plaintext highlighter-rouge">blur_pix</code> for soft-edge slicing.</li>
+  <li>Combine with <code class="language-plaintext highlighter-rouge">scrolling_pro</code> to animate the sliced region across time.</li>
+  <li>Apply before LUTs for unified grading of sliced material.</li>
+</ul>
+
 
 
       </section>

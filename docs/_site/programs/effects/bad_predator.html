@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"bad_predator","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/bad_predator.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,32 +61,77 @@
       <h1 id="bad_predator">bad_predator</h1>
 
 <h2 id="description">Description</h2>
+<p>Applies a stylized “bad Predator heat vision” effect to the input video.<br />
+This intentionally degraded thermal-vision look mimics the broken or low-budget interpretation of the thermal-view used in the <em>Predator</em> films — surreal color distortion, thermal-like banding, exaggerated edge detection, and unstable gradients.</p>
 
-<p>Apply bad Predator heat vision effect</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">bad_predator</code> is designed for creators who want to:</p>
+<ul>
+  <li>add a faux–heat vision aesthetic,</li>
+  <li>produce psychedelic or thermal-like color distortions,</li>
+  <li>disrupt realism with genre-coded VFX,</li>
+  <li>introduce mood, abstraction, or sci-fi ambience,</li>
+  <li>create an intentionally <em>wrong</em> or glitchy interpretation of cinematic thermal vision.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Thermal Color Remapping</strong><br />
+The video is transformed into an artificial temperature-based palette, often with exaggerated reds, blues, greens, and neon ranges.</li>
+  <li><strong>Edge Boosting &amp; Gradient Distortion</strong><br />
+Edges may “glow,” flatten, or warp, imitating digital thermal sensors or corrupted color channels.</li>
+  <li><strong>Contrast Folding</strong><br />
+Shadows and highlights are redistributed into stylized color bins rather than natural brightness patterns.</li>
+  <li><strong>Encoding</strong><br />
+Output is encoded using global Videobeaux settings (codec, CRF, pixel format).</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P bad_predator \
+  -i input.mp4 \
+  -o output.mp4
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
-
 <ul>
   <li><em>(No additional program-specific arguments; uses global videobeaux options only.)</em></li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> bad_predator <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> bad_predator <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> bad_predator_styled.mp4
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P bad_predator \
+  -i myvideo.mp4 \
+  -o bad_predator_styled.mp4
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
-
 <video controls="" preload="metadata" style="max-width:100%; border-radius:8px; margin:1em 0;">
   <source src="https://github.com/schwwaaa/videobeaux/assets/7625379/0968ad50-cc97-4336-938f-01b47d86a7bd" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>The effect is purely stylistic — not physically accurate thermal imaging.</li>
+  <li>Works best on footage with strong silhouettes or motion, where thermal-emulated contrast is most visible.</li>
+  <li>If the global pixel format is set to low bit depth (e.g., 8-bit), banding interacts strongly with the effect, enhancing the “bad thermal” look.</li>
+  <li>Use <code class="language-plaintext highlighter-rouge">chain_builder</code> to combine with other stylized processes for multi-layer sci-fi or horror visuals.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Music videos, experimental film, and glitch-aesthetic sequences.</li>
+  <li>Sci-fi projects referencing Predator-style heat vision.</li>
+  <li>Stylized surveillance overlays or false-sensor aesthetics.</li>
+  <li>Abstract color grading for live visuals or performance art.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Apply before compression-heavy steps to preserve the color distortions.</li>
+  <li>Combine with <code class="language-plaintext highlighter-rouge">bad_contrast</code>, <code class="language-plaintext highlighter-rouge">hash_fingerprint</code>, or <code class="language-plaintext highlighter-rouge">bad_animation</code> for a fully degraded sensory aesthetic.</li>
+  <li>Use lower CRF values to avoid washing out the neon tonal ranges.</li>
+  <li>Consider pairing with <code class="language-plaintext highlighter-rouge">gamma_fix</code> to stabilize midtone visibility before applying the effect.</li>
+</ul>
 
 
       </section>

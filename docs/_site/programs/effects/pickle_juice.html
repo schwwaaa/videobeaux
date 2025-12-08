@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"pickle_juice","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/pickle_juice.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,31 +61,85 @@
       <h1 id="pickle_juice">pickle_juice</h1>
 
 <h2 id="description">Description</h2>
+<p>Applies a stylized color-treatment effect that makes the video appear as if it were “dipped in pickle juice.”<br />
+This look often includes green-tinted washes, acidic highlights, sour midtone shifts, and a brined, stained aesthetic reminiscent of aged film submerged in an odd chemical bath.</p>
 
-<p>Apply filter like the video was dipped in pickle juice</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">pickle_juice</code> is designed for creators who want:</p>
+<ul>
+  <li>green, brined, or chemically-tinted color distortion,</li>
+  <li>a dirty, acidic film-wash effect,</li>
+  <li>moody or surreal grading without using LUTs,</li>
+  <li>stylized discoloration for music videos, collage art, or experimental edits,</li>
+  <li>an instantly recognizable “soured” treatment that feels organic and gritty.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Color Shifting</strong><br />
+The effect pushes hues toward:
+    <ul>
+      <li>greenish brine,</li>
+      <li>yellow-acid midtones,</li>
+      <li>desaturated shadows.</li>
+    </ul>
+  </li>
+  <li><strong>Highlight Contamination</strong><br />
+Bright regions may take on a pickled glow, exaggerating chemical staining.</li>
+  <li><strong>Tonal Warping</strong>
+Midtones may twist or invert subtly to enhance the brined aesthetic.</li>
+  <li><strong>Encoding</strong><br />
+Output is encoded using global Videobeaux parameters (CRF, codec, pixel format).</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> pickle_juice <span class="se">\</span>
+  <span class="nt">-i</span> input.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> output.mp4
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
-
 <ul>
   <li><em>(No additional program-specific arguments; uses global videobeaux options only.)</em></li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> pickle_juice <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> pickle_juice <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> pickle_juice_styled.mp4
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> pickle_juice <span class="se">\</span>
+  <span class="nt">-i</span> myvideo.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> pickle_juice_styled.mp4
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
-
 <video controls="" preload="metadata" style="max-width:100%; border-radius:8px; margin:1em 0;">
   <source src="https://github.com/schwwaaa/videobeaux/assets/7625379/387bfff5-fbdd-423d-b482-8ab4d5ce744f" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Green-heavy color channels may clip differently depending on global gamma or LUTs applied earlier in the chain.</li>
+  <li>Compression artifacts may take on a greenish tint, especially at higher CRF values.</li>
+  <li>Works very well on brightly lit footage, where the “pickle wash” becomes more obvious.</li>
+  <li>The effect’s strength may vary depending on the source’s saturation and dynamic range.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Stylized music videos seeking gritty, acidic toning.</li>
+  <li>Collage-style edits where each clip has a unique chemical wash.</li>
+  <li>VHS-simulation workflows combined with <code class="language-plaintext highlighter-rouge">bad_contrast</code> or <code class="language-plaintext highlighter-rouge">nostalgic_stutter</code>.</li>
+  <li>Color-driven experimental cinematography.</li>
+  <li>Thematic sequences that benefit from a “soured,” off-kilter look.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Use lower CRF values to keep the color warping clean and smooth.</li>
+  <li>Use higher CRF if you want noisy, grainy, stained artifacts.</li>
+  <li>Pair with <code class="language-plaintext highlighter-rouge">gamma_fix</code> before applying for more consistent pickle coloration across the image.</li>
+  <li>Combine with <code class="language-plaintext highlighter-rouge">blur_pix</code> for a soft, brined haze effect.</li>
+  <li>Apply after <code class="language-plaintext highlighter-rouge">convert_dims</code> if producing platform-specific versions (square, reels, etc.).</li>
+</ul>
 
 
 

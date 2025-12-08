@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"scrolling_pro","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/scrolling_pro.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -59,30 +59,58 @@
       <section>
 
       <h1 id="scrolling_pro">scrolling_pro</h1>
+<p>:contentReference[oaicite:1]{index=1}</p>
 
 <h2 id="description">Description</h2>
+<p>Applies a continuous scrolling effect to the video, allowing the image to move horizontally, vertically, or in both directions simultaneously.<br />
+This module is ideal for generating drifting motion, conveyor-like movement, kinetic wallpaper loops, and directional flow effects.</p>
 
-<p>Apply video scrolling effect with definable parameters</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">scrolling_pro</code> is designed for creators who want:</p>
+<ul>
+  <li>seamless directional movement for loops or backgrounds,</li>
+  <li>kinetic motion overlays in collage or compositing workflows,</li>
+  <li>horizontal, vertical, or diagonal drifting of footage,</li>
+  <li>a simple way to generate infinite-scroll–style visuals,</li>
+  <li>controllable speed for gentle drift or aggressive motion.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Coordinate Translation</strong><br />
+Each frame is shifted on the X and/or Y axis according to the defined scroll speeds.</li>
+  <li><strong>Continuous Wraparound</strong><br />
+As the image scrolls, pixels exiting one side re-enter from the opposite side, creating an infinite looping illusion.</li>
+  <li><strong>Directional Combination</strong><br />
+Horizontal and vertical speeds can be combined, creating diagonal or complex drift patterns.</li>
+  <li><strong>Encoding</strong><br />
+Output is then encoded using Videobeaux global settings (codec, CRF, pixel format).</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> scrolling_pro <span class="se">\</span>
+  <span class="nt">-i</span> input.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> output.mp4 <span class="se">\</span>
+  <span class="nt">--horiz_speed</span> VALUE <span class="se">\</span>
+  <span class="nt">--vert_speed</span> VALUE
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">horiz_speed</code></li>
-  <li><code class="language-plaintext highlighter-rouge">vert_speed</code></li>
+  <li><strong>horiz_speed</strong> — Horizontal scrolling speed. Positive = scroll right; negative = scroll left.</li>
+  <li><strong>vert_speed</strong> — Vertical scrolling speed. Positive = scroll down; negative = scroll up.</li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> scrolling_pro <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4 <span class="nt">--horiz_speed</span> VALUE <span class="nt">--vert_speed</span> VALUE
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> scrolling_pro <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> scrolling_pro_styled.mp4 <span class="nt">--horiz_speed</span> EXAMPLE <span class="nt">--vert_speed</span> EXAMPLE
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> scrolling_pro <span class="se">\</span>
+  <span class="nt">-i</span> myvideo.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> scrolling_pro_styled.mp4 <span class="se">\</span>
+  <span class="nt">--horiz_speed</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--vert_speed</span> EXAMPLE
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
-
 <video controls="" preload="metadata" style="max-width:100%; border-radius:8px; margin:1em 0;">
   <source src="https://github.com/schwwaaa/videobeaux/assets/7625379/e84cfb49-f72d-449e-833a-0271903704f4" type="video/mp4" />
   Your browser does not support the video tag.
@@ -97,6 +125,33 @@
   <source src="https://github.com/schwwaaa/videobeaux/assets/7625379/4a4272de-e074-4e37-8c2d-a282f2d8be57" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Large scroll speeds may produce rapid motion suitable for glitch or kinetic graphics.</li>
+  <li>Small scroll speeds create subtle drifting backgrounds or ambient wallpaper loops.</li>
+  <li>Because wraparound is seamless, the effect is ideal for loops when combined with <code class="language-plaintext highlighter-rouge">looper_pro</code>.</li>
+  <li>Diagonal motion is achieved when both speeds are non-zero.</li>
+  <li>Higher-resolution footage yields smoother scroll texture, especially for slow motion.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>VJ loops and projection mapping backgrounds.</li>
+  <li>Infinite-scroll ambience for installations or screensavers.</li>
+  <li>Graphic overlays behind text or UI elements.</li>
+  <li>Creating drifting collage components inside Lagkage layouts.</li>
+  <li>Building kinetic transitions between scenes.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Use lower CRF for cleaner scroll edges, especially with detailed textures.</li>
+  <li>Slight blur (e.g., via <code class="language-plaintext highlighter-rouge">blur_pix</code>) before scrolling can remove hard seams in loop textures.</li>
+  <li>Combine with <code class="language-plaintext highlighter-rouge">double_cup</code> or <code class="language-plaintext highlighter-rouge">lsd_feedback</code> for trippy drifting effects.</li>
+  <li>Slow speeds often look more cinematic; fast speeds suit glitch or techno edits.</li>
+  <li>Apply <code class="language-plaintext highlighter-rouge">convert_dims</code> first if you need scroll-safe aspect ratios for looping platforms.</li>
+</ul>
 
 
 

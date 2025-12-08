@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"recalled_sensor","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/recalled_sensor.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,28 +61,78 @@
       <h1 id="recalled_sensor">recalled_sensor</h1>
 
 <h2 id="description">Description</h2>
+<p>Simulates the look of a malfunctioning digital camera sensor that is defective, failing, or subject to an official recall.<br />
+This effect introduces corrupted rows, unstable color channels, dead-pixel clusters, exposure tearing, and chaotic image instability — mimicking catastrophic sensor failure.</p>
 
-<p>Apply filter like a sensor was broken and to-be recalled</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">recalled_sensor</code> is designed for creators who want:</p>
+<ul>
+  <li>the aesthetics of a physically damaged or overheating sensor,</li>
+  <li>horizontal tearing, line corruption, or rolling-shutter breakage,</li>
+  <li>dead-pixel patterns, color-channel misalignment, or gritty digital decay,</li>
+  <li>an aggressive technical-failure look appropriate for glitch, horror, sci-fi, or surveillance themes,</li>
+  <li>unpredictable, chaotic motion artifacts that cannot be achieved through normal grading.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Simulated Sensor Row Failure</strong><br />
+Horizontal lines may break, misalign, repeat, or shift.</li>
+  <li><strong>Color-Channel Corruption</strong><br />
+Red, green, and blue channels may desynchronize or flicker independently.</li>
+  <li><strong>Dead Pixel Noise Injection</strong><br />
+Bright or dark pixel speckles mimic sensor element burnouts.</li>
+  <li><strong>Rolling-Shutter Breakdown</strong><br />
+Temporal distortions produce jittering horizontal bands or broken scanlines.</li>
+  <li><strong>Encoding</strong><br />
+Output is encoded using global Videobeaux settings for codec, CRF, and pixel format.</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> recalled_sensor <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
-
 <ul>
   <li><em>(No additional program-specific arguments; uses global videobeaux options only.)</em></li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> recalled_sensor <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> recalled_sensor <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> recalled_sensor_styled.mp4
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> recalled_sensor <span class="se">\</span>
+  <span class="nt">-i</span> myvideo.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> recalled_sensor_styled.mp4
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
-
 <p><em>Program output video omitted due to size; see repository for reference clips.</em></p>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>High-motion scenes produce more dramatic tearing because of simulated rolling-shutter corruption.</li>
+  <li>Bright surfaces intensify dead-pixel bloom and channel misalignment.</li>
+  <li>Compression interacts strongly with corrupted scanlines — higher CRF will exaggerate the effect.</li>
+  <li>Because the distortion emulates hardware malfunction rather than pure software effect, the results may appear chaotic and non-repetitive.</li>
+  <li>Works with any resolution but is most convincing at HD or higher due to visible pixel-grid patterns.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Horror, sci-fi, or techno-thriller sequences involving malfunctioning equipment.</li>
+  <li>Glitch art and experimental cinema exploring digital decay.</li>
+  <li>Surveillance or found-footage aesthetics that require broken-camera realism.</li>
+  <li>Transitions where catastrophic failure is used as a visual punctuation.</li>
+  <li>Layering beneath <code class="language-plaintext highlighter-rouge">crossmosh</code> or <code class="language-plaintext highlighter-rouge">overexposed_stutter</code> for extreme destruction.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Lower CRF if you want crisp corrupted lines; higher CRF if you prefer smearing and noise.</li>
+  <li>Pair with <code class="language-plaintext highlighter-rouge">bad_contrast</code> for harsher tonal collapse.</li>
+  <li>Combine with <code class="language-plaintext highlighter-rouge">lsd_feedback</code> or <code class="language-plaintext highlighter-rouge">frame_delay_pro2</code> to create evolving sensor meltdown effects.</li>
+  <li>If the clip is too bright, pre-process with <code class="language-plaintext highlighter-rouge">gamma_fix</code> to avoid overwhelming bloom in the corrupted channels.</li>
+  <li>For realistic malfunction aesthetics, leave the effect unchained; for surreal results, chain with other distortive modules.</li>
+</ul>
+
 
 
       </section>

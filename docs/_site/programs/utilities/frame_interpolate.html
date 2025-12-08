@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"frame_interpolate","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/utilities/frame_interpolate.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -59,39 +59,139 @@
       <section>
 
       <h1 id="frame_interpolate">frame_interpolate</h1>
+<p>:contentReference[oaicite:1]{index=1}</p>
 
 <h2 id="description">Description</h2>
+<p>Generates smooth slow-motion or higher-FPS video by creating intermediate frames using motion-compensated interpolation.</p>
 
-<p>Generates smooth slow-motion or higher-FPS video by creating intermediate frames using motion-compensated interpolation</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">frame_interpolate</code> creates additional frames between existing frames to produce:</p>
+<ul>
+  <li>ultra-smooth slow motion,</li>
+  <li>high-FPS versions of footage,</li>
+  <li>stabilized motion flow for VR, gaming, or cinematic sequences,</li>
+  <li>visually enhanced motion for archival or restoration tasks.</li>
+</ul>
+
+<p>It supports multiple interpolation engines (RIFE, DAIN, FFmpeg Minterpolate), allowing both high-quality deep-learning interpolation and traditional optical-flow methods.</p>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Engine Selection</strong><br />
+Choose interpolation backend:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">rife</code> (AI-based, fast, high quality)</li>
+      <li><code class="language-plaintext highlighter-rouge">dain</code> (AI-based, depth-aware interpolation)</li>
+      <li><code class="language-plaintext highlighter-rouge">ffmpeg</code> (classical minterpolate optical flow)</li>
+    </ul>
+  </li>
+  <li><strong>Interpolation Strategy</strong>
+    <ul>
+      <li><strong>fps</strong>: Defines the exact output frame rate.</li>
+      <li><strong>multiplier</strong>: Doubles, triples, or otherwise multiplies the existing frame count.</li>
+    </ul>
+  </li>
+  <li><strong>Optical Flow Configuration</strong> (FFmpeg engine)
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">mi_mode</code>, <code class="language-plaintext highlighter-rouge">me_mode</code>, <code class="language-plaintext highlighter-rouge">mc_mode</code> configure interpolation, motion estimation, and motion compensation logic.</li>
+      <li><code class="language-plaintext highlighter-rouge">vsbmc</code> enables virtual scene-based motion compensation.</li>
+      <li><code class="language-plaintext highlighter-rouge">scd</code> toggles scene-change detection to prevent warping across hard cuts.</li>
+    </ul>
+  </li>
+  <li><strong>AI Engine Configuration</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">rife_bin</code> and <code class="language-plaintext highlighter-rouge">dain_bin</code> specify executable paths or binaries for AI interpolation engines.</li>
+    </ul>
+  </li>
+  <li><strong>Encoding</strong>
+Output is encoded using CRF + preset settings, with optional audio copying.</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P frame_interpolate \
+  -i input.mp4 \
+  -o output.mp4 \
+  --outfile VALUE \
+  --engine VALUE \
+  --fps VALUE \
+  --multiplier VALUE \
+  --mi_mode VALUE \
+  --me_mode VALUE \
+  --mc_mode VALUE \
+  --vsbmc VALUE \
+  --scd VALUE \
+  --x264_preset VALUE \
+  --crf VALUE \
+  --copy_audio VALUE \
+  --rife_bin VALUE \
+  --dain_bin VALUE
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">outfile</code></li>
-  <li><code class="language-plaintext highlighter-rouge">engine</code></li>
-  <li><code class="language-plaintext highlighter-rouge">fps</code></li>
-  <li><code class="language-plaintext highlighter-rouge">multiplier</code></li>
-  <li><code class="language-plaintext highlighter-rouge">mi_mode</code></li>
-  <li><code class="language-plaintext highlighter-rouge">me_mode</code></li>
-  <li><code class="language-plaintext highlighter-rouge">mc_mode</code></li>
-  <li><code class="language-plaintext highlighter-rouge">vsbmc</code></li>
-  <li><code class="language-plaintext highlighter-rouge">scd</code></li>
-  <li><code class="language-plaintext highlighter-rouge">x264_preset</code></li>
-  <li><code class="language-plaintext highlighter-rouge">crf</code></li>
-  <li><code class="language-plaintext highlighter-rouge">copy_audio</code></li>
-  <li><code class="language-plaintext highlighter-rouge">rife_bin</code></li>
-  <li><code class="language-plaintext highlighter-rouge">dain_bin</code></li>
+  <li><strong>outfile</strong> — Output filename for the interpolated result.</li>
+  <li><strong>engine</strong> — Interpolation engine (<code class="language-plaintext highlighter-rouge">rife</code>, <code class="language-plaintext highlighter-rouge">dain</code>, <code class="language-plaintext highlighter-rouge">ffmpeg</code>).</li>
+  <li><strong>fps</strong> — Target frames per second for output video.</li>
+  <li><strong>multiplier</strong> — Multiplies frame count (e.g., 2×, 4×, 8×).</li>
+  <li><strong>mi_mode</strong> — Minterpolate mode (FFmpeg engine).</li>
+  <li><strong>me_mode</strong> — Motion estimation algorithm.</li>
+  <li><strong>mc_mode</strong> — Motion compensation method.</li>
+  <li><strong>vsbmc</strong> — Enables scene-based motion compensation.</li>
+  <li><strong>scd</strong> — Scene-change detection toggle.</li>
+  <li><strong>x264_preset</strong> — Encoder preset for libx264.</li>
+  <li><strong>crf</strong> — Constant Rate Factor controlling video quality.</li>
+  <li><strong>copy_audio</strong> — Copies original audio without re-encoding.</li>
+  <li><strong>rife_bin</strong> — Path to RIFE binary for AI interpolation.</li>
+  <li><strong>dain_bin</strong> — Path to DAIN binary for AI interpolation.</li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> frame_interpolate <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4 <span class="nt">--outfile</span> VALUE <span class="nt">--engine</span> VALUE <span class="nt">--fps</span> VALUE <span class="nt">--multiplier</span> VALUE <span class="nt">--mi_mode</span> VALUE <span class="nt">--me_mode</span> VALUE <span class="nt">--mc_mode</span> VALUE <span class="nt">--vsbmc</span> VALUE <span class="nt">--scd</span> VALUE <span class="nt">--x264_preset</span> VALUE <span class="nt">--crf</span> VALUE <span class="nt">--copy_audio</span> VALUE <span class="nt">--rife_bin</span> VALUE <span class="nt">--dain_bin</span> VALUE
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> frame_interpolate <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> frame_interpolate_styled.mp4 <span class="nt">--outfile</span> EXAMPLE <span class="nt">--engine</span> EXAMPLE <span class="nt">--fps</span> EXAMPLE <span class="nt">--multiplier</span> EXAMPLE <span class="nt">--mi_mode</span> EXAMPLE <span class="nt">--me_mode</span> EXAMPLE <span class="nt">--mc_mode</span> EXAMPLE <span class="nt">--vsbmc</span> EXAMPLE <span class="nt">--scd</span> EXAMPLE <span class="nt">--x264_preset</span> EXAMPLE <span class="nt">--crf</span> EXAMPLE <span class="nt">--copy_audio</span> EXAMPLE <span class="nt">--rife_bin</span> EXAMPLE <span class="nt">--dain_bin</span> EXAMPLE
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P frame_interpolate \
+  -i myvideo.mp4 \
+  -o frame_interpolate_styled.mp4 \
+  --outfile EXAMPLE \
+  --engine EXAMPLE \
+  --fps EXAMPLE \
+  --multiplier EXAMPLE \
+  --mi_mode EXAMPLE \
+  --me_mode EXAMPLE \
+  --mc_mode EXAMPLE \
+  --vsbmc EXAMPLE \
+  --scd EXAMPLE \
+  --x264_preset EXAMPLE \
+  --crf EXAMPLE \
+  --copy_audio EXAMPLE \
+  --rife_bin EXAMPLE \
+  --dain_bin EXAMPLE
 </code></pre></div></div>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>AI engines (RIFE/DAIN) generally produce the smoothest and least artifact-prone interpolation.</li>
+  <li>FFmpeg’s <code class="language-plaintext highlighter-rouge">minterpolate</code> can introduce warping around fast motion or scene cuts—use <code class="language-plaintext highlighter-rouge">scd=true</code> to reduce artifacts.</li>
+  <li>High multiplier values (4×, 8×) should be paired with AI engines for best results.</li>
+  <li>GPU acceleration may be required for realtime or high-resolution AI interpolation.</li>
+  <li>Audio is not stretched—slow-motion audio must be handled separately if desired.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Slow-motion cinematic sequences.</li>
+  <li>High-FPS playback for sports, action, and dance footage.</li>
+  <li>Animation smoothing for stylized or experimental outputs.</li>
+  <li>Restoring archival footage to modern frame rates (e.g., 12fps → 24fps).</li>
+  <li>Motion interpolation for VR or interactive displays.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Prefer RIFE for general-purpose high-quality interpolation.</li>
+  <li>Use DAIN when accuracy around depth edges is important.</li>
+  <li>Avoid interpolating across scene cuts; enable <code class="language-plaintext highlighter-rouge">scd</code>.</li>
+  <li>Start with CRF <strong>16–20</strong>; lower values for grading-quality output.</li>
+  <li>Test different multipliers—sometimes 2× looks more natural than 4×.</li>
+</ul>
 
 
       </section>

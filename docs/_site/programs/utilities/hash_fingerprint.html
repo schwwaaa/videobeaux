@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"hash_fingerprint","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/utilities/hash_fingerprint.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -59,35 +59,125 @@
       <section>
 
       <h1 id="hash_fingerprint">hash_fingerprint</h1>
+<p>:contentReference[oaicite:0]{index=0}</p>
 
 <h2 id="description">Description</h2>
+<p>Creates unique fingerprints of video files using checksums, perceptual hashing, or frame-level hashing.<br />
+Useful for deduplication, archival identification, similarity matching, and database cataloging.</p>
 
-<p>Creates unique perceptual or checksum-style fingerprints of a video for identification, comparison, or deduplication</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">hash_fingerprint</code> allows Videobeaux users to generate machine-identifiable signatures from media files.<br />
+This supports:</p>
+<ul>
+  <li>duplicate detection,</li>
+  <li>content-based indexing,</li>
+  <li>frame-level comparison,</li>
+  <li>large-scale archival workflows,</li>
+  <li>catalog metadata generation,</li>
+  <li>cross-system verification of assets.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>File System Scanning</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">recursive</code> allows walking entire folder trees.</li>
+      <li><code class="language-plaintext highlighter-rouge">exts</code> restricts scanning to specific file types.</li>
+    </ul>
+  </li>
+  <li><strong>Hash Types</strong><br />
+The tool can generate several forms of fingerprints:
+    <ul>
+      <li><strong>file_hashes</strong> → whole-file digests (MD5, SHA1, etc.)</li>
+      <li><strong>stream_hash</strong> → stream-level checksums from container metadata</li>
+      <li><strong>framemd5</strong> → per-frame MD5s for high-precision comparison</li>
+      <li><strong>phash</strong> → perceptual hash used for similarity matching rather than byte-exact comparison</li>
+    </ul>
+  </li>
+  <li><strong>Perceptual Hashing Controls</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">phash_fps</code> determines how many frames per second are sampled.</li>
+      <li><code class="language-plaintext highlighter-rouge">phash_size</code> sets the resolution of the perceptual hash grid.</li>
+    </ul>
+  </li>
+  <li><strong>Catalog Output</strong><br />
+A fingerprint catalog can be generated for long-term storage, search systems, or dataset builds.</li>
+  <li><strong>Stream Selection</strong><br />
+<code class="language-plaintext highlighter-rouge">stream_kind</code> allows selecting video/audio/subtitle streams depending on the hashing method.</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P hash_fingerprint \
+  -i input.mp4 \
+  -o output.mp4 \
+  --recursive VALUE \
+  --exts VALUE \
+  --file_hashes VALUE \
+  --stream_hash VALUE \
+  --framemd5 VALUE \
+  --phash VALUE \
+  --phash_fps VALUE \
+  --phash_size VALUE \
+  --catalog VALUE \
+  --stream_kind VALUE
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">recursive</code></li>
-  <li><code class="language-plaintext highlighter-rouge">exts</code></li>
-  <li><code class="language-plaintext highlighter-rouge">file_hashes</code></li>
-  <li><code class="language-plaintext highlighter-rouge">stream_hash</code></li>
-  <li><code class="language-plaintext highlighter-rouge">framemd5</code></li>
-  <li><code class="language-plaintext highlighter-rouge">phash</code></li>
-  <li><code class="language-plaintext highlighter-rouge">phash_fps</code></li>
-  <li><code class="language-plaintext highlighter-rouge">phash_size</code></li>
-  <li><code class="language-plaintext highlighter-rouge">catalog</code></li>
-  <li><code class="language-plaintext highlighter-rouge">stream_kind</code></li>
+  <li><strong>recursive</strong> — Enables recursive folder scanning for batch fingerprinting.</li>
+  <li><strong>exts</strong> — Comma-separated extensions to include (e.g., <code class="language-plaintext highlighter-rouge">mp4,mov,mkv</code>).</li>
+  <li><strong>file_hashes</strong> — Generates byte-level file digests for exact-match identification.</li>
+  <li><strong>stream_hash</strong> — Computes hash digests for individual media streams.</li>
+  <li><strong>framemd5</strong> — Produces an MD5 hash for every decoded frame; extremely precise but large.</li>
+  <li><strong>phash</strong> — Enables perceptual hashing for similarity comparisons.</li>
+  <li><strong>phash_fps</strong> — Number of frames per second to sample for phash generation.</li>
+  <li><strong>phash_size</strong> — Resolution of the phash grid (larger = more detail).</li>
+  <li><strong>catalog</strong> — Outputs results into a catalog file for later lookup or indexing.</li>
+  <li><strong>stream_kind</strong> — Specifies which stream type to fingerprint (e.g., <code class="language-plaintext highlighter-rouge">v</code>, <code class="language-plaintext highlighter-rouge">a</code>, <code class="language-plaintext highlighter-rouge">s</code>).</li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> hash_fingerprint <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4 <span class="nt">--recursive</span> VALUE <span class="nt">--exts</span> VALUE <span class="nt">--file_hashes</span> VALUE <span class="nt">--stream_hash</span> VALUE <span class="nt">--framemd5</span> VALUE <span class="nt">--phash</span> VALUE <span class="nt">--phash_fps</span> VALUE <span class="nt">--phash_size</span> VALUE <span class="nt">--catalog</span> VALUE <span class="nt">--stream_kind</span> VALUE
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> hash_fingerprint <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> hash_fingerprint_styled.mp4 <span class="nt">--recursive</span> EXAMPLE <span class="nt">--exts</span> EXAMPLE <span class="nt">--file_hashes</span> EXAMPLE <span class="nt">--stream_hash</span> EXAMPLE <span class="nt">--framemd5</span> EXAMPLE <span class="nt">--phash</span> EXAMPLE <span class="nt">--phash_fps</span> EXAMPLE <span class="nt">--phash_size</span> EXAMPLE <span class="nt">--catalog</span> EXAMPLE <span class="nt">--stream_kind</span> EXAMPLE
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P hash_fingerprint \
+  -i myvideo.mp4 \
+  -o hash_fingerprint_styled.mp4 \
+  --recursive false \
+  --exts mp4,mov \
+  --file_hashes true \
+  --stream_hash true \
+  --framemd5 false \
+  --phash true \
+  --phash_fps 1 \
+  --phash_size 32 \
+  --catalog true \
+  --stream_kind v
 </code></pre></div></div>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>File hashes ensure perfect binary-level identification, but cannot detect visually similar variants.</li>
+  <li>Perceptual hashing (<code class="language-plaintext highlighter-rouge">phash</code>) is ideal for detecting duplicates that differ by transcoding, compression, or scaling.</li>
+  <li><code class="language-plaintext highlighter-rouge">framemd5</code> is extremely accurate but produces large files; best for forensic comparison.</li>
+  <li>Catalog files allow large-scale search across thousands of items.</li>
+  <li>Adjust <code class="language-plaintext highlighter-rouge">phash_fps</code> and <code class="language-plaintext highlighter-rouge">phash_size</code> to balance between accuracy and performance.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Archival fingerprinting for media libraries.</li>
+  <li>Deduplication of large video collections.</li>
+  <li>Detecting alternate encodes of the same content.</li>
+  <li>Forensic verification and tamper detection.</li>
+  <li>Preparing similarity datasets for AI/ML workflows.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Use <code class="language-plaintext highlighter-rouge">phash_fps=1–3</code> for good coverage without heavy overhead.</li>
+  <li>Higher <code class="language-plaintext highlighter-rouge">phash_size</code> (e.g., 32–64) improves discrimination of similar videos.</li>
+  <li>Use <code class="language-plaintext highlighter-rouge">framemd5</code> only when exact frame-level matching is required.</li>
+  <li>Always include <code class="language-plaintext highlighter-rouge">catalog=true</code> for batch processing or long-term reference.</li>
+</ul>
 
 
       </section>

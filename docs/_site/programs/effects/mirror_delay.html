@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"mirror_delay","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/mirror_delay.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,31 +61,85 @@
       <h1 id="mirror_delay">mirror_delay</h1>
 
 <h2 id="description">Description</h2>
+<p>Applies a mirrored frame-delay effect, blending temporal echoes with reflective symmetry.<br />
+The result combines soft motion trailing with a mirrored duplication of the frame, creating hypnotic, kaleidoscopic, or hall-of-mirrors–style distortion.</p>
 
-<p>Apply a frame delay plus a mirrored effect</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">mirror_delay</code> is ideal for artists who want:</p>
+<ul>
+  <li>reflective, symmetrical echo patterns,</li>
+  <li>hypnotic mirrored smearing,</li>
+  <li>abstract duplication of movement,</li>
+  <li>dreamy motion persistence combined with geometric balance,</li>
+  <li>a lightweight but visually striking temporal effect.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Frame Delay</strong><br />
+Internal buffering creates a trailing echo that blends previous frames into the current one.</li>
+  <li><strong>Geometric Mirroring</strong><br />
+The image is mirrored horizontally, vertically, or both (depending on implementation), creating:
+    <ul>
+      <li>bilateral symmetry,</li>
+      <li>twin-image structures,</li>
+      <li>kaleidoscopic reflections.</li>
+    </ul>
+  </li>
+  <li><strong>Temporal + Spatial Fusion</strong><br />
+The mirrored image and the delayed frame blend together, producing surreal flowing reflections.</li>
+  <li><strong>Encoding</strong><br />
+The final composite is encoded with global Videobeaux settings (CRF, codec, pixel format).</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> mirror_delay <span class="se">\</span>
+  <span class="nt">-i</span> input.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> output.mp4
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
-
 <ul>
   <li><em>(No additional program-specific arguments; uses global videobeaux options only.)</em></li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> mirror_delay <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> mirror_delay <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> mirror_delay_styled.mp4
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> mirror_delay <span class="se">\</span>
+  <span class="nt">-i</span> myvideo.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> mirror_delay_styled.mp4
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
-
 <video controls="" preload="metadata" style="max-width:100%; border-radius:8px; margin:1em 0;">
   <source src="https://github.com/schwwaaa/videobeaux/assets/7625379/a3dea5c6-03a6-4f65-951d-211f50457b63" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Works well with centered subjects or footage containing strong motion vectors.</li>
+  <li>Mirroring combined with delay often creates geometric rhythm or pulse-like visual structure.</li>
+  <li>Compression artifacts can become symmetrical as well, adding to the aesthetic.</li>
+  <li>Bright edges and neon lights produce the most pronounced mirror-delay trails.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Music videos with mirrored choreography or symmetrical staging.</li>
+  <li>Psychedelic pieces needing a dreamlike reflective effect.</li>
+  <li>Ambient loops and visualizations requiring geometric repetition.</li>
+  <li>Projection-mapping and VJ sets where mirrored imagery reacts well to space.</li>
+  <li>Combining with <code class="language-plaintext highlighter-rouge">frame_delay_pro1</code> or <code class="language-plaintext highlighter-rouge">lsd_feedback</code> for layered temporal abstraction.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>For smoother trails, lower CRF (higher quality).</li>
+  <li>For glitchier mirrored buildup, render with a higher CRF.</li>
+  <li>Pair with <code class="language-plaintext highlighter-rouge">convert_dims</code> to square or portrait layouts for perfect symmetry.</li>
+  <li>Combine with <code class="language-plaintext highlighter-rouge">ghostee</code> for soft spectral reflection trails.</li>
+  <li>Run <em>before</em> a LUT (<code class="language-plaintext highlighter-rouge">lut_apply</code>) if you want the color grade to affect both halves identically.</li>
+</ul>
 
 
 

@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"gamma_fix","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/utilities/gamma_fix.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -59,36 +59,112 @@
       <section>
 
       <h1 id="gamma_fix">gamma_fix</h1>
+<p>:contentReference[oaicite:1]{index=1}</p>
 
 <h2 id="description">Description</h2>
+<p>Normalizes gamma, brightness, and exposure levels for broadcast-safe or web-safe consistency across diverse footage.</p>
 
-<p>Normalizes gamma, brightness, and exposure levels for broadcast-safe or web-safe consistency across diverse footage</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">gamma_fix</code> is designed to correct inconsistent exposure, contrast, and gamma shifts that often appear when mixing footage from multiple cameras, phones, archives, or lighting conditions.<br />
+It provides predictable luminance normalization suitable for:</p>
+<ul>
+  <li>web delivery,</li>
+  <li>broadcast pipelines,</li>
+  <li>archival stabilization,</li>
+  <li>color prep before LUTs or grading.</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>Luma Analysis</strong><br />
+The program evaluates input brightness and computes adjustments toward <code class="language-plaintext highlighter-rouge">target_yavg</code>.</li>
+  <li><strong>Contrast Shaping</strong><br />
+<code class="language-plaintext highlighter-rouge">min_contrast</code> and <code class="language-plaintext highlighter-rouge">max_contrast</code> constrain the allowed contrast stretch, preventing overcorrection.</li>
+  <li><strong>Gamma Adjustment</strong><br />
+A user-specified gamma curve can brighten or darken midtones without clipping shadows or highlights.</li>
+  <li><strong>Saturation Shaping</strong><br />
+<code class="language-plaintext highlighter-rouge">sat</code> provides global saturation control to compensate for washed-out or overly vivid sources.</li>
+  <li><strong>Legalization</strong><br />
+When enabled, <code class="language-plaintext highlighter-rouge">legalize</code> ensures output luminance stays within broadcast-safe IRE ranges.</li>
+  <li><strong>Encoding</strong><br />
+Output is encoded using the selected codec, preset, and CRF.</li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P gamma_fix \
+  -i input.mp4 \
+  -o output.mp4 \
+  --target_yavg VALUE \
+  --min_contrast VALUE \
+  --max_contrast VALUE \
+  --gamma VALUE \
+  --sat VALUE \
+  --legalize VALUE \
+  --vcodec VALUE \
+  --crf VALUE \
+  --preset VALUE \
+  --acodec VALUE \
+  --ab VALUE
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">target_yavg</code></li>
-  <li><code class="language-plaintext highlighter-rouge">min_contrast</code></li>
-  <li><code class="language-plaintext highlighter-rouge">max_contrast</code></li>
-  <li><code class="language-plaintext highlighter-rouge">gamma</code></li>
-  <li><code class="language-plaintext highlighter-rouge">sat</code></li>
-  <li><code class="language-plaintext highlighter-rouge">legalize</code></li>
-  <li><code class="language-plaintext highlighter-rouge">vcodec</code></li>
-  <li><code class="language-plaintext highlighter-rouge">crf</code></li>
-  <li><code class="language-plaintext highlighter-rouge">preset</code></li>
-  <li><code class="language-plaintext highlighter-rouge">acodec</code></li>
-  <li><code class="language-plaintext highlighter-rouge">ab</code></li>
+  <li><strong>target_yavg</strong> — Target brightness (luma average) to normalize toward.</li>
+  <li><strong>min_contrast</strong> — Minimum allowed contrast level after adjustment.</li>
+  <li><strong>max_contrast</strong> — Maximum allowed contrast level after adjustment.</li>
+  <li><strong>gamma</strong> — Gamma correction multiplier for shaping midtones.</li>
+  <li><strong>sat</strong> — Saturation adjustment factor.</li>
+  <li><strong>legalize</strong> — Ensures output levels conform to broadcast-safe luminance ranges.</li>
+  <li><strong>vcodec</strong> — Video codec to use for output (e.g., <code class="language-plaintext highlighter-rouge">libx264</code>).</li>
+  <li><strong>crf</strong> — Constant Rate Factor controlling video quality.</li>
+  <li><strong>preset</strong> — Encoding speed/quality preset.</li>
+  <li><strong>acodec</strong> — Audio codec.</li>
+  <li><strong>ab</strong> — Audio bitrate.</li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> gamma_fix <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4 <span class="nt">--target_yavg</span> VALUE <span class="nt">--min_contrast</span> VALUE <span class="nt">--max_contrast</span> VALUE <span class="nt">--gamma</span> VALUE <span class="nt">--sat</span> VALUE <span class="nt">--legalize</span> VALUE <span class="nt">--vcodec</span> VALUE <span class="nt">--crf</span> VALUE <span class="nt">--preset</span> VALUE <span class="nt">--acodec</span> VALUE <span class="nt">--ab</span> VALUE
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> gamma_fix <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> gamma_fix_styled.mp4 <span class="nt">--target_yavg</span> EXAMPLE <span class="nt">--min_contrast</span> EXAMPLE <span class="nt">--max_contrast</span> EXAMPLE <span class="nt">--gamma</span> EXAMPLE <span class="nt">--sat</span> EXAMPLE <span class="nt">--legalize</span> EXAMPLE <span class="nt">--vcodec</span> EXAMPLE <span class="nt">--crf</span> EXAMPLE <span class="nt">--preset</span> EXAMPLE <span class="nt">--acodec</span> EXAMPLE <span class="nt">--ab</span> EXAMPLE
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux -P gamma_fix \
+  -i myvideo.mp4 \
+  -o gamma_fix_styled.mp4 \
+  --target_yavg EXAMPLE \
+  --min_contrast EXAMPLE \
+  --max_contrast EXAMPLE \
+  --gamma EXAMPLE \
+  --sat EXAMPLE \
+  --legalize EXAMPLE \
+  --vcodec EXAMPLE \
+  --crf EXAMPLE \
+  --preset EXAMPLE \
+  --acodec EXAMPLE \
+  --ab EXAMPLE
 </code></pre></div></div>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>Gamma correction subtly adjusts midtone brightness without flattening highlights.</li>
+  <li>Luma averaging helps normalize footage from mixed sources with inconsistent exposure.</li>
+  <li>Excessive contrast stretching may introduce noise—use moderate ranges for natural results.</li>
+  <li>Broadcast-safe legalization prevents clipped peaks in deliverables meant for TV or streaming platforms.</li>
+  <li>Saturation adjustments apply globally; fine-grained color correction should be done in grading tools.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Normalizing multi-camera footage before editing.</li>
+  <li>Preparing consistent brightness for LUT workflows or grading.</li>
+  <li>Fixing underexposed or flat-looking archive material.</li>
+  <li>Making levels compliant for broadcast delivery requirements.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Start with small gamma adjustments for natural tonal shifts.</li>
+  <li>Set <code class="language-plaintext highlighter-rouge">target_yavg</code> close to typical mid-gray values (around 40–55% normalized luma).</li>
+  <li>Use moderate <code class="language-plaintext highlighter-rouge">sat</code> boosts (1.05–1.15) to avoid color clipping.</li>
+  <li>Lower CRF (14–18) retains quality when making heavy tonal corrections.</li>
+  <li>Always inspect waveform before and after applying legalization.</li>
+</ul>
 
 
       </section>

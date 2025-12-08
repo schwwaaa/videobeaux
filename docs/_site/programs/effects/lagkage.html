@@ -21,7 +21,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"The friendly multilateral video toolkit built for artists by artists.","headline":"lagkage","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/videobeaux/assets/img/videobeaux.png"}},"url":"http://localhost:4000/videobeaux/programs/effects/lagkage.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=fd2a142f7568a4ae27b97c74f7f874f5075eb259">
+    <link rel="stylesheet" href="/videobeaux/assets/css/style.css?v=5e23701ed3967d38bab12937d79f95fae74b2a53">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -61,31 +61,129 @@
       <h1 id="lagkage">lagkage</h1>
 
 <h2 id="description">Description</h2>
+<p>A JSON-driven multilayer video compositor that stacks, positions, resizes, mixes, sequences, and animates multiple media layers into a single rendered output.<br />
+<code class="language-plaintext highlighter-rouge">lagkage</code> is the most powerful structural tool in Videobeaux, allowing complex collage-based edits without touching an editor timeline.</p>
 
-<p>A JSON-driven multilayer video compositor that stacks, positions, resizes, and mixes multiple media sources into one unified output</p>
+<h2 id="purpose">Purpose</h2>
+<p><code class="language-plaintext highlighter-rouge">lagkage</code> is designed for creators who want to:</p>
+<ul>
+  <li>Build multi-layer compositions through JSON instead of a traditional NLE</li>
+  <li>Automate repetitive collage, mosaic, and layout generation</li>
+  <li>Mix videos of different sizes, formats, and aspect ratios</li>
+  <li>Control audio selection, muting, and sequencing</li>
+  <li>Create dense visual stacks for music videos, installations, and VJ systems</li>
+  <li>Generate hundreds of layouts for automated or procedural video art workflows</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+  <li><strong>JSON Layout File (<code class="language-plaintext highlighter-rouge">--layout_json</code>)</strong><br />
+The layout file describes each layer:
+    <ul>
+      <li>filename</li>
+      <li>position (x/y)</li>
+      <li>size or scale</li>
+      <li>opacity</li>
+      <li>z-order</li>
+      <li>type (video, image)</li>
+      <li>audio mute flag</li>
+      <li>mode (free, grid, fit, fill, etc.)</li>
+    </ul>
+  </li>
+  <li><strong>Layer Sequencing (<code class="language-plaintext highlighter-rouge">--sequence_direction</code>)</strong><br />
+Defines how layers progress in time:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">forward</code></li>
+      <li><code class="language-plaintext highlighter-rouge">reverse</code></li>
+      <li>other sequence logic depending on layout design</li>
+    </ul>
+  </li>
+  <li><strong>Audio Mode (<code class="language-plaintext highlighter-rouge">--audio_mode</code>)</strong><br />
+Controls where final output audio comes from:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">base</code> → input <code class="language-plaintext highlighter-rouge">-i</code> base video’s audio</li>
+      <li><code class="language-plaintext highlighter-rouge">all</code> → mix audio from all layers</li>
+      <li><code class="language-plaintext highlighter-rouge">first</code> → only the first layer</li>
+      <li><code class="language-plaintext highlighter-rouge">none</code> → mute output</li>
+      <li>additional modes depending on project configuration</li>
+    </ul>
+  </li>
+  <li><strong>Audio Source Override (<code class="language-plaintext highlighter-rouge">--audio_src</code>)</strong><br />
+Allows specifying a custom audio file or one of the layer files as the final mix source.</li>
+  <li><strong>Compositing &amp; Rendering</strong><br />
+After building filtergraphs, <code class="language-plaintext highlighter-rouge">lagkage</code>:
+    <ul>
+      <li>aligns layers</li>
+      <li>pads or scales</li>
+      <li>composes them in order</li>
+      <li>applies opacity</li>
+      <li>writes unified audio</li>
+      <li>encodes the final video with global Videobeaux settings</li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="program-template">Program Template</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> lagkage <span class="se">\</span>
+  <span class="nt">-i</span> input.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> output.mp4 <span class="se">\</span>
+  <span class="nt">--layout_json</span> VALUE <span class="se">\</span>
+  <span class="nt">--sequence_direction</span> VALUE <span class="se">\</span>
+  <span class="nt">--audio_mode</span> VALUE <span class="se">\</span>
+  <span class="nt">--audio_src</span> VALUE
+</code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">layout_json</code></li>
-  <li><code class="language-plaintext highlighter-rouge">sequence_direction</code></li>
-  <li><code class="language-plaintext highlighter-rouge">audio_mode</code></li>
-  <li><code class="language-plaintext highlighter-rouge">audio_src</code></li>
+  <li><strong>layout_json</strong> — Path to a JSON file describing all layers, sizes, positions, opacities, and behaviors.</li>
+  <li><strong>sequence_direction</strong> — Controls temporal ordering of layer playback (e.g., <code class="language-plaintext highlighter-rouge">forward</code>, <code class="language-plaintext highlighter-rouge">reverse</code>).</li>
+  <li><strong>audio_mode</strong> — Defines the audio strategy (<code class="language-plaintext highlighter-rouge">base</code>, <code class="language-plaintext highlighter-rouge">all</code>, <code class="language-plaintext highlighter-rouge">first</code>, <code class="language-plaintext highlighter-rouge">none</code>, etc.).</li>
+  <li><strong>audio_src</strong> — Optional override for specifying which audio file to use as final output.</li>
 </ul>
 
-<h2 id="program-template">Program Template</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> lagkage <span class="nt">-i</span> input.mp4 <span class="nt">-o</span> output.mp4 <span class="nt">--layout_json</span> VALUE <span class="nt">--sequence_direction</span> VALUE <span class="nt">--audio_mode</span> VALUE <span class="nt">--audio_src</span> VALUE
-</code></pre></div></div>
-
 <h2 id="real-world-example">Real World Example</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> lagkage <span class="nt">-i</span> myvideo.mp4 <span class="nt">-o</span> lagkage_styled.mp4 <span class="nt">--layout_json</span> EXAMPLE <span class="nt">--sequence_direction</span> EXAMPLE <span class="nt">--audio_mode</span> EXAMPLE <span class="nt">--audio_src</span> EXAMPLE
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>videobeaux <span class="nt">-P</span> lagkage <span class="se">\</span>
+  <span class="nt">-i</span> myvideo.mp4 <span class="se">\</span>
+  <span class="nt">-o</span> lagkage_styled.mp4 <span class="se">\</span>
+  <span class="nt">--layout_json</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--sequence_direction</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--audio_mode</span> EXAMPLE <span class="se">\</span>
+  <span class="nt">--audio_src</span> EXAMPLE
 </code></pre></div></div>
 
 <h2 id="program-output">Program Output</h2>
-
 <p><em>Program output video not yet linked.</em></p>
+
+<h2 id="technical-notes">Technical Notes</h2>
+<ul>
+  <li>JSON structure is strict — malformed layouts will cause FFmpeg filtergraph errors.</li>
+  <li>Large numbers of layers may significantly increase render time.</li>
+  <li>Mixed-resolution layers are automatically managed, but explicit sizing in JSON gives better control.</li>
+  <li>Audio mixing behavior varies depending on <code class="language-plaintext highlighter-rouge">audio_mode</code> and per-layer mute flags.</li>
+  <li>Layers can be animated if JSON includes frame-range-based or time-based instructions (depending on version).</li>
+  <li>Works extremely well in automated pipelines due to pure declarative structure.</li>
+</ul>
+
+<h2 id="recommended-usage">Recommended Usage</h2>
+<ul>
+  <li>Multi-video mosaics, walls, and grids.</li>
+  <li>Dense collage compositions for live visual systems.</li>
+  <li>Automated layout generation tools (e.g., Procedural 30-layout batches).</li>
+  <li>Narrative video art where positioning and scaling shift across cuts.</li>
+  <li>Social-media variants (reels, stories, square layouts) using preset JSON templates.</li>
+  <li>Long-form music videos with high-density sampling or montage.</li>
+</ul>
+
+<h2 id="quality-tips">Quality Tips</h2>
+<ul>
+  <li>Keep JSON clean and validated before rendering large batches.</li>
+  <li>Use absolute pixel sizes for precision; use percentages for flexibility.</li>
+  <li>For crisp compositing, pre-normalize all input files using <code class="language-plaintext highlighter-rouge">convert_dims</code> or <code class="language-plaintext highlighter-rouge">convert</code>.</li>
+  <li>For advanced lighting looks, apply <code class="language-plaintext highlighter-rouge">lut_apply</code> to individual layers before compositing in lagkage.</li>
+  <li>For glitch workflows, combine <code class="language-plaintext highlighter-rouge">lagkage</code> with moshers (<code class="language-plaintext highlighter-rouge">crossmosh</code>, <code class="language-plaintext highlighter-rouge">bad_predator</code>, etc.) at layer level.</li>
+</ul>
+
 
 
       </section>
