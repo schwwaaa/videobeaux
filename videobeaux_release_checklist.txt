@@ -1,0 +1,123 @@
+VIDEOBEAUX — RELEASING A NEW PYPI VERSION (REPEATABLE CHECKLIST)
+=======================================================
+
+Goal:
+- Build a fresh wheel/sdist from the current repo state
+- Smoke test the CLI locally
+- Upload to TestPyPI (optional but recommended)
+- Upload to PyPI (official release)
+- Verify end-user install works
+
+IMPORTANT NOTES
+---------------
+1) Use ONE virtual environment consistently.
+   If you have BOTH `.venv/` and `env/`, pick ONE and stick to it.
+   This checklist assumes `.venv/`.
+
+2) PyPI does NOT allow re-uploading the same version number.
+   You MUST bump `version = "x.y.z"` in `pyproject.toml` for every release.
+
+3) PEP 668 (Homebrew) blocks system installs. Always use the venv.
+
+A) ONE-TIME SETUP (DO THIS ONCE PER MACHINE)
+--------------------------------------------
+1) From repo root, create venv (if missing):
+   python3 -m venv .venv
+
+2) Activate:
+   source .venv/bin/activate
+
+3) Install/upgrade release tools:
+   python -m pip install -U pip build hatchling twine
+
+4) Optional: create accounts & token:
+   - Create TestPyPI account (recommended)
+   - Create PyPI account
+   - Create PyPI API tokens (Account Settings → API tokens)
+
+B) EVERY RELEASE (NEW VERSION) — STEP BY STEP
+---------------------------------------------
+0) Activate the SAME venv every time:
+   source .venv/bin/activate
+   which python
+   python --version
+
+1) Update release tools (safe to run each time):
+   python -m pip install -U pip build hatchling twine
+
+2) Update your package version:
+   - Edit `pyproject.toml`:
+     version = "x.y.z"
+   - Save the file
+
+3) Clean previous build artifacts:
+   rm -rf dist build *.egg-info
+
+4) Build sdist + wheel:
+   python -m build
+
+5) Local install test (installs the new wheel into your venv):
+   python -m pip install --force-reinstall dist/*.whl
+
+6) Smoke test:
+   videobeaux -h
+   python -c "import videobeaux; import videobeaux.cli; print('imports ok')"
+   videobeaux -h -P captburn
+
+   (Optional) Run one real render to confirm ffmpeg path is OK:
+   videobeaux -P amplify -i myvideo.mp4 -o out.mp4 --force
+
+C) PUBLISH (RECOMMENDED: TESTPYPI FIRST)
+---------------------------------------
+1) Upload to TestPyPI (dry run):
+   python -m twine upload --repository testpypi dist/*
+
+2) Optional: verify install from TestPyPI:
+   - Create a NEW temporary venv somewhere else:
+     python3 -m venv /tmp/vbtest
+     source /tmp/vbtest/bin/activate
+   - Install from TestPyPI:
+     python -m pip install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple videobeaux
+   - Test:
+     videobeaux -h
+
+D) OFFICIAL PYPI RELEASE
+------------------------
+1) Upload to PyPI:
+   python -m twine upload dist/*
+
+2) Verify public install (fresh env recommended):
+   python3 -m venv /tmp/vbprod
+   source /tmp/vbprod/bin/activate
+   python -m pip install -U videobeaux
+   videobeaux -h
+
+E) GIT TAGGING (OPTIONAL BUT STRONGLY RECOMMENDED)
+--------------------------------------------------
+1) Commit the version bump:
+   git add pyproject.toml
+   git commit -m "Release x.y.z"
+
+2) Tag the release:
+   git tag vX.Y.Z
+   git push
+   git push --tags
+
+TROUBLESHOOTING
+---------------
+1) Error: "No module named build"
+   You are in a different environment than where build was installed.
+   Fix:
+     source .venv/bin/activate
+     python -m pip install -U build
+
+2) Error: "externally-managed-environment"
+   You tried to install outside a venv. Activate `.venv` and retry.
+
+3) Error: "License file does not exist: LICENSE"
+   Ensure LICENSE exists OR remove the license file reference in pyproject.toml.
+
+4) `videobeaux` command not found after install
+   Confirm pyproject.toml contains:
+     [project.scripts]
+     videobeaux = "videobeaux.cli:main"

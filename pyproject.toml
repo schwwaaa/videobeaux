@@ -1,45 +1,59 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
 [project]
 name = "videobeaux"
 version = "0.1.0"
 description = "Your friendly multilateral video toolkit built for artists by artists. \n It's your best friend!"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
 authors = [
-    { name = "schwwaaa", email = "schwwaaa@gmail.com" }
+  { name = "schwwaaa", email = "schwwaaa@gmail.com" }
 ]
-requires-python = ">=3.8"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Environment :: Console",
+]
 
 dependencies = [
-    "beautifulsoup4==4.13.4",
-    "certifi==2025.7.14",
-    "cffi==1.17.1",
-    "charset-normalizer==3.4.2",
-    "decorator==4.4.2",
-    "idna==3.10",
-    "imageio==2.37.0",
-    "imageio-ffmpeg==0.6.0",
-    "moviepy==1.0.3",
-    "numpy==2.2.6",
-    "pillow==11.3.0",
-    "proglog==0.1.12",
-    "pycparser==2.22",
-    "pyfiglet==1.0.3",
-    "requests==2.32.4",
-    "soupsieve==2.7",
-    "srt==3.5.3",
-    "tqdm==4.67.1",
-    "typing_extensions==4.14.1",
-    "urllib3==2.5.0",
-    "videogrep==2.3.0",
-    "vosk==0.3.44",
-    "websockets==15.0.1",
-    "yt-dlp==2025.6.30"
+  "beautifulsoup4==4.13.4",
+  "certifi==2025.7.14",
+  "cffi==1.17.1",
+  "charset-normalizer==3.4.2",
+  "decorator==4.4.2",
+  "idna==3.10",
+  "imageio==2.37.0",
+  "imageio-ffmpeg==0.6.0",
+  "moviepy==1.0.3",
+  "numpy==2.2.6",
+  "pillow==11.3.0",
+  "proglog==0.1.12",
+  "pycparser==2.22",
+  "pyfiglet==1.0.3",
+  "requests==2.32.4",
+  "soupsieve==2.7",
+  "srt==3.5.3",
+  "tqdm==4.67.1",
+  "typing_extensions==4.14.1",
+  "urllib3==2.5.0",
+  "videogrep==2.3.0",
+  "vosk==0.3.44",
+  "websockets==15.0.1",
+  "yt-dlp==2025.6.30",
 ]
 
 [project.scripts]
 videobeaux = "videobeaux.cli:main"
 
-[build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
+[project.urls]
+Homepage = "https://github.com/schwwaaa/videobeaux"
+Repository = "https://github.com/schwwaaa/videobeaux"
+Issues = "https://github.com/schwwaaa/videobeaux/issues"
 
-[tool.setuptools]
-packages = ["videobeaux", "videobeaux.utils", "videobeaux.programs"]
+[tool.hatch.build.targets.wheel]
+packages = ["videobeaux"]

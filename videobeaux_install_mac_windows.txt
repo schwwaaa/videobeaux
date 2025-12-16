@@ -1,0 +1,146 @@
+VIDEOBEAUX — INSTALLATION GUIDE (TESTPYPI / PYPI)
+=================================================
+
+This document explains how end users install Videobeaux
+on macOS (Homebrew-based) and Windows.
+
+Videobeaux is a Python CLI application distributed via PyPI.
+Homebrew is used only to install pipx on macOS.
+
+-------------------------------------------------
+MACOS INSTALLATION (HOMEbrew + pipx) — RECOMMENDED
+-------------------------------------------------
+
+Requirements:
+- macOS 11+
+- Homebrew installed
+- Python 3.9+ (handled automatically by pipx)
+
+STEP 1: Install Homebrew (if not installed)
+-------------------------------------------
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+Verify:
+brew --version
+
+STEP 2: Install pipx using Homebrew
+-----------------------------------
+brew install pipx
+pipx ensurepath
+
+Restart Terminal after this step.
+
+STEP 3: Install Videobeaux from TestPyPI
+----------------------------------------
+pipx install \
+  --pip-args="--index-url https://test.pypi.org/simple --extra-index-url https://pypi.org/simple" \
+  videobeaux
+
+STEP 4: Verify installation
+---------------------------
+videobeaux -h
+videobeaux -h -P captburn
+
+STEP 5: ffmpeg requirement
+--------------------------
+Videobeaux requires ffmpeg to be installed separately.
+
+Install ffmpeg via Homebrew:
+brew install ffmpeg
+
+Verify:
+ffmpeg -version
+
+-------------------------------------------------
+WINDOWS INSTALLATION (pipx) — RECOMMENDED
+-------------------------------------------------
+
+Requirements:
+- Windows 10 or newer
+- Python 3.9+ installed
+- ffmpeg installed and on PATH
+
+STEP 1: Install Python
+---------------------
+Download and install Python from:
+https://www.python.org/downloads/windows/
+
+IMPORTANT:
+- Check "Add Python to PATH" during install
+
+Verify:
+python --version
+
+STEP 2: Install pipx
+--------------------
+python -m pip install --user pipx
+python -m pipx ensurepath
+
+Restart PowerShell or Command Prompt.
+
+Verify:
+pipx --version
+
+STEP 3: Install Videobeaux from TestPyPI
+----------------------------------------
+pipx install videobeaux \
+  --pip-args="--index-url https://test.pypi.org/simple --extra-index-url https://pypi.org/simple"
+
+STEP 4: Verify installation
+---------------------------
+videobeaux -h
+videobeaux -h -P captburn
+
+STEP 5: Install ffmpeg
+---------------------
+Option A (recommended): Chocolatey
+----------------------------------
+Install Chocolatey (run PowerShell as Admin):
+Set-ExecutionPolicy Bypass -Scope Process -Force; \
+[System.Net.ServicePointManager]::SecurityProtocol = \
+[System.Net.ServicePointManager]::SecurityProtocol -bor 3072; \
+iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+
+Install ffmpeg:
+choco install ffmpeg
+
+Option B: Manual install
+------------------------
+1) Download ffmpeg from:
+   https://ffmpeg.org/download.html
+2) Extract
+3) Add ffmpeg/bin to PATH
+
+Verify:
+ffmpeg -version
+
+-------------------------------------------------
+UNINSTALL / REINSTALL
+-------------------------------------------------
+
+macOS:
+pipx uninstall videobeaux
+pipx install videobeaux
+
+Windows:
+pipx uninstall videobeaux
+pipx install videobeaux
+
+-------------------------------------------------
+NOTES
+-------------------------------------------------
+
+- pipx installs Videobeaux in an isolated environment
+- Videobeaux is globally available as a CLI command
+- This method avoids Python environment conflicts
+- Recommended for artists, editors, and non-developers
+
+-------------------------------------------------
+FUTURE (WHEN MOVED FROM TESTPYPI TO PYPI)
+-------------------------------------------------
+
+Once Videobeaux is published to real PyPI,
+the installation commands remain the same
+but WITHOUT the --index-url flags:
+
+pipx install videobeaux
