@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "E:\videobeaux-main\gui\discover_programs.py", line 189, in <module>
+    sys.stdout.write(json.dumps(result, ensure_ascii=False) + '\n')
+OSError: [Errno 22] Invalid argument

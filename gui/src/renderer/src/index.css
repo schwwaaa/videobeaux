@@ -1,0 +1,87 @@
+/* ── Design tokens ─────────────────────────────────────────────────────────── */
+:root {
+  --bg:          #0f0f0f;
+  --surface:     #1a1a1a;
+  --surface2:    #222222;
+  --surface3:    #2a2a2a;
+  --border:      #333;
+  --border2:     #3d3d3d;
+  --text:        #e0e0e0;
+  --text-muted:  #888;
+  --text-dim:    #555;
+
+  --c-input:     #22c55e;
+  --c-output:    #ef4444;
+  --c-glitch:    #ef4444;
+  --c-temporal:  #f97316;
+  --c-visual:    #a855f7;
+  --c-comp:      #3b82f6;
+  --c-utility:   #22c55e;
+  --c-ai:        #06b6d4;
+
+  --radius:      8px;
+  --radius-sm:   5px;
+  --font:        -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --font-mono:   'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+}
+
+/* ── Reset ─────────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #root {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Scrollbars ────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #555; }
+
+/* ── ReactFlow overrides ───────────────────────────────────────────────────── */
+.react-flow__background { background: var(--bg) !important; }
+.react-flow__controls { background: var(--surface2) !important; border: 1px solid var(--border) !important; border-radius: var(--radius) !important; }
+.react-flow__controls-button { background: transparent !important; border-bottom: 1px solid var(--border) !important; color: var(--text-muted) !important; fill: var(--text-muted) !important; }
+.react-flow__controls-button:hover { background: var(--surface3) !important; }
+.react-flow__minimap { background: var(--surface) !important; border: 1px solid var(--border) !important; border-radius: var(--radius) !important; }
+.react-flow__edge-path { stroke: #555 !important; stroke-width: 2 !important; }
+.react-flow__edge.selected .react-flow__edge-path { stroke: #888 !important; }
+.react-flow__handle {
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50% !important;
+  border: 2px solid var(--bg) !important;
+}
+
+/* ── Utility ───────────────────────────────────────────────────────────────── */
+button {
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 12px;
+  border: none;
+  border-radius: var(--radius-sm);
+  transition: opacity 0.15s, background 0.15s;
+}
+button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+input, select, textarea {
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 12px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+input:focus, select:focus { border-color: var(--border2); }
+input::placeholder { color: var(--text-dim); }
+
+select option { background: var(--surface2); }

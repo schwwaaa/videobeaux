@@ -1,0 +1,76 @@
+{
+  "version": "1.0.2",
+  "style": {
+    "name": "CaptBurn",
+    "fontname": "Arial",
+    "fontsize": 42,
+    "primary": "#FFFFFF",
+    "outline": "#000000",
+    "outline_width": 3.0,
+    "shadow": 0.0,
+    "back": "#000000",
+    "back_opacity": 0.0,
+    "bold": false,
+    "italic": false,
+    "scale_x": 100,
+    "scale_y": 100,
+    "spacing": 0.0,
+    "margin_l": 60,
+    "margin_r": 60,
+    "margin_v": 40,
+    "align": 2,
+    "border_style": 1
+  },
+  "events": [
+    {
+      "start": 0.15,
+      "end": 1.86,
+      "text": "three thing you cannot do with dumpling"
+    },
+    {
+      "start": 2.16,
+      "end": 5.07,
+      "text": "first you squeeze or bite too aggressive"
+    },
+    {
+      "start": 5.25,
+      "end": 7.74,
+      "text": "juice escape plate crying you're crying"
+    },
+    {
+      "start": 8.07,
+      "end": 11.16,
+      "text": "all flavor gone second you ignore heat"
+    },
+    {
+      "start": 11.4,
+      "end": 14.64,
+      "text": "you bite too fast steam still angry now"
+    },
+    {
+      "start": 14.64,
+      "end": 17.13,
+      "text": "you burn your mouth roof of mouth damaged"
+    },
+    {
+      "start": 17.49,
+      "end": 19.979998,
+      "text": "third you rush pan you shake dumpling"
+    },
+    {
+      "start": 19.979998,
+      "end": 20.159998,
+      "text": "buffet"
+    },
+    {
+      "start": 20.16,
+      "end": 22.799791,
+      "text": "for crust ready it stick at tear it break"
+    },
+    {
+      "start": 22.83,
+      "end": 25.38,
+      "text": "relationship over dumpling teach patients"
+    }
+  ]
+}
