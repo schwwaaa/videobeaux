@@ -11,7 +11,7 @@ def register_arguments(parser):
         required=True,
         type=str,
         help=(
-            ""
+            "Glow neighborhood size for amplify. Small = tight edge glow; large = thicker bloom/halo. Try 2–8, push higher for heavy burn."
         )
     )
 
@@ -20,7 +20,7 @@ def register_arguments(parser):
         required=True,
         type=str,
         help=(
-            ""
+            "Glow intensity for amplify. Higher values increase bloom/burn and highlight clipping. Try 1.2–3.0; push higher for dramatic damage."
         )
     )
 
