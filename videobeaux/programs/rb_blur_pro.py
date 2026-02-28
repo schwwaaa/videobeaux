@@ -10,7 +10,7 @@ def register_arguments(parser):
         required=True,
         type=str,
         help=(
-            ""
+            "Debanding intensity. Higher removes more banding but can soften fine detail. Try ~0.8–1.5; increase if banding persists."
         )
     )
 
@@ -19,7 +19,7 @@ def register_arguments(parser):
         required=True,
         type=str,
         help=(
-            ""
+            "Debanding neighborhood size. Larger helps big smooth gradients (skies) but may smooth texture. Try 8–16."
         )
     )
 
