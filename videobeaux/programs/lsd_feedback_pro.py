@@ -10,7 +10,7 @@ def register_arguments(parser):
         required=True,
         type=str,
         help=(
-            ""
+            "Number of frames to mix across time. Higher values create longer motion trails and heavier ghosting. Must be >= 8. Try 8–16."
         )
     )
 
