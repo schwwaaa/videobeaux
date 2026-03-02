@@ -9,3 +9,9 @@
   :floppy_disk: <a href="https://schwwaaa.github.io/videobeaux/programs.html">Programs</a> :floppy_disk: <br/> 
  :wrench: <a href="https://schwwaaa.github.io/videobeaux/examples.html">Examples</a> :wrench:
 </p>
+
+<p align="center">
+  <img width="20%" height="20%" src="https://ko-fi.com/img/githubbutton_sm.svg">
+    <a href="https://ko-fi.com/F1F71V9CQG"></a>
+  <img>
+</p>
