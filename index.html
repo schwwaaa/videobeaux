@@ -1,201 +1,1639 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MySoftware - The Missing Package Manager</title>
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-      margin: 0;
-      padding: 0;
-      line-height: 1.6;
-      color: #2f2f2f;
-      background-color: #f5f5f5;
-      text-align: center;
-    }
-    .container {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-    header {
-      padding: 80px 0;
-      background-color: #fff;
-    }
-    .logo {
-      max-width: 120px;
-      margin-bottom: 24px;
-    }
-    h1 {
-      font-size: 48px;
-      font-weight: 700;
-      margin: 0;
-      color: #000;
-    }
-    .tagline {
-      font-size: 24px;
-      color: #595959;
-      margin: 16px 0 0;
-    }
-    section {
-      padding: 80px 0;
-      background-color: #fff;
-    }
-    h2 {
-      font-size: 32px;
-      font-weight: 700;
-      margin-bottom: 24px;
-      color: #000;
-    }
-    .two-column {
-      display: flex;
-      justify-content: space-between;
-      gap: 40px;
-      align-items: center;
-    }
-    .column-left {
-      flex: 1;
-      text-align: left;
-      max-width: 50%;
-    }
-    .column-right {
-      flex: 1;
-      max-width: 50%;
-      position: relative;
-    }
-    .column-left p {
-      font-size: 18px;
-      margin: 0 0 16px;
-    }
-    line{
-      color:black;
-    }
-    p {
-      font-size: 18px;
-      margin: 0 0 16px;
-    }
-    .install-code {
-      background: #2f2f2f;
-      color: #fff;
-      padding: 16px;
-      border-radius: 8px;
-      font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size: 14px;
-      text-align: left;
-      margin: 0;
-      white-space: pre-wrap;
-      position: relative;
-    }
-    .copy-button {
-      position: absolute;
-      გეძებულია: top: 8px;
-      right: 8px;
-      background: #f36d21;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      padding: 8px 16px;
-      font-size: 14px;
-      cursor: pointer;
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
-    .install-code:hover .copy-button {
-      opacity: 1;
-    }
-    .copy-button:hover {
-      background: #d15e1c;
-    }
-    a {
-      color: #f36d21;
-      text-decoration: underline;
-      transition: color 0.2s;
-    }
-    a:hover {
-      color: #d15e1c;
-    }
-    @media (max-width: 768px) {
-      .two-column {
-        flex-direction: column;
-        gap: 24px;
-      }
-      .column-left,
-      .column-right {
-        max-width: 100%;
-      }
-      h1 {
-        font-size: 36px;
-      }
-      .tagline {
-        font-size: 20px;
-      }
-      h2 {
-        font-size: 28px;
-      }
-      p, .column-left p {
-        font-size: 16px;
-      }
-      .install-code {
-        font-size: 13px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Videobeaux is a friendly command-line video toolkit for creating effects, repairing media, extracting assets, and automating video workflows.">
+    <meta name="theme-color" content="#a8ad23">
+    <title>Videobeaux — Break, Bend, Repair & Automate Video</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bungee&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+         :root {
+            --ink: #080808;
+            --paper: #fffdf6;
+            --gray: #e7e7e4;
+            --lime: #a8ad23;
+            --lime-bright: #c5d92d;
+            --cyan: #32b9df;
+            --coral: #ff6847;
+            --purple: #8654aa;
+            --yellow: #ffe500;
+            --magenta: #d52c91;
+            --max-width: 1180px;
+            --border: 5px solid var(--ink);
+            --shadow: 8px 8px 0 var(--ink);
+            --small-shadow: 5px 5px 0 var(--ink);
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 92px;
+        }
+        
+        body {
+            margin: 0;
+            color: var(--ink);
+            background: linear-gradient(90deg, transparent 49px, rgba(8, 8, 8, .035) 50px, transparent 51px), linear-gradient(transparent 49px, rgba(8, 8, 8, .035) 50px, transparent 51px), var(--paper);
+            background-size: 50px 50px;
+            font-family: "Atkinson Hyperlegible", Arial, sans-serif;
+            font-size: 18px;
+            line-height: 1.55;
+            overflow-x: hidden;
+        }
+        
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            width: 180px;
+            height: 180px;
+            z-index: -1;
+            opacity: .18;
+            pointer-events: none;
+        }
+        
+        body::before {
+            top: 130px;
+            left: -90px;
+            background: var(--cyan);
+            transform: rotate(24deg);
+        }
+        
+        body::after {
+            right: -95px;
+            bottom: 80px;
+            border-radius: 50%;
+            background: var(--magenta);
+        }
+        
+        img,
+        video {
+            max-width: 100%;
+        }
+        
+        button,
+        a {
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        a {
+            color: inherit;
+        }
+        
+        .skip-link {
+            position: absolute;
+            left: 12px;
+            top: -60px;
+            z-index: 1000;
+            padding: 10px 14px;
+            background: var(--yellow);
+            border: 3px solid var(--ink);
+            font-weight: 700;
+        }
+        
+        .skip-link:focus {
+            top: 12px;
+        }
+        
+        .shell {
+            width: min(calc(100% - 36px), var(--max-width));
+            margin-inline: auto;
+        }
+        
+        .site-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 253, 246, .94);
+            backdrop-filter: blur(12px);
+            border-bottom: 4px solid var(--ink);
+        }
+        
+        .nav-inner {
+            min-height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 22px;
+        }
+        
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-family: "Bungee", Impact, sans-serif;
+            font-size: 1rem;
+            letter-spacing: .02em;
+        }
+        
+        .brand-mark {
+            width: 38px;
+            height: 31px;
+            position: relative;
+            display: grid;
+            place-items: center;
+            background: var(--lime-bright);
+            border: 3px solid var(--ink);
+            border-radius: 7px;
+            box-shadow: 3px 3px 0 var(--ink);
+        }
+        
+        .brand-mark::before,
+        .brand-mark::after {
+            content: "";
+            position: absolute;
+            top: -10px;
+            width: 3px;
+            height: 13px;
+            background: var(--ink);
+            transform-origin: bottom;
+        }
+        
+        .brand-mark::before {
+            left: 13px;
+            transform: rotate(-28deg);
+        }
+        
+        .brand-mark::after {
+            right: 13px;
+            transform: rotate(28deg);
+        }
+        
+        .brand-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--cyan);
+            border: 2px solid var(--ink);
+        }
+        
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: .92rem;
+            font-weight: 700;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .nav-links a:hover,
+        .nav-links a:focus-visible {
+            border-color: var(--magenta);
+        }
+        
+        .nav-cta {
+            padding: 8px 13px;
+            background: var(--yellow);
+            border: 3px solid var(--ink) !important;
+            box-shadow: 4px 4px 0 var(--ink);
+            border-radius: 8px;
+        }
+        
+        .menu-button {
+            display: none;
+            border: 3px solid var(--ink);
+            background: var(--cyan);
+            padding: 8px 10px;
+            font: inherit;
+            font-weight: 700;
+            box-shadow: 3px 3px 0 var(--ink);
+        }
+        
+        .hero {
+            position: relative;
+            padding: 82px 0 76px;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: "";
+            position: absolute;
+            width: 560px;
+            height: 330px;
+            right: -120px;
+            top: 64px;
+            background: var(--lime);
+            border: 5px solid var(--ink);
+            transform: rotate(-4deg);
+            z-index: -1;
+        }
+        
+        .hero::after {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            left: 46%;
+            top: 105px;
+            background: var(--gray);
+            transform: rotate(38deg);
+            z-index: -2;
+        }
+        
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.02fr .98fr;
+            align-items: center;
+            gap: clamp(38px, 7vw, 86px);
+        }
+        
+        .eyebrow,
+        .sticker-label {
+            display: inline-block;
+            margin: 0 0 20px;
+            padding: 7px 11px;
+            font-family: "IBM Plex Mono", monospace;
+            font-weight: 700;
+            font-size: .84rem;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            background: var(--cyan);
+            border: 3px solid var(--ink);
+            box-shadow: 4px 4px 0 var(--ink);
+            transform: rotate(-1deg);
+        }
+        
+        h1,
+        h2,
+        h3,
+        p {
+            margin-top: 0;
+        }
+        
+        h1 {
+            max-width: 760px;
+            margin-bottom: 20px;
+            font-family: "Bungee", Impact, sans-serif;
+            font-size: clamp(3rem, 7vw, 6.35rem);
+            line-height: .94;
+            letter-spacing: -.035em;
+            text-transform: uppercase;
+        }
+        
+        .text-punch {
+            color: var(--paper);
+            -webkit-text-stroke: 3px var(--ink);
+            text-shadow: 5px 5px 0 var(--purple);
+        }
+        
+        .hero-copy {
+            max-width: 650px;
+            margin-bottom: 26px;
+            font-size: clamp(1.15rem, 2.1vw, 1.45rem);
+            font-weight: 700;
+        }
+        
+        .hero-note {
+            max-width: 620px;
+            font-family: "IBM Plex Mono", monospace;
+            font-size: .9rem;
+        }
+        
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin: 30px 0 22px;
+        }
+        
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 51px;
+            padding: 11px 18px;
+            border: 4px solid var(--ink);
+            border-radius: 10px;
+            box-shadow: 6px 6px 0 var(--ink);
+            font-family: "Bungee", Impact, sans-serif;
+            font-size: .88rem;
+            text-decoration: none;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform .15s ease, box-shadow .15s ease;
+        }
+        
+        .button:hover,
+        .button:focus-visible {
+            transform: translate(3px, 3px);
+            box-shadow: 3px 3px 0 var(--ink);
+        }
+        
+        .button-primary {
+            background: var(--yellow);
+        }
+        
+        .button-secondary {
+            background: var(--paper);
+        }
+        
+        .button-coral {
+            background: var(--coral);
+        }
+        
+        .hero-art {
+            position: relative;
+            min-height: 575px;
+            display: grid;
+            place-items: center;
+        }
+        
+        .hero-logo {
+            position: relative;
+            z-index: 3;
+            width: min(100%, 540px);
+            aspect-ratio: 1064 / 1350;
+            object-fit: contain;
+            filter: drop-shadow(13px 14px 0 rgba(8, 8, 8, .96));
+            transform: rotate(1.4deg);
+            /* background: white; */
+            /* border: 5px solid var(--ink); */
+            /* clip-path: polygon(4% 0, 100% 0, 96% 97%, 3% 100%, 0 7%); */
+        }
+        
+        .orbit-shape {
+            position: absolute;
+            z-index: 1;
+            border: 5px solid var(--ink);
+        }
+        
+        .shape-one {
+            width: 155px;
+            height: 105px;
+            left: -20px;
+            top: 100px;
+            background: var(--cyan);
+            transform: rotate(19deg);
+        }
+        
+        .shape-two {
+            width: 124px;
+            height: 124px;
+            right: -5px;
+            bottom: 76px;
+            border-radius: 50%;
+            background: var(--yellow);
+        }
+        
+        .shape-three {
+            width: 92px;
+            height: 92px;
+            left: 34px;
+            bottom: 48px;
+            background: var(--magenta);
+            transform: rotate(45deg);
+        }
+        
+        .signal-tag {
+            position: absolute;
+            z-index: 4;
+            right: 8px;
+            top: 52px;
+            width: 150px;
+            padding: 12px;
+            background: var(--paper);
+            border: 4px solid var(--ink);
+            box-shadow: 6px 6px 0 var(--ink);
+            font-family: "IBM Plex Mono", monospace;
+            font-size: .75rem;
+            font-weight: 700;
+            transform: rotate(3deg);
+        }
+        
+        .signal-bar {
+            height: 9px;
+            margin-top: 8px;
+            background: repeating-linear-gradient(90deg, var(--coral) 0 16px, var(--yellow) 16px 32px, var(--cyan) 32px 48px, var(--purple) 48px 64px);
+            border: 2px solid var(--ink);
+        }
+        
+        .marquee {
+            overflow: hidden;
+            border-block: 5px solid var(--ink);
+            background: var(--ink);
+            color: var(--paper);
+            white-space: nowrap;
+        }
+        
+        .marquee-track {
+            width: max-content;
+            display: flex;
+            gap: 28px;
+            padding: 13px 0;
+            animation: marquee 34s linear infinite;
+            font-family: "IBM Plex Mono", monospace;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .marquee-track span::after {
+            content: "✦";
+            color: var(--yellow);
+            margin-left: 28px;
+        }
+        
+        @keyframes marquee {
+            to {
+                transform: translateX(-50%);
+            }
+        }
+        
+        .section {
+            position: relative;
+            padding: 96px 0;
+        }
+        
+        .section-tight {
+            padding: 70px 0;
+        }
+        
+        .section-lime {
+            background: var(--lime);
+            border-block: 5px solid var(--ink);
+        }
+        
+        .section-cyan {
+            background: var(--cyan);
+            border-block: 5px solid var(--ink);
+        }
+        
+        .section-dark {
+            color: var(--paper);
+            background: var(--ink);
+        }
+        
+        .section-heading {
+            max-width: 810px;
+            margin-bottom: 42px;
+        }
+        
+        .section-heading h2 {
+            margin-bottom: 16px;
+            font-family: "Bungee", Impact, sans-serif;
+            font-size: clamp(2.1rem, 5vw, 4.5rem);
+            line-height: 1;
+            text-transform: uppercase;
+        }
+        
+        .section-heading p {
+            max-width: 700px;
+            margin-bottom: 0;
+            font-size: 1.17rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        
+        .stat-card {
+            min-height: 150px;
+            padding: 22px;
+            background: var(--paper);
+            border: var(--border);
+            box-shadow: var(--small-shadow);
+            transform: rotate(var(--tilt, 0deg));
+        }
+        
+        .stat-card:nth-child(1) {
+            --tilt: -1deg;
+        }
+        
+        .stat-card:nth-child(2) {
+            --tilt: .7deg;
+            background: var(--yellow);
+        }
+        
+        .stat-card:nth-child(3) {
+            --tilt: -.5deg;
+            background: var(--coral);
+        }
+        
+        .stat-card:nth-child(4) {
+            --tilt: .8deg;
+            background: var(--purple);
+            color: white;
+        }
+        
+        .stat-number {
+            display: block;
+            margin-bottom: 2px;
+            font-family: "Bungee", Impact, sans-serif;
+            font-size: 2.7rem;
+            line-height: 1;
+        }
+        
+        .stat-card p {
+            margin: 0;
+            font-weight: 700;
+        }
+        
+        .capability-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 26px;
+        }
+        
+        .capability-card {
+            position: relative;
+            min-height: 260px;
+            padding: 30px 30px 28px;
+            background: var(--paper);
+            border: var(--border);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        
+        .capability-card::after {
+            content: attr(data-number);
+            position: absolute;
+            right: -3px;
+            bottom: -24px;
+            color: rgba(8, 8, 8, .10);
+            font-family: "Bungee", Impact, sans-serif;
+            font-size: 8rem;
+            line-height: 1;
+        }
+        
+        .capability-icon {
+            width: 58px;
+            height: 58px;
+            display: grid;
+            place-items: center;
+            margin-bottom: 20px;
+            border: 4px solid var(--ink);
+            border-radius: 50%;
+            box-shadow: 4px 4px 0 var(--ink);
+            font-size: 1.7rem;
+            background: var(--accent);
+        }
+        
+        .capability-card h3,
+        .program-card h3,
+        .step-card h3 {
+            margin-bottom: 9px;
+            font-family: "Bungee", Impact, sans-serif;
+            font-size: 1.35rem;
+            line-height: 1.15;
+            text-transform: uppercase;
+        }
+        
+        .capability-card p {
+            max-width: 520px;
+            margin-bottom: 0;
+        }
+        
+        .process-board {
+            padding: 0;
+            background: transparent;
+            border: 0;
+            box-shadow: none;
+        }
+        
+        .process-board-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            border: 6px solid var(--ink);
+            box-shadow: 12px 12px 0 var(--ink);
+        }
+        
+        .program-toolbar {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 28px;
+            align-items: end;
+        }
+        
+        .program-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .filter-button {
+            padding: 8px 12px;
+            border: 3px solid var(--ink);
+            border-radius: 8px;
+            background: var(--paper);
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 3px 3px 0 var(--ink);
+        }
+        
+        .filter-button[aria-pressed="true"] {
+            background: var(--yellow);
+        }
+        
+        .program-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        
+        .program-card {
+            display: flex;
+            flex-direction: column;
+            min-height: 330px;
+            padding: 24px;
+            background: var(--paper);
+            color: var(--ink);
+            border: var(--border);
+            box-shadow: var(--shadow);
+            transition: transform .15s ease, box-shadow .15s ease;
+        }
+        
+        .program-card:hover {
+            transform: translate(3px, 3px) rotate(.25deg);
+            box-shadow: 5px 5px 0 var(--ink);
+        }
+        
+        .program-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 19px;
+        }
+        
+        .program-type,
+        .program-index {
+            font-family: "IBM Plex Mono", monospace;
+            font-size: .72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .program-type {
+            padding: 4px 7px;
+            border: 2px solid var(--ink);
+            background: var(--card-accent);
+        }
+        
+        .program-card p {
+            margin-bottom: 22px;
+        }
+        
+        .program-command {
+            margin-top: auto;
+            padding: 11px;
+            color: var(--paper);
+            background: var(--ink);
+            border-left: 8px solid var(--card-accent);
+            font-family: "IBM Plex Mono", monospace;
+            font-size: .78rem;
+            overflow-wrap: anywhere;
+        }
+        
+        .program-card[hidden] {
+            display: none;
+        }
+        
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            counter-reset: steps;
+        }
+        
+        .step-card {
+            min-height: 245px;
+            padding: 22px;
+            background: var(--paper);
+            border: 4px solid var(--ink);
+            box-shadow: 6px 6px 0 var(--ink);
+            counter-increment: steps;
+        }
+        
+        .step-card::before {
+            content: "0" counter(steps);
+            display: inline-grid;
+            place-items: center;
+            width: 52px;
+            height: 45px;
+            margin-bottom: 20px;
+            background: var(--step-color);
+            border: 3px solid var(--ink);
+            font-family: "Bungee", Impact, sans-serif;
+        }
+        
+        .code-panel {
+            position: relative;
+            padding: 22px;
+            color: var(--paper);
+            background: #151515;
+            border: 5px solid var(--ink);
+            box-shadow: var(--shadow);
+        }
+        
+        .code-panel::before {
+            content: "VIDEOBEAUX PROCESS MONITOR";
+            display: block;
+            margin-bottom: 14px;
+            color: var(--yellow);
+            font-family: "IBM Plex Mono", monospace;
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+        }
+        
+        .code-panel pre {
+            margin: 0;
+            padding-right: 92px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            font: 600 .88rem/1.65 "IBM Plex Mono", monospace;
+        }
+        
+        .copy-button {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            padding: 7px 10px;
+            color: var(--ink);
+            background: var(--cyan);
+            border: 3px solid var(--paper);
+            font: 700 .72rem "IBM Plex Mono", monospace;
+            cursor: pointer;
+        }
+        
+        .example-layout {
+            display: grid;
+            grid-template-columns: .72fr 1.28fr;
+            gap: 28px;
+            align-items: start;
+        }
+        
+        .example-tabs {
+            display: grid;
+            gap: 13px;
+        }
+        
+        .example-tab {
+            width: 100%;
+            padding: 18px;
+            text-align: left;
+            border: 4px solid var(--ink);
+            background: var(--paper);
+            box-shadow: 5px 5px 0 var(--ink);
+            font: inherit;
+            cursor: pointer;
+        }
+        
+        .example-tab[aria-selected="true"] {
+            background: var(--yellow);
+            transform: translate(3px, 3px);
+            box-shadow: 2px 2px 0 var(--ink);
+        }
+        
+        .example-tab strong {
+            display: block;
+            font-family: "Bungee", Impact, sans-serif;
+            font-size: .92rem;
+            text-transform: uppercase;
+        }
+        
+        .example-stage {
+            padding: 20px;
+            background: var(--lime);
+            border: 6px solid var(--ink);
+            box-shadow: 11px 11px 0 var(--ink);
+        }
+        
+        .crt-frame {
+            padding: 16px;
+            background: var(--ink);
+            border: 6px solid var(--ink);
+            border-radius: 30px 30px 20px 20px;
+            box-shadow: inset 0 0 0 5px var(--purple);
+        }
+        
+        .video-shell {
+            min-height: 360px;
+            display: grid;
+            place-items: center;
+            position: relative;
+            overflow: hidden;
+            background: repeating-linear-gradient(0deg, transparent 0 4px, rgba(255, 255, 255, .10) 4px 6px), linear-gradient(140deg, #522d80, #0a9fc8 42%, #dce326 43%, #ff6847);
+            border: 4px solid var(--paper);
+            border-radius: 20px;
+        }
+        
+        .video-shell video {
+            width: 100%;
+            display: block;
+            background: #000;
+            border-radius: 14px;
+        }
+        
+        .video-fallback {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            padding: 30px;
+            text-align: center;
+            color: white;
+            font-family: "IBM Plex Mono", monospace;
+            font-weight: 700;
+            pointer-events: none;
+        }
+        
+        .video-shell:has(video[src]) .video-fallback {
+            display: none;
+        }
+        
+        .example-command {
+            margin-top: 22px;
+            padding: 15px;
+            color: var(--paper);
+            background: var(--ink);
+            font: 600 .78rem/1.5 "IBM Plex Mono", monospace;
+            overflow-wrap: anywhere;
+        }
+        
+        .install-grid {
+            display: grid;
+            grid-template-columns: .88fr 1.12fr;
+            gap: 34px;
+            align-items: start;
+        }
+        
+        .install-copy h2 {
+            margin-bottom: 15px;
+            font-family: "Bungee", Impact, sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4.6rem);
+            line-height: 1;
+            text-transform: uppercase;
+        }
+        
+        .install-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        
+        .install-tab {
+            padding: 8px 12px;
+            border: 3px solid var(--paper);
+            background: transparent;
+            color: var(--paper);
+            font: 700 .8rem "IBM Plex Mono", monospace;
+            cursor: pointer;
+        }
+        
+        .install-tab[aria-selected="true"] {
+            color: var(--ink);
+            background: var(--yellow);
+            border-color: var(--ink);
+        }
+        
+        .install-panel[hidden] {
+            display: none;
+        }
+        
+        .install-panel p {
+            margin: 15px 0 0;
+            color: #d5d5d5;
+            font-size: .93rem;
+        }
+        
+        .terminal-status {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .terminal-status span {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid var(--paper);
+        }
+        
+        .terminal-status span:nth-child(1) {
+            background: var(--coral);
+        }
+        
+        .terminal-status span:nth-child(2) {
+            background: var(--yellow);
+        }
+        
+        .terminal-status span:nth-child(3) {
+            background: var(--lime-bright);
+        }
+        
+        .final-cta {
+            position: relative;
+            padding: 76px 0;
+            overflow: hidden;
+            background: var(--yellow);
+            border-block: 5px solid var(--ink);
+        }
+        
+        .final-cta::before,
+        .final-cta::after {
+            content: "";
+            position: absolute;
+            border: 5px solid var(--ink);
+        }
+        
+        .final-cta::before {
+            width: 190px;
+            height: 190px;
+            left: -55px;
+            top: -50px;
+            background: var(--coral);
+            transform: rotate(35deg);
+        }
+        
+        .final-cta::after {
+            width: 150px;
+            height: 150px;
+            right: -25px;
+            bottom: -45px;
+            border-radius: 50%;
+            background: var(--cyan);
+        }
+        
+        .final-inner {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 28px;
+        }
+        
+        .final-inner h2 {
+            max-width: 760px;
+            margin-bottom: 8px;
+            font-family: "Bungee", Impact, sans-serif;
+            font-size: clamp(2.4rem, 5vw, 5rem);
+            line-height: 1;
+            text-transform: uppercase;
+        }
+        
+        .final-inner p {
+            margin-bottom: 0;
+            font-size: 1.18rem;
+            font-weight: 700;
+        }
+        
+        footer {
+            padding: 35px 0 46px;
+            color: var(--paper);
+            background: var(--ink);
+            font-family: "IBM Plex Mono", monospace;
+            font-size: .82rem;
+        }
+        
+        .footer-grid {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+        }
+        
+        .footer-links a {
+            color: var(--yellow);
+        }
+        
+         :focus-visible {
+            outline: 4px solid var(--magenta);
+            outline-offset: 4px;
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition: none !important;
+            }
+        }
+        
+        @media (max-width: 980px) {
+            .hero-grid,
+            .install-grid,
+            .example-layout {
+                grid-template-columns: 1fr;
+            }
+            .hero-art {
+                min-height: 500px;
+                max-width: 620px;
+                margin: 0 auto;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .program-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .steps-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .process-board {
+                grid-template-columns: 1fr;
+            }
+            .process-arrow {
+                transform: rotate(90deg);
+                margin: 2px auto;
+            }
+            .final-inner {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 760px) {
+            body {
+                font-size: 17px;
+            }
+            .shell {
+                width: min(calc(100% - 24px), var(--max-width));
+            }
+            .menu-button {
+                display: block;
+            }
+            .nav-links {
+                position: absolute;
+                inset: 72px 0 auto 0;
+                display: none;
+                padding: 22px;
+                background: var(--paper);
+                border-bottom: 4px solid var(--ink);
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .nav-links[data-open="true"] {
+                display: flex;
+            }
+            .nav-links a {
+                padding: 7px 0;
+            }
+            .hero {
+                padding-top: 58px;
+            }
+            .hero::before {
+                width: 350px;
+                height: 270px;
+                right: -120px;
+            }
+            .hero-art {
+                min-height: 430px;
+            }
+            .hero-logo {
+                max-height: 430px;
+            }
+            .signal-tag {
+                right: -2px;
+                top: 25px;
+            }
+            .shape-one {
+                left: -30px;
+            }
+            .capability-grid,
+            .stats-grid,
+            .program-grid,
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+            .program-toolbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+            .section {
+                padding: 74px 0;
+            }
+            .video-shell {
+                min-height: 240px;
+            }
+            .code-panel pre {
+                padding-right: 0;
+                padding-top: 42px;
+            }
+            .copy-button {
+                top: 16px;
+            }
+            .footer-grid {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 470px) {
+            h1 {
+                font-size: 2.65rem;
+            }
+            .text-punch {
+                -webkit-text-stroke-width: 2px;
+                text-shadow: 3px 3px 0 var(--purple);
+            }
+            .button {
+                width: 100%;
+            }
+            .hero-art {
+                min-height: 370px;
+            }
+            .hero-logo {
+                max-height: 365px;
+            }
+            .signal-tag {
+                width: 125px;
+                font-size: .66rem;
+            }
+            .orbit-shape {
+                transform: scale(.8);
+            }
+            .shape-three {
+                display: none;
+            }
+            .final-inner .button {
+                width: auto;
+            }
+        }
+        
+        .brand-icon {
+            width: 64px;
+            height: 64px;
+            display: block;
+            object-fit: contain;
+            filter: drop-shadow(3px 3px 0 rgba(8, 8, 8, .35));
+        }
+    </style>
 </head>
+
 <body>
-  <header>
-    <div class="container">
-      <img src="https://via.placeholder.com/120" alt="MySoftware Logo" class="logo">
-      <h1>MySoftware</h1>
-      <p class="tagline">The Missing Package Manager for Your System</p>
-    </div>
-  </header>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-  <section id="install">
-    <div class="container">
-      <h2>Installation</h2>
-      <p>Paste that in a macOS Terminal or Linux shell prompt.</p>
-      <pre class="install-code">/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/MySoftware/install/main/install.sh)"<button class="copy-button" onclick="copyCode(this)">Copy</button></pre>
-      <p>The script explains what it will do and then pauses before it does it. <a href="https://docs.mysoftware.com/Installation">Read about other installation options.</a></p>
-    </div>
-  </section>
-
-  <section id="what-does">
-    <div class="container">
-      <h2>What Does videobeaux Do?</h2>
-      <div class="two-column">
-        <div class="column-left">
-          <p>MySoftware installs the stuff you need that your system didn’t.</p>
+    <nav class="site-nav" aria-label="Primary navigation">
+        <div class="shell nav-inner">
+            <a class="brand" href="#top" aria-label="Videobeaux home">
+                <img class="brand-icon" src="assets/videobeaux-tv-icon.png" alt="" aria-hidden="true"> videobeaux
+            </a>
+            <button class="menu-button" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
+            <div class="nav-links" id="nav-links" data-open="false">
+                <a href="#toolkit">Toolkit</a>
+                <a href="#programs">Programs</a>
+                <a href="#examples">Examples</a>
+                <a href="docs.html" target="_blank" rel="noreferrer">Docs</a>
+                <a href="https://github.com/schwwaaa/videobeaux" target="_blank" rel="noreferrer">GitHub</a>
+                <a class="nav-cta" href="#install">Install</a>
+            </div>
         </div>
-        <div class="column-right">
-          <pre class="install-code">mysoftware install package<button class="copy-button" onclick="copyCode(this)">Copy</button></pre>
-        </div>
-      </div>
-    </div>
+    </nav>
 
-    <div class="container">
-      <div class="two-column">
-        <div class="column-left">
-          <p>MySoftware installs the stuff you need that your system didn’t.</p>
-        </div>
-        <div class="column-right">
-          <pre class="install-code">mysoftware install package<button class="copy-button" onclick="copyCode(this)">Copy</button></pre>
-        </div>
-      </div>
-    </div>
+    <main id="main">
+        <header class="hero" id="top">
+            <div class="shell hero-grid">
+                <div>
+                    <p class="eyebrow">📺 Friendly multilateral video toolkit</p>
+                    <h1>Break, bend, <span class="text-punch">repair</span> &amp; automate video.</h1>
+                    <p class="hero-copy">Videobeaux turns focused command-line programs into an artist-led video-processing system—from controlled datamoshing and frame stutter to conversion, extraction, compositing, and chainable workflows.</p>
+                    <div class="button-row">
+                        <a class="button button-primary" href="#programs">Explore programs</a>
+                        <a class="button button-secondary" href="#install">Install Videobeaux</a>
+                    </div>
+                    <p class="hero-note">Built for artists by artists. Feed it an MP4, choose a program, and let the television do something useful—or wonderfully incorrect.</p>
+                </div>
 
-  </section>
+                <div class="hero-art" aria-label="Videobeaux television mascot artwork">
+                    <span class="orbit-shape shape-one" aria-hidden="true"></span>
+                    <span class="orbit-shape shape-two" aria-hidden="true"></span>
+                    <span class="orbit-shape shape-three" aria-hidden="true"></span>
+                    <div class="signal-tag" aria-hidden="true">
+                        SIGNAL: FRIENDLY<br>MODE: MULTILATERAL
+                        <div class="signal-bar"></div>
+                    </div>
+                    <img class="hero-logo" src="assets/videobeaux-tv-icon-full.png" alt="Videobeaux cartoon television logo">
+                </div>
+            </div>
+        </header>
 
-  <script>
-    function copyCode(button) {
-      const code = button.parentElement.textContent.replace('Copy', '').trim();
-      navigator.clipboard.writeText(code).then(() => {
-        button.textContent = 'Copied!';
-        setTimeout(() => {
-          button.textContent = 'Copy';
-        }, 2000);
-      });
-    }
-  </script>
+        <div class="marquee" aria-label="Selected Videobeaux programs">
+            <div class="marquee-track" aria-hidden="true">
+                <span>crossmosh</span><span>lagkage</span><span>stutter_pro</span><span>bad_predator</span><span>chain_builder</span><span>captburn</span><span>tonemap_hdr_sdr</span><span>thumbs</span><span>extract_frames</span><span>lsd_feedback</span><span>soapblind</span><span>repainting</span>
+                <span>crossmosh</span><span>lagkage</span><span>stutter_pro</span><span>bad_predator</span><span>chain_builder</span><span>captburn</span><span>tonemap_hdr_sdr</span><span>thumbs</span><span>extract_frames</span><span>lsd_feedback</span><span>soapblind</span><span>repainting</span>
+            </div>
+        </div>
+
+        <section class="section section-tight section-lime" aria-labelledby="proof-title">
+            <div class="shell">
+                <div class="section-heading">
+                    <p class="sticker-label">Not one effect. A whole strange workshop.</p>
+                    <h2 id="proof-title">A real toolkit behind the mascot.</h2>
+                </div>
+                <div class="stats-grid">
+                    <article class="stat-card"><span class="stat-number">60+</span>
+                        <p>documented effects and utilities</p>
+                    </article>
+                    <article class="stat-card"><span class="stat-number">1</span>
+                        <p>consistent command-line interface</p>
+                    </article>
+                    <article class="stat-card"><span class="stat-number">A→B</span>
+                        <p>chainable processing workflows</p>
+                    </article>
+                    <article class="stat-card"><span class="stat-number">MP4</span>
+                        <p>input-focused, practical operation</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="toolkit" aria-labelledby="toolkit-title">
+            <div class="shell">
+                <div class="section-heading">
+                    <p class="sticker-label">What does Videobeaux do?</p>
+                    <h2 id="toolkit-title">Creative damage meets practical processing.</h2>
+                    <p>The documentation spans playful image destruction, repeatable editorial operations, media inspection, and automation. The landing page groups those programs by the outcome a user wants—not by a wall of filenames.</p>
+                </div>
+                <div class="capability-grid" id="capability-grid"></div>
+            </div>
+        </section>
+
+        <section class="section section-cyan" aria-labelledby="process-title">
+            <div class="shell">
+                <div class="section-heading">
+                    <p class="sticker-label">The process</p>
+                    <h2 id="process-title">Input. Program. Output. Chain it again.</h2>
+                    <p>Videobeaux uses a consistent global command structure, while individual programs can expose their own arguments when a process needs more control.</p>
+                </div>
+                <div class="process-board" aria-label="Video processing workflow">
+                    <img class="process-board-image" src="assets/how-it-works-approved.png" alt="How it works: landscape video input, Videobeaux program television, psychedelic landscape output, and a chain-it-again processing loop">
+                </div>
+            </div>
+        </section>
+
+        <section class="section section-dark" id="programs" aria-labelledby="programs-title">
+            <div class="shell">
+                <div class="program-toolbar">
+                    <div class="section-heading" style="margin-bottom:0">
+                        <p class="sticker-label" style="color:var(--ink)">Featured programs</p>
+                        <h2 id="programs-title">Pick a machine.</h2>
+                        <p>These cards use descriptions and command structures from the project documentation.</p>
+                    </div>
+                    <div class="program-filter" role="group" aria-label="Filter programs">
+                        <button class="filter-button" type="button" data-filter="all" aria-pressed="true">All</button>
+                        <button class="filter-button" type="button" data-filter="effect" aria-pressed="false">Effects</button>
+                        <button class="filter-button" type="button" data-filter="utility" aria-pressed="false">Utilities</button>
+                    </div>
+                </div>
+                <div class="program-grid" id="program-grid"></div>
+                <div class="button-row" style="margin-top:38px">
+                    <a class="button button-primary" href="https://schwwaaa.github.io/videobeaux/programs.html" target="_blank" rel="noreferrer">Browse all programs</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" aria-labelledby="start-title">
+            <div class="shell">
+                <div class="section-heading">
+                    <p class="sticker-label">Getting started</p>
+                    <h2 id="start-title">The shortest route from file to altered file.</h2>
+                </div>
+                <div class="steps-grid">
+                    <article class="step-card" style="--step-color:var(--yellow)">
+                        <h3>Install</h3>
+                        <p>Run the project install script on macOS or Linux, or configure the documented Windows prerequisites.</p>
+                    </article>
+                    <article class="step-card" style="--step-color:var(--cyan)">
+                        <h3>Choose</h3>
+                        <p>Use <code>videobeaux --help</code> to inspect available program modes and global options.</p>
+                    </article>
+                    <article class="step-card" style="--step-color:var(--coral)">
+                        <h3>Process</h3>
+                        <p>Pass the program, input, and output. Add program-specific arguments only when needed.</p>
+                    </article>
+                    <article class="step-card" style="--step-color:var(--purple); color:white">
+                        <h3>Chain</h3>
+                        <p>Use <code>chain_builder</code> to pass one processed output directly into the next effect.</p>
+                    </article>
+                </div>
+                <div class="code-panel" style="margin-top:34px">
+                    <button class="copy-button" type="button" data-copy-target="usage-command">Copy</button>
+                    <pre id="usage-command">videobeaux --program PROGRAM --input INPUT_FILE --output OUTPUT_FILE [program options]</pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section-lime" id="examples" aria-labelledby="examples-title">
+            <div class="shell">
+                <div class="section-heading">
+                    <p class="sticker-label">Working examples</p>
+                    <h2 id="examples-title">See the command. See what came back.</h2>
+                    <p>The documentation includes a basic effect, a parameterized stutter process, and a three-stage chain. Select an example to switch the command and video.</p>
+                </div>
+                <div class="example-layout">
+                    <div class="example-tabs" role="tablist" aria-label="Video examples" id="example-tabs"></div>
+                    <div class="example-stage">
+                        <div class="crt-frame">
+                            <div class="video-shell">
+                                <video id="example-video" controls preload="metadata" playsinline></video>
+                                <div class="video-fallback">VIDEO PREVIEW<br>Load the page online to retrieve the documented GitHub-hosted example.</div>
+                            </div>
+                        </div>
+                        <div class="example-command" id="example-command"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section-dark" id="install" aria-labelledby="install-title">
+            <div class="shell install-grid">
+                <div class="install-copy">
+                    <p class="sticker-label" style="color:var(--ink)">Installation</p>
+                    <h2 id="install-title">Put the toolkit in your terminal.</h2>
+                    <p>Use the documented shell installer for macOS/Linux. The Windows tab preserves the prerequisites currently listed in the project docs.</p>
+                    <div class="button-row">
+                        <a class="button button-primary" href="https://schwwaaa.github.io/videobeaux/installation.html" target="_blank" rel="noreferrer">Full installation docs</a>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="install-tabs" role="tablist" aria-label="Installation platform">
+                        <button class="install-tab" type="button" role="tab" data-install="unix" aria-selected="true">macOS / Linux</button>
+                        <button class="install-tab" type="button" role="tab" data-install="windows" aria-selected="false">Windows</button>
+                    </div>
+
+                    <div class="install-panel" data-panel="unix">
+                        <div class="code-panel">
+                            <div class="terminal-status" aria-hidden="true"><span></span><span></span><span></span></div>
+                            <button class="copy-button" type="button" data-copy-target="unix-command">Copy</button>
+                            <pre id="unix-command">/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/schwwaaa/videobeaux/refs/heads/main/install.sh)"</pre>
+                        </div>
+                        <p>Run this from the directory where you want the project to live. The installer explains its actions before continuing.</p>
+                    </div>
+
+                    <div class="install-panel" data-panel="windows" hidden>
+                        <div class="code-panel">
+                            <div class="terminal-status" aria-hidden="true"><span></span><span></span><span></span></div>
+                            <button class="copy-button" type="button" data-copy-target="windows-command">Copy</button>
+                            <pre id="windows-command">choco install ffmpeg
+setx VIDEOBEAUX_PATH "C:\videobeaux"</pre>
+                        </div>
+                        <p>These are the Windows prerequisites currently shown in the documentation. Follow the full installation page for the remaining project setup.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="final-cta" aria-labelledby="cta-title">
+            <div class="shell final-inner">
+                <div>
+                    <h2 id="cta-title">Feed it a video. See what comes back.</h2>
+                    <p>Creative effects, practical utilities, and repeatable processing chains in one friendly toolkit.</p>
+                </div>
+                <a class="button button-coral" href="https://github.com/schwwaaa/videobeaux" target="_blank" rel="noreferrer">Open GitHub</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="shell footer-grid">
+            <div>📺 videobeaux — built for artists by artists. It's your best friend.</div>
+            <div class="footer-links">
+                <a href="https://schwwaaa.net" target="_blank" rel="noreferrer">schwwaaa.net</a>
+                <a href="https://schwwaaa.github.io/videobeaux/" target="_blank" rel="noreferrer">Documentation</a>
+                <a href="https://github.com/schwwaaa/videobeaux" target="_blank" rel="noreferrer">Repository</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const CONTENT = {
+            capabilities: [{
+                number: "01",
+                icon: "✹",
+                accent: "var(--yellow)",
+                title: "Create & distort",
+                text: "Datamosh, smear, stutter, delay, split, repaint, scroll, loop, overexpose, and generate deliberately broken motion with named, repeatable effects."
+            }, {
+                number: "02",
+                icon: "↔",
+                accent: "var(--cyan)",
+                title: "Repair & convert",
+                text: "Normalize dimensions, convert containers, fix gamma, interpolate frames, apply LUTs, tonemap HDR to SDR, and prepare media for practical delivery."
+            }, {
+                number: "03",
+                icon: "⌕",
+                accent: "var(--coral)",
+                title: "Inspect & extract",
+                text: "Pull frames or sound, generate thumbnails and contact sheets, inspect metadata, create fingerprints, and isolate useful media components."
+            }, {
+                number: "04",
+                icon: "⛓",
+                accent: "var(--purple)",
+                title: "Compose & automate",
+                text: "Build multi-layer JSON compositions with lagkage, burn captions, create transitions, and pass outputs through repeatable multi-program chains."
+            }],
+            programs: [{
+                name: "crossmosh",
+                type: "effect",
+                accent: "var(--magenta)",
+                description: "A controlled datamoshing engine that manipulates motion vectors, frame order, GOP structure, decay, and A/B source blending for intentional glitch drift.",
+                command: "videobeaux -P crossmosh -i input.mp4 -o output.mp4 [options]"
+            }, {
+                name: "lagkage",
+                type: "effect",
+                accent: "var(--purple)",
+                description: "A JSON-driven multilayer compositor for stacking, positioning, resizing, mixing, sequencing, and animating multiple media sources without a traditional timeline.",
+                command: "videobeaux -P lagkage -i input.mp4 -o output.mp4 --layout_json layout.json"
+            }, {
+                name: "stutter_pro",
+                type: "effect",
+                accent: "var(--yellow)",
+                description: "A controllable frame-stutter process for rhythmic holds, skips, and timeline hiccups with a user-defined stutter intensity.",
+                command: "videobeaux -P stutter_pro -i input.mp4 -o output.mp4 --stutter 2"
+            }, {
+                name: "chain_builder",
+                type: "utility",
+                accent: "var(--cyan)",
+                description: "Runs a comma-separated sequence of compatible programs, using each processed output as the input for the next stage.",
+                command: "videobeaux -P chain_builder -i input.mp4 -o output.mp4 --chain rb_blur,soapblind,lsd_feedback"
+            }, {
+                name: "captburn",
+                type: "utility",
+                accent: "var(--coral)",
+                description: "Burns caption or subtitle content into video with controls for typeface, placement, styling, encoding, and output behavior.",
+                command: "videobeaux -P captburn -i input.mp4 -o output.mp4 [caption options]"
+            }, {
+                name: "tonemap_hdr_sdr",
+                type: "utility",
+                accent: "var(--lime-bright)",
+                description: "Converts HDR material to SDR using selectable tonemap curves, BT.709 mapping, dithering, pixel-format, CRF, and encoder controls.",
+                command: "videobeaux -P tonemap_hdr_sdr -i input.mp4 -o output.mp4 --algo hable"
+            }, {
+                name: "thumbs",
+                type: "utility",
+                accent: "var(--yellow)",
+                description: "Samples frames by time or scene changes and generates thumbnails, labeled stills, or tiled contact sheets for previews and quality control.",
+                command: "videobeaux -P thumbs -i input.mp4 -o output --tile 5x5 --timestamps true"
+            }, {
+                name: "extract_frames",
+                type: "utility",
+                accent: "var(--cyan)",
+                description: "Decodes a video into sequential frame images for animation, archival work, visual debugging, datasets, or frame-by-frame art processes.",
+                command: "videobeaux -P extract_frames -i input.mp4 -o frames"
+            }, {
+                name: "bad_predator",
+                type: "effect",
+                accent: "var(--coral)",
+                description: "Applies a deliberately broken heat-vision treatment and provides one of the simplest demonstrations of the standard program workflow.",
+                command: "videobeaux -P bad_predator -i input.mp4 -o output.mp4"
+            }],
+            examples: [{
+                label: "Basic effect",
+                detail: "bad_predator / no extra arguments",
+                video: "https://github.com/user-attachments/assets/fe45aa80-9878-4d15-bc64-87dd25071855",
+                command: "videobeaux --program bad_predator --input example.mp4 --output example_bp.mp4"
+            }, {
+                label: "Parameterized effect",
+                detail: "stutter_pro / stutter intensity 2",
+                video: "https://github.com/user-attachments/assets/fec22179-8e40-49e5-b591-c9d5fb07e31b",
+                command: "videobeaux --program stutter_pro -i example.mp4 -o stutter_example.mp4 --stutter 2"
+            }, {
+                label: "Three-stage chain",
+                detail: "rb_blur → soapblind → lsd_feedback",
+                video: "https://github.com/user-attachments/assets/ac321c77-4757-4846-b838-6847472e7e09",
+                command: "videobeaux --program chain_builder --input example.mp4 --output chainedoutput.mp4 --chain rb_blur,soapblind,lsd_feedback --force"
+            }]
+        };
+
+        const capabilityGrid = document.querySelector("#capability-grid");
+        CONTENT.capabilities.forEach((item) => {
+            const card = document.createElement("article");
+            card.className = "capability-card";
+            card.dataset.number = item.number;
+            card.innerHTML = `
+        <div class="capability-icon" style="--accent:${item.accent}; background:${item.accent}" aria-hidden="true">${item.icon}</div>
+        <h3>${item.title}</h3>
+        <p>${item.text}</p>`;
+            capabilityGrid.appendChild(card);
+        });
+
+        const programGrid = document.querySelector("#program-grid");
+        CONTENT.programs.forEach((program, index) => {
+            const card = document.createElement("article");
+            card.className = "program-card";
+            card.dataset.type = program.type;
+            card.style.setProperty("--card-accent", program.accent);
+            card.innerHTML = `
+        <div class="program-meta">
+          <span class="program-type">${program.type}</span>
+          <span class="program-index">${String(index + 1).padStart(2, "0")}</span>
+        </div>
+        <h3>${program.name}</h3>
+        <p>${program.description}</p>
+        <div class="program-command">${program.command}</div>`;
+            programGrid.appendChild(card);
+        });
+
+        document.querySelectorAll(".filter-button").forEach((button) => {
+            button.addEventListener("click", () => {
+                const filter = button.dataset.filter;
+                document.querySelectorAll(".filter-button").forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+                document.querySelectorAll(".program-card").forEach((card) => {
+                    card.hidden = filter !== "all" && card.dataset.type !== filter;
+                });
+            });
+        });
+
+        const tabsContainer = document.querySelector("#example-tabs");
+        const video = document.querySelector("#example-video");
+        const command = document.querySelector("#example-command");
+
+        function selectExample(index) {
+            const item = CONTENT.examples[index];
+            document.querySelectorAll(".example-tab").forEach((tab, tabIndex) => {
+                tab.setAttribute("aria-selected", String(tabIndex === index));
+            });
+            video.pause();
+            video.src = item.video;
+            video.load();
+            command.textContent = item.command;
+        }
+
+        CONTENT.examples.forEach((item, index) => {
+            const tab = document.createElement("button");
+            tab.type = "button";
+            tab.className = "example-tab";
+            tab.setAttribute("role", "tab");
+            tab.setAttribute("aria-selected", String(index === 0));
+            tab.innerHTML = `<strong>${item.label}</strong><span>${item.detail}</span>`;
+            tab.addEventListener("click", () => selectExample(index));
+            tabsContainer.appendChild(tab);
+        });
+        selectExample(0);
+
+        document.querySelectorAll("[data-copy-target]").forEach((button) => {
+            button.addEventListener("click", async() => {
+                const target = document.getElementById(button.dataset.copyTarget);
+                const original = button.textContent;
+                try {
+                    await navigator.clipboard.writeText(target.textContent.trim());
+                    button.textContent = "Copied!";
+                } catch (error) {
+                    const selection = window.getSelection();
+                    const range = document.createRange();
+                    range.selectNodeContents(target);
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                    button.textContent = "Select text";
+                }
+                window.setTimeout(() => {
+                    button.textContent = original;
+                }, 1800);
+            });
+        });
+
+        document.querySelectorAll(".install-tab").forEach((tab) => {
+            tab.addEventListener("click", () => {
+                const platform = tab.dataset.install;
+                document.querySelectorAll(".install-tab").forEach((item) => item.setAttribute("aria-selected", String(item === tab)));
+                document.querySelectorAll(".install-panel").forEach((panel) => {
+                    panel.hidden = panel.dataset.panel !== platform;
+                });
+            });
+        });
+
+        const menuButton = document.querySelector(".menu-button");
+        const navLinks = document.querySelector("#nav-links");
+        menuButton.addEventListener("click", () => {
+            const open = menuButton.getAttribute("aria-expanded") === "true";
+            menuButton.setAttribute("aria-expanded", String(!open));
+            navLinks.dataset.open = String(!open);
+        });
+        navLinks.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => {
+            menuButton.setAttribute("aria-expanded", "false");
+            navLinks.dataset.open = "false";
+        }));
+    </script>
 </body>
+
 </html>
