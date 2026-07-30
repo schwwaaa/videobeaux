@@ -124,6 +124,49 @@ a{color:inherit}.skip-link{position:absolute;left:12px;top:-60px;z-index:9999;pa
   }
 }
 
+        .schwwaaa-footer {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            padding: 28px 0 36px;
+            text-align: center;
+            font-family: "Audiowide", sans-serif;
+        }
+
+        .schwwaaa-footer-logo {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .schwwaaa-footer-image {
+            display: block;
+            width: min(168px, 44vw);
+            height: auto;
+            object-fit: contain;
+            opacity: 0.9;
+            filter: drop-shadow(0 0 12px rgba(255,255,255,0.22))
+                    drop-shadow(0 0 22px rgba(13,110,253,0.18));
+            transition: opacity 0.3s ease, transform 0.3s ease, filter 0.3s ease;
+        }
+
+        .schwwaaa-footer-logo:hover .schwwaaa-footer-image {
+            opacity: 1;
+            transform: translateY(-1px);
+            filter: drop-shadow(0 0 14px rgba(255,255,255,0.35))
+                    drop-shadow(0 0 28px rgba(13,110,253,0.32));
+        }
+
+        .schwwaaa-footer-label {
+            display: block;
+            margin-top: 8px;
+            color: rgba(255,255,255,0.54);
+            font-size: 0.58rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
 </style>
 </head>
 <body>
@@ -6403,7 +6446,12 @@ Output uses the provided CRF and preset options for consistent quality.</li>
   </article><div class="section-nav"><a class="back-to-top" href="#top">↑ Back to top</a></div>
 </section>
 
-      <footer class="doc-footer">Videobeaux — the friendly multilateral video toolkit built for artists by artists.</footer>
+      <!-- <footer class="doc-footer">Videobeaux — the friendly multilateral video toolkit built for artists by artists.</footer> -->
+    <footer class="schwwaaa-footer" aria-label="schwwaaa footer logo">
+    <a class="schwwaaa-footer-logo" href="https://linktr.ee/schwwaaa" target="_blank" rel="noopener noreferrer">
+        <img class="schwwaaa-footer-image" src="./assets/schwwaaa-logo.png" alt="schwwaaa">
+    </a>
+</footer>
     </div>
   </main>
 </div>
