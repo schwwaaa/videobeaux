@@ -1,10 +1,10 @@
 <p align="center">
-  <img src="img/videobeaux-1.png" width="420" alt="Videobeaux television mascot and wordmark">
+  <img src="https://github.com/schwwaaa/videobeaux/blob/main/assets/videobeaux-tv-icon-full.png?raw=true" width="420" alt="Videobeaux television mascot and wordmark">
 </p>
 
-<h1 align="center">Videobeaux</h1>
+<!-- <h1 align="center">Videobeaux</h1> -->
 
-<p align="center"><strong>Break, bend, repair, and automate video.</strong></p>
+<!-- <p align="center"><strong>Break, bend, repair, and automate video.</strong></p> -->
 
 <p align="center">A friendly command-line video toolkit for artists, archivists, researchers, editors, educators, and creative technologists.</p>
 
