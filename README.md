@@ -9,8 +9,8 @@
 <p align="center">A friendly command-line video toolkit for artists, archivists, researchers, editors, educators, and creative technologists.</p>
 
 <p align="center">
-  <a href="https://schwwaaa.github.io/videobeaux/">Website</a> ·
-  <a href="https://schwwaaa.github.io/videobeaux/docs.html">Documentation</a> ·
+  <a href="https://videobeaux.online">Website</a> ·
+  <a href="https://videobeaux.online/docs.html">Documentation</a> ·
   <a href="https://github.com/schwwaaa/videobeaux">Repository</a> ·
   <a href="https://ko-fi.com/F1F71V9CQG">Support</a>
 </p>
