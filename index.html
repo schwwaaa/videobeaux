@@ -7,6 +7,9 @@
     <meta name="description" content="Videobeaux is a friendly command-line video toolkit for creating effects, repairing media, extracting assets, and automating video workflows.">
     <meta name="theme-color" content="#a8ad23">
     <title>Videobeaux — Break, Bend, Repair & Automate Video</title>
+    <link href="assets/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png" />
+    <link href="assets/favicon-32x32.png" rel="icon" sizes="16x16" type="image/png" />
+    <link href="assets/favicon-32x32.png" rel="apple-touch-icon" sizes="180x180" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bungee&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
@@ -1186,6 +1189,7 @@
             object-fit: contain;
             filter: drop-shadow(3px 3px 0 rgba(8, 8, 8, .35));
         }
+        
         .schwwaaa-footer {
             position: relative;
             z-index: 1;
@@ -1194,41 +1198,38 @@
             text-align: center;
             font-family: "Audiowide", sans-serif;
         }
-
+        
         .schwwaaa-footer-logo {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             text-decoration: none;
         }
-
+        
         .schwwaaa-footer-image {
             display: block;
             width: min(168px, 44vw);
             height: auto;
             object-fit: contain;
             opacity: 0.9;
-            filter: drop-shadow(0 0 12px rgba(255,255,255,0.22))
-                    drop-shadow(0 0 22px rgba(13,110,253,0.18));
+            filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.22)) drop-shadow(0 0 22px rgba(13, 110, 253, 0.18));
             transition: opacity 0.3s ease, transform 0.3s ease, filter 0.3s ease;
         }
-
+        
         .schwwaaa-footer-logo:hover .schwwaaa-footer-image {
             opacity: 1;
             transform: translateY(-1px);
-            filter: drop-shadow(0 0 14px rgba(255,255,255,0.35))
-                    drop-shadow(0 0 28px rgba(13,110,253,0.32));
+            filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.35)) drop-shadow(0 0 28px rgba(13, 110, 253, 0.32));
         }
-
+        
         .schwwaaa-footer-label {
             display: block;
             margin-top: 8px;
-            color: rgba(255,255,255,0.54);
+            color: rgba(255, 255, 255, 0.54);
             font-size: 0.58rem;
             letter-spacing: 0.16em;
             text-transform: uppercase;
         }
-                
     </style>
 </head>
 
@@ -1678,10 +1679,10 @@ setx VIDEOBEAUX_PATH "C:\videobeaux"</pre>
         }));
     </script>
     <footer class="schwwaaa-footer" aria-label="schwwaaa footer logo">
-    <a class="schwwaaa-footer-logo" href="https://linktr.ee/schwwaaa" target="_blank" rel="noopener noreferrer">
-        <img class="schwwaaa-footer-image" src="./assets/schwwaaa-logo.png" alt="schwwaaa">
-    </a>
-</footer>
+        <a class="schwwaaa-footer-logo" href="https://linktr.ee/schwwaaa" target="_blank" rel="noopener noreferrer">
+            <img class="schwwaaa-footer-image" src="./assets/schwwaaa-logo.png" alt="schwwaaa">
+        </a>
+    </footer>
 </body>
 
 </html>
