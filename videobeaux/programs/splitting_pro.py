@@ -7,20 +7,18 @@ def register_arguments(parser):
 
     parser.add_argument(
         "--width",
-        required=True,
+        required=False,
         type=str,
-        help=(
-            ""
-        )
+        default="157",
+        help="Size in pixels of the shuffled slices. Default: 157."
     )
 
     parser.add_argument(
         "--position",
-        required=True,
-        type=str,
-        help=(
-            ""
-        )
+        required=False,
+        choices=["vertical", "horizontal", "block"],
+        default="vertical",
+        help="Shuffle direction: vertical slices, horizontal slices, or square blocks. Default: vertical."
     )
 
 def run(args):

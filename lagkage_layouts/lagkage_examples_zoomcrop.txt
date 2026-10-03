@@ -1,0 +1,88 @@
+Lagkage Zoom + Crop Example Commands
+====================================
+
+These examples assume:
+- You are in the project root.
+- Base video is at: media/base.mp4
+- JSON layouts are in: lagkage_layouts/
+- Output directory: out/
+
+1) Corner logo with zoom
+------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex01_logo_corner_zoom.mp4 \
+  --layout-json lagkage_layouts/layout_ex01_logo_corner_zoom.json \
+  --force
+
+2) GIF sticker with zoom + crop
+-------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex02_gif_zoomcrop_sticker.mp4 \
+  --layout-json lagkage_layouts/layout_ex02_gif_zoomcrop_sticker.json \
+  --force
+
+3) Dual PIP, right pane zoomed
+------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex03_dual_pip_zoom_right.mp4 \
+  --layout-json lagkage_layouts/layout_ex03_dual_pip_zoom_right.json \
+  --force
+
+4) Lower-third band via crop
+----------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex04_lower_third_crop_band.mp4 \
+  --layout-json lagkage_layouts/layout_ex04_lower_third_crop_band.json \
+  --force
+
+5) Center mask, cropped + zoomed
+--------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex05_mask_crop_zoom_center.mp4 \
+  --layout-json lagkage_layouts/layout_ex05_mask_crop_zoom_center.json \
+  --force
+
+6) Freeform spray (GIFs + logo, random sequence)
+------------------------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex06_freeform_spray_zoom.mp4 \
+  --layout-json lagkage_layouts/layout_ex06_freeform_spray_zoom.json \
+  --force
+
+7) Logo grid with zoomed center
+-------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex07_logo_grid_zoom_center.mp4 \
+  --layout-json lagkage_layouts/layout_ex07_logo_grid_zoom_center.json \
+  --force
+
+8) Story mode: band + zoomed PIP + logo
+---------------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex08_story_mode_zoom.mp4 \
+  --layout-json lagkage_layouts/layout_ex08_story_mode_zoom.json \
+  --force
+
+9) Split-screen: left zoom+crop, right normal
+---------------------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex09_split_screen_zoom_left.mp4 \
+  --layout-json lagkage_layouts/layout_ex09_split_screen_zoom_left.json \
+  --force
+
+10) Full showcase (logos, bands, PIPs, GIFs)
+--------------------------------------------
+videobeaux -P lagkage \
+  -i media/base.mp4 \
+  -o out/ex10_full_showcase_zoomcrop.mp4 \
+  --layout-json lagkage_layouts/layout_ex10_full_showcase_zoomcrop.json \
+  --force

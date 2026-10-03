@@ -1,5 +1,5 @@
 # videobeaux/programs/lut_apply.py
-# Color Correction / LUT Apply — requires --outfile (no -o/--output fallback)
+# Color Correction / LUT Apply
 
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
 
@@ -9,19 +9,24 @@ def _is_hi_bit_pf(pix_fmt: str) -> bool:
     pf = pix_fmt.lower()
     return "p10" in pf or "p12" in pf
 
+# The GUI always supplies the output path (-o) from the connected Output node,
+# so this program-specific fallback flag is hidden from the node's fields.
+GUI_METADATA = {'args': {'outfile': {'hidden': True}}}
+
+
 def register_arguments(parser):
     parser.description = (
         "Color Correction / LUT Apply\n"
         "• Apply a 3D LUT (.cube/.3dl) with adjustable intensity.\n"
-        "• Basic color tweaks: brightness, contrast, saturation, gamma.\n"
-        "• Uses only --outfile for output (no -o/--output)."
+        "• Basic color tweaks: brightness, contrast, saturation, gamma."
     )
 
-    # Program-specific output ONLY (no short alias; avoids global -o)
+    # Prefer the global -o/--output when given (e.g. the GUI always sets it);
+    # --outfile is a fallback for direct CLI use without -o.
     parser.add_argument(
         "--outfile",
-        required=True,
-        help="Output video file (required)"
+        required=False,
+        help="Output video file. Falls back to -o/--output when omitted."
     )
 
     # Optional explicit vcodec; if omitted we auto-pick based on pix_fmt
@@ -57,9 +62,11 @@ def register_arguments(parser):
 
 def run(args):
     infile = getattr(args, "input", None)  # provided by global CLI
-    outfile = args.outfile                 # required here
+    outfile = getattr(args, "output", None) or args.outfile
     if not infile:
         raise SystemExit("❌ Missing input. Provide -i/--input globally.")
+    if not outfile:
+        raise SystemExit("❌ Missing output. Provide -o/--output or --outfile.")
 
     # EQ chain
     eq = (
@@ -89,7 +96,7 @@ def run(args):
     else:
         src = "[0:v]"
 
-    fg_parts.append(f"{src},{eq}[v_eq]")
+    fg_parts.append(f"{src}{eq}[v_eq]")
     fg_parts.append(f"[v_eq]format={args.pix_fmt}[out_v]")
     filtergraph = ";".join(fg_parts)
 

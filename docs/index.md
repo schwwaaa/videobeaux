@@ -30,7 +30,6 @@ nav_order: 1
 - [mirror_delay](programs/effects/mirror_delay.md)
 - [nostalgic_stutter](programs/effects/nostalgic_stutter.md)
 - [overexposed_stutter](programs/effects/overexposed_stutter.md)
-- [overlay_img_pro](programs/effects/overlay_img_pro.md)
 - [pickle_juice](programs/effects/pickle_juice.md)
 - [recalled_sensor](programs/effects/recalled_sensor.md)
 - [repainting](programs/effects/repainting.md)

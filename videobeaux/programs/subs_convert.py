@@ -159,6 +159,11 @@ def _print_list(streams: List[Dict[str, Any]], src: Path) -> None:
 # ------------------------------
 # CLI
 # ------------------------------
+# The GUI always supplies the output path (-o) from the connected Output node,
+# so this program-specific fallback flag is hidden from the node's fields.
+GUI_METADATA = {'args': {'outputfile': {'hidden': True}}}
+
+
 def register_arguments(parser: argparse.ArgumentParser):
     parser.description = (
         "List, extract, and convert subtitle tracks. "
@@ -200,6 +205,12 @@ def run(args: argparse.Namespace):
     in_path = Path(args.input)
     if not in_path.exists():
         raise SystemExit(f"❌ Input not found: {in_path}")
+
+    # Prefer the global -o/--output when given (e.g. the GUI always sets
+    # it) over the program's own --outputfile for the single-output paths
+    # below, so a wired-in Output node isn't silently ignored.
+    if not getattr(args, "outputfile", None) and getattr(args, "output", None):
+        args.outputfile = args.output
 
     is_sub_file = _is_subtitle_file(in_path)
 

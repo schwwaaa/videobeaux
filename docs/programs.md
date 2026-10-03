@@ -26,7 +26,6 @@ nav_order: 3
 | mirror_delay | Apply a frame delay plus a mirrored effect | - |
 | nostalgic_stutter | Apply frame stutter akin to a corrupted file | - |
 | overexposed_stutter | Apply a frame stutter and exposing the video like the- | file is corrupted | - |
-| overlay_img_pro | Overlay an image with location & dimension control | overlay_img, x_pos, y_pos, img_height, img_width |
 | pickle_juice | Apply filter like the video was dipped in pickle juice | - |
 | recalled_sensor | Apply filter like a sensor was broken and to-be recalled |- |
 | repainting | Apply filter like repainting the same image while smudged with- | alcohol |- |
@@ -74,5 +73,5 @@ nav_order: 3
 | thumbs | Generates thumbnails or contact sheets by sampling frames at chosen intervals for previews, galleries, or QC review | fps, scene, scene_threshold, tile, scale, timestamps, label, fontfile, bg, margin, padding, outdir, outputfile, image_format, jpeg_quality |
 | tonemap_hdr_sdr | Converts HDR footage (PQ/HLG) to SDR using tunable tonemapping curves, preserving highlight detail and color accuracy | outfile, algo, desat, peak, dither, pix_fmt, x264_preset, crf, copy_audio |
 | transraibe | AI-based transcription tool | stt_model |
-| watermark | Applies image or text watermarks onto video with configurable positioning, scaling, opacity, and blend style | watermark, placement, margin, scale, opacity, spin, start, end, wm_loop, ignore_loop, video_crf, video_preset |
+| watermark | Watermark or general-purpose image overlay (PNG/JPG/GIF): 9-point placement or custom X/Y, scale or exact pixel sizing, opacity, spin, and a timed enable window (merges the former overlay_img_pro) | watermark, placement, margin, x_pos, y_pos, scale, width, height, opacity, spin, start, end, wm_loop, ignore_loop, video_crf, video_preset |
 | wipe_transitions | Creates directional wipe transitions between clips using customizable timing, edge softness, and motion orientation | input1, input2, output_format, preset, duration, offset |

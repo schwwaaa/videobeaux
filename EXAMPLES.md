@@ -327,7 +327,6 @@ An overview of each program can be find in this [YouTube playlist](https://www.y
 | mirror_delay | Apply a frame delay plus a mirrored effect | - |
 | nostalgic_stutter | Apply frame stutter akin to a corrupted file | - |
 | overexposed_stutter | Apply a frame stutter and exposing the video like the- | file is corrupted | - |
-| overlay_img_pro | Overlay an image with location & dimension control | overlay_img, x_pos, y_pos, img_height, img_width |
 | pickle_juice | Apply filter like the video was dipped in pickle juice | - |
 | recalled_sensor | Apply filter like a sensor was broken and to-be recalled |- |
 | repainting | Apply filter like repainting the same image while smudged with- | alcohol |- |
@@ -446,10 +445,6 @@ https://github.com/schwwaaa/videobeaux/assets/7625379/3cef37d9-093f-4bd9-850c-4b
 overexposed_stutter
 
 https://github.com/schwwaaa/videobeaux/assets/7625379/f7250a1e-3cf5-4826-977a-a5a18b231ddb
-
-overlay_img_pro
-
-https://github.com/schwwaaa/videobeaux/assets/7625379/3932d910-b898-4ed7-ba3a-288a708c0d83
 
 pickle_juice
 

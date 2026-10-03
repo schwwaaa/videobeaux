@@ -9,7 +9,7 @@
 #   videobeaux -P frame_interpolate -i in.mp4 --outfile out_60fps.mp4 --fps 60
 #
 # Notes:
-# - Uses --outfile (do NOT use global -o).
+# - Prefers global -o/--output; --outfile is a fallback.
 # - If you prefer a multiplier (e.g., 2x), pass --multiplier 2 and omit --fps.
 #   We'll compute FPS via ffprobe.
 # - Default engine is 'ffmpeg' (pure minterpolate).
@@ -62,6 +62,11 @@ def _probe_fps(input_path: str) -> float:
     return fps
 
 
+# The GUI always supplies the output path (-o) from the connected Output node,
+# so this program-specific fallback flag is hidden from the node's fields.
+GUI_METADATA = {'args': {'outfile': {'hidden': True}}}
+
+
 def register_arguments(parser):
     parser.description = (
         "Frame Interpolation\n"
@@ -71,11 +76,12 @@ def register_arguments(parser):
         "  • dain-ncnn (external binary; scaffold only)\n"
     )
 
-    # Output path (do NOT use global -o)
+    # Output path — prefers the global -o/--output (the GUI always sets it);
+    # --outfile is a fallback for direct CLI use without -o.
     parser.add_argument(
         "--outfile",
-        required=True,
-        help="Output file path for the interpolated result (mp4 recommended)."
+        required=False,
+        help="Output file path for the interpolated result (mp4 recommended). Falls back to -o/--output when omitted."
     )
 
     # Engine selection
@@ -235,6 +241,9 @@ def _run_dain_scaffold(args, target_fps: float):
 
 
 def run(args):
+    args.outfile = getattr(args, "output", None) or args.outfile
+    if not args.outfile:
+        raise SystemExit("❌ Missing output. Provide -o/--output or --outfile.")
     outfile = Path(args.outfile)
     if outfile.suffix.lower() != ".mp4":
         # We allow any extension, but mp4+x264 is what most of videobeaux uses.

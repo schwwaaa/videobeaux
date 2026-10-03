@@ -1,0 +1,93 @@
+{
+  "presetFormatVersion": 1,
+  "savedAt": "2026-09-08T00:16:31.987Z",
+  "nodes": [
+    {
+      "id": "input-1",
+      "type": "inputNode",
+      "position": {
+        "x": -258.87689965775365,
+        "y": 63.913151572445784
+      },
+      "data": {
+        "filePath": "/Users/bozer/schwwaaa/silence_xtaction/forgedd/silent_forge_r1_qwikchop/silent_forge_r1_edit_0047.mp4"
+      },
+      "deletable": false
+    },
+    {
+      "id": "output-1",
+      "type": "outputNode",
+      "position": {
+        "x": 551.5243610885044,
+        "y": 132.09144800392377
+      },
+      "data": {
+        "filePath": "/Users/bozer/schwwaaa/silence_xtaction/forgedd/yt_completes/yt3_r2.mp4",
+        "format": "mp4"
+      },
+      "deletable": false
+    },
+    {
+      "id": "effect-3-1788825319818",
+      "type": "effectNode",
+      "position": {
+        "x": 32.379931693067405,
+        "y": 58.94388411277423
+      },
+      "data": {
+        "program": "shortify",
+        "args": {
+          "preset": "shorts_1080x1920",
+          "blur-sigma": 20
+        }
+      }
+    },
+    {
+      "id": "effect-4-1788825328039",
+      "type": "effectNode",
+      "position": {
+        "x": 19.791345543524756,
+        "y": 488.90439524197086
+      },
+      "data": {
+        "program": "auto_narrate",
+        "args": {
+          "duration": "7",
+          "voice": "am_adam",
+          "voice_speed": 1,
+          "style": "painton",
+          "original_volume": 0.2,
+          "topic": "sometimes you crack unddr the gel",
+          "stt_model": "/Users/bozer/schwwaaa/videobeaux-gui/models/vosk-model-en-us-0.22-lgraph",
+          "llm_model": "gpt-oss:120b"
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "xy-edge__input-1-effect-3-1788825319818",
+      "source": "input-1",
+      "target": "effect-3-1788825319818",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-3-1788825319818-effect-4-1788825328039",
+      "source": "effect-3-1788825319818",
+      "target": "effect-4-1788825328039",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-4-1788825328039-output-1",
+      "source": "effect-4-1788825328039",
+      "target": "output-1",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    }
+  ]
+}

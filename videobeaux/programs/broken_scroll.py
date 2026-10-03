@@ -2,7 +2,7 @@ from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
 
 def register_arguments(parser):
     parser.description = (
-            "Applies a double-layered blur and pixelation combined effect."
+            "Amplified frame differences plus a slow vertical scroll — a rolling, broken-tracking look."
     )
     print("✅ This program mode does not require additional arguments")
 

@@ -18,7 +18,6 @@ lagkage
 | mirror_delay | Apply a frame delay plus a mirrored effect | - |
 | nostalgic_stutter | Apply frame stutter akin to a corrupted file | - |
 | overexposed_stutter | Apply a frame stutter and exposing the video like the- | file is corrupted | - |
-| overlay_img_pro | Overlay an image with location & dimension control | overlay_img, x_pos, y_pos, img_height, img_width |
 | pickle_juice | Apply filter like the video was dipped in pickle juice | - |
 | recalled_sensor | Apply filter like a sensor was broken and to-be recalled |- |
 | repainting | Apply filter like repainting the same image while smudged with- | alcohol |- |

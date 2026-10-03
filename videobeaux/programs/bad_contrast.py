@@ -2,7 +2,7 @@ from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
 
 def register_arguments(parser):
     parser.description = (
-            "Converts input video into a stylized animation format. Requires output format like mp4 or mov."
+            "Harsh blend-mode contrast corruption — hard-mix, vivid-light and exclusion blends over a softened copy."
     )
     print("✅ This program mode does not require additional arguments")
 

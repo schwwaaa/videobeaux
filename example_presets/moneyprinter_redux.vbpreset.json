@@ -1,0 +1,153 @@
+{
+  "presetFormatVersion": 1,
+  "savedAt": "2026-09-08T06:02:35.499Z",
+  "nodes": [
+    {
+      "id": "input-1",
+      "type": "inputNode",
+      "position": {
+        "x": -267.715163587932,
+        "y": -180.66973028189037
+      },
+      "data": {
+        "filePath": "/Users/bozer/schwwaaa/kabaddi_shorts/kabaddi_highlights__jIbmf2v8e0.mp4",
+        "mode": "file"
+      },
+      "deletable": false
+    },
+    {
+      "id": "output-1",
+      "type": "outputNode",
+      "position": {
+        "x": 947.1598528027253,
+        "y": 208.15372160404496
+      },
+      "data": {
+        "filePath": "/Users/bozer/schwwaaa/kabaddi_shorts/for_review/output_r1.mp4",
+        "format": "mp4"
+      },
+      "deletable": false
+    },
+    {
+      "id": "effect-11-1788820326000",
+      "type": "effectNode",
+      "position": {
+        "x": 662.4724479064824,
+        "y": -160.40685387075763
+      },
+      "data": {
+        "program": "shortify",
+        "args": {
+          "preset": "shorts_1080x1920",
+          "blur-sigma": 20
+        }
+      }
+    },
+    {
+      "id": "effect-14-1788838840277",
+      "type": "effectNode",
+      "position": {
+        "x": -98.35074491574574,
+        "y": 316.82108948298395
+      },
+      "data": {
+        "program": "auto_narrate",
+        "args": {
+          "duration": "30",
+          "voice": "am_adam",
+          "voice_speed": 1,
+          "original_volume": 0.2,
+          "font": "Arial",
+          "font_size": 76,
+          "primary_color": "#FFFFFF",
+          "highlight_color": "#FF8929",
+          "outline_color": "#000000",
+          "topic": "kabaddi fun facts",
+          "stt_model": "/Users/bozer/schwwaaa/videobeaux-gui/models/vosk-model-en-us-0.42-gigaspeech",
+          "llm_model": "gpt-oss:120b"
+        }
+      }
+    },
+    {
+      "id": "effect-15-1788838855616",
+      "type": "effectNode",
+      "position": {
+        "x": 614.2515402372379,
+        "y": 353.890217151539
+      },
+      "data": {
+        "program": "watermark",
+        "args": {
+          "placement": "top-left",
+          "margin": "40",
+          "scale": "0.3",
+          "opacity": 0.8,
+          "spin": 0,
+          "watermark": "/Users/bozer/schwwaaa/videobeaux-gui/ui_design/yt_watermark_transp.png"
+        }
+      }
+    },
+    {
+      "id": "effect-16-1788839346100",
+      "type": "effectNode",
+      "position": {
+        "x": 84.3071213313466,
+        "y": -162.47092130578605
+      },
+      "data": {
+        "program": "qwikchop",
+        "args": {
+          "black-scan": 0.25,
+          "black-thresh": 0.1,
+          "black-pict": 0.1,
+          "edge-pad-pre": 0.03,
+          "edge-pad-post": 0.02,
+          "min-edit": 0.2,
+          "pieces": "10"
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "xy-edge__effect-15-1788838855616-output-1",
+      "source": "effect-15-1788838855616",
+      "target": "output-1",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__input-1-effect-16-1788839346100",
+      "source": "input-1",
+      "target": "effect-16-1788839346100",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-16-1788839346100-effect-11-1788820326000",
+      "source": "effect-16-1788839346100",
+      "target": "effect-11-1788820326000",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-11-1788820326000-effect-14-1788838840277",
+      "source": "effect-11-1788820326000",
+      "target": "effect-14-1788838840277",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-14-1788838840277-effect-15-1788838855616",
+      "source": "effect-14-1788838840277",
+      "target": "effect-15-1788838855616",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    }
+  ]
+}

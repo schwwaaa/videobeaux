@@ -20,6 +20,11 @@ DEFAULT_EXTS = [
     ".jpg", ".jpeg", ".png", ".bmp", ".tif", ".tiff", ".gif"
 ]
 
+# The GUI always supplies the output path (-o) from the connected Output node,
+# so this program-specific fallback flag is hidden from the node's fields.
+GUI_METADATA = {'args': {'catalog': {'hidden': True}}}
+
+
 def register_arguments(parser: argparse.ArgumentParser):
     parser.description = (
         "Compute file hashes (md5/sha1/sha256), optional FFmpeg stream hash, per-frame checksums, "
@@ -184,8 +189,12 @@ def run(args: argparse.Namespace):
     else:
         entries = [input_path]
 
-    # Determine catalog path
-    if args.catalog:
+    # Determine catalog path — prefer the global -o/--output when given
+    # (e.g. the GUI always sets it), then --catalog, then a default next
+    # to the first input.
+    if getattr(args, "output", None):
+        catalog_path = Path(args.output)
+    elif args.catalog:
         catalog_path = Path(args.catalog)
     else:
         catalog_path = _catalog_default_path(entries[0])

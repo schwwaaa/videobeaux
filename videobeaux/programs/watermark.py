@@ -1,10 +1,15 @@
 #!/usr/bin/env python3
 # videobeaux/programs/watermark.py
 #
-# Overlay a static/animated watermark (PNG/JPG/GIF) onto a video.
+# Overlay a static/animated image (PNG/JPG/GIF) onto a video — covers both
+# "watermark" use (opacity, spin, timed fade-in/out, GIF looping) and precise
+# image-overlay use (9-point placement grid, custom pixel/expression position,
+# exact pixel sizing). Merged from what used to be two near-duplicate
+# programs, watermark.py and overlay_img_pro.py.
 # - Robust GIF handling (looping, -ignore_loop, optional -stream_loop)
-# - Placement presets with margin
-# - Scale factor relative to watermark's intrinsic width (iw*scale)
+# - 9 placement presets + custom X/Y, with margin
+# - Sizing: scale factor relative to intrinsic width (iw*scale), or exact
+#   --width/--height pixel dimensions when you need precise control
 # - Opacity via colorchannelmixer (alpha)
 # - Optional spin (continuous rotation over time)
 # - Timed enable window (start/end seconds)
@@ -23,6 +28,7 @@
 #     -1 = infinite, 0 = no extra loops, N>0 loop N times after first play
 # - We ALWAYS pass -ignore_loop 0 for GIF so decoder honors intrinsic timing.
 # - For non-GIF stills, ffmpeg holds the frame; for sequences/GIF we add -stream_loop as requested.
+# - --width/--height take priority over --scale when either is set.
 
 from __future__ import annotations
 import argparse
@@ -31,22 +37,42 @@ from typing import Tuple
 
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
 
+GUI_METADATA = {
+    'args': {
+        'placement': {
+            'type': 'select', 'default': 'bottom-right',
+            'choices': [
+                'top-left', 'top-center', 'top-right',
+                'center-left', 'center', 'center-right',
+                'bottom-left', 'bottom-center', 'bottom-right',
+                'custom',
+            ],
+            'help': "Where to position the overlay. Choose 'custom' to use X/Y Position below for exact pixel/expression control.",
+        },
+        'x_pos': {'help': "Horizontal position (pixels or an ffmpeg expression). Only used when Placement is 'custom'."},
+        'y_pos': {'help': "Vertical position (pixels or an ffmpeg expression). Only used when Placement is 'custom'."},
+        'width': {'help': "Exact overlay width in pixels. Overrides --scale when set."},
+        'height': {'help': "Exact overlay height in pixels (or -1 to preserve aspect ratio). Overrides --scale when set."},
+    }
+}
 
+
+# 9-point placement grid + margin, using ffmpeg overlay filter variables
+# (W/H = main video size, w/h = the overlay's own size after scaling).
 def _placement_xy(placement: str, margin: int) -> Tuple[str, str]:
-    pm = placement.lower().strip()
     m = int(margin)
-    if pm == "top-left":
-        return (f"{m}", f"{m}")
-    if pm == "top-right":
-        return (f"W-w-{m}", f"{m}")
-    if pm == "bottom-left":
-        return (f"{m}", f"H-h-{m}")
-    if pm == "bottom-right":
-        return (f"W-w-{m}", f"H-h-{m}")
-    if pm == "center":
-        return (f"(W-w)/2", f"(H-h)/2")
-    # fallback
-    return (f"W-w-{m}", f"H-h-{m}")
+    table = {
+        "top-left":      (f"{m}", f"{m}"),
+        "top-center":    ("(W-w)/2", f"{m}"),
+        "top-right":     (f"W-w-{m}", f"{m}"),
+        "center-left":   (f"{m}", "(H-h)/2"),
+        "center":        ("(W-w)/2", "(H-h)/2"),
+        "center-right":  (f"W-w-{m}", "(H-h)/2"),
+        "bottom-left":   (f"{m}", f"H-h-{m}"),
+        "bottom-center": ("(W-w)/2", f"H-h-{m}"),
+        "bottom-right":  (f"W-w-{m}", f"H-h-{m}"),
+    }
+    return table.get(placement.lower().strip(), (f"W-w-{m}", f"H-h-{m}"))
 
 
 def _sanitize_scale(scale: float) -> float:
@@ -93,16 +119,30 @@ def _gif_input_flags(wm_path: Path, wm_loop: int, ignore_loop_flag: bool) -> lis
 
 def register_arguments(parser: argparse.ArgumentParser):
     parser.description = (
-        "Burn a watermark (PNG/JPG/GIF) into a video with placement, scale, opacity, "
-        "optional spin, and timed enable window."
+        "Burn a watermark or general-purpose image overlay (PNG/JPG/GIF) into a video: "
+        "9-point placement grid or a custom pixel/expression position, scale or exact "
+        "pixel sizing, opacity, optional spin, and a timed enable window."
     )
-    parser.add_argument("--watermark", required=True, help="Path to watermark image (PNG/JPG/GIF).")
+    parser.add_argument("--watermark", required=True, help="Path to watermark/overlay image (PNG/JPG/GIF).")
     parser.add_argument("--placement", default="bottom-right",
-                        choices=["top-left", "top-right", "bottom-left", "bottom-right", "center"],
-                        help="Watermark placement.")
+                        choices=[
+                            "top-left", "top-center", "top-right",
+                            "center-left", "center", "center-right",
+                            "bottom-left", "bottom-center", "bottom-right",
+                            "custom",
+                        ],
+                        help="Where to position the overlay. Use 'custom' with --x_pos/--y_pos for exact control.")
     parser.add_argument("--margin", type=int, default=24, help="Margin (px) from edges for placement.")
+    parser.add_argument("--x_pos", required=False, type=str, default=None,
+                        help="Horizontal position, in pixels or an ffmpeg expression. Only used when --placement custom.")
+    parser.add_argument("--y_pos", required=False, type=str, default=None,
+                        help="Vertical position, in pixels or an ffmpeg expression. Only used when --placement custom.")
     parser.add_argument("--scale", type=float, default=0.25,
-                        help="Scale factor relative to watermark intrinsic width (iw*scale).")
+                        help="Scale factor relative to watermark intrinsic width (iw*scale). Ignored if --width/--height is set.")
+    parser.add_argument("--width", required=False, type=str, default=None,
+                        help="Exact overlay width in pixels. Overrides --scale when set.")
+    parser.add_argument("--height", required=False, type=str, default=None,
+                        help="Exact overlay height in pixels (or -1 to preserve aspect ratio). Overrides --scale when set.")
     parser.add_argument("--opacity", type=float, default=0.8,
                         help="Watermark opacity (0.0–1.0).")
     parser.add_argument("--spin", type=float, default=0.0,
@@ -137,11 +177,15 @@ def run(args: argparse.Namespace):
         raise SystemExit(f"❌ Watermark not found: {wm_path}")
 
     # Validate numerics
-    scale = _sanitize_scale(args.scale)
     opacity = _sanitize_opacity(args.opacity)
 
     # Placement math
-    x_expr, y_expr = _placement_xy(args.placement, args.margin)
+    if args.placement == "custom":
+        if not args.x_pos or not args.y_pos:
+            raise SystemExit("❌ --placement custom requires both --x_pos and --y_pos.")
+        x_expr, y_expr = args.x_pos, args.y_pos
+    else:
+        x_expr, y_expr = _placement_xy(args.placement, args.margin)
 
     # Enable expression
     if args.end and args.end > 0:
@@ -150,10 +194,18 @@ def run(args: argparse.Namespace):
         enable_expr = f"gte(t,{float(args.start)})"
 
     # Build the watermark processing chain
-    # 1) scale relative to its own width (iw*scale)
+    # 1) size: exact --width/--height when given, else scale relative to its
+    #    own intrinsic width (iw*scale)
     # 2) convert to RGBA, then apply alpha multiplier via colorchannelmixer
     # 3) optional rotation with 'rotate' (angle in radians)
-    wm_chain_parts = [f"scale=iw*{scale}:-1", "format=rgba", f"colorchannelmixer=aa={opacity}"]
+    if args.width or args.height:
+        w_expr = args.width if args.width else "-1"
+        h_expr = args.height if args.height else "-1"
+        size_filter = f"scale={w_expr}:{h_expr}"
+    else:
+        scale = _sanitize_scale(args.scale)
+        size_filter = f"scale=iw*{scale}:-1"
+    wm_chain_parts = [size_filter, "format=rgba", f"colorchannelmixer=aa={opacity}"]
 
     spin = float(args.spin or 0.0)
     if spin != 0.0:
@@ -168,7 +220,7 @@ def run(args: argparse.Namespace):
 
     # Assemble filter_complex with named pads
     # [1:v]wm_chain[wm];[0:v][wm]overlay=... (alpha premult handled by format=rgba)
-    filter_complex = f"[1:v]{wm_chain}[wm];[0:v][wm]{overlay}"
+    filter_complex = f"[1:v]{wm_chain}[wm];[0:v][wm]{overlay}[vout]"
 
     # Inputs (include GIF flags when appropriate)
     input_flags: list[str] = ["-i", str(in_path)]
@@ -180,8 +232,8 @@ def run(args: argparse.Namespace):
         "ffmpeg",
         *input_flags,
         "-filter_complex", filter_complex,
-        "-map", "0:v:0",
-        "-map", "0:a?:0",
+        "-map", "[vout]",
+        "-map", "0:a:0?",
         "-c:v", "libx264",
         "-crf", str(int(args.video_crf)),
         "-preset", str(args.video_preset),

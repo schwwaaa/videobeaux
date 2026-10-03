@@ -1,0 +1,140 @@
+{
+  "presetFormatVersion": 1,
+  "savedAt": "2026-09-05T21:00:06.302Z",
+  "nodes": [
+    {
+      "id": "input-1",
+      "type": "inputNode",
+      "position": {
+        "x": -329.8,
+        "y": -140.57999999999998
+      },
+      "data": {
+        "filePath": "/Users/bozer/schwwaaa/silence_xtaction/commercials/xword_vad_032_yt1.mp4"
+      },
+      "deletable": false
+    },
+    {
+      "id": "output-1",
+      "type": "outputNode",
+      "position": {
+        "x": 919.3,
+        "y": -277.72
+      },
+      "data": {
+        "filePath": "",
+        "format": "mp4"
+      },
+      "deletable": false
+    },
+    {
+      "id": "effect-6-1788641955138",
+      "type": "effectNode",
+      "position": {
+        "x": -24.40000000000009,
+        "y": -112.9425
+      },
+      "data": {
+        "program": "word_xtraction_vad",
+        "args": {
+          "keep_nonspeech": true,
+          "max_word_d": 1.5,
+          "speech_pad": 0.08,
+          "merge_gap": 0.2,
+          "use_vad": false,
+          "vad_threshold": 0.45,
+          "vad_min_speech": 150,
+          "vad_min_silence": 120,
+          "vad_pad": 120,
+          "vad_keep_short": 0.4
+        }
+      }
+    },
+    {
+      "id": "effect-7-1788641960320",
+      "type": "effectNode",
+      "position": {
+        "x": 600.82,
+        "y": -128.81499999999994
+      },
+      "data": {
+        "program": "watermark",
+        "args": {
+          "placement": "bottom-right",
+          "margin": 24,
+          "scale": 0.25,
+          "opacity": 0.8,
+          "spin": 0
+        }
+      }
+    },
+    {
+      "id": "input-8-1788641980676",
+      "type": "inputNode",
+      "position": {
+        "x": -327.78000000000003,
+        "y": -554.0749999999999
+      },
+      "data": {
+        "filePath": "",
+        "label": "Source 8"
+      }
+    },
+    {
+      "id": "effect-9-1788641986875",
+      "type": "effectNode",
+      "position": {
+        "x": 498.21999999999997,
+        "y": -564.0749999999999
+      },
+      "data": {
+        "program": "concat",
+        "args": {
+          "crossfade": "1.5"
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "xy-edge__input-1-effect-6-1788641955138",
+      "source": "input-1",
+      "target": "effect-6-1788641955138",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-6-1788641955138-effect-7-1788641960320",
+      "source": "effect-6-1788641955138",
+      "target": "effect-7-1788641960320",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__input-8-1788641980676-effect-9-1788641986875",
+      "source": "input-8-1788641980676",
+      "target": "effect-9-1788641986875",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-7-1788641960320-effect-9-1788641986875input2",
+      "source": "effect-7-1788641960320",
+      "target": "effect-9-1788641986875",
+      "sourceHandle": null,
+      "targetHandle": "input2",
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-9-1788641986875-output-1",
+      "source": "effect-9-1788641986875",
+      "target": "output-1",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    }
+  ]
+}

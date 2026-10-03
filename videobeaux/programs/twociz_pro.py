@@ -10,7 +10,7 @@ def register_arguments(parser):
         required=True,
         type=str,
         help=(
-            ""
+            "Neighborhood size for amplify. Small = sharp/edgy; large = broad smeary hallucination. Try 2–8."
         )
     )
 
@@ -19,7 +19,7 @@ def register_arguments(parser):
         required=True,
         type=str,
         help=(
-            ""
+            "Amplify strength. 1.0 is mild; higher values get more intense/crunchy. Try 1.2–3.0."
         )
     )
 
@@ -28,7 +28,7 @@ def register_arguments(parser):
         required=True,
         type=str,
         help=(
-            ""
+            "Chromakey edge softness. 0 = hard edge; higher = feathered edge. Try 0.0–0.20."
         )
     )
 
@@ -37,7 +37,7 @@ def register_arguments(parser):
         required=True,
         type=str,
         help=(
-            ""
+            "Chromakey tolerance for blue. Higher removes more blues (and can eat nearby colors). Try 0.10–0.35."
         )
     )
 

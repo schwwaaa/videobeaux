@@ -1,0 +1,198 @@
+/* ── Fonts (self-hosted — CSP is locked to 'self', no external font CDN) ───── */
+@font-face {
+  font-family: 'Bungee';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./assets/fonts/Bungee-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Atkinson Hyperlegible';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./assets/fonts/AtkinsonHyperlegible-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Atkinson Hyperlegible';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('./assets/fonts/AtkinsonHyperlegible-Bold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./assets/fonts/IBMPlexMono-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('./assets/fonts/IBMPlexMono-SemiBold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('./assets/fonts/IBMPlexMono-Bold.woff2') format('woff2');
+}
+
+/* ── Design tokens ─────────────────────────────────────────────────────────── */
+/* "Videobeaux Television" visual language — see ui_design/ spec + videobeaux.online.
+   Nickelodeon '90s + Memphis design + broadcast/CRT hardware: thick black
+   outlines, flat optimistic color, comic-book offset shadows, warm paper bg. */
+:root {
+  --ink:         #080808;
+  --paper:       #fffdf6;
+  --paper-dim:   #f3f1e7;
+  --muted:       #8a8a80;
+  --muted-dim:   #6a6a62;
+  --yellow:      #ffe500;
+  --lime-bright: #c5d92d;
+  --lime:        #a8ad23;
+  --cyan:        #32b9df;
+  --magenta:     #d52c91;
+  --purple:      #8654aa;
+  --coral:       #ff6847;
+  --orange:      #ff9f1c;
+  --teal:        #2ec4b6;
+  --gray:        #e7e7e4;
+
+  /* Screen/console stays dark in both themes — the CRT the TV mascot
+     broadcasts through — so it isn't redefined under [data-theme="dark"]. */
+  --screen:      #141414;
+  --screen-dim:  #1c1c1c;
+
+  --c-input:     var(--cyan);
+  --c-output:    var(--coral);
+  --c-glitch:    var(--magenta);
+  --c-trails:    var(--orange);
+  --c-temporal:  var(--coral);
+  --c-look:      var(--purple);
+  --c-vision:    var(--teal);
+  --c-layout:    var(--cyan);
+  --c-edit:      var(--lime-bright);
+  --c-speech:    var(--yellow);
+  --c-media:     var(--lime);
+
+  --radius:      10px;
+  --radius-sm:   7px;
+  --border-w:    3px;
+  --border:      var(--border-w) solid var(--ink);
+
+  /* Drop shadow is split into offset/color tokens (user-customizable via
+     Settings, applied as inline overrides on this same :root by
+     SettingsContext) with --shadow/--shadow-sm composed from them, so
+     every consumer of --shadow picks up a change with no other edits. */
+  --shadow-offset:    5px;
+  --shadow-offset-sm: 3px;
+  --shadow-color:     var(--ink);
+  --shadow:      var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
+  --shadow-sm:   var(--shadow-offset-sm) var(--shadow-offset-sm) 0 var(--shadow-color);
+  --paper-dot:   #d8d4c2;
+
+  --font-display: 'Bungee', Impact, sans-serif;
+  --font:         'Atkinson Hyperlegible', Arial, sans-serif;
+  --font-mono:    'IBM Plex Mono', 'Fira Code', Consolas, monospace;
+}
+
+/* ── Dark theme ────────────────────────────────────────────────────────────── */
+/* Explicit opt-in via data-theme (set by SettingsContext), not
+   prefers-color-scheme — this is a persisted user choice, not an OS
+   preference. Ink/paper roles swap; accent hues stay the same since
+   they're already saturated enough to read on a dark ground. */
+:root[data-theme="dark"] {
+  --ink:         #f3f1e7;
+  --paper:       #1c1a22;
+  --paper-dim:   #242229;
+  --muted:       #9a9a92;
+  --muted-dim:   #78786e;
+  --gray:        #2c2a33;
+  --paper-dot:   #34323c;
+}
+
+/* ── Reset ─────────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #root {
+  height: 100%;
+  overflow: hidden;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Scrollbars ────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--ink); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--purple); }
+
+/* ── ReactFlow overrides ───────────────────────────────────────────────────── */
+.react-flow__background { background: var(--paper) !important; }
+.react-flow__background pattern circle { fill: var(--paper-dot, #d8d4c2) !important; }
+.react-flow__controls {
+  background: var(--paper) !important;
+  border: var(--border) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow) !important;
+  overflow: hidden;
+}
+.react-flow__controls-button {
+  background: transparent !important;
+  border-bottom: 2px solid var(--ink) !important;
+  color: var(--ink) !important;
+  fill: var(--ink) !important;
+}
+.react-flow__controls-button:hover { background: var(--yellow) !important; }
+.react-flow__minimap {
+  background: var(--paper) !important;
+  border: var(--border) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow) !important;
+}
+.react-flow__edge-path { stroke: var(--ink) !important; stroke-width: 3 !important; }
+.react-flow__edge.selected .react-flow__edge-path { stroke: var(--magenta) !important; }
+.react-flow__handle {
+  width: 12px !important;
+  height: 12px !important;
+  border-radius: 50% !important;
+  border: 2px solid var(--ink) !important;
+}
+
+/* ── Utility ───────────────────────────────────────────────────────────────── */
+button {
+  cursor: pointer;
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 12px;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  color: var(--ink);
+  transition: transform 0.08s, box-shadow 0.08s;
+}
+button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+input, select, textarea {
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 12px;
+  outline: none;
+  transition: box-shadow 0.15s;
+}
+input:focus, select:focus { box-shadow: 2px 2px 0 var(--ink); }
+input::placeholder { color: #8a8a80; }
+
+select option { background: var(--paper); }

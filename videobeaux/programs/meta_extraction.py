@@ -307,6 +307,11 @@ def _loudness_ebur128(input_path: Path) -> Dict[str, Any]:
 
 # ---------- CLI wiring ----------
 
+# The GUI always supplies the output path (-o) from the connected Output node,
+# so this program-specific fallback flag is hidden from the node's fields.
+GUI_METADATA = {'args': {'outputfile': {'hidden': True}}}
+
+
 def register_arguments(parser: argparse.ArgumentParser):
     parser.description = (
         "Extract extensive metadata to JSON, with optional analysis passes "

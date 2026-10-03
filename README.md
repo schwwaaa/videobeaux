@@ -1,249 +1,376 @@
 <p align="center">
-  <img src="https://github.com/schwwaaa/videobeaux/blob/main/assets/videobeaux-tv-icon-full.png?raw=true" width="420" alt="Videobeaux television mascot and wordmark">
+  <img width="45%" height="45%" src="img/videobeaux-1.png"/>
 </p>
 
-<!-- <h1 align="center">Videobeaux</h1> -->
-
-<!-- <p align="center"><strong>Break, bend, repair, and automate video.</strong></p> -->
-
-<p align="center">A friendly command-line video toolkit for artists, archivists, researchers, editors, educators, and creative technologists.</p>
+<p align="center"><em>The friendly multilateral video toolkit built for artists by artists. It's your best friend.</em></p>
 
 <p align="center">
-  <a href="https://videobeaux.online">Website</a> ·
-  <a href="https://videobeaux.online/docs.html">Documentation</a> ·
-  <a href="https://github.com/schwwaaa/videobeaux">Repository</a> ·
-  <a href="https://ko-fi.com/F1F71V9CQG">Support</a>
+  <strong>107 effect/utility programs</strong> · node-based GUI + scriptable CLI · <strong>100% local</strong> — no cloud, no accounts, no API keys
 </p>
 
 ---
 
-## What is Videobeaux?
+Videobeaux is a video-processing toolkit built around one big library of effects — glitch/corruption looks, temporal/frame effects, colour and visual filters, compositing tools, transcript-driven editing, and AI-assisted captioning/narration — and two ways to drive it:
 
-Videobeaux is a collection of focused video-processing programs that share one consistent command-line interface.
+- **The GUI**: drag effect nodes onto a canvas, wire them together into a pipeline, hit Run.
+- **The CLI**: `python3 -m videobeaux.cli -P <program> -i input.mp4 -o output.mp4 [options]`, script it however you want.
 
-It combines deliberately destructive effects with practical media utilities, making it useful for both experimentation and production. You can datamosh footage, repeat or reorder frames, composite multiple sources, extract images or audio, build contact sheets, burn captions, convert formats, repair media, and chain multiple programs into repeatable workflows.
-
-Videobeaux is not a traditional nonlinear editor. It is a workshop of small tools that can be used independently or connected together.
-
-> Built for artists by artists. Feed it a video, choose a program, and let the television do something useful—or wonderfully incorrect.
-
-## Core workflow
-
-```text
-Input → Program → Output → Chain it again
-```
-
-```bash
-videobeaux \
-  --program PROGRAM \
-  --input INPUT_FILE \
-  --output OUTPUT_FILE \
-  [program options]
-```
-
-Processed outputs can then be passed into another program or assembled into a multi-stage chain.
-
-## What can it do?
-
-### Create and distort
-
-- Controlled datamoshing
-- Frame stutter and repetition
-- Feedback and delay
-- Smear, split, scroll, loop, and repaint effects
-- Deliberate compression damage
-- Experimental frame-order manipulation
-
-### Repair and convert
-
-- Container conversion
-- Dimension normalization
-- Gamma correction
-- Frame interpolation
-- LUT application
-- HDR-to-SDR tonemapping
-- Delivery-oriented media preparation
-
-### Inspect and extract
-
-- Frame extraction
-- Audio extraction
-- Thumbnail generation
-- Contact sheets
-- Metadata inspection
-- Media fingerprinting
-- Asset isolation
-
-### Compose and automate
-
-- JSON-driven multilayer compositing
-- Caption and subtitle burning
-- Repeatable command-line processing
-- Program chains
-- Batch-oriented workflows
-- Scriptable media pipelines
-
-## Featured programs
-
-| Program | Type | Purpose |
-|---|---|---|
-| `crossmosh` | Effect | Controlled datamoshing with motion-vector, GOP, decay, frame-order, and source-blending controls |
-| `lagkage` | Effect | JSON-driven multilayer video composition without a traditional timeline |
-| `stutter_pro` | Effect | Rhythmic frame holds, skips, and timeline interruptions |
-| `bad_predator` | Effect | Deliberately broken heat-vision processing and a simple introduction to the standard workflow |
-| `chain_builder` | Utility | Passes the output of one compatible program directly into the next |
-| `captburn` | Utility | Burns captions or subtitles into video |
-| `thumbs` | Utility | Generates thumbnails, labeled stills, and tiled contact sheets |
-| `extract_frames` | Utility | Exports sequential image frames from a video |
-| `tonemap_hdr_sdr` | Utility | Converts HDR footage to SDR with selectable tonemapping and output controls |
-
-The complete program reference is available in the [documentation](https://schwwaaa.github.io/videobeaux/docs.html).
-
-## Quick start
-
-### 1. Install
-
-On macOS or Linux:
-
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/schwwaaa/videobeaux/refs/heads/main/install.sh)"
-```
-
-Windows users should follow the platform-specific instructions in the [documentation](https://schwwaaa.github.io/videobeaux/docs.html#installation).
-
-### 2. Inspect the available programs
-
-```bash
-videobeaux --help
-```
-
-### 3. Process a video
-
-```bash
-videobeaux \
-  --program bad_predator \
-  --input example.mp4 \
-  --output example_bp.mp4
-```
-
-### 4. Use program-specific controls
-
-```bash
-videobeaux \
-  --program stutter_pro \
-  --input example.mp4 \
-  --output stutter_example.mp4 \
-  --stutter 2
-```
-
-### 5. Chain multiple programs
-
-```bash
-videobeaux \
-  --program chain_builder \
-  --input example.mp4 \
-  --output chained-output.mp4 \
-  --chain rb_blur,soapblind,lsd_feedback \
-  --force
-```
-
-## Documentation
-
-The project documentation is available as a single static page:
-
-**[Open the Videobeaux documentation](https://schwwaaa.github.io/videobeaux/docs.html)**
-
-It includes installation, getting started, examples, the global command structure, effect references, utility references, program-specific arguments, and workflow guidance.
-
-The documentation does not require Jekyll, Ruby, Bundler, or a Gemfile. It is published as a static `docs.html` file.
-
-## Website
-
-**[Visit the Videobeaux website](https://schwwaaa.github.io/videobeaux/)**
-
-The site includes the toolkit overview, featured programs, working examples, installation guidance, process illustrations, and links to the complete documentation.
-
-## Design philosophy
-
-Videobeaux is built around a simple idea:
-
-> Small, focused tools become more powerful when they can be combined.
-
-Each program is intended to be understandable on its own. Together, they form a flexible processing system that can support one-off experiments, repeatable studio workflows, archival work, and automated pipelines.
-
-## Who is it for?
-
-Videobeaux is designed for:
-
-- Video artists
-- Experimental filmmakers
-- Archivists
-- Creative coders
-- Researchers
-- Educators
-- Editors
-- Media laboratories
-- Batch-processing workflows
-- Artists building repeatable processing pipelines
-
-## Accessibility and approachability
-
-The public website and documentation aim to provide plain-language explanations, a consistent command structure, practical examples, readable technical documentation, keyboard-accessible navigation, reduced-motion support, high-contrast interface design, and clear links between the website, docs, and repository.
-
-## Project structure
-
-```text
-videobeaux/
-├── README.md
-├── index.html
-├── docs.html
-├── install.sh
-├── assets/
-├── img/
-├── programs/
-└── examples/
-```
-
-For current architecture and program-specific details, use the repository source and published documentation together.
-
-## Contributing
-
-Contributions are welcome when they improve reliability, documentation, portability, accessibility, or usefulness.
-
-Helpful contributions may include bug fixes, platform testing, documentation corrections, improved examples, new focused programs, accessibility improvements, installation fixes, and reproducible issue reports.
-
-Before submitting substantial changes, open an issue describing the problem, intended behavior, and proposed scope.
-
-## Reporting problems
-
-When opening an issue, include:
-
-- Operating system
-- Videobeaux command used
-- Input format
-- Expected behavior
-- Actual behavior
-- Complete terminal output
-- A minimal reproducible example when possible
-
-Do not upload private or copyrighted media unless you have permission to share it.
-
-## Support the project
-
-<p>
-  <a href="https://ko-fi.com/F1F71V9CQG">
-    <img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Support Videobeaux on Ko-fi">
-  </a>
-</p>
-
-## License
-
-See the repository license file for the current licensing terms.
-
----
+Both sit on the exact same 107 programs — nothing is GUI-exclusive or CLI-exclusive except a couple of legacy modes noted below. Everything runs on your machine. The one genuinely optional exception — AI narration scripting via a local [Ollama](https://ollama.com) model — is opt-in and the app works completely fine without it.
 
 <p align="center">
-  <strong>Videobeaux</strong><br>
-  Built for artists by artists.<br>
-  It's your best friend.
+  <img width="100%" src="img/gui-canvas.png"/>
 </p>
+
+## Contents
+
+- [The GUI](#the-gui)
+  - [For users — just want to run it?](#for-users--just-want-to-run-it)
+  - [What you get](#what-you-get)
+  - [Optional AI features](#optional-ai-features)
+- [The CLI](#the-cli)
+  - [Basic usage](#basic-usage)
+  - [Examples](#examples)
+- [Installing from source](#installing-from-source)
+- [Building GUI installers](#building-gui-installers)
+- [Programs](#programs)
+
+## The GUI
+
+A visual, node-based editor for building video pipelines out of videobeaux's effects. Input node → chain of effect nodes → Output node, connected however you like — branch, fan-out, batch-process a whole folder. No cloud services, no accounts, no telemetry.
+
+<p align="center">
+  <img width="32%" src="img/gui-sidebar.png"/>
+  &nbsp;&nbsp;
+  <img width="55%" src="img/kinetic-captions-example.png"/>
+</p>
+
+*Left: the effect library, organized by category — drag anything onto the canvas. Right: a frame from Kinetic Captions, one of the AI & Advanced programs — the actively-spoken word pops larger in real time, rendered locally with no ML model.*
+
+### For users — just want to run it?
+
+Download the installer for your platform from the [Releases](../../releases) page:
+
+- **macOS**: download the `.dmg`, open it, drag videobeaux into Applications.
+- **Windows**: download the `.exe` and run it.
+
+No Python, Node, or ffmpeg install needed — everything the app needs to run is bundled inside.
+
+On first launch, a **Setup** screen walks you through getting fully working:
+- Confirms the bundled Python and ffmpeg are working correctly.
+- Lets you download a speech-recognition model (needed for transcript-driven effects — Silence Xtraction, Word Xtraction, Grep Supercut, Ngrams, Qwikchop Deluxe, Auto Narrate) — pick small/fast or large/accurate, right from the app.
+
+Reopen this screen anytime from the **⚙ Setup** button in the header — it's not a one-time wizard.
+
+**A couple of things to expect on an unsigned build:**
+- **macOS**: Gatekeeper will say the app "can't be opened because it is from an unidentified developer." Right-click (or Control-click) the app and choose **Open**, then confirm — you only need to do this once. Proper code signing/notarization is a planned follow-up, not yet in place.
+- **Windows**: SmartScreen may show a similar "Windows protected your PC" warning. Click **More info → Run anyway**.
+
+### What you get
+
+- **A node canvas** — drag any of the 107 programs onto it, wire Input → effects → Output. Multiple effects chain into one pipeline; branch one output into several downstream effects.
+- **Batch mode** — point an Input node at a folder instead of a file and the whole pipeline runs once per video. Programs that natively produce many files from one input (Qwikchop, Qwikchop Deluxe, Extract Frames) fan out automatically.
+- **Save/load presets** — snapshot the whole node graph (including every field you've filled in) to a `.vbpreset.json` file and reload it later.
+- **Live model pickers** — Vosk (speech-to-text), Ollama (local LLM), and kokoro-tts voice dropdowns are all populated by asking the actual installed tool what it has, not a hardcoded list — install a new model and it just shows up.
+- **A real-time colour picker** on every colour field (captions, LUTs, watermarks) — a native OS colour wheel, synced with a plain hex field you can also just paste into.
+
+### Optional AI features
+
+Entirely opt-in, never required for the app to work:
+- **Auto Narrate**'s AI-scripted narration path needs a local [Ollama](https://ollama.com) server with a model pulled (`ollama pull llama3.1:8b` or similar; the Setup screen shows whether it's running and links to the download) — or skip it and just type/paste your own narration text, which needs no extra setup at all.
+- **Auto Narrate**'s text-to-speech uses [`kokoro-tts`](https://github.com/nazdridoy/kokoro-tts) fully offline. In the installed app the engine is built in — open **⚙ Setup → Optional features → Narration voice** and click Download for the one-time ~335 MB voice models. Running from source on Python 3.13+ (kokoro-tts supports <3.13), install it separately with `uv tool install kokoro-tts`; the Setup screen then detects it.
+- **Qwikchop Deluxe** can optionally hand its shortlisted highlights to a local Ollama model for smarter re-ranking — its default scoring (TextRank-style centrality, audio energy, keyword hooks) needs no network call at all.
+
+## The CLI
+
+Everything in the GUI is a thin wrapper over the same Python CLI — use it directly for scripting, batch jobs, or just because you'd rather type a command than drag a node.
+
+### Basic usage
+
+```
+python3 -m videobeaux.cli --program PROGRAM --input INPUT_FILE --output OUTPUT_FILE [program options]
+
+  -P, --program PROGRAM   Name of the effect program to run (e.g. convert, glitch)
+  -i, --input INPUT       Input video file
+  -o, --output OUTPUT     Output file name. No extension saves as mp4; or use .mp4/.mov/.avi/.mkv/.webm.
+  -F, --force             Force overwrite output file
+  -h, --help              Show help message and exit
+```
+
+Every program has its own flags on top of the global ones — pass `-P <program> --help` to see them:
+
+```bash
+python3 -m videobeaux.cli -P kinetic_captions --help
+```
+
+### Examples
+
+```bash
+# A quick glitch pass
+python3 -m videobeaux.cli -P bad_animation -i clip.mp4 -o clip_glitched.mp4
+
+# Trim a section out of a longer video
+python3 -m videobeaux.cli -P trim -i raw.mp4 -o clip.mp4 --start 1:12 --duration 8
+
+# Burn word-pop kinetic captions from a transcript
+# (transcraibe always writes <input>.json next to the input, regardless of -o)
+python3 -m videobeaux.cli -P transcraibe -i clip.mp4 --stt_model models/vosk-model-en-us-0.22
+python3 -m videobeaux.cli -P kinetic_captions -i clip.mp4 -o clip_captioned.mp4 --trans_json clip.json
+
+# AI-narrated captions, fully offline (your own script, no Ollama/network involved)
+python3 -m videobeaux.cli -P auto_narrate -i clip.mp4 -o clip_narrated.mp4 \
+  --script "Here's what nobody tells you about this." \
+  --stt_model models/vosk-model-en-us-0.22
+
+# Pull the most interesting moments out of a longer video automatically
+python3 -m videobeaux.cli -P qwikchop_deluxe -i podcast.mp4 -o highlights.mp4 \
+  --stt_model models/vosk-model-en-us-0.22 --count 6 --max_time 15
+```
+
+## Installing from source
+
+```bash
+git clone <this repo>
+cd videobeaux-gui
+
+# Python environment (name it "venv" — the app looks for this exact name)
+python3 -m venv venv
+source venv/bin/activate   # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+
+# Make sure ffmpeg is on your PATH (brew install ffmpeg / apt install ffmpeg / etc.)
+# On macOS, use ffmpeg-full or another libass-enabled build — captioning
+# programs need the `ass` filter, which the plain Homebrew ffmpeg formula
+# doesn't include:
+#   brew install ffmpeg-full && brew unlink ffmpeg && brew link ffmpeg-full
+# (The dev GUI also finds the keg-only ffmpeg-full by itself — no relink needed there.)
+```
+
+At this point the CLI works standalone:
+
+```bash
+python3 -m videobeaux.cli --help
+```
+
+For the GUI on top of it:
+
+```bash
+cd gui
+npm install
+npm run dev
+```
+
+Download a [Vosk model](https://alphacephei.com/vosk/models) and drop it in `models/` (or use the in-app Setup screen) for transcript-driven effects.
+
+## Building GUI installers
+
+```bash
+cd gui
+npm run dist
+```
+
+This stages a self-contained Python environment (via [python-build-standalone](https://github.com/astral-sh/python-build-standalone), with all of `requirements.txt` pre-installed) and static ffmpeg binaries into `gui/resources/` (see `gui/scripts/build-python-env.mjs`), then packages everything with electron-builder into `gui/dist/`. Building for Windows currently needs to run on a Windows machine/CI runner (`pip install`s compiled wheels for whatever platform the build script itself runs on).
+
+Speech-recognition models are **not** bundled into the installer (they run ~7GB combined) — the in-app Setup screen handles that separately, after install.
+
+## Programs
+
+107 programs appear in the GUI sidebar (plus a few CLI-only ones), grouped the same way here. Any program can be run standalone from the CLI regardless of category.
+
+<details>
+<summary><strong>⚡ Glitch & Corruption</strong> (17)</summary>
+
+_Signal, pixel and channel corruption — datamosh, RGB shifts, pixel sorting, warps, optical-flow smears._
+
+| Program | Description |
+|---|---|
+| Bad Animation | Broken-pulldown judder — wrong telecine timing makes frames stutter and comb |
+| Bad Contrast | Harsh blend-mode contrast corruption (hard-mix, vivid-light, exclusion) |
+| Digital Boss | Hue/saturation shift plus extreme frame-difference amplification — a busted, blown-out digital look |
+| XRGB | Stacked red/green/blue channel displacements — heavy RGB tearing |
+| Crossmosh | Real datamosh: decoder state corruption between two clips |
+| Pixel Sort | Glitch-art pixel sorting — bright pixels smear into sorted streaks |
+| VHS Tracking Error | Horizontal tracking-jitter wobble plus chroma bleed, like a worn VHS tape |
+| Chromatic Pulse | Animated chromatic aberration that pulses over time |
+| Deep Fry | Blown-out saturation/contrast, oversharpened, deep-fried meme look |
+| Twociz | Extreme frame-difference amplification with a blue chroma-key knockout |
+| Twociz Pro | Frame-difference amplification and blue chroma-key knockout, with controls |
+| Splitting | Shuffles vertical pixel slices and blends them with the original — damaged-tape tearing |
+| Splitting Pro | Pixel-slice shuffling with direction (vertical/horizontal/block) and slice-size controls |
+| Slight Smear | Small red/green/blue channel offsets with wrapped edges — a subtle colour smear |
+| Blur Pix | Pixelization with frame lag/mixing and chroma shift — smeared blocky blur |
+| Warp | Swirl, bulge, pinch, ripple, kaleidoscope and mirror distortions, optionally animated |
+| Flow Warp | Optical-flow smear/push — pixels drag along motion like a datamosh melt — or a color flow view |
+
+</details>
+
+<details>
+<summary><strong>≋ Trails & Echoes</strong> (11)</summary>
+
+_Feedback, ghosting and smear — effects that blend a frame with its own past._
+
+| Program | Description |
+|---|---|
+| Ghostee | Frame-difference amplification with colour balance — moving edges glow and ghost |
+| LSD Feedback | Weighted multi-frame blend (including negative weights) — trippy feedback trails |
+| LSD Feedback Pro | Multi-frame feedback blend with a configurable frame count |
+| Double Cup | Heavy median smear blended with a weighted multi-frame mix — sludgy double image |
+| Mirror Delay | A mirrored copy blended with a weighted multi-frame delay mix |
+| Frame Delay Pro 1 | Blends a configurable number of past frames into the output — dreamy echo trail |
+| Frame Delay Pro 2 | Lagging trail with configurable decay and YUV plane selection |
+| Fever | Channel-plane shuffling with a frame-difference boost — feverish dream look |
+| T-1000 | Temporal median smoothing with RGB offsets — liquid-mercury shimmer on motion |
+| Smudge | Temporal median — moving subjects smear and melt into the background |
+| Repainting | Median repaint blended with a multi-frame mix — painterly, smeared motion |
+
+</details>
+
+<details>
+<summary><strong>⏱ Time & Motion</strong> (13)</summary>
+
+_Speed, reversal, loops, stutters, freezes and scrolling._
+
+| Program | Description |
+|---|---|
+| Speed | Change playback speed without pitch-shifting audio |
+| Reverse | Reverse the video |
+| Boomerang | Forward-then-reverse ping-pong loop |
+| Time Ramp | Variable speed ramp within one clip (e.g. slow-mo into a speed-up), unlike the flat Speed effect |
+| Freeze Punch | Freezes on detected audio peaks then resumes — a punchy freeze-frame emphasis edit |
+| Strobe Cut | Periodic flash/strobe brightness spikes at a configurable interval |
+| Stutter Pro | Replaces frames with random picks from the last N frames |
+| Nostalgic Stutter | Random-frame stutter with chroma shift and multi-frame mixing, like a corrupted file |
+| Overexposed Stutter | Hard blend modes with random-frame repeats and lag — blown-out corrupted stutter |
+| Looper Pro | Repeats a chosen segment (start frame + length) a set number of times |
+| Frame Interpolate | Motion-interpolated slow-motion / higher frame rate (ffmpeg minterpolate; RIFE/DAIN engines not implemented yet) |
+| Scrolling Pro | Scroll the picture horizontally and/or vertically at a set speed |
+| Broken Scroll | Amplified frame differences plus a slow vertical scroll — rolling broken-tracking look |
+
+</details>
+
+<details>
+<summary><strong>✦ Color & Look</strong> (28)</summary>
+
+_Colour grading and stylization — grades, LUTs, film/night-vision looks, halftone, duotone, dithering, cartoon and sketch._
+
+| Program | Description |
+|---|---|
+| Gamma Fix | Adjust gamma, brightness, contrast, and saturation |
+| LUT Apply | Apply a 3D LUT (.cube / .3dl) with optional colour adjustments |
+| Duotone | Maps luminance to a 2-color gradient — a stylized-poster look |
+| Night Vision | Green-phosphor night-vision-goggle look with grain and vignette |
+| Old Film Damage | Vintage film-print scratches, dust, flicker, and gate-weave |
+| Halftone | Newsprint-style halftone dot pattern, dot size driven by brightness |
+| Steel Wash | Shear plus a cold steel-blue vibrance grade |
+| Pickle Juice | Shear plus a strongly green-skewed vibrance grade |
+| Septic | Green/magenta-skewed vibrance grade — a sickly colour cast |
+| WB Flare | Wide bilateral blur — soft, blown-out white-balance glow |
+| WB Flare Pro | Bilateral blur with a configurable sigma |
+| Xpiritualism | Multi-layer bloom with a pastel colour pass — soft, dreamy glow |
+| Zapruder | Frame-difference amplification with colour correction and DCT denoise — degraded found-footage look |
+| Bad Predator | Heat-vision look — amplified frame differences with a hot false-colour grade |
+| Ball Point Pen | Frame-difference edges with deinterlace artifacts and colour balance — inked sketch look |
+| Light Snow | Motion-interpolated frames with chroma shift and debanding — a light static shimmer |
+| RB Blur | Debanding (gradfun) — smooths banding in flat gradients like skies and shadows |
+| RB Blur Pro | Debanding (gradfun) with strength and radius controls |
+| Recalled Sensor | Strong frame-difference bloom — edges burn bright like overexposure |
+| Recalled Sensor Pro | Frame-difference bloom with radius and intensity controls |
+| Soapblind | Heavy wavelet denoise — plasticky, smoothed, soap-in-the-eyes look |
+| Dither | Adaptive-palette dithering — Floyd-Steinberg, Atkinson, Sierra, Bayer and more, with chunky Pixel Size |
+| Retro Dither | Dither onto a classic fixed palette — 1-bit B&W, Game Boy, CGA, EGA, C64, PICO-8, phosphors, or your own colors |
+| Ordered Dither | Bayer, clustered-dot, blue-noise and static dither patterns onto a palette or posterized colors, optionally animated |
+| Neon Edges | Glowing colored edge outlines over a dimmed, original or black background |
+| Cartoon | Flat posterized colors with inked outlines |
+| Sketch | Pencil, colored-pencil, watercolor-style and painterly looks |
+| K-Means Palette | Snap the video to its N dominant colors, optionally dithered |
+
+</details>
+
+<details>
+<summary><strong>◉ Vision & Tracking</strong> (5)</summary>
+
+_Computer vision (OpenCV) — face tracking, redaction and reframing, motion isolation, feature tracking._
+
+| Program | Description |
+|---|---|
+| Face Track | Detect and track faces with boxes, brackets, IDs, trails, a spotlight, or an image pasted on each face |
+| Face Redact | Blur, pixelate, fill or dither over tracked faces — or hide everything except the faces |
+| Face Follow | Smart reframe: a smoothed virtual camera that pans and zooms to keep a face in shot |
+| Motion Ghost | Isolate what moves — tint it, show only the movers, or leave glowing motion trails |
+| Feature Trails | Tracking-HUD look: tracked points, trails and connecting lines over the video |
+
+</details>
+
+<details>
+<summary><strong>⊞ Layout & Overlay</strong> (4)</summary>
+
+_Put things on top of or next to each other — overlays, stacks, multi-layer composites._
+
+| Program | Description |
+|---|---|
+| Watermark / Image Overlay | Overlay a watermark or image onto the video — 9-point placement or custom X/Y, scale or exact pixel sizing, opacity, spin, and a timed enable window |
+| Stack 2× | Stack two videos vertically (input on top, input2 on bottom) |
+| Triptych | Arrange three videos in a symmetric hstack or vstack layout |
+| Lagkage | JSON-driven multilayer compositor |
+
+</details>
+
+<details>
+<summary><strong>✂ Cut & Assemble</strong> (6)</summary>
+
+_Cut videos apart and assemble them — trims, splits, joins, inserts, transitions._
+
+| Program | Description |
+|---|---|
+| Trim | Extracts a single section of a video by timestamp — grab a clip from the middle, or trim off the start. |
+| Qwikchop | Split a video into exactly N equal segments, exported as separate files. Optional seamless-head trimming to avoid black flashes at cuts. |
+| Mince | Merge a folder of videos into one output in a chosen order |
+| Concat | Join two videos back to back — first then second. Good for adding a slate before the main video. |
+| Insert Clip | Inserts a second video into the master at a chosen timestamp, then picks up the master from where it left off — e.g. an intermission slate. Independent transition control at each boundary. |
+| Wipe Transitions | Combine two videos with a transitional wipe using ffmpeg's xfade filter |
+
+</details>
+
+<details open>
+<summary><strong>◈ Speech & Captions</strong> (9)</summary>
+
+_Transcript-driven editing, captions and narration (Vosk / kokoro-tts, all local)._
+
+| Program | Description |
+|---|---|
+| Transcraibe | AI speech-to-text transcription (Vosk) |
+| Kinetic Captions | Per-frame rendered captions with a true size pop on the active word |
+| Captburn | Burn subtitles / captions into video |
+| Auto Narrate | Adds AI-narrated captions to a video — type your own script (offline, default) or draft one from a topic via an optional local Ollama model. Synthesizes speech (kokoro-tts), transcribes it locally (Vosk), mixes it over the original audio, and burns kinetic-typography captions (the spoken word pops larger, per-frame rendered — see Kinetic Captions). |
+| Grep Supercut | Searches a transcript for a word, phrase, or regex and cuts together every match — the classic "videogrep": find every time someone says X. |
+| Qwikchop Deluxe | Content-aware highlight extraction: scores candidate excerpts from the transcript (local centrality + audio energy + keyword hooks — no network) and exports the best ones, each as its own file. |
+| Silence Xtraction | Remove speech segments, keeping what's left (not exactly silence, but no discernable words) |
+| Word Xtraction VAD | Remove recognized speech (Vosk) and optionally local Silero VAD detections, keeping applause, laughter, music, noise, and other non-speech audio. |
+| Ngrams | Lists the most common word sequences spoken in a transcript — useful for finding good search terms before running Grep Supercut. |
+
+</details>
+
+<details open>
+<summary><strong>⚙ Media Tools</strong> (14)</summary>
+
+_Convert, resize, stabilize, extract, inspect and download._
+
+| Program | Description |
+|---|---|
+| Convert | General-purpose converter — codec, quality, and format control. Output container is set by the Output node. |
+| Convert Dims | Convert and change video dimensions |
+| Resize | Resize video to specific dimensions |
+| Shortify | Converts a video to vertical Shorts/Reels format with a blurred, enlarged background fill instead of black bars. |
+| Tonemap HDR→SDR | Tonemap HDR content to SDR |
+| Extract Frames | Extract frames from video as images |
+| Extract Sound | Extract audio track from video |
+| Thumbs | Generate thumbnail grid from video |
+| Subs Convert | Convert subtitle format |
+| Download YT | Download video from YouTube / yt-dlp |
+| Media Info | Concise report of dimensions, duration, fps, codecs and size — printed to the log and saved as JSON |
+| Meta Extraction | Extract video metadata / ffprobe info |
+| Hash Fingerprint | Generate a perceptual hash fingerprint |
+| Stabilize | Remove camera shake with feature tracking and a smoothed camera path |
+
+</details>
+
+<sub>Three more programs exist for backward compatibility, CLI-only (not in the GUI's sidebar): `convert` (superseded by Convert above), `chain_builder`, `chain_builder_pro`.</sub>

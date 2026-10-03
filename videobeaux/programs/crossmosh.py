@@ -1,7 +1,8 @@
 # videobeaux/programs/crossmosh.py
 # True P-only datamosh (concat protocol keeps decoder state) + optional melt trail.
 # Backward-compatible with the earlier crossmosh args:
-#   --b-input, --outfile, --codec, --qscale, --gop, --keep-temp, (respects global --force)
+#   --b-input, --codec, --qscale, --gop, --keep-temp, (respects global --force)
+# Output goes to the standard global -o/--output like every other program.
 #
 # New options:
 #   --mode {proto,smear}  (default proto)
@@ -11,16 +12,30 @@ import os, tempfile, shutil
 from pathlib import Path
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
 
+GUI_METADATA = {
+    'args': {
+        'b-input': {
+            'type': 'file',
+            'subtype': 'video',
+            'label': 'B Clip (Second Video)',
+            'help': 'The second clip that gets datamoshed into.',
+        },
+    }
+}
+
 def register_arguments(p):
     p.description = "Cross-mosh (real datamosh): keep decoder state A→B; optional smear trail."
     # Inputs
     p.add_argument("--b-input", required=True, help="Second clip (B)")
-    # Output (note: NOT -o; use --outfile to avoid conflict with global -o)
-    p.add_argument("--outfile", required=True, help="Final output (e.g. out/mosh.avi)")
 
     # Keep old knobs for compatibility
-    p.add_argument("--codec", default="libxvid", choices=["libxvid", "mpeg4"],
-                   help="P-only friendly MPEG-4 ASP codec. libxvid strongly recommended.")
+    # Default is mpeg4, not libxvid: Homebrew's ffmpeg formula (the exact
+    # install path this project's own install.sh uses) doesn't ship libxvid
+    # support, so defaulting to it breaks out-of-the-box for most installs.
+    # libxvid still gives better quality/compatibility for this trick where
+    # available — pick it manually if your ffmpeg build has it.
+    p.add_argument("--codec", default="mpeg4", choices=["libxvid", "mpeg4"],
+                   help="P-only friendly MPEG-4 ASP codec. libxvid gives better results if your ffmpeg build has it.")
     p.add_argument("--qscale", type=float, default=3.0,
                    help="Quality scale (lower = higher quality). Default: 3")
     p.add_argument("--gop", type=int, default=9999,
@@ -47,9 +62,12 @@ def run(args):
     if not A.exists(): raise FileNotFoundError(f"Input A not found: {A}")
     if not B.exists(): raise FileNotFoundError(f"Input B not found: {B}")
 
-    out = Path(args.outfile)
-    if out.suffix.lower() != ".avi":
-        out = out.with_suffix(".avi")  # concat protocol + ASP works best in AVI
+    # Deliver to exactly the path the caller asked for (global -o/--output).
+    # The datamosh trick needs an AVI/XVID container internally, but the
+    # final bytes are moved here as-is regardless of this path's extension —
+    # downstream ffmpeg reads sniff the real container from content, not the
+    # filename, so this stays compatible with a pipeline step expecting .mp4.
+    out = Path(args.output)
 
     tmp = Path(tempfile.mkdtemp(prefix="vb_crossmosh_"))
     try:

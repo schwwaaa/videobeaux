@@ -42,13 +42,14 @@ def _videos_in_dir(d: Path, recurse: bool) -> List[Path]:
 def _work_and_export_paths(inp: Path, output_base: str | None) -> Tuple[Path, Path]:
     """
     Return (work_dir, export_dir).
-    - If -o/--output is provided (cli may coerce .mp4), use its stem as base.
-    - Otherwise use folders next to the input.
+    - If -o/--output is provided (cli may coerce .mp4), its stem IS the export
+      dir directly (same convention as extract_frames.py) — the chosen output
+      path is exactly where segments land, not just a directory near it.
+    - Otherwise use folders next to the input (CLI-only, no -o given).
     """
     if output_base:
-        base = Path(output_base).with_suffix("")  # strip .mp4 if cli added it
-        work_dir = base.parent / f"{base.stem}_{inp.stem}_qwik_tmp"
-        export_dir = base.parent / f"{inp.stem}_qwikchop"
+        export_dir = Path(output_base).with_suffix("")  # strip .mp4 if cli added it
+        work_dir = export_dir.parent / f"{export_dir.stem}_{inp.stem}_qwik_tmp"
     else:
         work_dir = inp.parent / f"{inp.stem}_qwik_tmp"
         export_dir = inp.parent / f"{inp.stem}_qwikchop"
@@ -184,10 +185,17 @@ def _segment_into_n_edits(
 def _export_segments(inp: Path, segs: List[Path], export_dir: Path, force: bool):
     """
     Copy temp segments into export_dir with final names.
+
+    export_dir may be shared across multiple inputs (a directory-of-videos
+    CLI run all targeting the same -o now lands in one folder, since it's
+    derived from the output path's own stem rather than each input's name)
+    — so --force only clears THIS input's own prior "<stem>_edit_*" files,
+    never the whole directory, to avoid wiping a sibling input's results.
     """
-    if export_dir.exists() and force:
-        shutil.rmtree(export_dir, ignore_errors=True)
     _mkdir(export_dir)
+    if force:
+        for stale in export_dir.glob(f"{inp.stem}_edit_*"):
+            stale.unlink(missing_ok=True)
 
     pad = max(4, len(str(len(segs))))
     for i, src in enumerate(segs, start=1):

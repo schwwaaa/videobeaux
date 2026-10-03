@@ -28,22 +28,30 @@ def main():
         formatter_class=argparse.RawTextHelpFormatter
     )
     parser.add_argument("-P", "--program", help="Name of the effect program to run (e.g. convert, glitch)")
-    parser.add_argument("-i", "--input", help="Input video file - mp4 only")
-    parser.add_argument("-o", "--output", help="Output file name, no extension. Output will be saved as mp4.")
+    parser.add_argument("-i", "--input", help="Input video file")
+    parser.add_argument("-o", "--output", help="Output file name. No extension saves as mp4; or use .mp4/.mov/.avi/.mkv/.webm.")
     #parser.add_argument("-c", "--config", help="Optional config file")
     parser.add_argument("-F", "--force", action="store_true", help="Force overwrite output file")
     parser.add_argument("-h", "--help", action="store_true", help="Show help message and exit")
 
     global_args, remaining = parser.parse_known_args()
 
-    # Validate and sanitize output filename
-    # TODO - revist MP4 only
+    # Validate and sanitize output filename.
+    # Allowlist matches the GUI's Output node format dropdown
+    # (gui/src/renderer/src/components/nodes/OutputNode.jsx's FORMATS) —
+    # extend both together if that list ever grows.
+    # Non-video extensions cover programs with json/audio/image/text output
+    # (the GUI passes temp paths like vb_<uuid>.json for those steps).
+    ALLOWED_OUTPUT_EXTS = {".mp4", ".mov", ".avi", ".mkv", ".webm",
+                           ".json", ".wav", ".png", ".txt",
+                           ".srt", ".vtt", ".ass"}
     if global_args.output:
         output_path = Path(global_args.output)
         suffix = output_path.suffix.lower()
 
-        if suffix and suffix != ".mp4":
-            print(f"❌ Invalid file extension.  --output accepts a file name, which will be saved as mp4.")
+        if suffix and suffix not in ALLOWED_OUTPUT_EXTS:
+            allowed = ", ".join(sorted(e.lstrip(".") for e in ALLOWED_OUTPUT_EXTS))
+            print(f"❌ Invalid file extension. --output accepts a file name ending in one of: {allowed}.")
             sys.exit(1)
         if not suffix:
             global_args.output += ".mp4"

@@ -1,5 +1,4 @@
 # custom_parser.py
-#NOT IN USE AS OF JULY 19
 import argparse
 import sys
 

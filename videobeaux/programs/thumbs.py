@@ -18,7 +18,7 @@ import argparse
 from pathlib import Path
 from typing import List
 
-from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
+from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress, ffmpeg_has_filter
 
 DEFAULT_EXT = "jpg"
 
@@ -74,6 +74,11 @@ def _ensure_parent(path: Path):
 # ------------------------------
 # Argument registration
 # ------------------------------
+# The GUI always supplies the output path (-o) from the connected Output node,
+# so this program-specific fallback flag is hidden from the node's fields.
+GUI_METADATA = {'args': {'outputfile': {'hidden': True}}}
+
+
 def register_arguments(parser: argparse.ArgumentParser):
     parser.description = (
         "Generate thumbnails and/or a tiled contact sheet from a video. "
@@ -110,7 +115,12 @@ def run(args: argparse.Namespace):
         raise SystemExit(f"❌ Input not found: {in_path}")
 
     contactsheet_path: Path | None = None
-    if getattr(args, "outputfile", None):
+    # Prefer the global -o/--output when given (e.g. the GUI always sets
+    # it) over the program's own --outputfile, so a wired-in Output node
+    # isn't silently ignored.
+    if getattr(args, "output", None):
+        contactsheet_path = Path(args.output)
+    elif getattr(args, "outputfile", None):
         contactsheet_path = Path(args.outputfile)
     if contactsheet_path and contactsheet_path.suffix == "":
         ext = args.image_format or DEFAULT_EXT
@@ -122,6 +132,12 @@ def run(args: argparse.Namespace):
 
     if not contactsheet_path and not outdir_path:
         raise SystemExit("❌ Provide at least one output: --outputfile or --outdir.")
+
+    if (args.timestamps or args.label) and not ffmpeg_has_filter("drawtext"):
+        raise SystemExit(
+            "❌ --timestamps/--label need ffmpeg's 'drawtext' filter (libfreetype), which this "
+            "ffmpeg build lacks. Run without them, or use an ffmpeg built with --enable-libfreetype."
+        )
 
     scale = _scale_expr(args.scale)
     draw_chain = _drawtext_chain(args.timestamps, args.fontfile)
@@ -162,7 +178,9 @@ def run(args: argparse.Namespace):
             filters.append(f"fps={max(0.001, float(args.fps))}")
         filters.append(f"scale={scale}")
         filters.extend(draw_chain)
-        filters.append(f"tile={cols}x{rows}:{int(args.margin)}:{int(args.padding)}:{bg_color}")
+        # tile's positional order is layout:nb_frames:margin:padding:color — use
+        # named options so margin isn't misread as nb_frames.
+        filters.append(f"tile={cols}x{rows}:margin={int(args.margin)}:padding={int(args.padding)}:color={bg_color}")
 
         if args.label:
             label_txt = _escape_text(in_path.name)

@@ -1,0 +1,1115 @@
+{
+  "meta": {
+    "source": "/var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_src_v7vdbrtl/synthetic.mp4",
+    "start": 6.0,
+    "dur": 8.0,
+    "full_res": false,
+    "ffmpeg": "ffmpeg version 9.0.1 Copyright (c) 2000-2026 the FFmpeg developers"
+  },
+  "counts": {
+    "PASS": 100,
+    "SKIP": 10
+  },
+  "results": [
+    {
+      "program": "transcraibe",
+      "category": "speech",
+      "category_label": "Speech & Captions",
+      "status": "PASS",
+      "seconds": 2.1747591495513916,
+      "detail": "133 bytes JSON",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P transcraibe -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/transcraibe/result.json -F --stt_model /Users/bozer/schwwaaa/videobeaux-gui/models/vosk-model-en-us-0.22-lgraph"
+    },
+    {
+      "program": "bad_animation",
+      "category": "glitch",
+      "category_label": "Glitch & Corruption",
+      "status": "PASS",
+      "seconds": 0.24172186851501465,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P bad_animation -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/bad_animation/result.mp4 -F"
+    },
+    {
+      "program": "bad_contrast",
+      "category": "glitch",
+      "category_label": "Glitch & Corruption",
+      "status": "PASS",
+      "seconds": 0.37779903411865234,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P bad_contrast -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/bad_contrast/result.mp4 -F"
+    },
+    {
+      "program": "blur_pix",
+      "category": "glitch",
+      "category_label": "Glitch & Corruption",
+      "status": "PASS",
+      "seconds": 0.31369495391845703,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P blur_pix -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/blur_pix/result.mp4 -F"
+    },
+    {
+      "program": "ball_point_pen",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 0.6810600757598877,
+      "detail": "640x360, 10.4s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P ball_point_pen -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/ball_point_pen/result.mp4 -F"
+    },
+    {
+      "program": "boomerang",
+      "category": "temporal",
+      "category_label": "Time & Motion",
+      "status": "PASS",
+      "seconds": 0.4476299285888672,
+      "detail": "640x360, 16.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P boomerang -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/boomerang/result.mp4 -F"
+    },
+    {
+      "program": "bad_predator",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 1.5211100578308105,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P bad_predator -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/bad_predator/result.mp4 -F"
+    },
+    {
+      "program": "captburn",
+      "category": "speech",
+      "category_label": "Speech & Captions",
+      "status": "PASS",
+      "seconds": 0.4248771667480469,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P captburn -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/captburn/result.mp4 -F --trans-json /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/transcraibe/result.json"
+    },
+    {
+      "program": "broken_scroll",
+      "category": "temporal",
+      "category_label": "Time & Motion",
+      "status": "PASS",
+      "seconds": 0.8427779674530029,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P broken_scroll -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/broken_scroll/result.mp4 -F"
+    },
+    {
+      "program": "chain_builder",
+      "category": "uncategorized",
+      "category_label": "Uncategorized",
+      "status": "PASS",
+      "seconds": 0.6252999305725098,
+      "detail": "640x360, 16.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P chain_builder -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/chain_builder/result.mp4 -F --chain reverse,boomerang"
+    },
+    {
+      "program": "chain_builder_pro",
+      "category": "uncategorized",
+      "category_label": "Uncategorized",
+      "status": "PASS",
+      "seconds": 0.6032812595367432,
+      "detail": "640x360, 16.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P chain_builder_pro -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/chain_builder_pro/result.mp4 -F --chain_config /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/chain.json"
+    },
+    {
+      "program": "cartoon",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 1.236762285232544,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P cartoon -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/cartoon/result.mp4 -F"
+    },
+    {
+      "program": "concat",
+      "category": "edit",
+      "category_label": "Cut & Assemble",
+      "status": "PASS",
+      "seconds": 0.41931891441345215,
+      "detail": "640x360, 12.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P concat -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/concat/result.mp4 -F --input2 /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip2.mp4"
+    },
+    {
+      "program": "convert",
+      "category": "uncategorized",
+      "category_label": "Uncategorized",
+      "status": "PASS",
+      "seconds": 0.29979896545410156,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P convert -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/convert/result.mp4 -F --output-format mp4"
+    },
+    {
+      "program": "chromatic_pulse",
+      "category": "glitch",
+      "category_label": "Glitch & Corruption",
+      "status": "PASS",
+      "seconds": 0.8566379547119141,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P chromatic_pulse -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/chromatic_pulse/result.mp4 -F"
+    },
+    {
+      "program": "convert_dims",
+      "category": "media",
+      "category_label": "Media Tools",
+      "status": "PASS",
+      "seconds": 0.35902905464172363,
+      "detail": "640x480, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P convert_dims -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/convert_dims/result.mp4 -F --output-format mp4 --preset 480p"
+    },
+    {
+      "program": "convert_mux",
+      "category": "media",
+      "category_label": "Media Tools",
+      "status": "PASS",
+      "seconds": 0.25828003883361816,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P convert_mux -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/convert_mux/result.mp4 -F"
+    },
+    {
+      "program": "deep_fry",
+      "category": "glitch",
+      "category_label": "Glitch & Corruption",
+      "status": "PASS",
+      "seconds": 0.357928991317749,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P deep_fry -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/deep_fry/result.mp4 -F"
+    },
+    {
+      "program": "crossmosh",
+      "category": "glitch",
+      "category_label": "Glitch & Corruption",
+      "status": "PASS",
+      "seconds": 0.48839402198791504,
+      "detail": "640x360, 12.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P crossmosh -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/crossmosh/result.mp4 -F --b-input /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip2.mp4"
+    },
+    {
+      "program": "digital_boss",
+      "category": "glitch",
+      "category_label": "Glitch & Corruption",
+      "status": "PASS",
+      "seconds": 0.3658890724182129,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P digital_boss -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/digital_boss/result.mp4 -F"
+    },
+    {
+      "program": "download_yt",
+      "category": "media",
+      "category_label": "Media Tools",
+      "status": "SKIP",
+      "seconds": 0.0,
+      "detail": "needs network + a real YouTube URL as -i",
+      "error": "",
+      "cmd": ""
+    },
+    {
+      "program": "double_cup",
+      "category": "trails",
+      "category_label": "Trails & Echoes",
+      "status": "PASS",
+      "seconds": 0.964040994644165,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P double_cup -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/double_cup/result.mp4 -F"
+    },
+    {
+      "program": "dither",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 1.009795904159546,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P dither -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/dither/result.mp4 -F --colors 8 --pixel_size 2"
+    },
+    {
+      "program": "extract_frames",
+      "category": "media",
+      "category_label": "Media Tools",
+      "status": "PASS",
+      "seconds": 0.14336109161376953,
+      "detail": "8 file(s) in result/",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P extract_frames -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/extract_frames/result.mp4 -F --frame_rate 1"
+    },
+    {
+      "program": "face_follow",
+      "category": "vision",
+      "category_label": "Vision & Tracking",
+      "status": "SKIP",
+      "seconds": 0.0,
+      "detail": "the built-in synthetic clip has no faces \u2014 pass --source with a clip of a person",
+      "error": "",
+      "cmd": ""
+    },
+    {
+      "program": "face_redact",
+      "category": "vision",
+      "category_label": "Vision & Tracking",
+      "status": "SKIP",
+      "seconds": 0.0,
+      "detail": "the built-in synthetic clip has no faces \u2014 pass --source with a clip of a person",
+      "error": "",
+      "cmd": ""
+    },
+    {
+      "program": "face_track",
+      "category": "vision",
+      "category_label": "Vision & Tracking",
+      "status": "SKIP",
+      "seconds": 0.0,
+      "detail": "the built-in synthetic clip has no faces \u2014 pass --source with a clip of a person",
+      "error": "",
+      "cmd": ""
+    },
+    {
+      "program": "extract_sound",
+      "category": "media",
+      "category_label": "Media Tools",
+      "status": "PASS",
+      "seconds": 0.12764501571655273,
+      "detail": "8.0s audio",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P extract_sound -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/extract_sound/result.wav -F"
+    },
+    {
+      "program": "duotone",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 1.5791196823120117,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P duotone -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/duotone/result.mp4 -F"
+    },
+    {
+      "program": "auto_narrate",
+      "category": "speech",
+      "category_label": "Speech & Captions",
+      "status": "PASS",
+      "seconds": 5.574526071548462,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P auto_narrate -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/auto_narrate/result.mp4 -F --script This is a short smoke test narration. --stt_model /Users/bozer/schwwaaa/videobeaux-gui/models/vosk-model-en-us-0.22-lgraph"
+    },
+    {
+      "program": "fever",
+      "category": "trails",
+      "category_label": "Trails & Echoes",
+      "status": "PASS",
+      "seconds": 0.546515941619873,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P fever -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/fever/result.mp4 -F"
+    },
+    {
+      "program": "frame_delay_pro2",
+      "category": "trails",
+      "category_label": "Trails & Echoes",
+      "status": "PASS",
+      "seconds": 0.27713704109191895,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P frame_delay_pro2 -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/frame_delay_pro2/result.mp4 -F --decay 0.8 --planes 7"
+    },
+    {
+      "program": "feature_trails",
+      "category": "vision",
+      "category_label": "Vision & Tracking",
+      "status": "PASS",
+      "seconds": 0.9718899726867676,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P feature_trails -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/feature_trails/result.mp4 -F"
+    },
+    {
+      "program": "frame_delay_pro1",
+      "category": "trails",
+      "category_label": "Trails & Echoes",
+      "status": "PASS",
+      "seconds": 0.429567813873291,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P frame_delay_pro1 -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/frame_delay_pro1/result.mp4 -F --frame_quantity 3 --frame_weights 0.5"
+    },
+    {
+      "program": "flow_warp",
+      "category": "glitch",
+      "category_label": "Glitch & Corruption",
+      "status": "PASS",
+      "seconds": 1.3067598342895508,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P flow_warp -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/flow_warp/result.mp4 -F"
+    },
+    {
+      "program": "gamma_fix",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 0.7553439140319824,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P gamma_fix -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/gamma_fix/result.mp4 -F"
+    },
+    {
+      "program": "grep_supercut",
+      "category": "speech",
+      "category_label": "Speech & Captions",
+      "status": "SKIP",
+      "seconds": 0.0,
+      "detail": "the built-in synthetic clip has no speech \u2014 pass --source with a clip of someone talking",
+      "error": "",
+      "cmd": ""
+    },
+    {
+      "program": "freeze_punch",
+      "category": "temporal",
+      "category_label": "Time & Motion",
+      "status": "PASS",
+      "seconds": 1.0018560886383057,
+      "detail": "640x360, 9.4s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P freeze_punch -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/freeze_punch/result.mp4 -F"
+    },
+    {
+      "program": "hash_fingerprint",
+      "category": "media",
+      "category_label": "Media Tools",
+      "status": "PASS",
+      "seconds": 0.05997300148010254,
+      "detail": "196 bytes JSON",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P hash_fingerprint -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/hash_fingerprint/result.json -F --file-hashes md5"
+    },
+    {
+      "program": "ghostee",
+      "category": "trails",
+      "category_label": "Trails & Echoes",
+      "status": "PASS",
+      "seconds": 0.5634560585021973,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P ghostee -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/ghostee/result.mp4 -F"
+    },
+    {
+      "program": "insert_clip",
+      "category": "edit",
+      "category_label": "Cut & Assemble",
+      "status": "PASS",
+      "seconds": 0.44472503662109375,
+      "detail": "640x360, 12.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P insert_clip -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/insert_clip/result.mp4 -F --input2 /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip2.mp4 --insert_at 2"
+    },
+    {
+      "program": "halftone",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 0.6683871746063232,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P halftone -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/halftone/result.mp4 -F"
+    },
+    {
+      "program": "kinetic_captions",
+      "category": "speech",
+      "category_label": "Speech & Captions",
+      "status": "PASS",
+      "seconds": 0.652611255645752,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P kinetic_captions -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/kinetic_captions/result.mp4 -F --trans-json /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/transcraibe/result.json"
+    },
+    {
+      "program": "lagkage",
+      "category": "layout",
+      "category_label": "Layout & Overlay",
+      "status": "PASS",
+      "seconds": 0.5766911506652832,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P lagkage -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/lagkage/result.mp4 -F --layout-json /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/layout.json"
+    },
+    {
+      "program": "looper_pro",
+      "category": "temporal",
+      "category_label": "Time & Motion",
+      "status": "PASS",
+      "seconds": 0.2697789669036865,
+      "detail": "640x360, 9.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P looper_pro -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/looper_pro/result.mp4 -F --size_in_frames 12 --loop_count 2 --start_frame 10"
+    },
+    {
+      "program": "kmeans_palette",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 0.9374709129333496,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P kmeans_palette -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/kmeans_palette/result.mp4 -F --colors 5 --dither bayer8"
+    },
+    {
+      "program": "lsd_feedback_pro",
+      "category": "trails",
+      "category_label": "Trails & Echoes",
+      "status": "PASS",
+      "seconds": 0.44932007789611816,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P lsd_feedback_pro -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/lsd_feedback_pro/result.mp4 -F --frames 8"
+    },
+    {
+      "program": "lsd_feedback",
+      "category": "trails",
+      "category_label": "Trails & Echoes",
+      "status": "PASS",
+      "seconds": 0.4593040943145752,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P lsd_feedback -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/lsd_feedback/result.mp4 -F"
+    },
+    {
+      "program": "media_info",
+      "category": "media",
+      "category_label": "Media Tools",
+      "status": "PASS",
+      "seconds": 0.08391118049621582,
+      "detail": "838 bytes JSON",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P media_info -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/media_info/result.json -F"
+    },
+    {
+      "program": "meta_extraction",
+      "category": "media",
+      "category_label": "Media Tools",
+      "status": "PASS",
+      "seconds": 0.09626007080078125,
+      "detail": "1917 bytes JSON",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P meta_extraction -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/meta_extraction/result.json -F"
+    },
+    {
+      "program": "lut_apply",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 0.3044438362121582,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P lut_apply -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/lut_apply/result.mp4 -F --lut /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/identity.cube --intensity 0.7"
+    },
+    {
+      "program": "mirror_delay",
+      "category": "trails",
+      "category_label": "Trails & Echoes",
+      "status": "PASS",
+      "seconds": 0.3467278480529785,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P mirror_delay -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/mirror_delay/result.mp4 -F"
+    },
+    {
+      "program": "mince",
+      "category": "edit",
+      "category_label": "Cut & Assemble",
+      "status": "PASS",
+      "seconds": 0.52829909324646,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P mince -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/folder -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/mince/result.mp4 -F --mode forward --normalize"
+    },
+    {
+      "program": "neon_edges",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 1.0373198986053467,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P neon_edges -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/neon_edges/result.mp4 -F"
+    },
+    {
+      "program": "ngrams",
+      "category": "speech",
+      "category_label": "Speech & Captions",
+      "status": "SKIP",
+      "seconds": 0.0,
+      "detail": "the built-in synthetic clip has no speech \u2014 pass --source with a clip of someone talking",
+      "error": "",
+      "cmd": ""
+    },
+    {
+      "program": "motion_ghost",
+      "category": "vision",
+      "category_label": "Vision & Tracking",
+      "status": "PASS",
+      "seconds": 1.4193031787872314,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P motion_ghost -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/motion_ghost/result.mp4 -F --mode trails"
+    },
+    {
+      "program": "night_vision",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 0.40001702308654785,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P night_vision -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/night_vision/result.mp4 -F"
+    },
+    {
+      "program": "nostalgic_stutter",
+      "category": "temporal",
+      "category_label": "Time & Motion",
+      "status": "PASS",
+      "seconds": 0.3019101619720459,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P nostalgic_stutter -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/nostalgic_stutter/result.mp4 -F"
+    },
+    {
+      "program": "old_film_damage",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 0.3914299011230469,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P old_film_damage -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/old_film_damage/result.mp4 -F"
+    },
+    {
+      "program": "frame_interpolate",
+      "category": "temporal",
+      "category_label": "Time & Motion",
+      "status": "PASS",
+      "seconds": 5.766915798187256,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P frame_interpolate -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/frame_interpolate/result.mp4 -F --multiplier 2"
+    },
+    {
+      "program": "overexposed_stutter",
+      "category": "temporal",
+      "category_label": "Time & Motion",
+      "status": "PASS",
+      "seconds": 0.347445011138916,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P overexposed_stutter -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/overexposed_stutter/result.mp4 -F"
+    },
+    {
+      "program": "pickle_juice",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 0.345073938369751,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P pickle_juice -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/pickle_juice/result.mp4 -F"
+    },
+    {
+      "program": "qwikchop",
+      "category": "edit",
+      "category_label": "Cut & Assemble",
+      "status": "PASS",
+      "seconds": 0.4956371784210205,
+      "detail": "3 file(s) in result/",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P qwikchop -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/qwikchop/result.mp4 -F --pieces 3"
+    },
+    {
+      "program": "qwikchop_deluxe",
+      "category": "speech",
+      "category_label": "Speech & Captions",
+      "status": "SKIP",
+      "seconds": 0.0,
+      "detail": "the built-in synthetic clip has no speech \u2014 pass --source with a clip of someone talking",
+      "error": "",
+      "cmd": ""
+    },
+    {
+      "program": "rb_blur",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 0.29527711868286133,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P rb_blur -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/rb_blur/result.mp4 -F"
+    },
+    {
+      "program": "ordered_dither",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 1.4328761100769043,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P ordered_dither -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/ordered_dither/result.mp4 -F --method bayer8 --palette pico8"
+    },
+    {
+      "program": "rb_blur_pro",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 0.33342504501342773,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P rb_blur_pro -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/rb_blur_pro/result.mp4 -F --strength 1.0 --radius 8"
+    },
+    {
+      "program": "recalled_sensor",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 0.6358988285064697,
+      "detail": "640x360, 8.4s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P recalled_sensor -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/recalled_sensor/result.mp4 -F"
+    },
+    {
+      "program": "recalled_sensor_pro",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 0.3537788391113281,
+      "detail": "640x360, 9.2s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P recalled_sensor_pro -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/recalled_sensor_pro/result.mp4 -F --radius 4 --factor 2"
+    },
+    {
+      "program": "light_snow",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 5.656452894210815,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P light_snow -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/light_snow/result.mp4 -F"
+    },
+    {
+      "program": "resize",
+      "category": "media",
+      "category_label": "Media Tools",
+      "status": "PASS",
+      "seconds": 0.21526694297790527,
+      "detail": "320x180, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P resize -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/resize/result.mp4 -F --new_height 180 --new_width 320"
+    },
+    {
+      "program": "reverse",
+      "category": "temporal",
+      "category_label": "Time & Motion",
+      "status": "PASS",
+      "seconds": 0.3440272808074951,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P reverse -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/reverse/result.mp4 -F"
+    },
+    {
+      "program": "repainting",
+      "category": "trails",
+      "category_label": "Trails & Echoes",
+      "status": "PASS",
+      "seconds": 0.7513799667358398,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P repainting -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/repainting/result.mp4 -F"
+    },
+    {
+      "program": "retro_dither",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 0.6426920890808105,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P retro_dither -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/retro_dither/result.mp4 -F --palette gameboy"
+    },
+    {
+      "program": "scrolling_pro",
+      "category": "temporal",
+      "category_label": "Time & Motion",
+      "status": "PASS",
+      "seconds": 0.3003871440887451,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P scrolling_pro -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/scrolling_pro/result.mp4 -F --horiz_speed 0.01 --vert_speed 0"
+    },
+    {
+      "program": "silence_xtraction",
+      "category": "speech",
+      "category_label": "Speech & Captions",
+      "status": "SKIP",
+      "seconds": 0.0,
+      "detail": "the built-in synthetic clip has no speech \u2014 pass --source with a clip of someone talking",
+      "error": "",
+      "cmd": ""
+    },
+    {
+      "program": "septic",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 0.2739229202270508,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P septic -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/septic/result.mp4 -F"
+    },
+    {
+      "program": "slight_smear",
+      "category": "glitch",
+      "category_label": "Glitch & Corruption",
+      "status": "PASS",
+      "seconds": 0.31008005142211914,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P slight_smear -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/slight_smear/result.mp4 -F"
+    },
+    {
+      "program": "smudge",
+      "category": "trails",
+      "category_label": "Trails & Echoes",
+      "status": "PASS",
+      "seconds": 0.48705196380615234,
+      "detail": "640x360, 9.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P smudge -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/smudge/result.mp4 -F"
+    },
+    {
+      "program": "sketch",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 1.160059928894043,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P sketch -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/sketch/result.mp4 -F --mode pencil"
+    },
+    {
+      "program": "shortify",
+      "category": "media",
+      "category_label": "Media Tools",
+      "status": "PASS",
+      "seconds": 1.41031813621521,
+      "detail": "1080x1920, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P shortify -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/shortify/result.mp4 -F"
+    },
+    {
+      "program": "pixel_sort",
+      "category": "glitch",
+      "category_label": "Glitch & Corruption",
+      "status": "PASS",
+      "seconds": 4.016788005828857,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P pixel_sort -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/pixel_sort/result.mp4 -F"
+    },
+    {
+      "program": "speed",
+      "category": "temporal",
+      "category_label": "Time & Motion",
+      "status": "PASS",
+      "seconds": 0.23356389999389648,
+      "detail": "640x360, 5.4s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P speed -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/speed/result.mp4 -F --speed_factor 1.5"
+    },
+    {
+      "program": "splitting",
+      "category": "glitch",
+      "category_label": "Glitch & Corruption",
+      "status": "PASS",
+      "seconds": 0.29699110984802246,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P splitting -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/splitting/result.mp4 -F"
+    },
+    {
+      "program": "splitting_pro",
+      "category": "glitch",
+      "category_label": "Glitch & Corruption",
+      "status": "PASS",
+      "seconds": 0.29062771797180176,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P splitting_pro -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/splitting_pro/result.mp4 -F --width 20 --position vertical"
+    },
+    {
+      "program": "stack_2x",
+      "category": "layout",
+      "category_label": "Layout & Overlay",
+      "status": "PASS",
+      "seconds": 0.28740930557250977,
+      "detail": "640x720, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P stack_2x -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/stack_2x/result.mp4 -F --input2 /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip2.mp4"
+    },
+    {
+      "program": "steel_wash",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 0.30114293098449707,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P steel_wash -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/steel_wash/result.mp4 -F"
+    },
+    {
+      "program": "strobe_cut",
+      "category": "temporal",
+      "category_label": "Time & Motion",
+      "status": "PASS",
+      "seconds": 0.2960031032562256,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P strobe_cut -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/strobe_cut/result.mp4 -F"
+    },
+    {
+      "program": "stabilize",
+      "category": "media",
+      "category_label": "Media Tools",
+      "status": "PASS",
+      "seconds": 0.8338637351989746,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P stabilize -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/stabilize/result.mp4 -F"
+    },
+    {
+      "program": "subs_convert",
+      "category": "media",
+      "category_label": "Media Tools",
+      "status": "PASS",
+      "seconds": 0.1301271915435791,
+      "detail": "104 bytes",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P subs_convert -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/sample.srt -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/subs_convert/result.vtt -F --format vtt"
+    },
+    {
+      "program": "stutter_pro",
+      "category": "temporal",
+      "category_label": "Time & Motion",
+      "status": "PASS",
+      "seconds": 0.26707911491394043,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P stutter_pro -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/stutter_pro/result.mp4 -F --stutter 5"
+    },
+    {
+      "program": "thumbs",
+      "category": "media",
+      "category_label": "Media Tools",
+      "status": "PASS",
+      "seconds": 0.15838623046875,
+      "detail": "996x390 image",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P thumbs -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/thumbs/result.png -F --fps 1 --tile 3x2"
+    },
+    {
+      "program": "tonemap_hdr_sdr",
+      "category": "media",
+      "category_label": "Media Tools",
+      "status": "SKIP",
+      "seconds": 0.0,
+      "detail": "could not build the synthetic HDR clip",
+      "error": "",
+      "cmd": ""
+    },
+    {
+      "program": "trim",
+      "category": "edit",
+      "category_label": "Cut & Assemble",
+      "status": "PASS",
+      "seconds": 0.17500710487365723,
+      "detail": "640x360, 2.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P trim -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/trim/result.mp4 -F --start 1 --duration 2"
+    },
+    {
+      "program": "time_ramp",
+      "category": "temporal",
+      "category_label": "Time & Motion",
+      "status": "PASS",
+      "seconds": 0.35671091079711914,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P time_ramp -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/time_ramp/result.mp4 -F"
+    },
+    {
+      "program": "triptych",
+      "category": "layout",
+      "category_label": "Layout & Overlay",
+      "status": "PASS",
+      "seconds": 0.4426860809326172,
+      "detail": "1920x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P triptych -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/triptych/result.mp4 -F --input2 /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip2.mp4 --input3 /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip3.mp4"
+    },
+    {
+      "program": "twociz",
+      "category": "glitch",
+      "category_label": "Glitch & Corruption",
+      "status": "PASS",
+      "seconds": 0.6513628959655762,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P twociz -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/twociz/result.mp4 -F"
+    },
+    {
+      "program": "twociz_pro",
+      "category": "glitch",
+      "category_label": "Glitch & Corruption",
+      "status": "PASS",
+      "seconds": 0.5544447898864746,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P twociz_pro -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/twociz_pro/result.mp4 -F --radius 4 --factor 2 --blend 0.1 --similarity 0.2"
+    },
+    {
+      "program": "vhs_tracking",
+      "category": "glitch",
+      "category_label": "Glitch & Corruption",
+      "status": "PASS",
+      "seconds": 0.38258790969848633,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P vhs_tracking -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/vhs_tracking/result.mp4 -F"
+    },
+    {
+      "program": "t1000",
+      "category": "trails",
+      "category_label": "Trails & Echoes",
+      "status": "PASS",
+      "seconds": 1.648082971572876,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P t1000 -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/t1000/result.mp4 -F"
+    },
+    {
+      "program": "watermark",
+      "category": "layout",
+      "category_label": "Layout & Overlay",
+      "status": "PASS",
+      "seconds": 0.30451393127441406,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P watermark -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/watermark/result.mp4 -F --watermark /Users/bozer/schwwaaa/videobeaux-gui/media/logo.png"
+    },
+    {
+      "program": "wbflare",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 0.28955793380737305,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P wbflare -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/wbflare/result.mp4 -F"
+    },
+    {
+      "program": "wbflare_pro",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 0.27889180183410645,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P wbflare_pro -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/wbflare_pro/result.mp4 -F --sigma 5"
+    },
+    {
+      "program": "word_xtraction_vad",
+      "category": "speech",
+      "category_label": "Speech & Captions",
+      "status": "SKIP",
+      "seconds": 0.0,
+      "detail": "the built-in synthetic clip has no speech \u2014 pass --source with a clip of someone talking",
+      "error": "",
+      "cmd": ""
+    },
+    {
+      "program": "wipe_transitions",
+      "category": "edit",
+      "category_label": "Cut & Assemble",
+      "status": "PASS",
+      "seconds": 0.5346629619598389,
+      "detail": "640x360, 11.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P wipe_transitions -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/wipe_transitions/result.mp4 -F --input2 /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip2.mp4"
+    },
+    {
+      "program": "warp",
+      "category": "glitch",
+      "category_label": "Glitch & Corruption",
+      "status": "PASS",
+      "seconds": 1.0172958374023438,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P warp -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/warp/result.mp4 -F --mode swirl --speed 2"
+    },
+    {
+      "program": "xrgb",
+      "category": "glitch",
+      "category_label": "Glitch & Corruption",
+      "status": "PASS",
+      "seconds": 0.3792591094970703,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P xrgb -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/xrgb/result.mp4 -F"
+    },
+    {
+      "program": "xpiritualism",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 0.9785819053649902,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P xpiritualism -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/xpiritualism/result.mp4 -F"
+    },
+    {
+      "program": "zapruder",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 2.8637888431549072,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P zapruder -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/zapruder/result.mp4 -F"
+    },
+    {
+      "program": "soapblind",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 22.975509881973267,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P soapblind -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_mk8qfjih/out/soapblind/result.mp4 -F"
+    }
+  ]
+}

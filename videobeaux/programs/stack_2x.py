@@ -1,5 +1,16 @@
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
 
+GUI_METADATA = {
+    'args': {
+        'input2': {
+            'type': 'file',
+            'subtype': 'video',
+            'label': 'Second Video',
+            'help': 'Video placed on the bottom of the stack — connect a node or pick a file.',
+        },
+    }
+}
+
 def register_arguments(parser):
     parser.description = (
         "Stacks 2 videos, --input on top of --input2, in a vertical column."

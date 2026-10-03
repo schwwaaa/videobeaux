@@ -35,14 +35,46 @@ def get_video_duration(input_file):
         print(f"❌ Invalid duration for {input_file}")
         sys.exit(1)
 
+def get_video_dims_fps(input_file):
+    """Get (width, height, fps) of a video's first video stream using ffprobe."""
+    result = subprocess.run(
+        ['ffprobe', '-v', 'error', '-select_streams', 'v:0',
+         '-show_entries', 'stream=width,height,r_frame_rate',
+         '-of', 'default=noprint_wrappers=1:nokey=1', str(input_file)],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True
+    )
+    if result.returncode != 0:
+        print(f"❌ Error getting video info for {input_file}: {result.stderr}")
+        sys.exit(1)
+    lines = result.stdout.strip().splitlines()
+    if len(lines) < 3:
+        print(f"❌ Unexpected ffprobe output for {input_file}")
+        sys.exit(1)
+    width, height, rate = int(lines[0]), int(lines[1]), lines[2]
+    if '/' in rate:
+        num, den = rate.split('/')
+        fps = float(num) / float(den) if float(den) != 0 else 0.0
+    else:
+        fps = float(rate)
+    return width, height, fps
+
+GUI_METADATA = {
+    'args': {
+        'input2': {
+            'type': 'file',
+            'subtype': 'video',
+            'label': 'Second Video',
+            'help': 'Video that transitions in — connect a node or pick a file.',
+        },
+    }
+}
+
 def register_arguments(parser):
     parser.description = "Combines two input videos with a transitional wipe using FFmpeg's xfade filter. Supports various preset transitions and customizable duration."
-    parser.add_argument(
-        "--input1",
-        required=True,
-        type=str,
-        help="Path to the first input video."
-    )
+    # The first video comes from the standard global -i/--input, matching
+    # every other multi-input program; only the second is an extra arg.
     parser.add_argument(
         "--input2",
         required=True,
@@ -50,15 +82,9 @@ def register_arguments(parser):
         help="Path to the second input video."
     )
     parser.add_argument(
-        "--output-format",
-        required=True,
-        type=str,
-        help="Format to convert output into (e.g., mp4, mov, etc). Output argument can just be a filename with no extension."
-    )
-    parser.add_argument(
         "--preset",
-        required=True,
         type=str,
+        default="fade",
         choices=VIDEO_TRANSITIONS,
         help="Preset transition type (e.g., wipeleft, fade, etc)."
     )
@@ -71,39 +97,48 @@ def register_arguments(parser):
     parser.add_argument(
         "--offset",
         type=float,
-        default=None,
-        help="Offset in seconds where the transition starts in the first video (default: end of first video minus duration)."
+        default=3.0,
+        help="Offset in seconds where the transition starts in the first video (default: 3)."
     )
 
 def run(args):
-    output_path = Path(args.output)
-    clean_output = output_path.with_suffix(f".{args.output_format}")
-    
+    # Output goes straight to the global -o/--output, like every other
+    # program — no separate format flag needed.
+    clean_output = Path(args.output)
+
     if clean_output.exists() and not args.force:
         print(f"❌ {clean_output} already exists. Use --force to overwrite.")
         sys.exit(1)
 
     # Get durations
-    dur1 = get_video_duration(args.input1)
+    dur1 = get_video_duration(args.input)
     dur2 = get_video_duration(args.input2)
-    
-    # Set offset if not provided
-    if args.offset is None:
-        args.offset = max(0, dur1 - args.duration)
-    
+
     # Warn if transition might exceed lengths
     if args.offset + args.duration > dur1 or args.duration > dur2:
         print("⚠️ Warning: Transition duration exceeds available clip lengths. Output may be truncated or incomplete.")
-    
-    # FFmpeg command with xfade for video and acrossfade for audio
+
+    # xfade requires both video streams to share dimensions and frame rate —
+    # real-world clips rarely match by default, so normalize the second clip
+    # (and the first clip's frame rate) to the first clip's geometry before
+    # blending. Without this, ffmpeg fails deep inside the encoder with an
+    # opaque "Invalid argument" error rather than a clear message.
+    w1, h1, fps1 = get_video_dims_fps(args.input)
+
+    # acrossfade only takes `duration` — unlike xfade, it has no `offset`
+    # concept (it assumes a plain sequential concat with an overlap at the
+    # join, not two simultaneous streams sharing a timeline).
     filter_complex = (
-        f"[0:v][1:v]xfade=transition={args.preset}:duration={args.duration}:offset={args.offset}[v];"
-        f"[0:a][1:a]acrossfade=duration={args.duration}:offset={args.offset}[a]"
+        f"[1:v]scale={w1}:{h1}:force_original_aspect_ratio=decrease,"
+        f"pad={w1}:{h1}:(ow-iw)/2:(oh-ih)/2,setsar=1,fps={fps1}[v1n];"
+        f"[0:v]fps={fps1},setsar=1[v0n];"
+        f"[v0n][v1n]xfade=transition={args.preset}:duration={args.duration}:offset={args.offset}[v];"
+        f"[0:a][1:a]acrossfade=duration={args.duration}[a]"
     )
-    
+
     command = [
         "ffmpeg",
-        "-i", str(args.input1),
+        "-i", str(args.input),
         "-i", str(args.input2),
         "-filter_complex", filter_complex,
         "-map", "[v]",
@@ -115,4 +150,4 @@ def run(args):
     ]
 
     # Add -y flag if force overwrite is enabled
-    run_ffmpeg_with_progress((command[:1] + ["-y"] + command[1:]) if args.force else command, args.input1, clean_output)
+    run_ffmpeg_with_progress((command[:1] + ["-y"] + command[1:]) if args.force else command, args.input, clean_output)

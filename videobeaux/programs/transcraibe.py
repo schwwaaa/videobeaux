@@ -126,7 +126,18 @@ import subprocess
 import imageio_ffmpeg
 from vosk import Model, KaldiRecognizer, SetLogLevel
 from pathlib import Path
+import shutil
 import sys
+
+GUI_METADATA = {
+    'args': {
+        'stt_model': {
+            'type': 'file',
+            'subtype': 'model',
+            'label': 'Vosk Model',
+        },
+    }
+}
 
 # --------------------------
 # CLI Args
@@ -295,8 +306,18 @@ def json_to_txt(json_path: Path, txt_path: Path) -> None:
 # Entry
 # --------------------------
 def run(args):
+    # The transcript is always written next to the input (<input>.json, or
+    # into --json_out) so other modes (captburn, grep_supercut, …) can find
+    # it. If -o points at a .json file (the GUI always passes one for this
+    # json-output mode), a copy is also written there so the pipeline's
+    # output path actually exists.
+    mirror_to = None
     if args.output:
-        print("📢 NOTE: --output is accepted for compatibility, but ignored by this mode.\n")
+        if str(args.output).lower().endswith(".json"):
+            mirror_to = Path(args.output)
+        else:
+            print("📢 NOTE: --output is accepted for compatibility, but ignored by this mode "
+                  "(the transcript is saved next to the input).\n")
 
     # Validate mutually exclusive input options
     single_input = args.input is not None
@@ -330,6 +351,10 @@ def run(args):
             emit_txt=args.emit_txt,
             overwrite=args.overwrite,
         )
+        if mirror_to is not None and json_path.exists():
+            mirror_to.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(json_path, mirror_to)
+            print(f"📄 Copied transcript → {mirror_to}")
 
     else:
         # Batch mode

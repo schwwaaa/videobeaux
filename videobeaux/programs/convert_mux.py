@@ -11,6 +11,78 @@ from pathlib import Path
 
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress  # progress + error plumbing
 
+# GUI dropdown/label overrides. Values chosen so the default codec pairing
+# (libx264/aac) is always safe; codec-dependent fields (crf, preset,
+# profile-v, level, gop, bitrate/maxrate/bufsize, vf, tagv) are deliberately
+# left without a default — a wrong default for a mismatched codec (e.g.
+# -preset on libvpx-vp9) makes ffmpeg hard-error, and there's no "unset"
+# escape hatch once a GUI field has a default.
+GUI_METADATA = {
+    'args': {
+        'profile': {
+            'type': 'select', 'label': 'Quick Preset',
+            'choices': [
+                'mp4_h264', 'mp4_hevc', 'mp4_av1',
+                'webm_vp9', 'webm_av1',
+                'prores_422', 'prores_4444', 'dnxhr_hq',
+                'lossless_ffv1',
+                'avi_mjpeg_fast', 'avi_mpeg4_fast',
+            ],
+            'help': "Overrides the codec/quality settings below. Leave blank to use them instead. Must match the Output node's format.",
+        },
+        'vcodec': {
+            'type': 'select', 'label': 'Video Codec', 'default': 'libx264',
+            'choices': ['libx264', 'libx265', 'libvpx-vp9', 'libsvtav1', 'prores_ks', 'mpeg4', 'mjpeg', 'ffv1', 'dnxhd'],
+        },
+        'acodec': {
+            'type': 'select', 'label': 'Audio Codec', 'default': 'aac',
+            'choices': ['aac', 'libmp3lame', 'libopus', 'flac', 'pcm_s16le', 'pcm_s24le'],
+        },
+        'crf':      {'label': 'Quality (CRF)', 'default': 23,
+                     'help': 'Lower = higher quality. Tuned for the default libx264 codec — x265/VP9/AV1 typically want higher values (~28-35).'},
+        'bitrate':  {'label': 'Video Bitrate', 'help': 'e.g. 5M. Overrides CRF-based quality if set.'},
+        'maxrate':  {'label': 'Video Max Rate'},
+        'bufsize':  {'label': 'VBV Buffer Size'},
+        'preset': {
+            'type': 'select', 'label': 'Encoder Preset', 'default': 'medium',
+            'choices': ['ultrafast', 'superfast', 'veryfast', 'faster', 'fast', 'medium', 'slow', 'slower', 'veryslow'],
+            'help': 'x264/x265 speed-vs-quality preset. Leave blank for other codecs.',
+        },
+        'profile-v': {
+            'type': 'select', 'label': 'Codec Profile',
+            'choices': ['baseline', 'main', 'high', 'high10', 'high422', 'high444'],
+            'help': 'x264/x265 profile restriction. Leave blank to let the encoder choose.',
+        },
+        'level': {
+            'type': 'select', 'label': 'Codec Level',
+            'choices': ['3.0', '3.1', '4.0', '4.1', '4.2', '5.0', '5.1', '5.2'],
+            'help': 'Leave blank to let the encoder choose.',
+        },
+        'pix-fmt': {
+            'type': 'select', 'label': 'Pixel Format', 'default': 'yuv420p',
+            'choices': ['yuv420p', 'yuv422p', 'yuv444p', 'yuv420p10le', 'yuv422p10le', 'yuva444p10le'],
+        },
+        'gop': {'label': 'GOP Size', 'help': 'Keyframe interval in frames.'},
+        'r': {
+            'type': 'select', 'label': 'Frame Rate',
+            'choices': ['23.976', '24', '25', '29.97', '30', '50', '59.94', '60'],
+            'help': 'Leave blank to keep the source frame rate.',
+        },
+        'vf':   {'label': 'Video Filtergraph'},
+        'tagv': {'label': 'Video Tag (fourcc)', 'help': 'e.g. hvc1 for HEVC in MP4.'},
+        'abitrate': {'label': 'Audio Bitrate', 'default': '192k'},
+        'ac': {
+            'type': 'select', 'label': 'Audio Channels', 'default': '2',
+            'choices': ['1', '2', '6', '8'],
+        },
+        'ar': {
+            'type': 'select', 'label': 'Audio Sample Rate', 'default': '48000',
+            'choices': ['22050', '44100', '48000', '96000'],
+        },
+        'copy': {'label': 'Stream Copy (no re-encode)', 'help': 'Skip re-encoding entirely when the source is already compatible. Ignores every setting above.'},
+    }
+}
+
 # ------------------------------
 # Helpers
 # ------------------------------
@@ -103,7 +175,9 @@ def _PROFILES():
             "-c:a","aac","-b:a","192k","-ac","2"
         ],
         "mp4_av1": lambda: [
-            "-c:v","libaom-av1","-crf","28","-b:v","0",
+            # libaom-av1 isn't built into most Homebrew ffmpeg installs;
+            # libsvtav1 is, and is what's actually available here.
+            "-c:v","libsvtav1","-crf","28","-b:v","0",
             "-pix_fmt","yuv420p",
             "-movflags","+faststart",
             "-c:a","aac","-b:a","192k","-ac","2"
@@ -117,7 +191,7 @@ def _PROFILES():
             "-c:a","libopus","-b:a","160k","-ac","2"
         ],
         "webm_av1": lambda: [
-            "-c:v","libaom-av1","-crf","32","-b:v","0",
+            "-c:v","libsvtav1","-crf","32","-b:v","0",
             "-pix_fmt","yuv420p",
             "-c:a","libopus","-b:a","160k","-ac","2"
         ],
@@ -179,17 +253,19 @@ def _build_ffmpeg_command(args: argparse.Namespace) -> list[str]:
     in_path = args.input
     out_path = args.output
 
-    # Even though cli.py appends .mp4 and enforces it, we preserve format logic for future flexibility.
     mux = _guess_container_from_path(out_path, args.format)
 
-    # FAIL FAST if profile clearly mismatches .mp4 (helps avoid confusing FFmpeg errors)
-    if out_path.lower().endswith(".mp4") and args.profile:
+    # FAIL FAST if the profile clearly mismatches the resolved output
+    # container (helps avoid confusing FFmpeg errors deep in the encode).
+    # cli.py now allows mp4/mov/avi/mkv/webm, not just .mp4, so this checks
+    # against whatever container the output path actually resolves to.
+    if args.profile:
         hint = _profile_container_hint(args.profile)
-        if hint and hint not in ("mp4", "audio"):  # audio-only is also incompatible with .mp4 filename
+        if hint and hint != "audio" and hint != mux:
             raise SystemExit(
-                f"❌ Profile '{args.profile}' expects container '{hint}', "
-                f"but your output is '.mp4' (cli.py is MP4-only). "
-                f"Pick one of: mp4_h264, mp4_hevc, mp4_av1 — or pass raw FFmpeg flags after ' -- '."
+                f"❌ Profile '{args.profile}' expects a '{hint}' container, "
+                f"but your output is '.{_ext_lower(out_path)}' (resolves to '{mux}'). "
+                f"Pick a matching output extension, or a different profile."
             )
 
     # Base invocation (respect global --force)
@@ -291,7 +367,7 @@ def register_arguments(parser):
     """
     Register per-program flags only. Global -i/-o/-F/--help come from cli.py.
     """
-    parser.description = "Black-box FFmpeg converter: any format in → any format out (mp4 outputs enforced by cli)."
+    parser.description = "Black-box FFmpeg converter: any format in → mp4/mov/avi/mkv/webm out (container chosen by the -o extension)."
 
     # Container/format control
     parser.add_argument("--format", help="Force container/muxer hint (mp4, mov, webm, matroska, mxf, gif, image2, avi)")

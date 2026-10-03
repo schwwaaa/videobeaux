@@ -1,0 +1,148 @@
+{
+  "presetFormatVersion": 1,
+  "savedAt": "2026-09-07T21:20:19.328Z",
+  "nodes": [
+    {
+      "id": "input-1",
+      "type": "inputNode",
+      "position": {
+        "x": -243.79999999999998,
+        "y": 84.29999999999998
+      },
+      "data": {
+        "filePath": "/Users/bozer/schwwaaa/silence_xtaction/forgedd/forged_katzbalger_uxwlQm0TXZ4.mp4"
+      },
+      "deletable": false
+    },
+    {
+      "id": "output-1",
+      "type": "outputNode",
+      "position": {
+        "x": 1300.825,
+        "y": 155.72
+      },
+      "data": {
+        "filePath": "/Users/bozer/schwwaaa/silence_xtaction/forgedd/mpppppp_new_test/output.mp4",
+        "format": "mp4"
+      },
+      "deletable": false
+    },
+    {
+      "id": "effect-3-1788814593763",
+      "type": "effectNode",
+      "position": {
+        "x": 658.6199999999999,
+        "y": 66.01999999999997
+      },
+      "data": {
+        "program": "auto_narrate",
+        "args": {
+          "duration": "14",
+          "voice": "am_adam",
+          "voice_speed": 1,
+          "style": "popon",
+          "original_volume": 0.2,
+          "llm_model": "gpt-oss:120b",
+          "stt_model": "/Users/bozer/schwwaaa/videobeaux-gui/models/vosk-model-en-us-0.42-gigaspeech",
+          "topic": "forging the best path and forging facts"
+        }
+      }
+    },
+    {
+      "id": "effect-4-1788814668358",
+      "type": "effectNode",
+      "position": {
+        "x": -98.69499999999994,
+        "y": 393.91999999999996
+      },
+      "data": {
+        "program": "qwikchop",
+        "args": {
+          "black-scan": 0.25,
+          "black-thresh": 0.1,
+          "black-pict": 0.1,
+          "edge-pad-pre": 0.03,
+          "edge-pad-post": 0.02,
+          "min-edit": 0.2,
+          "pieces": "40"
+        }
+      }
+    },
+    {
+      "id": "effect-5-1788814709954",
+      "type": "effectNode",
+      "position": {
+        "x": 389.30500000000006,
+        "y": 557.92
+      },
+      "data": {
+        "program": "shortify",
+        "args": {
+          "preset": "shorts_1080x1920",
+          "blur-sigma": 20
+        }
+      }
+    },
+    {
+      "id": "effect-6-1788814720679",
+      "type": "effectNode",
+      "position": {
+        "x": 1187.305,
+        "y": 667.92
+      },
+      "data": {
+        "program": "watermark",
+        "args": {
+          "placement": "top-left",
+          "margin": "40",
+          "scale": "0.5",
+          "opacity": 0.8,
+          "spin": 0,
+          "watermark": "/Users/bozer/schwwaaa/videobeaux-gui/ui_design/yt_watermark_transp.png"
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "xy-edge__input-1-effect-4-1788814668358",
+      "source": "input-1",
+      "target": "effect-4-1788814668358",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-4-1788814668358-effect-5-1788814709954",
+      "source": "effect-4-1788814668358",
+      "target": "effect-5-1788814709954",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-5-1788814709954-effect-3-1788814593763",
+      "source": "effect-5-1788814709954",
+      "target": "effect-3-1788814593763",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-3-1788814593763-effect-6-1788814720679",
+      "source": "effect-3-1788814593763",
+      "target": "effect-6-1788814720679",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-6-1788814720679-output-1",
+      "source": "effect-6-1788814720679",
+      "target": "output-1",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    }
+  ]
+}

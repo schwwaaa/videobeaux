@@ -1,0 +1,69 @@
+{
+  "presetFormatVersion": 1,
+  "savedAt": "2026-09-07T19:05:35.362Z",
+  "nodes": [
+    {
+      "id": "input-1",
+      "type": "inputNode",
+      "position": {
+        "x": -9.379999999999995,
+        "y": 104.88
+      },
+      "data": {
+        "filePath": "/Users/bozer/schwwaaa/silence_xtaction/forgedd/forged_ngulu_9W9kRJAuLOo.mp4",
+        "mode": "file"
+      },
+      "deletable": false
+    },
+    {
+      "id": "output-1",
+      "type": "outputNode",
+      "position": {
+        "x": 680,
+        "y": 200
+      },
+      "data": {
+        "filePath": "/Users/bozer/schwwaaa/silence_xtaction/forgedd/cutgrep_r2.mp4",
+        "format": "mp4"
+      },
+      "deletable": false
+    },
+    {
+      "id": "effect-5-1788806836101",
+      "type": "effectNode",
+      "position": {
+        "x": 271.88,
+        "y": 98.02000000000002
+      },
+      "data": {
+        "program": "grep_supercut",
+        "args": {
+          "search_type": "fragment",
+          "padding": "",
+          "max_clips": 0,
+          "stt_model": "/Users/bozer/schwwaaa/videobeaux-gui/models/vosk-model-en-us-0.42-gigaspeech",
+          "query": "^cut$",
+          "randomize": true
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "xy-edge__input-1-effect-5-1788806836101",
+      "source": "input-1",
+      "target": "effect-5-1788806836101",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-5-1788806836101-output-1",
+      "source": "effect-5-1788806836101",
+      "target": "output-1",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    }
+  ]
+}

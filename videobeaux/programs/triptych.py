@@ -21,6 +21,14 @@
 
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
 
+GUI_METADATA = {
+    'args': {
+        'input2':         {'type': 'file', 'subtype': 'video', 'label': 'Second Video'},
+        'input3':         {'type': 'file', 'subtype': 'video', 'label': 'Third Video'},
+        'audio-external': {'type': 'file', 'label': 'External Audio'},
+    }
+}
+
 
 def register_arguments(parser):
     parser.description = (

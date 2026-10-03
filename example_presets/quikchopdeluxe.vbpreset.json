@@ -1,0 +1,129 @@
+{
+  "presetFormatVersion": 1,
+  "savedAt": "2026-09-10T02:31:27.648Z",
+  "nodes": [
+    {
+      "id": "input-1",
+      "type": "inputNode",
+      "position": {
+        "x": -268.8548000987333,
+        "y": -441.95654995337674
+      },
+      "data": {
+        "filePath": "/Users/bozer/schwwaaa/silence_xtaction/forgedd/forged_katzbalger_uxwlQm0TXZ4.mp4",
+        "mode": "file"
+      },
+      "deletable": false
+    },
+    {
+      "id": "output-1",
+      "type": "outputNode",
+      "position": {
+        "x": 1120.254298008231,
+        "y": -368.07608182445625
+      },
+      "data": {
+        "filePath": "/Users/bozer/schwwaaa/silence_xtaction/forgedd/qwick_deluze_r1.mp4",
+        "format": "mp4"
+      },
+      "deletable": false
+    },
+    {
+      "id": "effect-3-1789007245721",
+      "type": "effectNode",
+      "position": {
+        "x": 31.86302458449859,
+        "y": -406.7454442926883
+      },
+      "data": {
+        "program": "qwikchop_deluxe",
+        "args": {
+          "count": "40",
+          "target_duration": "50",
+          "min_time": 3,
+          "max_time": "45",
+          "min_gap": 2,
+          "padding": 0,
+          "hook_words": "secret,never,actually,literally,wow,insane,worst,best,amazing,shocking,unbelievable,crazy,honestly,wild",
+          "weight_centrality": 0.5,
+          "weight_energy": 0.3,
+          "weight_hooks": 0.2,
+          "llm_candidates": 15,
+          "vcodec": "libx264",
+          "crf": 18,
+          "preset": "veryfast",
+          "stt_model": "/Users/bozer/schwwaaa/videobeaux-gui/models/vosk-model-en-us-0.22",
+          "llm_model": "gpt-oss:120b"
+        }
+      }
+    },
+    {
+      "id": "effect-4-1789007335867",
+      "type": "effectNode",
+      "position": {
+        "x": 566.3374501092493,
+        "y": -66.11632456497198
+      },
+      "data": {
+        "program": "shortify",
+        "args": {
+          "preset": "shorts_1080x1920",
+          "blur-sigma": 20
+        }
+      }
+    },
+    {
+      "id": "effect-5-1789007434601",
+      "type": "effectNode",
+      "position": {
+        "x": 846.0818856157429,
+        "y": -531.6328976019298
+      },
+      "data": {
+        "program": "watermark",
+        "args": {
+          "placement": "bottom-right",
+          "margin": 24,
+          "scale": 0.25,
+          "opacity": 0.8,
+          "spin": 0,
+          "watermark": "/Users/bozer/schwwaaa/videobeaux-gui/ui_design/yt_watermark_transp.png"
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "xy-edge__input-1-effect-3-1789007245721",
+      "source": "input-1",
+      "target": "effect-3-1789007245721",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-3-1789007245721-effect-4-1789007335867",
+      "source": "effect-3-1789007245721",
+      "target": "effect-4-1789007335867",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-4-1789007335867-effect-5-1789007434601",
+      "source": "effect-4-1789007335867",
+      "target": "effect-5-1789007434601",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-5-1789007434601-output-1",
+      "source": "effect-5-1789007434601",
+      "target": "output-1",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    }
+  ]
+}

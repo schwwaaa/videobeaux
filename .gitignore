@@ -172,5 +172,16 @@ cython_debug/
 #.idea/
 
 vosk-models/
+models/
 
 .yaml
+
+# GUI (Electron/Node)
+node_modules/
+gui/out/
+gui/resources/
+
+# Voice models are downloaded by the in-app Setup screen
+*.onnx
+!videobeaux/assets/face_detection_yunet_2023mar.onnx
+voices-*.bin
