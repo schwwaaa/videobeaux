@@ -65,6 +65,15 @@ function pressable(e, down) {
   e.currentTarget.style.transform = down ? 'translate(3px, 3px)' : 'none'
 }
 
+// A failed Python check ends with the interesting line of the traceback
+// (e.g. "ModuleNotFoundError: No module named 'vosk'"); say what it means.
+function describePython(detail) {
+  if (!detail) return 'not found'
+  const m = /No module named '([^']+)'/.exec(detail)
+  if (m) return `needs its packages installed (missing '${m[1]}')`
+  return detail
+}
+
 function Badge({ ok }) {
   return <div style={styles.badge(ok)}>{ok === null ? '' : ok ? '✓' : '✕'}</div>
 }
@@ -83,6 +92,10 @@ export default function SetupScreen({ onClose }) {
   const [kokoroDownloading, setKokoroDownloading] = useState(false)
   const [kokoroProgress, setKokoroProgress] = useState(null)
   const [kokoroError, setKokoroError] = useState(null)
+  // One-click Python setup (source/dev checkouts only)
+  const [installing, setInstalling] = useState(false)
+  const [installInfo, setInstallInfo] = useState(null)   // { phase, message, line, received, total }
+  const [installError, setInstallError] = useState(null)
 
   const runCheck = useCallback(async () => {
     setChecking(true)
@@ -105,7 +118,10 @@ export default function SetupScreen({ onClose }) {
       if (modelId === 'kokoro-tts') setKokoroProgress({ received, total, phase })
       else setProgress({ received, total, phase })
     })
-    return () => removeProgress()
+    const removeInstall = window.electronAPI.onInstallProgress(p => {
+      setInstallInfo(prev => ({ ...(prev || {}), ...p, line: p.line ?? (p.message ? null : prev?.line) }))
+    })
+    return () => { removeProgress(); removeInstall() }
   }, [runCheck, refreshInstalled])
 
   const handleDownload = async (modelId) => {
@@ -119,6 +135,22 @@ export default function SetupScreen({ onClose }) {
       refreshInstalled()
     } else {
       setDownloadError(`${modelId}: ${result.error}`)
+    }
+  }
+
+  const handleInstallPython = async (fresh) => {
+    setInstalling(true)
+    setInstallError(null)
+    setInstallInfo({ phase: 'start', message: 'Starting…' })
+    const result = await window.electronAPI.installPython({ fresh })
+    setInstalling(false)
+    if (result.ok) {
+      // Program discovery ran against the missing Python at launch — reload so
+      // it runs again (and the optional-feature rows re-check against the new Python).
+      window.location.reload()
+    } else {
+      setInstallInfo(null)
+      setInstallError(result.error)
     }
   }
 
@@ -143,7 +175,7 @@ export default function SetupScreen({ onClose }) {
 
         <div style={styles.sectionTitle}>Environment</div>
         <div style={styles.checkRow}>
-          <Badge ok={env.python.ok} /> Python {checking && env.python.ok === null ? '(checking…)' : env.python.ok ? 'ready' : env.python.detail || 'not found'}
+          <Badge ok={env.python.ok} /> Python {checking && env.python.ok === null ? '(checking…)' : env.python.ok ? 'ready' : describePython(env.python.detail)}
         </div>
         <div style={styles.checkRow}>
           <Badge ok={env.ffmpeg.ok} /> ffmpeg {env.ffmpeg.ok ? 'ready' : (checking ? '(checking…)' : 'not found')}
@@ -151,6 +183,62 @@ export default function SetupScreen({ onClose }) {
         <div style={styles.checkRow}>
           <Badge ok={env.ffprobe.ok} /> ffprobe {env.ffprobe.ok ? 'ready' : (checking ? '(checking…)' : 'not found')}
         </div>
+        {env.python.ok === false && env.canInstallPython && (
+          <div style={{ ...styles.modelCard, flexDirection: 'column', alignItems: 'stretch', gap: 6, marginTop: 8 }}>
+            <div style={{ fontSize: 12, color: 'var(--ink)' }}>
+              Python isn't set up on this computer yet. Videobeaux can do it for you — it downloads
+              Python {installInfo ? '' : '3.12 '}and installs the packages it needs (about 1–2 GB, several minutes, one time).
+            </div>
+            {installing && installInfo && (
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--muted-dim)' }}>
+                <div style={{ color: 'var(--ink)' }}>{installInfo.message || 'Working…'}</div>
+                {installInfo.phase === 'python-download' && installInfo.total > 0 && (
+                  <div style={styles.progressTrack}>
+                    <div style={{ height: '100%', background: 'var(--cyan)', transition: 'width 0.2s',
+                      width: `${Math.min(100, (installInfo.received / installInfo.total) * 100)}%` }} />
+                  </div>
+                )}
+                {installInfo.phase === 'pip' && (
+                  <>
+                    <div style={styles.progressTrack}>
+                      <div style={{ height: '100%', width: '35%', background: 'var(--cyan)', animation: 'vb-indeterminate 1.4s ease-in-out infinite' }} />
+                    </div>
+                    {installInfo.line && (
+                      <div style={{ marginTop: 4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {installInfo.line}
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            )}
+            {installError && (
+              <div style={{ fontSize: 11, color: 'var(--coral)', fontFamily: 'var(--font-mono)', whiteSpace: 'pre-wrap' }}>
+                ❌ {installError}
+              </div>
+            )}
+            <div style={{ display: 'flex', gap: 8 }}>
+              <button
+                style={styles.buttonSmall(installing ? 'var(--gray)' : 'var(--cyan)')}
+                disabled={installing}
+                onClick={() => handleInstallPython(false)}
+                onMouseDown={e => !installing && pressable(e, true)} onMouseUp={e => pressable(e, false)} onMouseLeave={e => pressable(e, false)}
+              >
+                {installing ? 'Setting up…' : (installError ? 'Try again' : 'Set up Python automatically')}
+              </button>
+              {installError && !installing && (
+                <button
+                  style={styles.buttonSmall()}
+                  onClick={() => handleInstallPython(true)}
+                  onMouseDown={e => pressable(e, true)} onMouseUp={e => pressable(e, false)} onMouseLeave={e => pressable(e, false)}
+                >
+                  Start over with a fresh Python
+                </button>
+              )}
+            </div>
+            <style>{`@keyframes vb-indeterminate { 0% { margin-left: -35%; } 100% { margin-left: 100%; } }`}</style>
+          </div>
+        )}
         <button
           style={{ ...styles.buttonSmall(), marginTop: 8 }}
           onClick={runCheck}

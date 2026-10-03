@@ -8,6 +8,8 @@ import { randomUUID } from 'crypto'
 import { execFile } from 'child_process'
 import { promisify } from 'util'
 import { downloadToFile } from './download.js'
+import { findVenvPython, installPython } from './pythonSetup.js'
+import pythonRuntime from '../../python-runtime.json'
 
 const execFileAsync = promisify(execFile)
 
@@ -401,6 +403,19 @@ app.whenReady().then(async () => {
     }
   })
 
+  // One-click Python for source/dev checkouts (see pythonSetup.js). A packaged
+  // app already ships its own interpreter, so this is refused there.
+  ipcMain.handle('setup:installPython', async (event, opts) => {
+    if (app.isPackaged) return { ok: false, error: 'This install already includes Python.' }
+    const { vbRoot } = getPaths()
+    return installPython({
+      vbRoot,
+      runtime: pythonRuntime,
+      fresh: !!opts?.fresh,
+      onProgress: p => event.sender.send('setup:installProgress', p)
+    })
+  })
+
   // ── Optional features: narration voice (kokoro-tts) + Ollama ────────────────
   // Neither is needed by most programs, so Setup treats them as opt-in extras
   // rather than required environment checks.
@@ -526,7 +541,12 @@ app.whenReady().then(async () => {
       let out = ''
       proc.stdout?.on('data', d => { out += d.toString('utf8') })
       proc.stderr?.on('data', d => { out += d.toString('utf8') })
-      proc.on('close', code => resolveCheck({ ok: code === 0, detail: out.trim().split('\n')[0] || '' }))
+      // Report the LAST line: for a Python failure the first line is just
+      // "Traceback (most recent call last):", the useful part is at the end.
+      proc.on('close', code => {
+        const lines = out.trim().split('\n').filter(Boolean)
+        resolveCheck({ ok: code === 0, detail: (code === 0 ? lines[0] : lines[lines.length - 1]) || '' })
+      })
       proc.on('error', err => resolveCheck({ ok: false, detail: err.message }))
     })
 
@@ -536,7 +556,11 @@ app.whenReady().then(async () => {
       check(ffprobeBin, ['-version'])
     ])
 
-    return { python: pythonResult, ffmpeg: ffmpegResult, ffprobe: ffprobeResult }
+    return {
+      python: pythonResult, ffmpeg: ffmpegResult, ffprobe: ffprobeResult,
+      // Source/dev checkouts can have the app set Python up; a packaged app ships its own.
+      canInstallPython: !app.isPackaged
+    }
   })
 
   ipcMain.handle('setup:downloadModel', async (event, modelId) => {
@@ -599,12 +623,12 @@ app.whenReady().then(async () => {
   }
 
   function findPython() {
-    // 1. Prefer the bundled interpreter (packaged) / dev venv
+    // 1. Prefer the bundled interpreter (packaged) / the app-managed or user venv (dev).
+    //    findVenvPython also knows the Windows layout, where python-build-standalone
+    //    puts python.exe at the folder root rather than under Scripts/.
     const { pythonHome } = getPaths()
-    const venvPython = process.platform === 'win32'
-      ? join(pythonHome, 'Scripts', 'python.exe')
-      : join(pythonHome, 'bin', 'python3')
-    if (existsSync(venvPython)) return venvPython
+    const found = findVenvPython(pythonHome)
+    if (found) return found
 
     // 2. Fall back to system Python
     return process.platform === 'win32' ? 'python' : 'python3'

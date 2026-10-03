@@ -7,6 +7,7 @@ env/
 ideas/
 *.mp4
 *.mov
+videobeaux/programs/kokoro-v1.0.onnx
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -180,8 +181,4 @@ models/
 node_modules/
 gui/out/
 gui/resources/
-
-# Voice models are downloaded by the in-app Setup screen
-*.onnx
-!videobeaux/assets/face_detection_yunet_2023mar.onnx
 voices-*.bin

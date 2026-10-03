@@ -136,6 +136,9 @@ cd videobeaux-gui
 python3 -m venv venv
 source venv/bin/activate   # Windows: venv\Scripts\activate
 pip install -r requirements.txt
+# (Optional shortcut: skip these three lines and just run the GUI — its Setup screen has a
+#  "Set up Python automatically" button that downloads Python 3.12 into ./venv and installs
+#  everything for you.)
 
 # Make sure ffmpeg is on your PATH (brew install ffmpeg / apt install ffmpeg / etc.)
 # On macOS, use ffmpeg-full or another libass-enabled build — captioning

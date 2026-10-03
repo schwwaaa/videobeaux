@@ -41,6 +41,12 @@ contextBridge.exposeInMainWorld('electronAPI', {
   downloadModel: (modelId) => ipcRenderer.invoke('setup:downloadModel', modelId),
   openModelsFolder: () => ipcRenderer.invoke('setup:openModelsFolder'),
   checkOptional: () => ipcRenderer.invoke('setup:checkOptional'),
+  installPython: (opts) => ipcRenderer.invoke('setup:installPython', opts),
+  onInstallProgress: (cb) => {
+    const handler = (_, data) => cb(data)
+    ipcRenderer.on('setup:installProgress', handler)
+    return () => ipcRenderer.removeListener('setup:installProgress', handler)
+  },
   downloadKokoro: () => ipcRenderer.invoke('setup:downloadKokoro'),
   openExternal: (key) => ipcRenderer.invoke('shell:openExternal', key),
   onDownloadProgress: (cb) => {

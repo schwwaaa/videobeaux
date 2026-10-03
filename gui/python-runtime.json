@@ -1,0 +1,11 @@
+{
+  "_comment": "Pinned python-build-standalone interpreter. Shared by scripts/build-python-env.mjs (installer) and src/main/pythonSetup.js (in-app dev setup) so they can't drift. Bump release/version together (https://github.com/astral-sh/python-build-standalone/releases).",
+  "release": "20260901",
+  "version": "3.12.14",
+  "urlBase": "https://github.com/astral-sh/python-build-standalone/releases/download",
+  "assets": {
+    "darwin_arm64": "cpython-3.12.14+20260901-aarch64-apple-darwin-install_only.tar.gz",
+    "darwin_x64": "cpython-3.12.14+20260901-x86_64-apple-darwin-install_only.tar.gz",
+    "win32_x64": "cpython-3.12.14+20260901-x86_64-pc-windows-msvc-install_only.tar.gz"
+  }
+}

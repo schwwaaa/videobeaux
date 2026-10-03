@@ -28,17 +28,14 @@ const platformArg = process.argv.find(a => a.startsWith('--platform='))
 const targetPlatform = platformArg ? platformArg.split('=')[1] : process.platform
 
 // ── python-build-standalone: pinned release + per-platform asset names ──────
-// Bump PBS_RELEASE/PYTHON_VERSION periodically (check
-// https://github.com/astral-sh/python-build-standalone/releases) — pinned
-// rather than "latest" so a build today and a build in six months produce
-// the same interpreter.
-const PBS_RELEASE = '20260901'
-const PYTHON_VERSION = '3.12.14'
-const PBS_ASSETS = {
-  darwin_arm64: `cpython-${PYTHON_VERSION}+${PBS_RELEASE}-aarch64-apple-darwin-install_only.tar.gz`,
-  darwin_x64: `cpython-${PYTHON_VERSION}+${PBS_RELEASE}-x86_64-apple-darwin-install_only.tar.gz`,
-  win32_x64: `cpython-${PYTHON_VERSION}+${PBS_RELEASE}-x86_64-pc-windows-msvc-install_only.tar.gz`
-}
+// Lives in gui/python-runtime.json (shared with the in-app dev setup in
+// src/main/pythonSetup.js) so the installer and a source checkout always use
+// the same interpreter. Pinned rather than "latest" so a build today and a
+// build in six months produce the same Python.
+const RUNTIME = JSON.parse(readFileSync(join(GUI_ROOT, 'python-runtime.json'), 'utf8'))
+const PBS_RELEASE = RUNTIME.release
+const PYTHON_VERSION = RUNTIME.version
+const PBS_ASSETS = RUNTIME.assets
 
 function pbsAssetKey() {
   const arch = process.arch === 'arm64' ? 'arm64' : 'x64'
@@ -86,7 +83,7 @@ async function stagePython() {
   const asset = PBS_ASSETS[key]
   if (!asset) throw new Error(`No python-build-standalone asset configured for ${key}`)
 
-  const url = `https://github.com/astral-sh/python-build-standalone/releases/download/${PBS_RELEASE}/${asset}`
+  const url = `${RUNTIME.urlBase}/${PBS_RELEASE}/${asset}`
   const tarPath = join(RESOURCES, '_python.tar.gz')
   await download(url, tarPath)
 
