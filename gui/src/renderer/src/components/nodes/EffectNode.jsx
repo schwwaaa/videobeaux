@@ -207,15 +207,21 @@ function numberStep(arg, lo, hi) {
 }
 
 /**
- * A typeable number box (arrow keys step it, typed values are clamped to min/max on blur) with a slider
- * next to it — always. When the program declares no range the slider uses a soft range from the default,
- * and anything typed outside it is still accepted. (`step="any"` used to make the arrows do nothing.)
+ * A typeable number box with a slider next to it — always (a soft range from the default when the program declares
+ * none; anything typed outside it is still accepted).
+ *
+ * Typing uses a local draft so the box can be emptied and retyped (it used to snap back to the default, so "0"
+ * could never be deleted). Valid numbers are stored as numbers as you type; on blur an empty/invalid draft reverts
+ * and a valid one is clamped to min/max with a brief red hint. A ↺ button appears when the value differs from the
+ * default, and a tinted strip under the slider marks the recommended ("good") range and the default.
  */
 function NumberField({ arg, value, onChange, inputStyle }) {
   const [lo, hi] = sliderRange(arg)
   const step = numberStep(arg, lo, hi)
   const showSlider = !arg.free
-  const shown = value !== undefined && value !== '' ? value : (arg.default !== undefined ? arg.default : '')
+  const [draft, setDraft] = useState(null)         // text while the box is being edited, else null
+  const [hint, setHint] = useState('')
+  const current = value !== undefined && value !== '' ? value : (arg.default !== undefined ? arg.default : '')
   const clamp = (v) => {
     let n = Number(v)
     if (!Number.isFinite(n)) return v
@@ -224,33 +230,78 @@ function NumberField({ arg, value, onChange, inputStyle }) {
     return arg.integer ? Math.round(n) : n
   }
   const decimals = (String(step).split('.')[1] || '').length
-  const numeric = Number.isFinite(Number(shown)) && shown !== '' ? Number(shown) : lo
+  const numeric = Number.isFinite(Number(current)) && current !== '' ? Number(current) : lo
+  const pct = (v) => `${Math.max(0, Math.min(100, ((v - lo) / (hi - lo)) * 100))}%`
+  const hasGood = arg.good_min != null && arg.good_max != null
+  const hasDefault = Number.isFinite(Number(arg.default)) && arg.default !== ''
+  const differs = hasDefault && Number(current) !== Number(arg.default)
+
+  const commit = (text) => {
+    const t = String(text).trim()
+    setDraft(null)
+    if (t === '' || !Number.isFinite(Number(t))) return                // nothing usable typed: keep the last good value
+    const n = Number(t)
+    const c = clamp(n)
+    if (c !== n) {
+      setHint(n > c ? `max ${c}` : `min ${c}`)
+      setTimeout(() => setHint(''), 1600)
+    }
+    onChange(c)
+  }
+
   return (
     <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
       {showSlider && (
-        <input
-          className="nodrag"
-          type="range"
-          min={lo}
-          max={hi}
-          step={step}
-          value={Math.min(hi, Math.max(lo, numeric))}
-          onChange={e => onChange(arg.integer ? Number(e.target.value) : Number(Number(e.target.value).toFixed(decimals + 1)))}
-          style={{ flex: 1, minWidth: 0, accentColor: 'var(--slider)', cursor: 'pointer' }}
-        />
+        <div style={{ flex: 1, minWidth: 0, position: 'relative', paddingBottom: hasGood || hasDefault ? 6 : 0 }}>
+          <input
+            className="nodrag"
+            type="range"
+            min={lo}
+            max={hi}
+            step={step}
+            value={Math.min(hi, Math.max(lo, numeric))}
+            onChange={e => { setDraft(null); onChange(arg.integer ? Number(e.target.value) : Number(Number(e.target.value).toFixed(decimals + 1))) }}
+            style={{ width: '100%', display: 'block', accentColor: 'var(--slider)', cursor: 'pointer' }}
+          />
+          {hasGood && (
+            <div title={`Good starting range: ${arg.good_min}–${arg.good_max}`} style={{
+              position: 'absolute', bottom: 0, height: 4, borderRadius: 2, pointerEvents: 'none',
+              left: pct(arg.good_min), width: `calc(${pct(arg.good_max)} - ${pct(arg.good_min)})`,
+              background: 'var(--slider)', opacity: 0.45
+            }} />
+          )}
+          {hasDefault && (
+            <div title={`Default: ${arg.default}`} style={{
+              position: 'absolute', bottom: 0, height: 6, width: 2, left: pct(Number(arg.default)),
+              background: 'var(--ink)', opacity: 0.7, pointerEvents: 'none'
+            }} />
+          )}
+        </div>
       )}
       <input
         className="nodrag"
         type="number"
-        style={{ ...inputStyle, width: showSlider ? 68 : '100%', flexShrink: 0 }}
-        value={shown}
+        style={{ ...inputStyle, width: showSlider ? 68 : '100%', flexShrink: 0, ...(hint ? { borderColor: 'var(--coral)' } : {}) }}
+        value={draft !== null ? draft : current}
         min={arg.min}
         max={arg.max}
         step={step}
         placeholder={arg.default !== undefined ? String(arg.default) : ''}
-        onChange={e => onChange(e.target.value)}
-        onBlur={e => { if (e.target.value !== '') onChange(clamp(e.target.value)) }}
+        title={hint || (hasGood ? `Good starting range: ${arg.good_min}–${arg.good_max}` : undefined)}
+        onFocus={e => e.currentTarget.select()}
+        onChange={e => {
+          const t = e.target.value
+          setDraft(t)
+          if (t !== '' && Number.isFinite(Number(t))) onChange(clamp(Number(t)))
+        }}
+        onBlur={e => commit(e.target.value)}
+        onKeyDown={e => { if (e.key === 'Enter') e.currentTarget.blur() }}
       />
+      {differs && (
+        <button className="nodrag" title={`Reset to default (${arg.default})`} onClick={() => { setDraft(null); onChange(arg.default) }}
+                style={{ padding: '0 5px', height: 22, fontSize: 12, lineHeight: 1, flexShrink: 0 }}>↺</button>
+      )}
+      {hint && <span style={{ fontSize: 10, color: 'var(--coral)', fontFamily: 'var(--font-mono)', flexShrink: 0 }}>{hint}</span>}
     </div>
   )
 }
@@ -743,6 +794,21 @@ export default function EffectNode({ id, data, selected }) {
           ? { padding: '8px 10px', display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: 14, rowGap: 7 }
           : { padding: '8px 10px', display: 'flex', flexDirection: 'column', gap: 7 }
         }>
+          {prog.presets && Object.keys(prog.presets).length > 0 && (
+            <div style={{ gridColumn: '1 / -1', display: 'flex', flexWrap: 'wrap', gap: 5, alignItems: 'center' }}>
+              <span style={{ fontSize: 10, color: 'var(--muted-dim)', fontFamily: 'var(--font-mono)' }}>Presets</span>
+              {Object.entries(prog.presets).map(([name, vals]) => {
+                const active = Object.entries(vals).every(([k, v]) => Number((data.args || {})[k] ?? NaN) === Number(v) || (data.args || {})[k] === v)
+                return (
+                  <button key={name} className="nodrag" onClick={() => updateNodeData(id, { args: { ...(data.args || {}), ...vals } })}
+                          style={{ padding: '1px 8px', fontSize: 10, fontFamily: 'var(--font-mono)', borderRadius: 999,
+                                   background: active ? color : 'var(--paper)', color: active ? 'var(--on-color)' : 'var(--ink)' }}>
+                    {name}
+                  </button>
+                )
+              })}
+            </div>
+          )}
           {plainArgs.map(arg => (
             <div key={arg.name}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 3 }}>

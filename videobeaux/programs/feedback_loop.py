@@ -5,6 +5,7 @@ and hue-shifted a little each frame, so the picture spirals into itself. OpenCV,
 import numpy as np
 
 from videobeaux.utils.cv import require_cv2
+from videobeaux.utils.feedback_core import transform_feedback
 from videobeaux.utils.frame_pipe import process_video
 
 MIXES = ["screen", "lighten", "add", "mix", "over (keyed by brightness)"]
@@ -22,6 +23,11 @@ GUI_METADATA = {
         'threshold': {'label': 'Key threshold', 'min': 0, 'max': 255,
                       'help': "For 'over (keyed)': only live pixels brighter than this are drawn over the feedback."},
         'crf': {'hidden': True},
+    },
+    'presets': {
+        'Tunnel': {'zoom': 3.0, 'rotate': 0.0, 'hue_shift': 0.0, 'decay': 0.8, 'mix_mode': 'screen'},
+        'Spiral': {'zoom': 2.0, 'rotate': 3.0, 'hue_shift': 6.0, 'decay': 0.7, 'mix_mode': 'screen'},
+        'Melt': {'zoom': -1.5, 'rotate': 1.0, 'shift_y': 3.0, 'decay': 0.9, 'mix_mode': 'lighten'},
     }
 }
 
@@ -52,14 +58,7 @@ def run(args):
         if st["fb"] is None:
             st["fb"] = frame.copy()
         fb = st["fb"]
-        m = cv2.getRotationMatrix2D((W / 2.0, H / 2.0), args.rotate, 1.0 + args.zoom / 100.0)
-        m[0, 2] += args.shift_x
-        m[1, 2] += args.shift_y
-        fb = cv2.warpAffine(fb, m, (W, H), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
-        if abs(args.hue_shift) > 0.01:
-            hsv = cv2.cvtColor(fb, cv2.COLOR_RGB2HSV)
-            hsv[..., 0] = (hsv[..., 0].astype(np.int16) + int(round(args.hue_shift / 2.0))) % 180
-            fb = cv2.cvtColor(hsv, cv2.COLOR_HSV2RGB)
+        fb = transform_feedback(cv2, fb, args.zoom, args.rotate, args.shift_x, args.shift_y, args.hue_shift)
         f = frame.astype(np.float32)
         b = fb.astype(np.float32) * decay
         if args.mix_mode == "screen":

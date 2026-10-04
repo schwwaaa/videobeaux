@@ -49,6 +49,7 @@ export function ProgramsProvider({ children }) {
             args:        (prog.args && prog.args.length > 0)
                            ? prog.args
                            : (live && !live.error && live.args?.length > 0 ? live.args : []),
+            presets:     live?.presets || prog.presets,
             // Same priority rule for outputType.
             outputType: prog.outputType || (live && !live.error ? live.outputType : null) || 'video',
           }
@@ -65,6 +66,7 @@ export function ProgramsProvider({ children }) {
             label:         id.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
             description:   info.description || '',
             args:          info.args || [],
+            presets:       info.presets,
             outputType:    info.outputType || 'video',
             categoryId:    'new',
             categoryLabel: 'New Programs',

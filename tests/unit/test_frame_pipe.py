@@ -34,5 +34,21 @@ class FramePipeColour(unittest.TestCase):
             self.assertEqual(tags, "bt709,bt709,bt709")
 
 
+    def test_output_is_never_smaller_than_the_input(self):
+        from videobeaux.utils.frame_pipe import probe_video, process_video
+
+        with tempfile.TemporaryDirectory() as d:
+            src, out = Path(d, "src.mp4"), Path(d, "out.mp4")
+            subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", "testsrc2=s=640x360:r=10:d=1", "-c:v", "libx264",
+                            "-pix_fmt", "yuv420p", str(src)], check=True)
+            seen = []
+            process_video(src, out, lambda f, i, t: (seen.append(f.shape[:2]) or f), force=True, max_width=320)
+            self.assertEqual(seen[0], (180, 320))                      # processed small ...
+            info = probe_video(out)
+            self.assertEqual((info.width, info.height), (640, 360))    # ... delivered at full size
+            process_video(src, out, lambda f, i, t: f, force=True, max_width=320, restore_size=False)
+            self.assertEqual(probe_video(out).width, 320)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -13,7 +13,7 @@ const ICON = {
   media:    '⚙'
 }
 
-export default function Sidebar({ canvasActions }) {
+export default function Sidebar({ canvasActions, collapsed = false, onToggle = () => {} }) {
   const { categories, ready } = usePrograms()
   const [open, setOpen] = useState({})
   const [search, setSearch] = useState('')
@@ -32,9 +32,21 @@ export default function Sidebar({ canvasActions }) {
     e.dataTransfer.effectAllowed = 'copy'
   }
 
+  if (collapsed) {
+    return (
+      <aside style={{ width: 38, background: 'var(--paper)', borderRight: 'var(--border)', display: 'flex', flexDirection: 'column',
+                      alignItems: 'center', paddingTop: 8, gap: 10, userSelect: 'none', flexShrink: 0 }}>
+        <button className="node-caret" onClick={onToggle} title="Show programs (⌘B)">▸</button>
+        <span style={{ writingMode: 'vertical-rl', fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.14em',
+                       textTransform: 'uppercase', color: 'var(--muted-dim)' }}>Programs</span>
+      </aside>
+    )
+  }
+
   return (
     <aside style={{
       width: 240,
+      flexShrink: 0,
       background: 'var(--paper)',
       borderRight: 'var(--border)',
       display: 'flex',
@@ -42,6 +54,11 @@ export default function Sidebar({ canvasActions }) {
       overflow: 'hidden',
       userSelect: 'none'
     }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 10px 0' }}>
+        <span style={{ flex: 1, fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--muted-dim)' }}>Programs</span>
+        <button className="node-caret" onClick={onToggle} title="Hide programs (⌘B)">◂</button>
+      </div>
+
       {/* Sources — add another Input node to feed a second/third video into a
           multi-input effect (e.g. stack_2x's second clip). Pinned above the
           search box so it's always reachable regardless of the filter. */}

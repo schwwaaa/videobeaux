@@ -23,6 +23,8 @@ import Sidebar    from './components/Sidebar'
 import LogPanel   from './components/LogPanel'
 import SetupScreen from './components/SetupScreen'
 import AppearanceMenu from './components/AppearanceMenu'
+import HelpWindow from './components/HelpWindow'
+import ConfirmDialog from './components/ConfirmDialog'
 import { ProgramsProvider, usePrograms } from './ProgramsContext'
 import { SettingsProvider, useSettings } from './SettingsContext'
 import { CanvasHistoryContext, useHistory } from './useCanvasHistory'
@@ -193,6 +195,21 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
   const handleEdgesChange = useCallback((changes) => {
     onEdgesChange(changes.map(c => (typeof c.id === 'string' && c.id.startsWith('proxy:') ? { ...c, id: c.id.slice(6) } : c)))
   }, [onEdgesChange])
+
+  // ── Clear workspace (confirmed, undoable) ──────────────────────────────────
+  const [confirmClear, setConfirmClear] = useState(false)
+  const clearWorkspace = useCallback((alsoPaths) => {
+    record()
+    const current = new Map(getNodes().map(n => [n.id, n]))
+    setNodes(INITIAL_NODES.map(n => {
+      const cur = current.get(n.id)
+      if (!cur) return n
+      return alsoPaths ? { ...n, position: cur.position } : { ...n, position: cur.position, data: cur.data }
+    }))
+    setEdges([])
+    setRunError(null)
+    setConfirmClear(false)
+  }, [record, getNodes, setNodes, setEdges])
 
   const clearSelection = useCallback(() => {
     setNodes(ns => ns.some(n => n.selected) ? ns.map(n => (n.selected ? { ...n, selected: false } : n)) : ns)
@@ -658,6 +675,23 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
             >
               📂 Load Preset
             </button>
+            <button
+              onClick={() => setConfirmClear(true)}
+              disabled={isRunning}
+              title="Clear the workspace (asks first; ⌘Z undoes)"
+              style={{
+                background: 'var(--paper)', color: 'var(--ink)',
+                padding: '9px 14px', borderRadius: 'var(--radius-sm)',
+                fontFamily: 'var(--font-display)', fontSize: 12,
+                border: 'var(--border)', boxShadow: 'var(--shadow-sm)',
+                opacity: isRunning ? 0.5 : 1, cursor: isRunning ? 'not-allowed' : 'pointer'
+              }}
+              onMouseDown={e => { if (!isRunning) { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'translate(3px, 3px)' } }}
+              onMouseUp={e => { e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; e.currentTarget.style.transform = 'none' }}
+              onMouseLeave={e => { e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; e.currentTarget.style.transform = 'none' }}
+            >
+              🗑 Clear
+            </button>
           </div>
         </Panel>
 
@@ -733,20 +767,23 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
           </Panel>
         )}
 
-        <Panel position="bottom-center">
-          <div style={{
-            fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--muted)',
-            pointerEvents: 'none', textAlign: 'center', lineHeight: 1.6
-          }}>
-            {connecting
-              ? 'Now click another dot to connect · Esc or click empty space to cancel'
-              : <>
-                  Drag or double-click programs from the sidebar · click one dot, then another, to connect<br />
-                  ⌘/Ctrl-click or Shift-drag to select several · ⌘G groups them · ⌘C / ⌘V copy & paste · Delete removes · ⌘A selects all
-                </>}
-          </div>
-        </Panel>
       </ReactFlow>
+      {confirmClear && (
+        <ConfirmDialog
+          title="Clear the workspace?"
+          danger
+          confirmLabel="Clear"
+          message={<>
+            This removes {nodes.filter(n => n.type === 'effectNode').length} program(s)
+            {nodes.some(n => n.type === 'groupNode') ? `, ${nodes.filter(n => n.type === 'groupNode').length} group(s)` : ''}
+            {nodes.filter(n => n.type === 'inputNode' && n.deletable !== false).length ? ', the extra inputs' : ''} and {edges.length} connection(s).
+            You can undo it with ⌘Z.
+          </>}
+          checkboxLabel="Also clear the Input / Output file paths"
+          onConfirm={clearWorkspace}
+          onCancel={() => setConfirmClear(false)}
+        />
+      )}
     </div>
     </RealEdgesContext.Provider>
     </GroupContext.Provider>
@@ -769,15 +806,35 @@ export default function App() {
 function AppInner() {
   const [logs, setLogs]                 = useState([])
   const [isRunning, setIsRunning]       = useState(false)
-  const [logCollapsed, setLogCollapsed] = useState(false)
   // progress: null when idle, object while running
   // { step, total, name, pct (0-100|null), speed, duration (s|null), current (s) }
   const [progress, setProgress]         = useState(null)
   const [showSetup, setShowSetup]       = useState(false)
+  const [showHelp, setShowHelp]         = useState(false)
+  const { sidebarCollapsed, setSidebarCollapsed, consoleCollapsed, setConsoleCollapsed } = useSettings()
+  const logCollapsed = consoleCollapsed
+  const setLogCollapsed = useCallback((v) => setConsoleCollapsed(typeof v === 'function' ? v(consoleCollapsed) : v), [consoleCollapsed, setConsoleCollapsed])
   // Set by FlowCanvas once it's mounted (it owns node state) — lets Sidebar
   // add a node via double-click without prop-drilling node state itself.
   const [canvasActions, setCanvasActions] = useState(null)
   const registerCanvasActions = useCallback(actions => setCanvasActions(actions), [])
+
+
+  // App-level shortcuts: ⌘B programs list, ⌘J console, F1 / ? help.
+  useEffect(() => {
+    const onKey = (e) => {
+      if (isModalLocked()) return
+      const t = e.target
+      const typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable)
+      if (e.key === 'F1' || (e.key === '?' && !typing && !e.metaKey && !e.ctrlKey)) { e.preventDefault(); setShowHelp(true); return }
+      if (!(e.metaKey || e.ctrlKey) || e.altKey || e.shiftKey || typing) return
+      const k = e.key.toLowerCase()
+      if (k === 'b') { e.preventDefault(); setSidebarCollapsed(!sidebarCollapsed) }
+      else if (k === 'j') { e.preventDefault(); setConsoleCollapsed(!consoleCollapsed) }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [sidebarCollapsed, consoleCollapsed, setSidebarCollapsed, setConsoleCollapsed])
 
   // Show Setup the first time the app runs (to offer the optional local-AI downloads) and any
   // time the core engine isn't ready (fresh clone, broken install) — it then repairs itself.
@@ -827,14 +884,28 @@ function AppInner() {
           >
             ⚙ Setup
           </button>
+          <button
+            onClick={() => setShowHelp(true)}
+            title="Help (F1)"
+            aria-label="Help"
+            style={{
+              background: 'var(--paper)', color: 'var(--ink)',
+              width: 30, padding: '5px 0', borderRadius: 'var(--radius-sm)',
+              fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: 13,
+              border: '2px solid var(--ink)', cursor: 'pointer'
+            }}
+          >
+            ?
+          </button>
         </div>
       </header>
 
       {showSetup && <SetupScreen onClose={() => setShowSetup(false)} />}
+      {showHelp && <HelpWindow onClose={() => setShowHelp(false)} />}
 
       {/* Main body */}
       <div style={{ flex: 1, display: 'flex', overflow: 'hidden', minHeight: 0 }}>
-        <Sidebar canvasActions={canvasActions} />
+        <Sidebar canvasActions={canvasActions} collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed(!sidebarCollapsed)} />
 
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', minWidth: 0 }}>
           <ReactFlowProvider>
@@ -854,7 +925,7 @@ function AppInner() {
             isRunning={isRunning}
             progress={progress}
             collapsed={logCollapsed}
-            onToggle={() => setLogCollapsed(c => !c)}
+            onToggle={() => setConsoleCollapsed(!consoleCollapsed)}
             onClear={() => setLogs([])}
           />
         </div>

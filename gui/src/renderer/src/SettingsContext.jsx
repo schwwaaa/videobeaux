@@ -9,7 +9,10 @@ const DEFAULTS = {
   shadowsEnabled: true,
   setupSeen: false,
   showSelectionBar: true,
-  sliderColor: '#8654aa'
+  sliderColor: '#8654aa',
+  selectionColor: 'auto',       // 'auto' = yellow in light mode, cyan in dark mode
+  sidebarCollapsed: false,
+  consoleCollapsed: false
 }
 
 /**
@@ -40,7 +43,9 @@ export function SettingsProvider({ children }) {
     root.style.setProperty('--shadow-offset-sm', `${Math.round(offset * 0.6)}px`)
     root.style.setProperty('--shadow-color', settings.shadowColor)
     root.style.setProperty('--slider', settings.sliderColor)
-  }, [settings.theme, settings.shadowOffset, settings.shadowColor, settings.shadowsEnabled, settings.sliderColor])
+    if (settings.selectionColor && settings.selectionColor !== 'auto') root.style.setProperty('--select', settings.selectionColor)
+    else root.style.removeProperty('--select')
+  }, [settings.theme, settings.shadowOffset, settings.shadowColor, settings.shadowsEnabled, settings.sliderColor, settings.selectionColor])
 
   function update(patch) {
     setSettingsState(prev => {
@@ -60,7 +65,10 @@ export function SettingsProvider({ children }) {
     setShadowsEnabled: (shadowsEnabled) => update({ shadowsEnabled }),
     setSetupSeen: (setupSeen) => update({ setupSeen }),
     setShowSelectionBar: (showSelectionBar) => update({ showSelectionBar }),
-    setSliderColor: (sliderColor) => update({ sliderColor })
+    setSliderColor: (sliderColor) => update({ sliderColor }),
+    setSelectionColor: (selectionColor) => update({ selectionColor }),
+    setSidebarCollapsed: (sidebarCollapsed) => update({ sidebarCollapsed }),
+    setConsoleCollapsed: (consoleCollapsed) => update({ consoleCollapsed })
   }
 
   return (

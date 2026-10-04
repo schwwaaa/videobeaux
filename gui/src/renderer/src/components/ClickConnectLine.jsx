@@ -74,11 +74,11 @@ export default function ClickConnectLine() {
     >
       {d && (
         <>
-          <path d={d} fill="none" stroke="var(--yellow)" strokeWidth="9" strokeLinecap="round" opacity="0.55" />
+          <path d={d} fill="none" stroke="var(--select)" strokeWidth="9" strokeLinecap="round" opacity="0.55" />
           <path d={d} fill="none" stroke="var(--ink)" strokeWidth="3" strokeLinecap="round" strokeDasharray="8 6">
             <animate attributeName="stroke-dashoffset" from="28" to="0" dur="0.7s" repeatCount="indefinite" />
           </path>
-          <circle cx={geom.x2} cy={geom.y2} r="6" fill="var(--yellow)" stroke="var(--ink)" strokeWidth="2.5" />
+          <circle cx={geom.x2} cy={geom.y2} r="6" fill="var(--select)" stroke="var(--select-outline)" strokeWidth="2.5" />
         </>
       )}
     </svg>

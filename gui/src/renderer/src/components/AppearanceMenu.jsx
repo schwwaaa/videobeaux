@@ -8,7 +8,7 @@ import { useSettings } from '../SettingsContext'
  */
 export default function AppearanceMenu() {
   const { theme, toggleTheme, shadowOffset, shadowColor, shadowsEnabled,
-    setShadowOffset, setShadowColor, setShadowsEnabled, showSelectionBar, setShowSelectionBar, sliderColor, setSliderColor } = useSettings()
+    setShadowOffset, setShadowColor, setShadowsEnabled, showSelectionBar, setShowSelectionBar, sliderColor, setSliderColor, selectionColor, setSelectionColor } = useSettings()
   const [open, setOpen] = useState(false)
   const wrapRef = useRef(null)
 
@@ -103,6 +103,26 @@ export default function AppearanceMenu() {
                           style={{ width: 22, height: 22, padding: 0, borderRadius: '50%', background: c,
                                    border: sliderColor.toLowerCase() === c ? '3px solid var(--ink)' : '2px solid var(--ink)' }} />
                 ))}
+              </div>
+            </div>
+
+            <div style={{ height: 1, background: 'var(--gray)' }} />
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: 11 }}>Selection color</span>
+              <div style={{ display: 'flex', gap: 6, alignItems: 'center', flexWrap: 'wrap' }}>
+                <button onClick={() => setSelectionColor('auto')} title="Yellow in light mode, cyan in dark mode"
+                        style={{ padding: '1px 8px', fontSize: 10, fontFamily: 'var(--font-mono)', borderRadius: 999,
+                                 background: selectionColor === 'auto' ? 'var(--select)' : 'var(--paper)', color: selectionColor === 'auto' ? '#080808' : 'var(--ink)' }}>
+                  auto
+                </button>
+                {[['#ffe500', 'yellow'], ['#6ff3ff', 'cyan'], ['#ff5ccf', 'pink'], ['#9dff4d', 'lime'], ['#ffffff', 'white'], ['#ff9f1c', 'orange']].map(([c, n]) => (
+                  <button key={c} title={n} onClick={() => setSelectionColor(c)}
+                          style={{ width: 22, height: 22, padding: 0, borderRadius: '50%', background: c,
+                                   border: selectionColor.toLowerCase() === c ? '3px solid var(--ink)' : '2px solid var(--ink)' }} />
+                ))}
+                <input type="color" value={/^#[0-9a-fA-F]{6}$/.test(selectionColor) ? selectionColor : '#6ff3ff'} onChange={e => setSelectionColor(e.target.value)}
+                       title="Custom selection color" style={{ width: 26, height: 24, padding: 0, border: '2px solid var(--ink)', borderRadius: 6, background: 'none' }} />
               </div>
             </div>
 

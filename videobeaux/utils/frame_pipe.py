@@ -125,6 +125,8 @@ def process_video(
     setup: Optional[Callable[[VideoInfo], None]] = None,
     audio: bool = True,
     max_width: Optional[int] = None,
+    restore_size: bool = True,
+    extra_inputs: Optional[list] = None,
 ) -> dict:
     """
     Run `fn(frame, index, t_seconds) -> frame` over every frame of in_path and
@@ -132,8 +134,13 @@ def process_video(
 
     frame is an (H, W, 3) uint8 RGB array (writable). fn must return an array of
     the same shape. If `max_width` is set and the video is wider, frames are
-    scaled down to it first (and the output is that smaller size) — useful for
+    processed at that width and scaled back up to the original size when encoding
+    (`restore_size=True`; the output is never smaller than the input) — useful for
     slow per-pixel effects on 4K phone footage. Returns {"frames": n, "seconds": wall_time}.
+
+    `extra_inputs` (paths) are decoded in lockstep at the main video's size and frame rate
+    (looping if shorter) and `fn` is then called as fn(frame, index, t, extras) with `extras`
+    a list of (H, W, 3) frames, one per extra input — for mixers that combine several videos.
     """
     require_sane_numpy()
     in_path, out_path = Path(in_path), Path(out_path)
@@ -141,12 +148,14 @@ def process_video(
     info = probe_video(in_path)
     # yuv420p needs even dimensions — crop at most one pixel on an odd edge.
     W, H = info.width - info.width % 2, info.height - info.height % 2
+    full_W, full_H = W, H
     scale_vf = f"crop={W}:{H}:0:0"
     if max_width and W > max_width:
         W = max_width - max_width % 2
         H = max(2, int(round(info.height * W / info.width)) // 2 * 2)
         scale_vf = f"scale={W}:{H}:flags=area"
-        print(f"ℹ️  Processing at {W}x{H} (down from {info.width}x{info.height}) to keep this effect fast.", flush=True)
+        print(f"ℹ️  Processing at {W}x{H} (down from {info.width}x{info.height}) to keep this effect fast"
+              + (f"; the result is scaled back up to {full_W}x{full_H}." if restore_size else "."), flush=True)
     if setup:
         setup(VideoInfo(W, H, info.fps, info.duration, info.frames, info.has_audio, info.transfer))
 
@@ -163,11 +172,19 @@ def process_video(
                "-framerate", f"{info.fps:.6f}", "-i", "-"]
     if audio and info.has_audio:
         enc_cmd += ["-i", str(in_path), "-map", "0:v:0", "-map", "1:a:0?", "-c:a", "aac", "-shortest"]
-    enc_cmd += ["-vf", _ENCODE_COLOR_VF, "-c:v", "libx264", "-preset", preset, "-crf", str(crf),
+    upscale = f"scale={full_W}:{full_H}:flags=bicubic," if (restore_size and (W, H) != (full_W, full_H)) else ""
+    enc_cmd += ["-vf", upscale + _ENCODE_COLOR_VF, "-c:v", "libx264", "-preset", preset, "-crf", str(crf),
                 "-pix_fmt", "yuv420p", *_ENCODE_COLOR_TAGS, "-movflags", "+faststart", str(out_path)]
 
     dec = subprocess.Popen(dec_cmd, stdout=subprocess.PIPE, stderr=dec_err)
     enc = subprocess.Popen(enc_cmd, stdin=subprocess.PIPE, stderr=enc_err)
+    extra_procs = []
+    for ep in (extra_inputs or []):
+        cmd = ["ffmpeg", "-v", "error", "-stream_loop", "-1", "-i", str(ep), "-an", "-vf",
+               f"fps={info.fps:.6f},scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H}",
+               "-f", "rawvideo", "-pix_fmt", "rgb24", "-"]
+        extra_procs.append(subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=tempfile.TemporaryFile()))
+    last_extras = [None] * len(extra_procs)
 
     frame_bytes = W * H * 3
     interactive = sys.stderr.isatty()
@@ -188,7 +205,16 @@ def process_video(
                 break
             frame = np.frombuffer(buf, dtype=np.uint8).reshape(H, W, 3).copy()
             t = n / info.fps
-            out = fn(frame, n, t)
+            if extra_procs:
+                extras = []
+                for k, ep in enumerate(extra_procs):
+                    eb = ep.stdout.read(frame_bytes)
+                    if len(eb) == frame_bytes:
+                        last_extras[k] = np.frombuffer(eb, dtype=np.uint8).reshape(H, W, 3).copy()
+                    extras.append(last_extras[k] if last_extras[k] is not None else frame)
+                out = fn(frame, n, t, extras)
+            else:
+                out = fn(frame, n, t)
             if out.dtype != np.uint8:
                 out = np.clip(out, 0, 255).astype(np.uint8)
             if out.shape != (H, W, 3):
@@ -217,6 +243,9 @@ def process_video(
             pass
         # On an exception in fn (or an early stop) the decoder is still blocked
         # writing to a pipe nobody reads — kill it or wait() would hang forever.
+        for ep in extra_procs:
+            ep.kill()
+            ep.wait()
         if max_frames is not None or not clean:
             dec.kill()
         dec.wait()

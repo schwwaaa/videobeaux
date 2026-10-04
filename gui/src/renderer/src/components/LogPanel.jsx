@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 const TYPE_STYLE = {
-  stdout:          { color: 'var(--paper)' },
+  stdout:          { color: 'var(--screen-ink)' },
   stderr:          { color: 'var(--yellow)' },
   system:          { color: 'var(--cyan)', fontStyle: 'italic' },
-  command:         { color: '#7a7a72', fontFamily: 'var(--font-mono)', fontSize: 11 },
+  command:         { color: 'var(--screen-ink-dim)', fontFamily: 'var(--font-mono)', fontSize: 11 },
   success:         { color: 'var(--lime-bright)', fontWeight: 700 },
   error:           { color: 'var(--coral)', fontWeight: 700 },
   'progress-line': { color: 'var(--cyan)', fontFamily: 'var(--font-mono)' }
@@ -19,6 +19,31 @@ const TYPE_STYLE = {
 //   step 1 of 2 at 100%   → 50 %  (snap when step message arrives)
 //   step 2 of 2 at 80 %   → 90 %
 //   done                  → bar hides
+
+function overallPercent(progress) {
+  const { step, total, pct } = progress
+  const hasPct = pct !== null && pct !== undefined
+  return total > 0 ? Math.round(((step - 1) + (hasPct ? pct / 100 : 0)) / total * 100) : 0
+}
+
+/** One-line progress for the collapsed console header — the bar is always visible while something runs. */
+function MiniProgress({ progress }) {
+  const pctNow = overallPercent(progress)
+  const { step, total, name, speed } = progress
+  return (
+    <div style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
+      <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, fontSize: 11, color: 'var(--cyan)', whiteSpace: 'nowrap',
+                     overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 260 }}>
+        {step > 0 ? `Step ${step}/${total}` : `${total} queued`}{name ? ` — ${name}` : ''}
+      </span>
+      <div style={{ flex: 1, minWidth: 60, height: 6, background: '#000', borderRadius: 3, overflow: 'hidden', border: '1px solid #000' }}>
+        <div style={{ height: '100%', width: `${pctNow}%`, background: 'linear-gradient(90deg, var(--lime-bright), var(--cyan))', transition: 'width 0.35s ease' }} />
+      </div>
+      {speed && <span style={{ fontSize: 10, color: 'var(--screen-ink-dim)', fontFamily: 'var(--font-mono)' }}>{speed}</span>}
+      <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: 10, color: 'var(--yellow)', minWidth: 28, textAlign: 'right' }}>{pctNow}%</span>
+    </div>
+  )
+}
 
 function ProgressBar({ progress }) {
   if (!progress) return null
@@ -56,7 +81,7 @@ function ProgressBar({ progress }) {
         </span>
         <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexShrink: 0 }}>
           {speed && (
-            <span style={{ fontSize: 10, color: '#8a8a80', fontFamily: 'var(--font-mono)' }}>{speed}</span>
+            <span style={{ fontSize: 10, color: 'var(--screen-ink-dim)', fontFamily: 'var(--font-mono)' }}>{speed}</span>
           )}
           <span style={{
             fontFamily: 'var(--font-mono)', fontWeight: 700,
@@ -164,10 +189,10 @@ export default function LogPanel({ logs, isRunning, progress, onClear, onToggle,
         <button
           onClick={onToggle}
           style={{
-            background: 'transparent', color: 'var(--paper)', border: 'none',
-            padding: '2px 4px', fontSize: 11, cursor: 'pointer', borderRadius: 3, lineHeight: 1
+            background: 'transparent', color: 'var(--screen-ink)', border: '2px solid var(--screen-ink-dim)',
+            width: 24, height: 22, padding: 0, fontSize: 11, cursor: 'pointer', borderRadius: 5, lineHeight: 1, flexShrink: 0
           }}
-          title={collapsed ? 'Expand log' : 'Collapse log'}
+          title={collapsed ? 'Show console (⌘J)' : 'Hide console (⌘J)'}
         >
           {collapsed ? '▲' : '▼'}
         </button>
@@ -190,22 +215,22 @@ export default function LogPanel({ logs, isRunning, progress, onClear, onToggle,
         )}
 
         {!isRunning && logs.length > 0 && (
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: '#6a6a62' }}>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--screen-ink-dim)' }}>
             {logs.length} line{logs.length !== 1 ? 's' : ''}
           </span>
         )}
 
-        <div style={{ flex: 1 }} />
+        {collapsed && isRunning && progress ? <MiniProgress progress={progress} /> : <div style={{ flex: 1 }} />}
 
         {logs.length > 0 && (
           <button
             onClick={onClear}
             style={{
-              background: 'transparent', color: '#8a8a80', border: 'none',
+              background: 'transparent', color: 'var(--screen-ink-dim)', border: 'none',
               fontFamily: 'var(--font-mono)', fontSize: 11, cursor: 'pointer', padding: '2px 6px', borderRadius: 3
             }}
             onMouseOver={e => e.currentTarget.style.color = 'var(--yellow)'}
-            onMouseOut={e => e.currentTarget.style.color = '#8a8a80'}
+            onMouseOut={e => e.currentTarget.style.color = 'var(--screen-ink-dim)'}
           >
             Clear
           </button>
@@ -226,11 +251,12 @@ export default function LogPanel({ logs, isRunning, progress, onClear, onToggle,
           fontFamily: 'var(--font-mono)',
           fontSize: 11,
           lineHeight: 1.6,
+          color: 'var(--screen-ink)',
           whiteSpace: 'pre-wrap',
           wordBreak: 'break-all'
         }}>
           {logs.length === 0 ? (
-            <span style={{ color: '#5a5a52', fontStyle: 'italic' }}>
+            <span style={{ color: 'var(--screen-ink-dim)', fontStyle: 'italic' }}>
               Log output will appear here when the pipeline runs…
             </span>
           ) : (

@@ -46,6 +46,15 @@ def pixel_sort_frame(arr: np.ndarray, threshold: int, vertical: bool) -> np.ndar
     return out.transpose(1, 0, 2) if vertical else out
 
 
+GUI_METADATA = {
+    'args': {
+        'max_width': {'label': 'Downscale for speed (px, 0 = off)', 'min': 0, 'max': 4096, 'good_min': 0, 'good_max': 1920,
+                      'help': 'Sort at this width to go faster on 4K footage — the result is scaled back up to the original '
+                              'size, so the output is never smaller than the input. 0 = no downscaling.'},
+    }
+}
+
+
 def register_arguments(parser):
     parser.description = (
         "Glitch-art pixel sorting: within each row (or column), pixels brighter than "
@@ -59,8 +68,8 @@ def register_arguments(parser):
                              "the effect. Set a number to fix it — lower sorts more.")
     parser.add_argument("--vertical", action="store_true", help="Sort along columns instead of rows.")
     parser.add_argument("--max_width", type=int, default=0,
-                        help="Shrink to this width first if the video is wider (0 = full size, the default). "
-                             "Use e.g. 1280 to speed up 4K footage.")
+                        help="Sort at this width if the video is wider (0 = off, the default), then scale the result back up "
+                             "to the original size. Use e.g. 1280 to speed up 4K footage.")
 
 
 def run(args):

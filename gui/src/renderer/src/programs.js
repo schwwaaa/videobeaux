@@ -68,7 +68,8 @@ export const CATEGORIES = [
       { id: 'repainting',          label: 'Repainting',         description: 'Median repaint blended with a multi-frame mix — painterly, smeared motion', args: [] },
       { id: 'long_exposure', label: 'Long Exposure', description: 'A slowly fading average of past frames — moving things smear into ghostly trails', args: [] },
       { id: 'rgb_time_split', label: 'RGB Time Split', description: 'Red channel is now, green and blue lag behind — motion leaves rainbow fringes', args: [] },
-      { id: 'feedback_loop', label: 'Feedback Loop', description: 'Video feedback: the output is fed back zoomed, rotated, shifted and hue-shifted each frame so the picture spirals into itself', args: [] }
+      { id: 'feedback_loop', label: 'Feedback Loop', description: 'Video feedback: the output is fed back zoomed, rotated, shifted and hue-shifted each frame so the picture spirals into itself', args: [] },
+      { id: 'key_feedback', label: 'Key Feedback', description: 'Video feedback with two keys — a luma/color Insert key picks what enters the loop, a Feedback key picks what survives each pass — plus zoom, rotate, shift and hue shift', args: [] }
     ]
   },
   {
@@ -180,7 +181,8 @@ export const CATEGORIES = [
       { id: 'led_wall', label: 'LED Wall', description: 'The picture rebuilt from a grid of round glowing LEDs, like a stadium video wall', args: [] },
       { id: 'pixelate', label: 'Pixelate', description: 'Chunky square pixels — a mosaic of any block size', args: [] },
       { id: 'color_pass', label: 'Color Pass', description: 'Keep one color range and turn everything else gray (or remove just that color) — a red dress in a gray world', args: [] },
-      { id: 'proc_amp', label: 'Proc Amp', description: 'Video processing amp: brightness, contrast, saturation, hue rotation, gamma, black/white levels, color temperature, broadcast-safe clamp', args: [] }
+      { id: 'proc_amp', label: 'Proc Amp', description: 'Video processing amp: brightness, contrast, saturation, hue rotation, gamma, black/white levels, color temperature, broadcast-safe clamp', args: [] },
+      { id: 'beauxtrix', label: 'Beauxtrix', description: 'A video blending matrix (homage to the LZX Video Blending Matrix): three R/G/B mixers summing videos A–D with −2…+2 levels, bias, and sum or absolute (solarize) outputs', args: [] }
     ]
   },
   {

@@ -48,6 +48,10 @@
    outlines, flat optimistic color, comic-book offset shadows, warm paper bg. */
 :root {
   --ink:         #080808;
+  --select:         #ffe500;   /* selection ring — theme-aware, configurable in Appearance */
+  --select-outline: #080808;
+  --screen-ink:     #ece9db;   /* console text (the console is dark in both themes) */
+  --screen-ink-dim: #b9b6a8;
   --on-color:    #080808;   /* text on the bright category/accent colors — stays dark in both themes */
   --paper:       #fffdf6;
   --paper-dim:   #f3f1e7;
@@ -113,6 +117,8 @@
    preference. Ink/paper roles swap; accent hues stay the same since
    they're already saturated enough to read on a dark ground. */
 :root[data-theme="dark"] {
+  --select:         #6ff3ff;
+  --select-outline: #fffdf6;
   --ink:         #f3f1e7;
   --paper:       #1c1a22;
   --paper-dim:   #242229;
@@ -183,19 +189,19 @@ html, body, #root {
   inset: -9px;
   border-radius: 50%;
 }
-.react-flow__handle:hover { box-shadow: 0 0 0 3px var(--yellow), 0 0 0 5px var(--ink); }
+.react-flow__handle:hover { box-shadow: 0 0 0 3px var(--select), 0 0 0 5px var(--select-outline); }
 
 /* Two-click connect: the dot that was clicked pulses; every dot it can connect to glows. */
 .react-flow__handle.clickconnecting {
-  background: var(--yellow) !important;
+  background: var(--select) !important;
   animation: vb-handle-pulse 0.9s ease-in-out infinite;
 }
 .react-flow__handle.connectionindicator:not(.clickconnecting) {
-  box-shadow: 0 0 0 3px var(--yellow), 0 0 0 5px var(--ink);
+  box-shadow: 0 0 0 3px var(--select), 0 0 0 5px var(--select-outline);
 }
 @keyframes vb-handle-pulse {
-  0%, 100% { box-shadow: 0 0 0 3px var(--yellow), 0 0 0 5px var(--ink); }
-  50%      { box-shadow: 0 0 0 7px var(--yellow), 0 0 0 9px var(--ink); }
+  0%, 100% { box-shadow: 0 0 0 3px var(--select), 0 0 0 5px var(--select-outline); }
+  50%      { box-shadow: 0 0 0 7px var(--select), 0 0 0 9px var(--select-outline); }
 }
 
 /* ── Selection ─────────────────────────────────────────────────────────────── */
@@ -205,15 +211,15 @@ html, body, #root {
    React Flow's wrapper's first child, so it works for every node type. */
 .react-flow__node.selected > div:first-child {
   box-shadow:
-    0 0 0 3px var(--yellow),
-    0 0 0 5px var(--ink),
+    0 0 0 3px var(--select),
+    0 0 0 5px var(--select-outline),
     calc(var(--shadow-offset) + 5px) calc(var(--shadow-offset) + 5px) 0 var(--shadow-color) !important;
 }
 .react-flow__node-groupNode.selected > div:first-child {
-  box-shadow: 0 0 0 3px var(--yellow), 0 0 0 5px var(--ink) !important;
+  box-shadow: 0 0 0 3px var(--select), 0 0 0 5px var(--select-outline) !important;
 }
 .react-flow__nodesselection-rect, .react-flow__selection {
-  background: rgba(255, 229, 0, 0.12) !important;
+  background: color-mix(in srgb, var(--select) 14%, transparent) !important;
   border: 2px dashed var(--ink) !important;
 }
 
@@ -222,7 +228,7 @@ html, body, #root {
   align-items: center;
   gap: 4px;
   padding: 3px 4px 3px 9px;
-  background: var(--yellow);
+  background: var(--select);
   color: #080808;
   border: 2px solid #080808;
   border-radius: var(--radius-sm);
