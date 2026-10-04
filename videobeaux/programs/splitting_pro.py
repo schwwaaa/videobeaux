@@ -28,7 +28,7 @@ def run(args):
         "-i", args.input,
         "-filter_complex", f"[0:v]shuffleplanes,shufflepixels=direction=inverse:m={args.position}:width={args.width}[2];[0:v][2]mix[out_v]",
         "-map", "[out_v]",
-        "-map", "0:a",
+        "-map", "0:a?",
         "-c:v", "libx264",
         "-profile:v", "main",
         "-pix_fmt", "yuv420p",

@@ -13,7 +13,7 @@ def run(args):
         "-i", args.input,
         "-filter_complex", "[0:v]gradfun=strength=64:radius=5[out_v]",
         "-map", "[out_v]",
-        "-map", "0:a",
+        "-map", "0:a?",
         args.output
     ]
 

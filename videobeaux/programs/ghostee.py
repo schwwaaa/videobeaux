@@ -13,7 +13,7 @@ def run(args):
         "-i", args.input,
         "-filter_complex", "[0:v]amplify=radius=8:factor=4,colorbalance[out_v]",
         "-map", "[out_v]",
-        "-map", "0:a",
+        "-map", "0:a?",
         "-c:v", "libx264",
         "-profile:v", "high",
         "-level:v", "4.2",

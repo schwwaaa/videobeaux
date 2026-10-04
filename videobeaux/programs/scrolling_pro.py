@@ -30,7 +30,7 @@ def run(args):
         "-i", args.input,
         "-filter_complex", f"[0:v]scroll=horizontal={args.horiz_speed}:vertical={args.vert_speed}[out_v]", 
         "-map", "[out_v]",
-        "-map", "0:a",
+        "-map", "0:a?",
         args.output
     ]
 

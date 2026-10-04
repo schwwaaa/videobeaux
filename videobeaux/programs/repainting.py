@@ -13,7 +13,7 @@ def run(args):
         "-i", args.input,
         "-filter_complex", "[0:v]median=radius=127:radiusV=15:percentile=0.43[3];[0:v]tmix=frames=20:weights=1 2 3 -2 1 2 3 -2 1 -4 4 2 3 -2 1 2 3 -2 1 1[7];[3][7]mix,lagfun=decay=1[out_v]",
         "-map", "[out_v]",
-        "-map", "0:a",
+        "-map", "0:a?",
         args.output
     ]
 

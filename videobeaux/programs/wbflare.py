@@ -13,7 +13,7 @@ def run(args):
         "-i", args.input,
         "-filter_complex", "[0:v]bilateral=sigmaS=377.67[out_v]",
         "-map", "[out_v]",
-        "-map", "0:a",
+        "-map", "0:a?",
         "-c:v", "libx264",
         "-profile:v", "main",
         "-pix_fmt", "yuv420p",

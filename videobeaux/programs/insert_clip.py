@@ -1,3 +1,4 @@
+from videobeaux.utils.media import ensure_audio
 import re
 import subprocess
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
@@ -143,6 +144,11 @@ def _join(parts, va, durA, vb, durB, mode, duration, w, h, fps, gap_label):
 
 
 def run(args):
+    # audio filter graphs need an audio track on every input
+    if getattr(args, 'input', None):
+        args.input = ensure_audio(args.input)
+    if getattr(args, 'input2', None):
+        args.input2 = ensure_audio(args.input2)
     insert_at = _parse_timestamp(args.insert_at, "--insert_at")
 
     master_dur = _get_video_duration(args.input)

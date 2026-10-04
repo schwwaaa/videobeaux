@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Handle, Position, useReactFlow } from '@xyflow/react'
+import { useUpdateNodeData } from '../../useCanvasHistory'
 
 const ACCENT = 'var(--cyan)'
 
@@ -128,7 +129,8 @@ function useVideoFileCount(folderPath) {
 }
 
 export default function InputNode({ id, data, deletable }) {
-  const { updateNodeData, deleteElements } = useReactFlow()
+  const { deleteElements } = useReactFlow()
+  const updateNodeData = useUpdateNodeData()
   const mode = data.mode === 'folder' ? 'folder' : 'file'
   const fileCount = useVideoFileCount(mode === 'folder' ? data.folderPath : null)
 

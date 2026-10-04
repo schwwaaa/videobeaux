@@ -1,0 +1,10 @@
+{
+  "_comment": "Static ffmpeg/ffprobe builds (GPL: libx264/x265, libass, libfreetype, libzimg, libvidstab) from eugeneware/ffmpeg-static. Shared by scripts/build-python-env.mjs (installer) and src/main/toolsSetup.js (in-app dev setup).",
+  "tag": "b6.1.1",
+  "urlBase": "https://github.com/eugeneware/ffmpeg-static/releases/download",
+  "assets": {
+    "darwin_arm64": { "ffmpeg": "ffmpeg-darwin-arm64.gz", "ffprobe": "ffprobe-darwin-arm64.gz" },
+    "darwin_x64":   { "ffmpeg": "ffmpeg-darwin-x64.gz",   "ffprobe": "ffprobe-darwin-x64.gz" },
+    "win32_x64":    { "ffmpeg": "ffmpeg-win32-x64.gz",    "ffprobe": "ffprobe-win32-x64.gz" }
+  }
+}

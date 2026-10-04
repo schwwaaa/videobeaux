@@ -49,8 +49,9 @@ PASS, FAIL, SKIP, TIMEOUT = "PASS", "FAIL", "SKIP", "TIMEOUT"
 # ──────────────────────────────────────────────────────────────────────────────
 
 def find_full_ffmpeg_dir() -> str | None:
-    """Homebrew's keg-only ffmpeg-full has zscale/libass/drawtext that the plain formula lacks."""
-    for d in ("/opt/homebrew/opt/ffmpeg-full/bin", "/usr/local/opt/ffmpeg-full/bin"):
+    """A full-featured ffmpeg (zscale/libass/drawtext): the app's own .tools build, else Homebrew's keg-only ffmpeg-full."""
+    for d in (str(REPO / ".tools" / "ffmpeg"),      # the app's own downloaded build, if present
+              "/opt/homebrew/opt/ffmpeg-full/bin", "/usr/local/opt/ffmpeg-full/bin"):
         if (Path(d) / "ffmpeg").exists():
             return d
     return None

@@ -48,7 +48,7 @@ def run(args):
         "-i", args.input,
         "-filter_complex", f"[0:v]amplify=radius={args.radius}:factor={args.factor},chromakey=color=blue:similarity={args.similarity}:blend={args.blend}[out_v]",
         "-map", "[out_v]",
-        "-map", "0:a",
+        "-map", "0:a?",
         "-c:v", "libx264",
         "-profile:v", "main",
         "-pix_fmt", "yuv420p",

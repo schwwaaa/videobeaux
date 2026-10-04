@@ -21,6 +21,7 @@ import SetupScreen from './components/SetupScreen'
 import AppearanceMenu from './components/AppearanceMenu'
 import { ProgramsProvider, usePrograms } from './ProgramsContext'
 import { SettingsProvider, useSettings } from './SettingsContext'
+import { CanvasHistoryContext, useHistory } from './useCanvasHistory'
 import { buildPipeline } from './pipeline'
 import tvIcon from './assets/img/tv-icon.png'
 
@@ -74,11 +75,32 @@ let _nodeCounter = 2
 function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progress, setProgress, registerCanvasActions }) {
   const [nodes, setNodes, onNodesChange] = useNodesState(INITIAL_NODES)
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
-  const { screenToFlowPosition, getViewport } = useReactFlow()
+  const { screenToFlowPosition, getViewport, getNodes, getEdges } = useReactFlow()
   const { programMap } = usePrograms()
   const { theme } = useSettings()
   const [runError, setRunError] = useState(null)
   const wrapperRef = useRef(null)
+
+  // Undo / redo (⌘Z / ⇧⌘Z, or the buttons in the top-left panel)
+  const getSnapshot = useCallback(() => ({ nodes: getNodes(), edges: getEdges() }), [getNodes, getEdges])
+  const restore = useCallback((snap) => {
+    setNodes(snap.nodes.map(n => ({ ...n, selected: false })))
+    setEdges(snap.edges.map(e => ({ ...e, selected: false })))
+  }, [setNodes, setEdges])
+  const { record, undo, redo, canUndo, canRedo } = useHistory({ getSnapshot, restore })
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (!(e.metaKey || e.ctrlKey) || e.altKey) return
+      const t = e.target
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable)) return
+      const k = e.key.toLowerCase()
+      if (k === 'z' && !e.shiftKey) { e.preventDefault(); undo() }
+      else if ((k === 'z' && e.shiftKey) || k === 'y') { e.preventDefault(); redo() }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [undo, redo])
 
   // Synchronous mirror of `progress` (React state updates aren't readable
   // synchronously) and the index of the in-place-updating progress line
@@ -91,14 +113,14 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
   // branches); one input socket may only ever receive a single connection.
   // So we dedupe by TARGET, not source — the inverse of a simple linear chain.
   const onConnect = useCallback(
-    (params) => setEdges(eds => {
+    (params) => { record(); setEdges(eds => {
       const withoutOld = eds.filter(e =>
         !(e.target === params.target &&
           (e.targetHandle ?? null) === (params.targetHandle ?? null))
       )
       return addEdge({ ...params, type: 'smoothstep' }, withoutOld)
-    }),
-    [setEdges]
+    }) },
+    [setEdges, record]
   )
 
   const isValidConnection = useCallback(
@@ -124,13 +146,14 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
     for (const a of (programMap[programId]?.args || [])) {
       if (a.default !== undefined) initialArgs[a.name] = a.default
     }
+    record()
     setNodes(nds => [...nds, {
       id,
       type: 'effectNode',
       position,
       data: { program: programId, args: initialArgs }
     }])
-  }, [setNodes, programMap])
+  }, [setNodes, programMap, record])
 
   // Extra source videos are numbered "Input 2", "Input 3", … (the original
   // Input node is "Input 1" in spirit). Pick the lowest number not already
@@ -138,6 +161,7 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
   // yields Input 2 again instead of a duplicate "Input 3".
   const addInputNode = useCallback((position) => {
     const id = `input-${++_nodeCounter}-${Date.now()}`
+    record()
     setNodes(nds => {
       const used = new Set([1])
       for (const n of nds) {
@@ -154,7 +178,7 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
         data: { filePath: '', label: `Input ${num}` }
       }]
     })
-  }, [setNodes])
+  }, [setNodes, record])
 
   // Current visible center of the canvas in flow coordinates, with a small
   // jitter so repeated double-clicks don't stack nodes exactly on top of
@@ -384,6 +408,7 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
       }])
     }
 
+    record()
     setNodes(data.nodes)
     setEdges(data.edges)
     setRunError(null)
@@ -397,6 +422,7 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
   }
 
   return (
+    <CanvasHistoryContext.Provider value={{ record }}>
     <div ref={wrapperRef} style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
       <ReactFlow
         nodes={nodes}
@@ -404,6 +430,8 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        onNodeDragStart={() => record()}
+        onBeforeDelete={async (d) => { record(); return d }}
         isValidConnection={isValidConnection}
         onDrop={onDrop}
         onDragOver={onDragOver}
@@ -429,6 +457,26 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
         {/* Save / Load preset panel */}
         <Panel position="top-left">
           <div style={{ display: 'flex', gap: 6 }}>
+            {[['↶ Undo', undo, canUndo, 'Undo (⌘Z)'], ['↷ Redo', redo, canRedo, 'Redo (⇧⌘Z)']].map(([label, fn, enabled, tip]) => (
+              <button
+                key={label}
+                onClick={fn}
+                disabled={!enabled || isRunning}
+                title={tip}
+                style={{
+                  background: 'var(--paper)', color: 'var(--ink)',
+                  padding: '9px 12px', borderRadius: 'var(--radius-sm)',
+                  fontFamily: 'var(--font-display)', fontSize: 12,
+                  border: 'var(--border)', boxShadow: 'var(--shadow-sm)',
+                  opacity: (!enabled || isRunning) ? 0.4 : 1, cursor: (!enabled || isRunning) ? 'not-allowed' : 'pointer'
+                }}
+                onMouseDown={e => { if (enabled && !isRunning) { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'translate(3px, 3px)' } }}
+                onMouseUp={e => { e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; e.currentTarget.style.transform = 'none' }}
+                onMouseLeave={e => { e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; e.currentTarget.style.transform = 'none' }}
+              >
+                {label}
+              </button>
+            ))}
             <button
               onClick={handleSave}
               disabled={isRunning}
@@ -522,6 +570,7 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
         </Panel>
       </ReactFlow>
     </div>
+    </CanvasHistoryContext.Provider>
   )
 }
 
@@ -550,14 +599,16 @@ function AppInner() {
   const [canvasActions, setCanvasActions] = useState(null)
   const registerCanvasActions = useCallback(actions => setCanvasActions(actions), [])
 
-  // First launch (or any launch with no speech model installed yet): show
-  // the setup screen automatically rather than letting a user hit a
-  // confusing "model not found" error three steps into their first pipeline.
+  // Show Setup the first time the app runs (to offer the optional local-AI downloads) and any
+  // time the core engine isn't ready (fresh clone, broken install) — it then repairs itself.
+  const { ready: settingsReady, setupSeen } = useSettings()
   useEffect(() => {
-    window.electronAPI.listModels().then(models => {
-      if (models.length === 0) setShowSetup(true)
+    if (!settingsReady) return
+    window.electronAPI.checkEnvironment().then(env => {
+      if (!env.ready || !setupSeen) setShowSetup(true)
     })
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [settingsReady])
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>

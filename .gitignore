@@ -7,7 +7,6 @@ env/
 ideas/
 *.mp4
 *.mov
-videobeaux/programs/kokoro-v1.0.onnx
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -181,4 +180,9 @@ models/
 node_modules/
 gui/out/
 gui/resources/
+
+# App-managed tools (downloaded by the in-app Setup)
+.tools/
+venv.old-*/
+.python-extract-*/
 voices-*.bin

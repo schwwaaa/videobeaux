@@ -1,3 +1,4 @@
+from videobeaux.utils.media import ensure_audio
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
 
 GUI_METADATA = {
@@ -26,6 +27,11 @@ def register_arguments(parser):
     )
 
 def run(args):
+    # audio filter graphs need an audio track on every input
+    if getattr(args, 'input', None):
+        args.input = ensure_audio(args.input)
+    if getattr(args, 'input2', None):
+        args.input2 = ensure_audio(args.input2)
 
     command = [
         "ffmpeg",

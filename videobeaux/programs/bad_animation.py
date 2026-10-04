@@ -12,7 +12,7 @@ def run(args):
         "-i", args.input,
         "-filter_complex", "[0:v]detelecine=first_field=bottom:pattern=5:start_frame=4[out_v]",
         "-map", "[out_v]",
-        "-map", "0:a",
+        "-map", "0:a?",
         args.output
     ]
 

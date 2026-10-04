@@ -19,6 +19,7 @@
 #   - for mode 4: mixed in -filter_complex
 #   - for mode 5: disabled with -an
 
+from videobeaux.utils.media import ensure_audio
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
 
 GUI_METADATA = {
@@ -183,6 +184,13 @@ def _build_video_filter_complex(layout, zoom1, zoom2, zoom3):
 
 
 def run(args):
+    # audio filter graphs need an audio track on every input
+    if getattr(args, 'input', None):
+        args.input = ensure_audio(args.input)
+    if getattr(args, 'input2', None):
+        args.input2 = ensure_audio(args.input2)
+    if getattr(args, 'input3', None):
+        args.input3 = ensure_audio(args.input3)
     # --- Build VIDEO filtergraph ---
     video_filter = _build_video_filter_complex(
         layout=args.layout,

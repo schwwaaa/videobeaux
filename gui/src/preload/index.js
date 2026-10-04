@@ -41,7 +41,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   downloadModel: (modelId) => ipcRenderer.invoke('setup:downloadModel', modelId),
   openModelsFolder: () => ipcRenderer.invoke('setup:openModelsFolder'),
   checkOptional: () => ipcRenderer.invoke('setup:checkOptional'),
-  installPython: (opts) => ipcRenderer.invoke('setup:installPython', opts),
+  repairSetup: (opts) => ipcRenderer.invoke('setup:repair', opts),
+  getSetupInfo: () => ipcRenderer.invoke('setup:getInfo'),
   onInstallProgress: (cb) => {
     const handler = (_, data) => cb(data)
     ipcRenderer.on('setup:installProgress', handler)

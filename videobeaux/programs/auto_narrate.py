@@ -1,3 +1,4 @@
+from videobeaux.utils.media import ensure_audio
 import subprocess
 import tempfile
 from pathlib import Path
@@ -140,6 +141,9 @@ Return ONLY the narration.
 
 
 def run(args):
+    # audio filter graphs need an audio track on every input
+    if getattr(args, 'input', None):
+        args.input = ensure_audio(args.input)
     if bool(args.script) == bool(args.topic):
         raise SystemExit(
             "❌ Provide exactly one of --script (your own narration text — works fully offline) "

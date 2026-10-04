@@ -12,7 +12,7 @@ def run(args):
         "-i", args.input,
         "-filter_complex", "[0:v]setpts=PTS-STARTPTS,tpad=start=12:start_mode=clone:stop=12:stop_mode=clone,amplify=radius=12:factor=12:low=17213.43:high=4310.24,scroll=h=0.003:v=1:vpos=0.2,trim=start_frame=12,format=yuv420p[out_v]",
         "-map", "[out_v]",
-        "-map", "0:a",
+        "-map", "0:a?",
         "-c:v", "libx264",
         "-profile:v", "high",
         "-level:v", "4.2",

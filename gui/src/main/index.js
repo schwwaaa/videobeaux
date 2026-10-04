@@ -9,7 +9,9 @@ import { execFile } from 'child_process'
 import { promisify } from 'util'
 import { downloadToFile } from './download.js'
 import { findVenvPython, installPython } from './pythonSetup.js'
+import { ffmpegBinaryPath, inspectFfmpeg, installFfmpeg } from './toolsSetup.js'
 import pythonRuntime from '../../python-runtime.json'
+import ffmpegRuntime from '../../ffmpeg-runtime.json'
 
 const execFileAsync = promisify(execFile)
 
@@ -46,9 +48,19 @@ function getPaths() {
   return {
     vbRoot,
     pythonHome: join(vbRoot, 'venv'),
-    ffmpegDir: findFullFfmpegDir(), // null → dev falls back to whatever ffmpeg is on PATH
+    ffmpegDir: findManagedFfmpegDir(vbRoot) || findFullFfmpegDir(), // null → dev falls back to whatever ffmpeg is on PATH
     modelsDir: join(vbRoot, 'models')
   }
+}
+
+// Dev only. The app can download its own full-featured ffmpeg into
+// <repo>/.tools/ffmpeg (see setup:repair) — preferred over anything on the machine.
+function managedFfmpegDir(vbRoot) {
+  return join(vbRoot, '.tools', 'ffmpeg')
+}
+function findManagedFfmpegDir(vbRoot) {
+  const dir = managedFfmpegDir(vbRoot)
+  return existsSync(ffmpegBinaryPath(dir, 'ffmpeg')) ? dir : null
 }
 
 // Dev only. Homebrew's plain `ffmpeg` formula omits libzimg/libass/libfreetype
@@ -194,7 +206,8 @@ app.whenReady().then(async () => {
     theme: 'light',
     shadowOffset: 5,
     shadowColor: '#080808',
-    shadowsEnabled: true
+    shadowsEnabled: true,
+    setupSeen: false
   }
 
   function settingsPath() {
@@ -212,8 +225,11 @@ app.whenReady().then(async () => {
     }
   })
 
-  ipcMain.handle('settings:set', (_, settings) => {
-    const merged = { ...DEFAULT_SETTINGS, ...settings }
+  ipcMain.handle('settings:set', (_, patch) => {
+    // Merge into what's already stored so one caller's partial update can't wipe another's keys.
+    let current = {}
+    try { current = JSON.parse(readFileSync(settingsPath(), 'utf8')) } catch { /* first write */ }
+    const merged = { ...DEFAULT_SETTINGS, ...current, ...patch }
     writeFileSync(settingsPath(), JSON.stringify(merged, null, 2), 'utf8')
     return merged
   })
@@ -403,19 +419,6 @@ app.whenReady().then(async () => {
     }
   })
 
-  // One-click Python for source/dev checkouts (see pythonSetup.js). A packaged
-  // app already ships its own interpreter, so this is refused there.
-  ipcMain.handle('setup:installPython', async (event, opts) => {
-    if (app.isPackaged) return { ok: false, error: 'This install already includes Python.' }
-    const { vbRoot } = getPaths()
-    return installPython({
-      vbRoot,
-      runtime: pythonRuntime,
-      fresh: !!opts?.fresh,
-      onProgress: p => event.sender.send('setup:installProgress', p)
-    })
-  })
-
   // ── Optional features: narration voice (kokoro-tts) + Ollama ────────────────
   // Neither is needed by most programs, so Setup treats them as opt-in extras
   // rather than required environment checks.
@@ -524,11 +527,11 @@ app.whenReady().then(async () => {
     shell.openPath(modelsDir)
   })
 
-  ipcMain.handle('setup:checkEnvironment', async () => {
+  async function environmentStatus() {
     const { ffmpegDir } = getPaths()
     const python = findPython()
-    const ffmpegBin = ffmpegDir ? join(ffmpegDir, process.platform === 'win32' ? 'ffmpeg.exe' : 'ffmpeg') : 'ffmpeg'
-    const ffprobeBin = ffmpegDir ? join(ffmpegDir, process.platform === 'win32' ? 'ffprobe.exe' : 'ffprobe') : 'ffprobe'
+    const ffmpegBin = ffmpegDir ? ffmpegBinaryPath(ffmpegDir, 'ffmpeg') : 'ffmpeg'
+    const ffprobeBin = ffmpegDir ? ffmpegBinaryPath(ffmpegDir, 'ffprobe') : 'ffprobe'
 
     const check = (cmd, args) => new Promise(resolveCheck => {
       let proc
@@ -550,18 +553,64 @@ app.whenReady().then(async () => {
       proc.on('error', err => resolveCheck({ ok: false, detail: err.message }))
     })
 
-    const [pythonResult, ffmpegResult, ffprobeResult] = await Promise.all([
+    const [pythonResult, ffmpegInfo, ffprobeResult] = await Promise.all([
       check(python, ['-c', 'import vosk, numpy, PIL; print("ok")']),
-      check(ffmpegBin, ['-version']),
+      inspectFfmpeg(ffmpegBin),
       check(ffprobeBin, ['-version'])
     ])
+    const ffmpegResult = { ok: ffmpegInfo.ok, detail: ffmpegInfo.detail }
+    // A source checkout also needs a *capable* ffmpeg (HDR tone mapping, caption burning and
+    // text labels need zscale/libass/drawtext, which a plain system build often lacks); the
+    // installer always bundles one.
+    const ffmpegCapable = app.isPackaged || ffmpegInfo.capable
 
     return {
-      python: pythonResult, ffmpeg: ffmpegResult, ffprobe: ffprobeResult,
-      // Source/dev checkouts can have the app set Python up; a packaged app ships its own.
+      python: pythonResult, ffmpeg: ffmpegResult, ffprobe: ffprobeResult, ffmpegCapable,
+      ready: pythonResult.ok && ffmpegInfo.ok && ffprobeResult.ok && ffmpegCapable,
+      // Source/dev checkouts can have the app repair itself; a packaged app ships everything.
+      canRepair: !app.isPackaged,
       canInstallPython: !app.isPackaged
     }
+  }
+
+  ipcMain.handle('setup:checkEnvironment', () => environmentStatus())
+
+  // One-click "make everything work" for source checkouts: Python + packages, then
+  // a full-featured ffmpeg. Idempotent — only fixes what's missing/broken.
+  ipcMain.handle('setup:repair', async (event, opts) => {
+    if (app.isPackaged) return { ok: false, error: 'This install already includes everything it needs — try reinstalling the app.' }
+    const { vbRoot } = getPaths()
+    const send = (p) => event.sender.send('setup:installProgress', p)
+    try {
+      const before = await environmentStatus()
+      const steps = []
+      if (!before.python.ok || opts?.fresh) steps.push('python')
+      if (!before.ffmpeg.ok || !before.ffprobe.ok || !before.ffmpegCapable) steps.push('ffmpeg')
+      for (let i = 0; i < steps.length; i++) {
+        const meta = { step: steps[i] === 'python' ? 'Setting up the video engine' : 'Getting video tools', stepIndex: i + 1, stepCount: steps.length }
+        if (steps[i] === 'python') {
+          const r = await installPython({
+            vbRoot, runtime: pythonRuntime, fresh: !!opts?.fresh,
+            onProgress: p => send({ ...meta, ...p })
+          })
+          if (!r.ok) return { ok: false, error: r.error }
+        } else {
+          await installFfmpeg({
+            targetDir: managedFfmpegDir(vbRoot), runtime: ffmpegRuntime,
+            onProgress: p => send({ ...meta, ...p })
+          })
+        }
+      }
+      const after = await environmentStatus()
+      return after.ready
+        ? { ok: true }
+        : { ok: false, error: 'Setup finished but something still isn\'t working — press Repair to try again.' }
+    } catch (err) {
+      return { ok: false, error: err.message }
+    }
   })
+
+  ipcMain.handle('setup:getInfo', () => ({ modelsDir: getPaths().modelsDir, packaged: app.isPackaged }))
 
   ipcMain.handle('setup:downloadModel', async (event, modelId) => {
     const model = VOSK_MODEL_CATALOG.find(m => m.id === modelId)

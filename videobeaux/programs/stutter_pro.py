@@ -21,7 +21,7 @@ def run(args):
         "-i", args.input,
         "-filter_complex", f"[0:v]random=frames={args.stutter}[out_v]", 
         "-map", "[out_v]",
-        "-map", "0:a",
+        "-map", "0:a?",
         args.output
     ]
 

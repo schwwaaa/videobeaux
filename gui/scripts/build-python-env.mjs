@@ -18,6 +18,7 @@ import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { spawnSync } from 'child_process'
 import { pipeline } from 'stream/promises'
+import { installFfmpeg } from '../src/main/toolsSetup.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const GUI_ROOT = join(__dirname, '..')
@@ -117,41 +118,20 @@ async function stagePython() {
 }
 
 // ── Step 2: static ffmpeg/ffprobe ────────────────────────────────────────────
+// Same fully-featured static build the in-app dev setup downloads (gui/ffmpeg-runtime.json):
+// native arm64 + x64 on macOS and x64 on Windows, with libx264/x265, libass, libfreetype,
+// libzimg and libvidstab — so HDR tone mapping, caption burning and stabilization work in
+// the installed app.
 
 async function stageFfmpeg() {
-  const ffmpegDir = join(RESOURCES, 'ffmpeg')
-  mkdirSync(ffmpegDir, { recursive: true })
-
-  if (targetPlatform === 'darwin') {
-    for (const tool of ['ffmpeg', 'ffprobe']) {
-      const info = await fetch(`https://evermeet.cx/ffmpeg/info/${tool}/release`).then(r => r.json())
-      const zipUrl = info.download.zip.url
-      const zipPath = join(RESOURCES, `_${tool}.zip`)
-      await download(zipUrl, zipPath)
-      run('unzip', ['-o', zipPath, '-d', ffmpegDir])
-      rmSync(zipPath)
-      run('chmod', ['+x', join(ffmpegDir, tool)])
-    }
-  } else if (targetPlatform === 'win32') {
-    // GPL static build (needed: every program here uses libx264, which
-    // LGPL-only builds omit) — BtbN's "latest n9.0" tag is a stable pointer
-    // that only advances within the 9.0.x line, not a moving "master" build.
-    const url = 'https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n9.0-latest-win64-gpl-9.0.zip'
-    const zipPath = join(RESOURCES, '_ffmpeg.zip')
-    await download(url, zipPath)
-    const extractDir = join(RESOURCES, '_ffmpeg_extract')
-    run('powershell', ['-NoProfile', '-Command', `Expand-Archive -LiteralPath "${zipPath}" -DestinationPath "${extractDir}" -Force`])
-    // BtbN's zip nests everything under one top-level folder with a bin/ subdir.
-    const topLevel = readdirSync(extractDir)[0]
-    const binDir = join(extractDir, topLevel, 'bin')
-    for (const f of ['ffmpeg.exe', 'ffprobe.exe']) {
-      copyFileSync(join(binDir, f), join(ffmpegDir, f))
-    }
-    rmrf(extractDir)
-    rmSync(zipPath)
-  } else {
-    throw new Error(`No ffmpeg bundling configured for platform: ${targetPlatform}`)
-  }
+  const runtime = JSON.parse(readFileSync(join(GUI_ROOT, 'ffmpeg-runtime.json'), 'utf8'))
+  await installFfmpeg({
+    targetDir: join(RESOURCES, 'ffmpeg'),
+    runtime,
+    platform: targetPlatform,
+    arch: process.arch,
+    onProgress: p => { if (p.message && p.received === 0) console.log(p.message) }
+  })
 }
 
 // ── Step 3: videobeaux package + discover_programs.py ───────────────────────

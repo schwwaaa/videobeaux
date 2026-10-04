@@ -13,7 +13,7 @@ def run(args):
         "-i", args.input,
         "-filter_complex", "[0:v]owdenoise=depth=11:luma_strength=330.06:ls=450.02:chroma_strength=440.1:cs=220.21[out_v]",
         "-map", "[out_v]",
-        "-map", "0:a",
+        "-map", "0:a?",
         "-c:v", "libx264",
         "-profile:v", "main",
         "-pix_fmt", "yuv420p",

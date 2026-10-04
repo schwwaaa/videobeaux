@@ -1,3 +1,4 @@
+from videobeaux.utils.media import ensure_audio
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
 
 
@@ -9,6 +10,9 @@ def register_arguments(parser):
 
 
 def run(args):
+    # audio filter graphs need an audio track on every input
+    if getattr(args, 'input', None):
+        args.input = ensure_audio(args.input)
     filter_complex = (
         "[0:v]split[va][vb];[vb]reverse[vr];[va][vr]concat=n=2:v=1:a=0[out_v];"
         "[0:a]asplit[aa][ab];[ab]areverse[ar];[aa][ar]concat=n=2:v=0:a=1[out_a]"

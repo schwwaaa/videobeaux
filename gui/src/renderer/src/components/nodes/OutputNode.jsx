@@ -1,5 +1,6 @@
 import React from 'react'
 import { Handle, Position, useReactFlow } from '@xyflow/react'
+import { useUpdateNodeData } from '../../useCanvasHistory'
 
 const FORMATS = ['mp4', 'mov', 'avi', 'mkv', 'webm']
 const ACCENT = 'var(--coral)'
@@ -100,7 +101,7 @@ function replaceExt(filePath, ext) {
 }
 
 export default function OutputNode({ id, data }) {
-  const { updateNodeData } = useReactFlow()
+  const updateNodeData = useUpdateNodeData()
 
   const handleSave = async () => {
     const ext = data.format || 'mp4'

@@ -128,41 +128,30 @@ python3 -m videobeaux.cli -P qwikchop_deluxe -i podcast.mp4 -o highlights.mp4 \
 
 ## Installing from source
 
+The one thing you need first is **[Node.js](https://nodejs.org)** (LTS). Everything else — Python, the video tools, all the packages — Videobeaux sets up for itself the first time it opens.
+
 ```bash
 git clone <this repo>
-cd videobeaux-gui
-
-# Python environment (name it "venv" — the app looks for this exact name)
-python3 -m venv venv
-source venv/bin/activate   # Windows: venv\Scripts\activate
-pip install -r requirements.txt
-# (Optional shortcut: skip these three lines and just run the GUI — its Setup screen has a
-#  "Set up Python automatically" button that downloads Python 3.12 into ./venv and installs
-#  everything for you.)
-
-# Make sure ffmpeg is on your PATH (brew install ffmpeg / apt install ffmpeg / etc.)
-# On macOS, use ffmpeg-full or another libass-enabled build — captioning
-# programs need the `ass` filter, which the plain Homebrew ffmpeg formula
-# doesn't include:
-#   brew install ffmpeg-full && brew unlink ffmpeg && brew link ffmpeg-full
-# (The dev GUI also finds the keg-only ffmpeg-full by itself — no relink needed there.)
-```
-
-At this point the CLI works standalone:
-
-```bash
-python3 -m videobeaux.cli --help
-```
-
-For the GUI on top of it:
-
-```bash
-cd gui
+cd videobeaux-gui/gui
 npm install
 npm run dev
 ```
 
-Download a [Vosk model](https://alphacephei.com/vosk/models) and drop it in `models/` (or use the in-app Setup screen) for transcript-driven effects.
+On first launch the Setup screen gets everything ready automatically (a few minutes and an internet connection, once). If anything ever breaks, open **⚙ Setup** and press **Repair**. The optional local-AI features (speech recognition, narration voice) are opt-in there too — they download once and then run entirely offline.
+
+<details>
+<summary>Prefer to manage Python yourself / use the CLI only?</summary>
+
+```bash
+python3 -m venv venv            # the app looks for a folder named "venv"
+source venv/bin/activate        # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+# ffmpeg must be on your PATH. On macOS use ffmpeg-full or another libass/libzimg build
+# (plain `brew install ffmpeg` lacks the `ass`, `zscale` and `drawtext` filters):
+#   brew install ffmpeg-full
+python3 -m videobeaux.cli --help
+```
+</details>
 
 ## Building GUI installers
 

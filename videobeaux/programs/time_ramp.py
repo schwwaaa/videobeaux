@@ -1,3 +1,4 @@
+from videobeaux.utils.media import ensure_audio
 import subprocess
 
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
@@ -27,6 +28,9 @@ def register_arguments(parser):
 
 
 def run(args):
+    # audio filter graphs need an audio track on every input
+    if getattr(args, 'input', None):
+        args.input = ensure_audio(args.input)
     steps = max(2, args.steps)
     duration = _ffprobe_duration_seconds(args.input)
     if duration <= 0:

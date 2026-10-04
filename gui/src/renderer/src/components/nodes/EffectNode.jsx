@@ -5,6 +5,7 @@ import {
 } from '@xyflow/react'
 import { usePrograms } from '../../ProgramsContext'
 import { videoArgsOf, upstreamIsBatch } from '../../pipeline'
+import { useUpdateNodeData } from '../../useCanvasHistory'
 
 // ── Model picker ─────────────────────────────────────────────────────────────
 //
@@ -439,7 +440,8 @@ function MediaInputRow({ nodeId, arg, value, onChange, color }) {
 // ── EffectNode ──────────────────────────────────────────────────────────────
 
 export default function EffectNode({ id, data, selected }) {
-  const { updateNodeData, deleteElements, getNodes, getEdges } = useReactFlow()
+  const { deleteElements, getNodes, getEdges } = useReactFlow()
+  const updateNodeData = useUpdateNodeData()
   const { programMap }     = usePrograms()
   const [expanded, setExpanded] = useState(true)
 

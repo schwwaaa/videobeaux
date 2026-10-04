@@ -1,3 +1,4 @@
+from videobeaux.utils.media import ensure_audio
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
 from pathlib import Path
 import sys
@@ -31,6 +32,9 @@ def register_arguments(parser):
     )
 
 def run(args):
+    # audio filter graphs need an audio track on every input
+    if getattr(args, 'input', None):
+        args.input = ensure_audio(args.input)
 
     if args.speed_factor < 0.5:
         print(f"❌ --speed_factor must be greater than 0.5")

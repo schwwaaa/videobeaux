@@ -13,7 +13,7 @@ def run(args):
         "-i", args.input,
         "-filter_complex", "[0:v]shear,vibrance=intensity=0.36:rbal=2.94:gbal=3.34:bbal=-3.83:rlum=0.41:glum=0.15:blum=0.28[out_v]",
         "-map", "[out_v]",
-        "-map", "0:a",
+        "-map", "0:a?",
         "-c:v", "libx264",
         "-profile:v", "high",
         "-level:v", "4.2",

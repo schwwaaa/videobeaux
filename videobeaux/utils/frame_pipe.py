@@ -24,6 +24,11 @@ from typing import Callable, Optional
 import numpy as np
 
 
+CONVERT_HINT = ("💡 If this file is an unusual format (e.g. a phone .MOV with HDR/HEVC, ProRes, or a "
+                "variable-frame-rate recording), run it through the Convert program first "
+                "(Media Tools → Convert, to mp4) and use that result here.")
+
+
 @dataclass
 class VideoInfo:
     width: int
@@ -85,19 +90,28 @@ def process_video(
     max_frames: Optional[int] = None,
     setup: Optional[Callable[[VideoInfo], None]] = None,
     audio: bool = True,
+    max_width: Optional[int] = None,
 ) -> dict:
     """
     Run `fn(frame, index, t_seconds) -> frame` over every frame of in_path and
     write the result (with the original audio) to out_path.
 
     frame is an (H, W, 3) uint8 RGB array (writable). fn must return an array of
-    the same shape. Returns {"frames": n, "seconds": wall_time}.
+    the same shape. If `max_width` is set and the video is wider, frames are
+    scaled down to it first (and the output is that smaller size) — useful for
+    slow per-pixel effects on 4K phone footage. Returns {"frames": n, "seconds": wall_time}.
     """
     in_path, out_path = Path(in_path), Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     info = probe_video(in_path)
     # yuv420p needs even dimensions — crop at most one pixel on an odd edge.
     W, H = info.width - info.width % 2, info.height - info.height % 2
+    scale_vf = f"crop={W}:{H}:0:0"
+    if max_width and W > max_width:
+        W = max_width - max_width % 2
+        H = max(2, int(round(info.height * W / info.width)) // 2 * 2)
+        scale_vf = f"scale={W}:{H}:flags=area"
+        print(f"ℹ️  Processing at {W}x{H} (down from {info.width}x{info.height}) to keep this effect fast.", flush=True)
     if setup:
         setup(VideoInfo(W, H, info.fps, info.duration, info.frames, info.has_audio))
 
@@ -107,7 +121,7 @@ def process_video(
     enc_err = tempfile.TemporaryFile(mode="w+", encoding="utf-8", errors="replace")
 
     dec_cmd = ["ffmpeg", "-v", "error", "-i", str(in_path), "-an",
-               "-vf", f"fps={info.fps:.6f},crop={W}:{H}:0:0",
+               "-vf", f"fps={info.fps:.6f},{scale_vf}",
                "-f", "rawvideo", "-pix_fmt", "rgb24", "-"]
     enc_cmd = ["ffmpeg", "-v", "error", "-y" if force else "-n",
                "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}",
@@ -176,11 +190,11 @@ def process_video(
             pbar.close()
 
     if enc.returncode != 0:
-        raise RuntimeError(f"❌ ffmpeg encode failed (code {enc.returncode})\n{_tail(enc_err)}")
+        raise RuntimeError(f"❌ ffmpeg encode failed (code {enc.returncode})\n{_tail(enc_err)}\n{CONVERT_HINT}")
     if dec.returncode not in (0, None) and max_frames is None:
-        raise RuntimeError(f"❌ ffmpeg decode failed (code {dec.returncode})\n{_tail(dec_err)}")
+        raise RuntimeError(f"❌ ffmpeg decode failed (code {dec.returncode})\n{_tail(dec_err)}\n{CONVERT_HINT}")
     if n == 0:
-        raise RuntimeError("❌ No frames were decoded from the input.\n" + _tail(dec_err))
+        raise RuntimeError("❌ No frames were decoded from the input.\n" + _tail(dec_err) + "\n" + CONVERT_HINT)
 
     print(f"\n📺 Process Complete: {out_path} \n", flush=True)
     return {"frames": n, "seconds": time.monotonic() - start}

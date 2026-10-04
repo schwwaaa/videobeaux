@@ -13,7 +13,7 @@ def run(args):
         "-i", args.input,
         "-filter_complex", "[0:v]amplify=radius=2:factor=13:threshold=61889.14:tolerance=0.2,colorbalance,colorcorrect=rl=0.61:rh=0.2:bh=0.16:analyze=minmax,dctdnoiz=sigma=498.03[out_v]",
         "-map", "[out_v]",
-        "-map", "0:a",
+        "-map", "0:a?",
         "-c:v", "libx264",
         "-profile:v", "high",
         "-level:v", "4.2",

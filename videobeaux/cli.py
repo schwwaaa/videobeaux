@@ -137,6 +137,11 @@ def main():
         import traceback
         print("\n💥 Program crashed with an unhandled exception:\n")
         traceback.print_exc()
+        msg = str(e)
+        if "ffmpeg" in msg.lower() and "💡" not in msg:
+            print("\n💡 If this input is an unusual format (e.g. a phone .MOV with HDR/HEVC, ProRes, "
+                  "or variable frame rate), try running it through the Convert program first "
+                  "(Media Tools → Convert, to mp4) and use that result here.")
         print("\n🐛 Combined args that were passed to the program:\n", combined_args)
         print("\n😵 Exiting due to failure...")
         sys.exit(1)    

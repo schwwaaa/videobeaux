@@ -6,7 +6,8 @@ const DEFAULTS = {
   theme: 'light',
   shadowOffset: 5,
   shadowColor: '#080808',
-  shadowsEnabled: true
+  shadowsEnabled: true,
+  setupSeen: false
 }
 
 /**
@@ -53,7 +54,8 @@ export function SettingsProvider({ children }) {
     toggleTheme: () => update({ theme: settings.theme === 'dark' ? 'light' : 'dark' }),
     setShadowOffset: (shadowOffset) => update({ shadowOffset }),
     setShadowColor: (shadowColor) => update({ shadowColor }),
-    setShadowsEnabled: (shadowsEnabled) => update({ shadowsEnabled })
+    setShadowsEnabled: (shadowsEnabled) => update({ shadowsEnabled }),
+    setSetupSeen: (setupSeen) => update({ setupSeen })
   }
 
   return (
