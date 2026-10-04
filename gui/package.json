@@ -8,7 +8,8 @@
     "dev": "electron-vite dev",
     "build": "electron-vite build",
     "stage-python": "node scripts/build-python-env.mjs",
-    "dist": "npm run stage-python && npm run build && electron-builder"
+    "dist": "npm run stage-python && npm run build && electron-builder",
+    "test": "node --test tests/grouping.test.mjs"
   },
   "dependencies": {
     "@xyflow/react": "^12.3.6",
@@ -33,10 +34,22 @@
       "node_modules/**/*"
     ],
     "extraResources": [
-      { "from": "resources/python", "to": "python" },
-      { "from": "resources/ffmpeg", "to": "ffmpeg" },
-      { "from": "resources/videobeaux", "to": "videobeaux" },
-      { "from": "resources/gui", "to": "gui" }
+      {
+        "from": "resources/python",
+        "to": "python"
+      },
+      {
+        "from": "resources/ffmpeg",
+        "to": "ffmpeg"
+      },
+      {
+        "from": "resources/videobeaux",
+        "to": "videobeaux"
+      },
+      {
+        "from": "resources/gui",
+        "to": "gui"
+      }
     ],
     "win": {
       "target": "nsis",

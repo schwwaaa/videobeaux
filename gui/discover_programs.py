@@ -135,6 +135,10 @@ def infer_bounds(name, default):
     return None, None
 
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from arg_ranges import RANGES  # noqa: E402
+
+
 class CapturingParser(argparse.ArgumentParser):
     """
     Intercepts add_argument() calls, prefers --long-flag names, applies
@@ -226,9 +230,19 @@ for prog_name in program_names:
 
         for schema in parser._captured:
             if schema['name'] in meta_args:
-                for key in ('type', 'subtype', 'label', 'help', 'default', 'choices', 'min', 'max', 'step', 'hidden'):
+                for key in ('type', 'subtype', 'label', 'help', 'default', 'choices', 'min', 'max', 'step', 'free', 'hidden'):
                     if key in meta_args[schema['name']]:
                         schema[key] = meta_args[schema['name']][key]
+
+        # Central slider ranges for programs that don't declare their own (see arg_ranges.py).
+        for schema in parser._captured:
+            if schema['type'] != 'number':
+                continue
+            rng = (RANGES.get(prog_name) or {}).get(schema['name'], 'unset')
+            if rng is None:
+                schema.setdefault('free', True)
+            elif rng != 'unset' and (schema.get('min') is None or schema.get('max') is None):
+                schema['min'], schema['max'] = rng
 
         result[prog_name] = {
             'description': (parser.description or '').strip(),

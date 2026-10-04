@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react'
+import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react'
 import {
   ReactFlow,
   ReactFlowProvider,
@@ -17,6 +17,7 @@ import {
 import InputNode  from './components/nodes/InputNode'
 import EffectNode from './components/nodes/EffectNode'
 import OutputNode from './components/nodes/OutputNode'
+import GroupNode  from './components/nodes/GroupNode'
 import ClickConnectLine from './components/ClickConnectLine'
 import Sidebar    from './components/Sidebar'
 import LogPanel   from './components/LogPanel'
@@ -26,12 +27,16 @@ import { ProgramsProvider, usePrograms } from './ProgramsContext'
 import { SettingsProvider, useSettings } from './SettingsContext'
 import { CanvasHistoryContext, useHistory } from './useCanvasHistory'
 import { buildPipeline } from './pipeline'
+import { useModalLocked, isModalLocked } from './useModalLock'
+import { GroupContext, RealEdgesContext } from './GroupContext'
+import { useGrouping, deriveGroupView } from './useGrouping'
 import tvIcon from './assets/img/tv-icon.png'
 
 const NODE_TYPES = {
   inputNode:  InputNode,
   effectNode: EffectNode,
-  outputNode: OutputNode
+  outputNode: OutputNode,
+  groupNode:  GroupNode
 }
 
 // deletable:false keeps Input/Output safe from Backspace/Delete without
@@ -78,15 +83,19 @@ let _nodeCounter = 2
 function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progress, setProgress, registerCanvasActions }) {
   const [nodes, setNodes, onNodesChange] = useNodesState(INITIAL_NODES)
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
-  const { screenToFlowPosition, getViewport, getNodes, getEdges, deleteElements } = useReactFlow()
+  const { screenToFlowPosition, getViewport, getNodes, deleteElements } = useReactFlow()
+  // React Flow is shown *display* edges (collapsed groups re-route their boundary edges); logic uses the real ones.
+  const edgesRef = useRef(edges)
+  edgesRef.current = edges
   const flowStore = useStoreApi()
   const { programMap } = usePrograms()
   const { theme, showSelectionBar } = useSettings()
+  const modalLocked = useModalLocked()
   const [runError, setRunError] = useState(null)
   const wrapperRef = useRef(null)
 
   // Undo / redo (⌘Z / ⇧⌘Z, or the buttons in the top-left panel)
-  const getSnapshot = useCallback(() => ({ nodes: getNodes(), edges: getEdges() }), [getNodes, getEdges])
+  const getSnapshot = useCallback(() => ({ nodes: getNodes(), edges: edgesRef.current }), [getNodes])
   const restore = useCallback((snap) => {
     setNodes(snap.nodes.map(n => ({ ...n, selected: false })))
     setEdges(snap.edges.map(e => ({ ...e, selected: false })))
@@ -101,24 +110,44 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
   const mouseFlowRef = useRef(null)
   const pasteCountRef = useRef(0)
 
+  const newId = useCallback((kind) => `${kind}-${++_nodeCounter}-${Date.now()}`, [])
+
   const copySelection = useCallback(() => {
-    const picked = getNodes().filter(n => n.selected && n.deletable !== false)
-    if (!picked.length) return false
+    const all = getNodes()
+    const byId = new Map(all.map(n => [n.id, n]))
+    const chosen = new Map()
+    for (const n of all.filter(n => n.selected && n.deletable !== false)) {
+      chosen.set(n.id, n)
+      if (n.type === 'groupNode') all.filter(m => m.parentId === n.id).forEach(m => chosen.set(m.id, m))   // a group brings its members
+    }
+    if (!chosen.size) return false
+    const picked = [...chosen.values()].sort((a, b) => (a.type === 'groupNode' ? 0 : 1) - (b.type === 'groupNode' ? 0 : 1))   // parents first
     const ids = new Set(picked.map(n => n.id))
     clipboardRef.current = {
-      nodes: structuredClone(picked.map(n => ({ type: n.type, position: n.position, data: n.data }))).map((n, i) => ({ ...n, oldId: picked[i].id })),
-      edges: structuredClone(getEdges().filter(e => ids.has(e.source) && ids.has(e.target))
+      nodes: picked.map(n => {
+        const keepParent = n.parentId && ids.has(n.parentId)
+        const parent = n.parentId ? byId.get(n.parentId) : null
+        const position = n.parentId && !keepParent && parent
+          ? { x: n.position.x + parent.position.x, y: n.position.y + parent.position.y }   // member copied without its group → absolute spot
+          : n.position
+        return structuredClone({
+          oldId: n.id, type: n.type, position, data: n.data, width: n.width, height: n.height, style: n.style,
+          parentId: keepParent ? n.parentId : undefined, hidden: n.hidden, draggable: n.draggable
+        })
+      }),
+      edges: structuredClone(edgesRef.current.filter(e => ids.has(e.source) && ids.has(e.target))
         .map(e => ({ source: e.source, target: e.target, sourceHandle: e.sourceHandle, targetHandle: e.targetHandle, type: e.type })))
     }
     pasteCountRef.current = 0
     return true
-  }, [getNodes, getEdges])
+  }, [getNodes])
 
   const pasteClipboard = useCallback((place = 'cursor') => {
     const clip = clipboardRef.current
     if (!clip || !clip.nodes.length) return
-    const minX = Math.min(...clip.nodes.map(n => n.position.x))
-    const minY = Math.min(...clip.nodes.map(n => n.position.y))
+    const top = clip.nodes.filter(n => !n.parentId)
+    const minX = Math.min(...top.map(n => n.position.x))
+    const minY = Math.min(...top.map(n => n.position.y))
     pasteCountRef.current += 1
     const nudge = (pasteCountRef.current - 1) * 30
     const target = place === 'cursor' && mouseFlowRef.current
@@ -126,11 +155,17 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
       : { x: minX + 40 * pasteCountRef.current, y: minY + 40 * pasteCountRef.current }
     const idMap = new Map()
     const fresh = clip.nodes.map(n => {
-      const id = `${n.type === 'inputNode' ? 'input' : 'effect'}-${++_nodeCounter}-${Date.now()}`
+      const id = newId(n.type === 'inputNode' ? 'input' : n.type === 'groupNode' ? 'group' : 'effect')
       idMap.set(n.oldId, id)
+      const isMember = !!n.parentId
       return {
-        id, type: n.type, data: structuredClone(n.data), selected: true,
-        position: { x: n.position.x - minX + target.x, y: n.position.y - minY + target.y }
+        id, type: n.type, data: structuredClone(n.data), selected: !isMember,
+        position: isMember ? n.position : { x: n.position.x - minX + target.x, y: n.position.y - minY + target.y },
+        ...(n.width != null ? { width: n.width } : {}), ...(n.height != null ? { height: n.height } : {}),
+        ...(n.style ? { style: n.style } : {}), ...(n.hidden ? { hidden: true } : {}),
+        ...(n.draggable === false ? { draggable: false } : {}),
+        ...(isMember ? { parentId: idMap.get(n.parentId), expandParent: true } : {}),
+        ...(n.type === 'groupNode' ? { zIndex: -1 } : {})
       }
     })
     const freshEdges = clip.edges.map((e, i) => ({
@@ -140,11 +175,24 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
     record()
     setNodes(nds => [...nds.map(n => (n.selected ? { ...n, selected: false } : n)), ...fresh])
     setEdges(eds => [...eds.map(e => (e.selected ? { ...e, selected: false } : e)), ...freshEdges])
-  }, [record, setNodes, setEdges])
+  }, [record, setNodes, setEdges, newId])
 
   const duplicateSelection = useCallback(() => {
     if (copySelection()) pasteClipboard('offset')
   }, [copySelection, pasteClipboard])
+
+  // ── Grouping ───────────────────────────────────────────────────────────────
+  const grouping = useGrouping({ setNodes, getNodes, record, newId })
+  const groupView = useMemo(() => deriveGroupView(nodes, edges, programMap), [nodes, edges, programMap])
+  const groupCtx = useMemo(() => ({
+    boundary: groupView.boundary, members: groupView.members,
+    toggleCollapse: grouping.toggleCollapse, ungroup: grouping.ungroup,
+    updateGroup: grouping.updateGroup, toggleLock: grouping.toggleLock
+  }), [groupView, grouping.toggleCollapse, grouping.ungroup, grouping.updateGroup, grouping.toggleLock])
+  // Edge changes on a re-routed (proxy) edge apply to the real edge underneath.
+  const handleEdgesChange = useCallback((changes) => {
+    onEdgesChange(changes.map(c => (typeof c.id === 'string' && c.id.startsWith('proxy:') ? { ...c, id: c.id.slice(6) } : c)))
+  }, [onEdgesChange])
 
   const clearSelection = useCallback(() => {
     setNodes(ns => ns.some(n => n.selected) ? ns.map(n => (n.selected ? { ...n, selected: false } : n)) : ns)
@@ -153,6 +201,7 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
 
   useEffect(() => {
     const onKey = (e) => {
+      if (isModalLocked()) return          // a helper window is open: it owns the keyboard
       const t = e.target
       if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable)) return
       if (e.key === 'Escape') {
@@ -171,15 +220,18 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
       else if (k === 'c') { if (copySelection()) e.preventDefault() }
       else if (k === 'v') { if (clipboardRef.current) { e.preventDefault(); pasteClipboard('cursor') } }
       else if (k === 'd') { e.preventDefault(); duplicateSelection() }
+      else if (k === 'g') { e.preventDefault(); if (e.shiftKey) grouping.ungroupSelection(); else grouping.groupSelection() }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [undo, redo, clearSelection, setNodes, flowStore, copySelection, pasteClipboard, duplicateSelection])
+  }, [undo, redo, clearSelection, setNodes, flowStore, copySelection, pasteClipboard, duplicateSelection, grouping])
 
   const connecting = useStore(st => !!st.connectionClickStartHandle)
   const selectedNodes = nodes.filter(n => n.selected)
   const selectedEdges = edges.filter(e => e.selected)
   const deletableSelected = selectedNodes.filter(n => n.deletable !== false)
+  const canGroup = selectedNodes.filter(n => n.type === 'effectNode' && !n.parentId).length >= 2
+  const canUngroup = selectedNodes.some(n => n.type === 'groupNode')
   const selectionCount = selectedNodes.length + selectedEdges.length
   const deleteSelection = useCallback(() => {
     deleteElements({ nodes: deletableSelected.map(n => ({ id: n.id })), edges: selectedEdges.map(e => ({ id: e.id })) })
@@ -506,6 +558,8 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
 
   return (
     <CanvasHistoryContext.Provider value={{ record }}>
+    <GroupContext.Provider value={groupCtx}>
+    <RealEdgesContext.Provider value={edges}>
     <div
       ref={wrapperRef}
       style={{ flex: 1, position: 'relative', overflow: 'hidden' }}
@@ -514,18 +568,23 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
     >
       <ReactFlow
         nodes={nodes}
-        edges={edges}
+        edges={groupView.displayEdges}
         onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
+        onEdgesChange={handleEdgesChange}
         onConnect={onConnect}
         onNodeDragStart={() => record()}
         onPaneClick={() => flowStore.setState({ connectionClickStartHandle: null })}
-        onBeforeDelete={async (d) => { record(); return d }}
+        onBeforeDelete={async (d) => {
+          const folded = d.nodes.filter(n => n.type === 'groupNode' && n.data?.collapsed)
+          if (folded.length && !window.confirm(`Delete ${folded.length === 1 ? `the group “${folded[0].data.label}”` : `${folded.length} groups`} and all the programs inside?`)) return false
+          record()
+          return d
+        }}
         isValidConnection={isValidConnection}
         onDrop={onDrop}
         onDragOver={onDragOver}
         nodeTypes={NODE_TYPES}
-        deleteKeyCode={['Backspace', 'Delete']}
+        deleteKeyCode={modalLocked ? null : ['Backspace', 'Delete']}
         fitView
         fitViewOptions={{ padding: 0.2 }}
         defaultEdgeOptions={{ type: 'smoothstep' }}
@@ -660,6 +719,12 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
                       title="Copy (⌘C) — then paste with ⌘V">⎘</button>
               <button onClick={duplicateSelection} disabled={isRunning || deletableSelected.length === 0}
                       title="Duplicate (⌘D)">⧉</button>
+              {canGroup && (
+                <button onClick={grouping.groupSelection} disabled={isRunning} title="Group the selected programs (⌘G)">▣ Group</button>
+              )}
+              {canUngroup && (
+                <button onClick={grouping.ungroupSelection} disabled={isRunning} title="Ungroup (⇧⌘G)">⇱ Ungroup</button>
+              )}
               <button className="selection-pill__delete" onClick={deleteSelection}
                       disabled={isRunning || (deletableSelected.length === 0 && selectedEdges.length === 0)}
                       title="Delete (Backspace / Delete)">⌫</button>
@@ -677,12 +742,14 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
               ? 'Now click another dot to connect · Esc or click empty space to cancel'
               : <>
                   Drag or double-click programs from the sidebar · click one dot, then another, to connect<br />
-                  ⌘/Ctrl-click or Shift-drag to select several · ⌘C / ⌘V copy & paste · Delete removes · ⌘A selects all
+                  ⌘/Ctrl-click or Shift-drag to select several · ⌘G groups them · ⌘C / ⌘V copy & paste · Delete removes · ⌘A selects all
                 </>}
           </div>
         </Panel>
       </ReactFlow>
     </div>
+    </RealEdgesContext.Provider>
+    </GroupContext.Provider>
     </CanvasHistoryContext.Provider>
   )
 }

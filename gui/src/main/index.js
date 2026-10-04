@@ -502,6 +502,46 @@ app.whenReady().then(async () => {
     return { ok: missing.length === 0, missing }
   }
 
+  // Background-removal models (U²-Net family, run through onnxruntime) — opt-in, kept under models/bgremove/.
+  const BG_MODELS = {
+    u2netp: { name: 'u2netp.onnx', size: 4574861, label: 'Fast, general-purpose',
+              url: 'https://github.com/danielgatis/rembg/releases/download/v0.0.0/u2netp.onnx' },
+    u2net_human_seg: { name: 'u2net_human_seg.onnx', size: 175997641, label: 'Best for people',
+                       url: 'https://github.com/danielgatis/rembg/releases/download/v0.0.0/u2net_human_seg.onnx' }
+  }
+
+  function bgModelStatus() {
+    const { modelsDir } = getPaths()
+    const out = {}
+    for (const [id, m] of Object.entries(BG_MODELS)) {
+      const p = join(modelsDir, 'bgremove', m.name)
+      let ok = false
+      try { ok = existsSync(p) && statSync(p).size === m.size } catch { /* not installed */ }
+      out[id] = { ok, sizeMB: Math.round(m.size / 1e6), label: m.label }
+    }
+    return out
+  }
+
+  ipcMain.handle('setup:downloadBgModel', async (event, id) => {
+    const m = BG_MODELS[id]
+    if (!m) return { ok: false, error: `Unknown model: ${id}` }
+    const { modelsDir } = getPaths()
+    const dest = join(modelsDir, 'bgremove', m.name)
+    try {
+      try { if (existsSync(dest) && statSync(dest).size === m.size) return { ok: true } } catch { /* re-download */ }
+      await downloadToFile(m.url, dest, {
+        expectedSize: m.size,
+        onProgress: ({ received }) => event.sender.send('setup:downloadProgress', {
+          modelId: `bgremove-${id}`, received, total: m.size, phase: 'downloading'
+        })
+      })
+      event.sender.send('setup:downloadProgress', { modelId: `bgremove-${id}`, received: m.size, total: m.size, phase: 'done' })
+      return { ok: true }
+    } catch (err) {
+      return { ok: false, error: err.message }
+    }
+  })
+
   ipcMain.handle('setup:checkOptional', async () => {
     const [{ cmd, pre, source }, ollamaRunning] = await Promise.all([
       kokoroInvocation(),
@@ -527,7 +567,8 @@ app.whenReady().then(async () => {
     return {
       kokoro: { engine: { ...engine, source }, models: kokoroModelStatus(),
                 downloadMB: Math.round(KOKORO_FILES.reduce((n, f) => n + f.size, 0) / 1e6) },
-      ollama: { installed: ollamaInstalled, running: ollamaRunning }
+      ollama: { installed: ollamaInstalled, running: ollamaRunning },
+      bgremove: { models: bgModelStatus() }
     }
   })
 

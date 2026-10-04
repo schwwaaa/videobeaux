@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer } from 'electron'
+import { contextBridge, ipcRenderer, webUtils } from 'electron'
 
 contextBridge.exposeInMainWorld('electronAPI', {
   // File dialogs
@@ -33,6 +33,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   listKokoroVoices: () => ipcRenderer.invoke('kokoro:listVoices'),
 
   // Helper windows (Lagkage layout editor, ...)
+  // Electron 32 removed File.path — this is how a dropped File maps back to its location on disk.
+  pathForFile: (file) => { try { return webUtils.getPathForFile(file) } catch { return '' } },
   readImageDataUrl: (path, layoutPath) => ipcRenderer.invoke('files:readDataUrl', { path, layoutPath }),
   probeMedia: (path, layoutPath) => ipcRenderer.invoke('media:probe', { path, layoutPath }),
   writeLayout: (name, json) => ipcRenderer.invoke('layouts:write', { name, json }),
@@ -55,6 +57,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     return () => ipcRenderer.removeListener('setup:installProgress', handler)
   },
   downloadKokoro: () => ipcRenderer.invoke('setup:downloadKokoro'),
+  downloadBgModel: (id) => ipcRenderer.invoke('setup:downloadBgModel', id),
   openExternal: (key) => ipcRenderer.invoke('shell:openExternal', key),
   onDownloadProgress: (cb) => {
     const handler = (_, data) => cb(data)

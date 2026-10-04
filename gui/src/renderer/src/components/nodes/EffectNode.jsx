@@ -7,6 +7,7 @@ import { usePrograms } from '../../ProgramsContext'
 import { videoArgsOf, upstreamIsBatch } from '../../pipeline'
 import { useUpdateNodeData } from '../../useCanvasHistory'
 import { ARG_HELPERS } from '../helpers/registry'
+import { useRealEdges } from '../../GroupContext'
 
 /** Choices like "Pack · Name" are shown grouped under their pack; plain choices stay flat. */
 function renderChoices(choices) {
@@ -76,7 +77,7 @@ function ModelPickerField({ value, onChange }) {
           title="Browse for a model folder"
           style={{
             background: 'var(--yellow)', border: '2px solid var(--ink)', borderRadius: 5,
-            color: 'var(--ink)', padding: '4px 8px', fontSize: 11, fontWeight: 700,
+            color: 'var(--on-color)', padding: '4px 8px', fontSize: 11, fontWeight: 700,
             cursor: 'pointer', flexShrink: 0
           }}
         >
@@ -184,30 +185,36 @@ function KokoroVoicePickerField({ value, onChange }) {
 
 // ── Arg field renderer ──────────────────────────────────────────────────────
 
-/** Step for the arrow keys / spinner: explicit, else 1 for integers, else fine enough for the range. */
-function numberStep(arg) {
+/** Slider range: the declared min/max, else a soft range derived from the default (typed values may exceed it). */
+function sliderRange(arg) {
+  const d = Number.isFinite(Number(arg.default)) && arg.default !== '' ? Number(arg.default) : 0
+  let lo = arg.min != null ? arg.min : (d < 0 ? d * 4 : 0)
+  let hi = arg.max != null ? arg.max : Math.max(arg.integer ? 10 : 1, Math.abs(d) * 4)
+  if (hi <= lo) hi = lo + 1
+  return [lo, hi]
+}
+
+/** Step for the arrow keys / slider: explicit, else 1 for integers, else fine enough for the range. */
+function numberStep(arg, lo, hi) {
   if (arg.step) return arg.step
   if (arg.integer) return 1
-  const hasRange = arg.min != null && arg.max != null
-  if (hasRange) {
-    const r = arg.max - arg.min
-    if (r <= 2) return 0.01
-    if (r <= 20) return 0.1
-    if (r <= 200) return 1
-    return 1
-  }
+  const r = hi - lo
+  if (r <= 2) return 0.01
+  if (r <= 20) return 0.1
   const d = String(arg.default ?? '').split('.')[1]
-  return d ? Math.max(0.001, Math.pow(10, -d.length)) : (Number.isInteger(arg.default) ? 1 : 0.1)
+  if (d && r <= 200) return Math.max(0.01, Math.pow(10, -d.length))
+  return 1
 }
 
 /**
- * A plain, typeable number box (arrow keys step it, typed values are clamped to min/max on blur)
- * plus a slider whenever the argument has a known range. `step="any"` used to make the browser's
- * arrows do nothing, so every number box now gets a real step.
+ * A typeable number box (arrow keys step it, typed values are clamped to min/max on blur) with a slider
+ * next to it — always. When the program declares no range the slider uses a soft range from the default,
+ * and anything typed outside it is still accepted. (`step="any"` used to make the arrows do nothing.)
  */
 function NumberField({ arg, value, onChange, inputStyle }) {
-  const hasRange = arg.min != null && arg.max != null
-  const step = numberStep(arg)
+  const [lo, hi] = sliderRange(arg)
+  const step = numberStep(arg, lo, hi)
+  const showSlider = !arg.free
   const shown = value !== undefined && value !== '' ? value : (arg.default !== undefined ? arg.default : '')
   const clamp = (v) => {
     let n = Number(v)
@@ -217,24 +224,25 @@ function NumberField({ arg, value, onChange, inputStyle }) {
     return arg.integer ? Math.round(n) : n
   }
   const decimals = (String(step).split('.')[1] || '').length
+  const numeric = Number.isFinite(Number(shown)) && shown !== '' ? Number(shown) : lo
   return (
     <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-      {hasRange && (
+      {showSlider && (
         <input
           className="nodrag"
           type="range"
-          min={arg.min}
-          max={arg.max}
+          min={lo}
+          max={hi}
           step={step}
-          value={Number.isFinite(Number(shown)) && shown !== '' ? Number(shown) : arg.min}
+          value={Math.min(hi, Math.max(lo, numeric))}
           onChange={e => onChange(arg.integer ? Number(e.target.value) : Number(Number(e.target.value).toFixed(decimals + 1)))}
-          style={{ flex: 1, minWidth: 0, accentColor: 'var(--purple)', cursor: 'pointer' }}
+          style={{ flex: 1, minWidth: 0, accentColor: 'var(--slider)', cursor: 'pointer' }}
         />
       )}
       <input
         className="nodrag"
         type="number"
-        style={{ ...inputStyle, width: hasRange ? 68 : '100%', flexShrink: 0 }}
+        style={{ ...inputStyle, width: showSlider ? 68 : '100%', flexShrink: 0 }}
         value={shown}
         min={arg.min}
         max={arg.max}
@@ -302,7 +310,7 @@ function ArgField({ arg, value, onChange, programId, nodeId }) {
             background: 'var(--yellow)',
             border: '2px solid var(--ink)',
             borderRadius: 5,
-            color: 'var(--ink)',
+            color: 'var(--on-color)',
             padding: '4px 8px',
             fontSize: 11,
             fontWeight: 700,
@@ -400,7 +408,7 @@ function ArgField({ arg, value, onChange, programId, nodeId }) {
           className="nodrag"
           checked={value !== undefined ? !!value : !!arg.default}
           onChange={e => onChange(e.target.checked)}
-          style={{ accentColor: 'var(--purple)', cursor: 'pointer' }}
+          style={{ accentColor: 'var(--slider)', cursor: 'pointer' }}
         />
         <span style={{ fontSize: 11, color: 'var(--muted-dim)' }}>Enabled</span>
       </label>
@@ -523,7 +531,7 @@ function MediaInputRow({ nodeId, arg, value, onChange, color }) {
             title="Choose file"
             style={{
               background: 'var(--yellow)', border: '2px solid var(--ink)', borderRadius: 5,
-              color: 'var(--ink)', padding: '4px 8px', fontSize: 11, fontWeight: 700,
+              color: 'var(--on-color)', padding: '4px 8px', fontSize: 11, fontWeight: 700,
               cursor: 'pointer', flexShrink: 0
             }}
           >
@@ -538,7 +546,8 @@ function MediaInputRow({ nodeId, arg, value, onChange, color }) {
 // ── EffectNode ──────────────────────────────────────────────────────────────
 
 export default function EffectNode({ id, data, selected }) {
-  const { deleteElements, getNodes, getEdges } = useReactFlow()
+  const { deleteElements, getNodes } = useReactFlow()
+  const realEdges = useRealEdges()
   const updateNodeData = useUpdateNodeData()
   const { programMap }     = usePrograms()
   const [expanded, setExpanded] = useState(true)
@@ -575,7 +584,7 @@ export default function EffectNode({ id, data, selected }) {
   // like qwikchop) — walks the whole upstream chain, not just one hop, since
   // batch-ness propagates through ordinary effects too.
   const isBatchUpstream = primaryConn
-    ? upstreamIsBatch(id, getNodes(), getEdges(), programMap)
+    ? upstreamIsBatch(id, getNodes(), realEdges, programMap)
     : false
   let batchLabel = 'Batch'
   if (primaryUpstream?.type === 'inputNode') {
@@ -636,10 +645,9 @@ export default function EffectNode({ id, data, selected }) {
           display: 'flex',
           alignItems: 'center',
           gap: 7,
-          cursor: hasCollapsible ? 'pointer' : 'default',
+          cursor: 'default',
           userSelect: 'none'
         }}
-        onClick={() => hasCollapsible && setExpanded(x => !x)}
       >
         {/* Colour dot */}
         <div style={{ width: 9, height: 9, borderRadius: '50%', background: 'var(--paper)', border: '2px solid var(--ink)', flexShrink: 0 }} />
@@ -650,20 +658,22 @@ export default function EffectNode({ id, data, selected }) {
           fontSize: 11, fontWeight: 700,
           letterSpacing: '0.07em',
           textTransform: 'uppercase',
-          color: 'var(--ink)',
+          color: 'var(--on-color)',
           flex: 1
         }}>
           {prog.label}
         </span>
 
-        {/* Collapse chevron */}
+        {/* Collapse / expand — only this button toggles, so clicking the header or name just selects the node */}
         {hasCollapsible && (
-          <span style={{
-            fontSize: 10, color: 'var(--ink)',
-            transform: expanded ? 'rotate(0deg)' : 'rotate(-90deg)',
-            transition: 'transform 0.15s',
-            marginRight: 4
-          }}>▼</span>
+          <button
+            className="nodrag node-caret"
+            onClick={e => { e.stopPropagation(); setExpanded(x => !x) }}
+            title={expanded ? 'Collapse' : 'Expand'}
+            aria-label={expanded ? 'Collapse program' : 'Expand program'}
+          >
+            {expanded ? '▾' : '▸'}
+          </button>
         )}
 
         {/* Delete button */}
@@ -674,7 +684,7 @@ export default function EffectNode({ id, data, selected }) {
           style={{
             background: 'transparent',
             border: 'none',
-            color: 'var(--ink)',
+            color: 'var(--on-color)',
             fontSize: 14,
             lineHeight: 1,
             padding: '0 2px',
@@ -686,7 +696,7 @@ export default function EffectNode({ id, data, selected }) {
             transition: 'color 0.1s'
           }}
           onMouseEnter={e => e.currentTarget.style.color = 'var(--coral)'}
-          onMouseLeave={e => e.currentTarget.style.color = 'var(--ink)'}
+          onMouseLeave={e => e.currentTarget.style.color = 'var(--on-color)'}
         >
           ✕
         </button>

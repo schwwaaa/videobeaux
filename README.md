@@ -5,7 +5,7 @@
 <p align="center"><em>The friendly multilateral video toolkit built for artists by artists. It's your best friend.</em></p>
 
 <p align="center">
-  <strong>147 effect/utility programs</strong> · node-based GUI + scriptable CLI · <strong>100% local</strong> — no cloud, no accounts, no API keys
+  <strong>148 effect/utility programs</strong> · node-based GUI + scriptable CLI · <strong>100% local</strong> — no cloud, no accounts, no API keys
 </p>
 
 ---
@@ -15,7 +15,7 @@ Videobeaux is a video-processing toolkit built around one big library of effects
 - **The GUI**: drag effect nodes onto a canvas, wire them together into a pipeline, hit Run.
 - **The CLI**: `python3 -m videobeaux.cli -P <program> -i input.mp4 -o output.mp4 [options]`, script it however you want.
 
-Both sit on the exact same 147 programs — nothing is GUI-exclusive or CLI-exclusive except a couple of legacy modes noted below. Everything runs on your machine. The one genuinely optional exception — AI narration scripting via a local [Ollama](https://ollama.com) model — is opt-in and the app works completely fine without it.
+Both sit on the exact same 148 programs — nothing is GUI-exclusive or CLI-exclusive except a couple of legacy modes noted below. Everything runs on your machine. The one genuinely optional exception — AI narration scripting via a local [Ollama](https://ollama.com) model — is opt-in and the app works completely fine without it.
 
 <p align="center">
   <img width="100%" src="img/gui-canvas.png"/>
@@ -67,7 +67,7 @@ Reopen this screen anytime from the **⚙ Setup** button in the header — it's 
 
 ### What you get
 
-- **A node canvas** — drag any of the 147 programs onto it, wire Input → effects → Output. Multiple effects chain into one pipeline; branch one output into several downstream effects.
+- **A node canvas** — drag any of the 148 programs onto it, wire Input → effects → Output. Multiple effects chain into one pipeline; branch one output into several downstream effects.
 - **Batch mode** — point an Input node at a folder instead of a file and the whole pipeline runs once per video. Programs that natively produce many files from one input (Qwikchop, Qwikchop Deluxe, Extract Frames) fan out automatically.
 - **Save/load presets** — snapshot the whole node graph (including every field you've filled in) to a `.vbpreset.json` file and reload it later.
 - **Live model pickers** — Vosk (speech-to-text), Ollama (local LLM), and kokoro-tts voice dropdowns are all populated by asking the actual installed tool what it has, not a hardcoded list — install a new model and it just shows up.
@@ -77,6 +77,7 @@ Reopen this screen anytime from the **⚙ Setup** button in the header — it's 
 
 - **Connect with two clicks** — click a dot, a line follows your cursor, click another dot. (Dragging still works; Esc or a click on empty space cancels.)
 - **Select several** — ⌘/Ctrl-click, Shift-drag a box, or ⌘A; selected programs get a bold yellow ring and a banner with a Delete button. Backspace/Delete removes them all (undo with ⌘Z).
+- **Groups** — select two or more programs and press ⌘G (or *Group*): they move together, can be locked, renamed and colored, and a caret folds the whole group into one compact card (⇧⌘G ungroups). Folding is only visual — connections and what runs are unchanged.
 - **Copy / paste** — select programs, ⌘C, then ⌘V pastes them (with the connections between them) at your cursor; ⌘D duplicates in place. The small bar at the bottom-left has the same buttons and can be switched off under 🎨 Appearance.
 - **Number fields** — type a value or use the arrow keys; anything with a known range also gets a slider, and typed values are clamped to the range.
 - **Layout editor (Lagkage)** — press ✎ next to *Layout JSON* to drag images, GIFs and videos onto a stand-in for your video instead of writing JSON. Positions are saved as percentages, so a layout works at any resolution. The same ✎ button mechanism (`components/helpers/registry.js`) can host editors for other programs.
@@ -189,7 +190,7 @@ Speech-recognition models are **not** bundled into the installer (they run ~7GB 
 
 ## Programs
 
-147 programs appear in the GUI sidebar (plus a few CLI-only ones), grouped the same way here. Any program can be run standalone from the CLI regardless of category.
+148 programs appear in the GUI sidebar (plus a few CLI-only ones), grouped the same way here. Any program can be run standalone from the CLI regardless of category.
 
 <details>
 <summary><strong>⚡ Glitch & Corruption</strong> (21)</summary>
@@ -349,13 +350,14 @@ _Computer vision (OpenCV) — face tracking, redaction and reframing, motion iso
 </details>
 
 <details>
-<summary><strong>⊞ Layout & Overlay</strong> (10)</summary>
+<summary><strong>⊞ Layout & Overlay</strong> (11)</summary>
 
 _Put things on top of or next to each other — overlays, stacks, multi-layer composites._
 
 | Program | Description |
 |---|---|
 | Watermark / Image Overlay | Overlay a watermark or image onto the video — 9-point placement or custom X/Y, scale or exact pixel sizing, opacity, spin, and a timed enable window |
+| Remove Background | Cut the subject out and put anything behind it — or export transparent WebM/MOV. Static-camera mode needs no download; optional local AI models (U²-Net) for harder shots |
 | Chroma Key | Remove a green/blue screen (or any solid color) and put a color, image or another video behind — or export transparent WebM/MOV. Auto-detects the screen color |
 | Luma Key | Knock out the darks or brights (black backgrounds, white skies); screen/add blend modes for fire, smoke and light leaks |
 | Stack 2× | Stack two videos vertically (input on top, input2 on bottom) |

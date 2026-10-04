@@ -31,13 +31,13 @@ const styles = {
   }),
   mono: { fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--muted-dim)' },
   button: (accent) => ({
-    background: accent || 'var(--yellow)', color: 'var(--ink)',
+    background: accent || 'var(--yellow)', color: 'var(--on-color)',
     padding: '8px 16px', borderRadius: 'var(--radius-sm)',
     fontFamily: 'var(--font-display)', fontSize: 11,
     border: 'var(--border)', boxShadow: 'var(--shadow-sm)', cursor: 'pointer', flexShrink: 0
   }),
   buttonSmall: (accent) => ({
-    background: accent || 'var(--paper)', color: 'var(--ink)',
+    background: accent || 'var(--paper)', color: accent ? 'var(--on-color)' : 'var(--ink)',
     padding: '5px 10px', borderRadius: 'var(--radius-sm)',
     fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: 10,
     border: 'var(--border)', boxShadow: 'var(--shadow-sm)', cursor: 'pointer', flexShrink: 0
@@ -121,6 +121,8 @@ export default function SetupScreen({ onClose }) {
   const [wantSpeech, setWantSpeech] = useState(false)
   const [speechId, setSpeechId] = useState(null)
   const [wantVoice, setWantVoice] = useState(false)
+  const [wantBgFast, setWantBgFast] = useState(false)
+  const [wantBgPeople, setWantBgPeople] = useState(false)
   const [aiBusy, setAiBusy] = useState(false)
   const [aiStatus, setAiStatus] = useState(null)      // { label, received, total }
   const [aiError, setAiError] = useState(null)
@@ -154,7 +156,10 @@ export default function SetupScreen({ onClose }) {
 
   const speechInstalled = catalog.some(m => installedModels.includes(m.id))
   const voiceInstalled = !!optional?.kokoro?.models?.ok
-  const anySelected = (wantSpeech && !speechInstalled) || (wantVoice && !voiceInstalled)
+  const bgModels = optional?.bgremove?.models || {}
+  const bgInstalled = (id) => !!bgModels[id]?.ok
+  const anySelected = (wantSpeech && !speechInstalled) || (wantVoice && !voiceInstalled) ||
+    (wantBgFast && !bgInstalled('u2netp')) || (wantBgPeople && !bgInstalled('u2net_human_seg'))
   const engineReady = !!env?.ready
 
   const finish = useCallback(() => { setSetupSeen(true); onClose() }, [setSetupSeen, onClose])
@@ -173,6 +178,13 @@ export default function SetupScreen({ onClose }) {
         setAiStatus({ label: 'Downloading the narration voice…', received: 0, total: 0 })
         const r = await window.electronAPI.downloadKokoro()
         if (!r.ok) throw new Error(`Narration voice: ${r.error}`)
+      }
+      for (const [want, id, label] of [[wantBgFast, 'u2netp', 'the background-removal model'], [wantBgPeople, 'u2net_human_seg', 'the people background-removal model']]) {
+        if (want && !bgInstalled(id)) {
+          setAiStatus({ label: `Downloading ${label}…`, received: 0, total: 0 })
+          const r = await window.electronAPI.downloadBgModel(id)
+          if (!r.ok) throw new Error(`Background removal (${id}): ${r.error}`)
+        }
       }
       setAiStatus(null)
       setAiBusy(false)
@@ -266,7 +278,7 @@ Video tools: ${env.ffmpeg.ok && env.ffprobe.ok ? (env.ffmpegCapable ? 'ok' : 'pr
             {speechInstalled
               ? <Badge ok={true} />
               : <input type="checkbox" checked={wantSpeech} onChange={e => setWantSpeech(e.target.checked)} disabled={aiBusy}
-                  style={{ width: 18, height: 18, accentColor: 'var(--purple)' }} />}
+                  style={{ width: 18, height: 18, accentColor: 'var(--slider)' }} />}
             <span style={{ flex: 1 }}>
               <b>Speech recognition</b> — turns spoken words into text
               <div style={styles.mono}>Used by transcription, caption and “find the spoken word” modes{speechInstalled ? ' · installed' : ''}</div>
@@ -277,7 +289,7 @@ Video tools: ${env.ffmpeg.ok && env.ffprobe.ok ? (env.ffmpegCapable ? 'ok' : 'pr
               {speechOptions.map(m => (
                 <label key={m.id} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, cursor: 'pointer' }}>
                   <input type="radio" name="speech" checked={speechId === m.id} onChange={() => setSpeechId(m.id)} disabled={aiBusy}
-                    style={{ accentColor: 'var(--purple)' }} />
+                    style={{ accentColor: 'var(--slider)' }} />
                   {m.label}
                 </label>
               ))}
@@ -290,7 +302,7 @@ Video tools: ${env.ffmpeg.ok && env.ffprobe.ok ? (env.ffmpegCapable ? 'ok' : 'pr
             {voiceInstalled
               ? <Badge ok={true} />
               : <input type="checkbox" checked={wantVoice} onChange={e => setWantVoice(e.target.checked)} disabled={aiBusy}
-                  style={{ width: 18, height: 18, accentColor: 'var(--purple)' }} />}
+                  style={{ width: 18, height: 18, accentColor: 'var(--slider)' }} />}
             <span style={{ flex: 1 }}>
               <b>Narration voice</b> — reads a script aloud
               <div style={styles.mono}>
@@ -298,6 +310,24 @@ Video tools: ${env.ffmpeg.ok && env.ffprobe.ok ? (env.ffmpegCapable ? 'ok' : 'pr
               </div>
             </span>
           </label>
+        </div>
+
+        <div style={styles.card}>
+          <div style={{ ...styles.row, alignItems: 'flex-start' }}>
+            <span style={{ flex: 1 }}>
+              <b>Background removal</b> — cut subjects out of video
+              <div style={styles.mono}>Used by Remove Background (its “static camera” mode needs no download)</div>
+              {[['u2netp', wantBgFast, setWantBgFast, 'Fast, general-purpose'], ['u2net_human_seg', wantBgPeople, setWantBgPeople, 'Best for people']].map(([id, want, setWant, label]) => (
+                <label key={id} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, marginTop: 6, cursor: bgInstalled(id) ? 'default' : 'pointer' }}>
+                  {bgInstalled(id)
+                    ? <Badge ok={true} />
+                    : <input type="checkbox" checked={want} onChange={e => setWant(e.target.checked)} disabled={aiBusy}
+                        style={{ width: 16, height: 16, accentColor: 'var(--slider)' }} />}
+                  {label} · {optional ? `~${bgModels[id]?.sizeMB ?? '?'} MB` : ''}{bgInstalled(id) ? ' · installed' : ''}
+                </label>
+              ))}
+            </span>
+          </div>
         </div>
 
         <div style={{ ...styles.mono, marginTop: 4 }}>

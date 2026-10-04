@@ -208,6 +208,7 @@ export const CATEGORIES = [
         description: 'Overlay a watermark or image onto the video — 9-point placement or custom X/Y, scale or exact pixel sizing, opacity, spin, and a timed enable window',
         args: []
       },
+      { id: 'remove_background', label: 'Remove Background', description: 'Cut the subject out and put anything behind it — or export transparent WebM/MOV. Static-camera mode needs no download; optional local AI models for harder shots', args: [] },
       { id: 'chroma_key', label: 'Chroma Key', description: 'Remove a green/blue screen (or any solid color) and put a color, image or another video behind — or export transparent WebM/MOV. Auto-detects the screen color', args: [] },
       { id: 'luma_key', label: 'Luma Key', description: 'Knock out the darks or brights (black backgrounds, white skies); screen/add blend modes for fire, smoke and light leaks', args: [] },
       {

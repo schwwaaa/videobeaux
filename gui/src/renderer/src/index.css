@@ -48,6 +48,7 @@
    outlines, flat optimistic color, comic-book offset shadows, warm paper bg. */
 :root {
   --ink:         #080808;
+  --on-color:    #080808;   /* text on the bright category/accent colors — stays dark in both themes */
   --paper:       #fffdf6;
   --paper-dim:   #f3f1e7;
   --muted:       #8a8a80;
@@ -89,6 +90,7 @@
      Settings, applied as inline overrides on this same :root by
      SettingsContext) with --shadow/--shadow-sm composed from them, so
      every consumer of --shadow picks up a change with no other edits. */
+  --slider:           #8654aa;   /* slider / checkbox accent — configurable in Appearance */
   --shadow-offset:    5px;
   --shadow-offset-sm: 3px;
   --shadow-color:     var(--ink);
@@ -114,8 +116,8 @@
   --ink:         #f3f1e7;
   --paper:       #1c1a22;
   --paper-dim:   #242229;
-  --muted:       #9a9a92;
-  --muted-dim:   #78786e;
+  --muted:       #b4b4ac;
+  --muted-dim:   #a0a098;
   --gray:        #2c2a33;
   --paper-dot:   #34323c;
 }
@@ -207,6 +209,9 @@ html, body, #root {
     0 0 0 5px var(--ink),
     calc(var(--shadow-offset) + 5px) calc(var(--shadow-offset) + 5px) 0 var(--shadow-color) !important;
 }
+.react-flow__node-groupNode.selected > div:first-child {
+  box-shadow: 0 0 0 3px var(--yellow), 0 0 0 5px var(--ink) !important;
+}
 .react-flow__nodesselection-rect, .react-flow__selection {
   background: rgba(255, 229, 0, 0.12) !important;
   border: 2px dashed var(--ink) !important;
@@ -244,6 +249,19 @@ button:not(:disabled), select, summary, [role="button"], label[for], input[type=
   cursor: var(--cursor-pointer) !important;
 }
 button:disabled { cursor: not-allowed !important; }
+input[type="range"], input[type="checkbox"], input[type="radio"] { accent-color: var(--slider); }
+
+/* Program-node collapse button (the only thing that collapses a node). */
+.node-caret {
+  width: 24px; height: 24px; padding: 0; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: #fffdf6; color: #080808;
+  border: 2px solid #080808; border-radius: 6px;
+  box-shadow: 2px 2px 0 #080808;
+  font-size: 13px; line-height: 1;
+}
+.node-caret:hover { background: var(--yellow); }
+.node-caret:active { transform: translate(2px, 2px); box-shadow: none; }
 
 /* ── Utility ───────────────────────────────────────────────────────────────── */
 button {

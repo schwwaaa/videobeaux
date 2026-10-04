@@ -8,7 +8,7 @@ import { useSettings } from '../SettingsContext'
  */
 export default function AppearanceMenu() {
   const { theme, toggleTheme, shadowOffset, shadowColor, shadowsEnabled,
-    setShadowOffset, setShadowColor, setShadowsEnabled, showSelectionBar, setShowSelectionBar } = useSettings()
+    setShadowOffset, setShadowColor, setShadowsEnabled, showSelectionBar, setShowSelectionBar, sliderColor, setSliderColor } = useSettings()
   const [open, setOpen] = useState(false)
   const wrapRef = useRef(null)
 
@@ -71,10 +71,39 @@ export default function AppearanceMenu() {
                   type="checkbox"
                   checked={showSelectionBar}
                   onChange={e => setShowSelectionBar(e.target.checked)}
-                  style={{ accentColor: 'var(--purple)', cursor: 'pointer' }}
+                  style={{ accentColor: 'var(--slider)', cursor: 'pointer' }}
                 />
                 <span style={{ fontSize: 10, color: 'var(--muted-dim)' }}>Show</span>
               </label>
+            </div>
+
+            <div style={{ height: 1, background: 'var(--gray)' }} />
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: 11 }}>Slider color</span>
+              <div style={{ display: 'flex', gap: 5, alignItems: 'center' }}>
+                <input
+                  type="color"
+                  value={/^#[0-9a-fA-F]{6}$/.test(sliderColor) ? sliderColor : '#8654aa'}
+                  onChange={e => setSliderColor(e.target.value)}
+                  title="Slider color"
+                  style={{ width: 32, height: 28, padding: 0, border: '2px solid var(--ink)', borderRadius: 6, background: 'none', flexShrink: 0 }}
+                />
+                <input
+                  type="text"
+                  value={sliderColor}
+                  onChange={e => setSliderColor(e.target.value)}
+                  style={{ flex: 1, minWidth: 0, fontFamily: 'var(--font-mono)', fontSize: 11, border: '2px solid var(--ink)',
+                           borderRadius: 6, padding: '4px 8px', background: 'var(--paper)', color: 'var(--ink)' }}
+                />
+              </div>
+              <div style={{ display: 'flex', gap: 6 }}>
+                {[['#8654aa', 'purple'], ['#ff6847', 'coral'], ['#32b9df', 'cyan'], ['#a8ad23', 'lime'], ['#ffe500', 'yellow'], ['#d52c91', 'magenta']].map(([c, n]) => (
+                  <button key={c} title={n} onClick={() => setSliderColor(c)}
+                          style={{ width: 22, height: 22, padding: 0, borderRadius: '50%', background: c,
+                                   border: sliderColor.toLowerCase() === c ? '3px solid var(--ink)' : '2px solid var(--ink)' }} />
+                ))}
+              </div>
             </div>
 
             <div style={{ height: 1, background: 'var(--gray)' }} />
@@ -88,7 +117,7 @@ export default function AppearanceMenu() {
                   type="checkbox"
                   checked={shadowsEnabled}
                   onChange={e => setShadowsEnabled(e.target.checked)}
-                  style={{ accentColor: 'var(--purple)', cursor: 'pointer' }}
+                  style={{ accentColor: 'var(--slider)', cursor: 'pointer' }}
                 />
                 <span style={{ fontSize: 10, color: 'var(--muted-dim)' }}>Enabled</span>
               </label>
@@ -106,7 +135,7 @@ export default function AppearanceMenu() {
                 value={shadowOffset}
                 disabled={!shadowsEnabled}
                 onChange={e => setShadowOffset(Number(e.target.value))}
-                style={{ accentColor: 'var(--purple)', cursor: shadowsEnabled ? 'pointer' : 'default' }}
+                style={{ accentColor: 'var(--slider)', cursor: shadowsEnabled ? 'pointer' : 'default' }}
               />
             </label>
 

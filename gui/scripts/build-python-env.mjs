@@ -151,6 +151,7 @@ function stageVideobeaux() {
   const guiDest = join(RESOURCES, 'gui')
   mkdirSync(guiDest, { recursive: true })
   copyFileSync(join(GUI_ROOT, 'discover_programs.py'), join(guiDest, 'discover_programs.py'))
+  copyFileSync(join(GUI_ROOT, 'arg_ranges.py'), join(guiDest, 'arg_ranges.py'))
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────

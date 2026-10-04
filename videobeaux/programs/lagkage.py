@@ -418,8 +418,24 @@ def run(args):
         if zoom < 1.0:
             zoom = 1.0
 
-        # compute overlay box size
+        # compute overlay box size (aspect from the source, unless the layout stretches it with height_pct)
         box_w, box_h = _compute_overlay_box(base_w, src_w, src_h, size_pct)
+        if layer.get("height_pct") is not None:
+            box_h = _even(max(2, int(base_h * float(layer["height_pct"]) / 100.0)))
+
+        # optional blur (percent of base width → sigma px) and rotation (degrees, about the box centre)
+        blur_sigma = max(0.0, float(layer.get("blur", 0.0) or 0.0)) * base_w / 100.0
+        pad = _even(int(math.ceil(blur_sigma * 3))) if blur_sigma > 0.05 else 0
+        rot_deg = float(layer.get("rotate", 0.0) or 0.0)
+        lay_w, lay_h = box_w + 2 * pad, box_h + 2 * pad          # box plus blur margin
+        if abs(rot_deg) % 360 > 0.01:
+            a = math.radians(rot_deg)
+            out_w = _even(int(math.ceil(abs(lay_w * math.cos(a)) + abs(lay_h * math.sin(a)))))
+            out_h = _even(int(math.ceil(abs(lay_w * math.sin(a)) + abs(lay_h * math.cos(a)))))
+        else:
+            out_w, out_h = lay_w, lay_h
+        # overlay coordinates are for the unrotated box; shift so the layer's centre stays put
+        shift_x, shift_y = (out_w - box_w) // 2, (out_h - box_h) // 2
 
         mode = (layer.get("mode") or "place").lower()
         if mode == "free":
@@ -477,8 +493,15 @@ def run(args):
                 f"crop={box_w}:{box_h}:(iw-{box_w})/2:(ih-{box_h})/2"
             )
 
-        # Force RGBA and apply opacity
+        # Force RGBA, then blur / rotate on a transparent canvas, then apply opacity
         layer_filters.append("format=rgba")
+        if pad:
+            layer_filters.append(f"pad={lay_w}:{lay_h}:{pad}:{pad}:color=0x00000000")
+            layer_filters.append(f"gblur=sigma={blur_sigma:.2f}")
+        if (out_w, out_h) != (lay_w, lay_h) or abs(rot_deg) % 360 > 0.01:
+            layer_filters.append(
+                f"rotate={math.radians(rot_deg):.6f}:ow={out_w}:oh={out_h}:c=0x00000000"
+            )
         layer_filters.append(f"colorchannelmixer=aa={opacity}")
 
         filter_parts.append(f"{in_label}{','.join(layer_filters)}{layer_label}")
@@ -486,7 +509,7 @@ def run(args):
         # overlay
         filter_parts.append(
             f"{current_label}{layer_label}"
-            f"overlay=x={x_expr}:y={y_expr}:format=auto"
+            f"overlay=x={x_expr}-{shift_x}:y={y_expr}-{shift_y}:format=auto"
             f"{next_label}"
         )
 

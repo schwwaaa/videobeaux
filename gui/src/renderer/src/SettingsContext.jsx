@@ -8,7 +8,8 @@ const DEFAULTS = {
   shadowColor: '#080808',
   shadowsEnabled: true,
   setupSeen: false,
-  showSelectionBar: true
+  showSelectionBar: true,
+  sliderColor: '#8654aa'
 }
 
 /**
@@ -38,7 +39,8 @@ export function SettingsProvider({ children }) {
     root.style.setProperty('--shadow-offset', `${offset}px`)
     root.style.setProperty('--shadow-offset-sm', `${Math.round(offset * 0.6)}px`)
     root.style.setProperty('--shadow-color', settings.shadowColor)
-  }, [settings.theme, settings.shadowOffset, settings.shadowColor, settings.shadowsEnabled])
+    root.style.setProperty('--slider', settings.sliderColor)
+  }, [settings.theme, settings.shadowOffset, settings.shadowColor, settings.shadowsEnabled, settings.sliderColor])
 
   function update(patch) {
     setSettingsState(prev => {
@@ -57,7 +59,8 @@ export function SettingsProvider({ children }) {
     setShadowColor: (shadowColor) => update({ shadowColor }),
     setShadowsEnabled: (shadowsEnabled) => update({ shadowsEnabled }),
     setSetupSeen: (setupSeen) => update({ setupSeen }),
-    setShowSelectionBar: (showSelectionBar) => update({ showSelectionBar })
+    setShowSelectionBar: (showSelectionBar) => update({ showSelectionBar }),
+    setSliderColor: (sliderColor) => update({ sliderColor })
   }
 
   return (

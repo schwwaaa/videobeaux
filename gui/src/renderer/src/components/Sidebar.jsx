@@ -136,7 +136,7 @@ export default function Sidebar({ canvasActions }) {
                   fontWeight: 700,
                   letterSpacing: '0.1em',
                   textTransform: 'uppercase',
-                  color: 'var(--ink)',
+                  color: 'var(--on-color)',
                   background: cat.color,
                   border: '2px solid var(--ink)',
                   borderRadius: 4,
@@ -163,7 +163,7 @@ export default function Sidebar({ canvasActions }) {
                       style={{
                         padding: '5px 12px 5px 22px',
                         fontSize: 12,
-                        color: 'var(--muted-dim)',
+                        color: 'var(--ink)',
                         cursor: 'grab',
                         borderRadius: 5,
                         margin: '0 4px',
@@ -178,7 +178,7 @@ export default function Sidebar({ canvasActions }) {
                       }}
                       onMouseOut={e => {
                         e.currentTarget.style.background = 'transparent'
-                        e.currentTarget.style.color = 'var(--muted-dim)'
+                        e.currentTarget.style.color = 'var(--ink)'
                       }}
                     >
                       <span style={{

@@ -35,7 +35,7 @@ const styles = {
     fontWeight: 700,
     letterSpacing: '0.08em',
     textTransform: 'uppercase',
-    color: 'var(--ink)'
+    color: 'var(--on-color)'
   },
   body: {
     padding: '10px 12px',
@@ -73,7 +73,7 @@ const styles = {
     background: 'var(--yellow)',
     border: '2px solid var(--ink)',
     borderRadius: 6,
-    color: 'var(--ink)',
+    color: 'var(--on-color)',
     padding: '5px 10px',
     fontSize: 12,
     fontWeight: 700,

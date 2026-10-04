@@ -117,11 +117,12 @@ def _encode_args(out: Path, transparent: bool, crf: int, has_aud: bool):
 
 
 def run_key(args, key_chain: str, *, spill: str | None = None, spill_mix: float = 0.0,
-            invert: bool = False, blend_mode: str | None = None):
+            invert: bool = False, blend_mode: str | None = None, matte_path: str | None = None):
     """
     key_chain: ffmpeg filter snippet taking the (even-sized) foreground and producing a stream WITH alpha,
     e.g. "chromakey=color=0x00B140:similarity=0.15:blend=0.05". When `blend_mode` is given (screen/addition/
-    lighten...) no matte is used: the clip is blended straight onto the background instead.
+    lighten...) no matte is used: the clip is blended straight onto the background instead. When `matte_path`
+    is given, that grayscale video (white = keep) supplies the alpha instead of a key filter.
     """
     info = probe_video(args.input)
     W, H = info.width - info.width % 2, info.height - info.height % 2
@@ -156,6 +157,11 @@ def run_key(args, key_chain: str, *, spill: str | None = None, spill_mix: float 
         cmd += ["-f", "lavfi", "-i", f"color=c={ff_color(args.bg_color)}:s={W}x{H}:r={fps:.6f}"]
         bg_chain = "[1:v]format=yuv420p[bg]"
 
+    matte_index = None
+    if matte_path:
+        matte_index = cmd.count('-i')              # position of the matte among the inputs
+        cmd += ['-i', str(matte_path)]
+
     # ── filter graph ─────────────────────────────────────────────────────────
     fg_prep = f"[0:v]crop={W}:{H}:0:0,setsar=1"
     g = []
@@ -164,9 +170,20 @@ def run_key(args, key_chain: str, *, spill: str | None = None, spill_mix: float 
         g.append(bg_chain)
         g.append(f"[bg][fg]blend=all_mode={blend_mode}:shortest=1,format=yuv420p[out]")
     else:
-        chain = f"{fg_prep},{key_chain}"
+        def attach(chain, tail):                    # append a filter to a chain, or to a bare [label]
+            return f"{chain}{tail}" if chain.endswith("]") else f"{chain},{tail}"
+
+        if matte_index is not None:
+            g.append(f"{fg_prep},format=yuv420p[fgsrc]")
+            # the matte video is limited-range gray: expand to full range so white = 1.0, black = 0.0
+            g.append(f"[{matte_index}:v]scale={W}:{H}:flags=bicubic,scale=in_range=tv:out_range=pc,format=gray,"
+                     f"fps={fps:.6f}[mt]")
+            g.append("[fgsrc][mt]alphamerge[fga]")
+            chain = "[fga]"
+        else:
+            chain = f"{fg_prep},{key_chain}"
         if spill and spill_mix > 0:
-            chain += f",format=gbrap,despill=type={spill}:mix={min(1.0, spill_mix):.3f}:expand=0:brightness=0"
+            chain = attach(chain, f"format=gbrap,despill=type={spill}:mix={min(1.0, spill_mix):.3f}:expand=0:brightness=0")
         shrink = max(0, min(10, int(args.shrink)))
         feather = max(0.0, min(10.0, float(args.feather)))
         if shrink or feather > 0 or invert:
@@ -176,11 +193,11 @@ def run_key(args, key_chain: str, *, spill: str | None = None, spill_mix: float 
             m += ",erosion" * shrink
             if feather > 0:
                 m += f",gblur=sigma={feather:.2f}"
-            g.append(f"{chain},format=gbrap,split[ka][kb]")
+            g.append(attach(chain, "format=gbrap,split[ka][kb]"))
             g.append(f"[ka]{m}[km]")
             g.append("[kb][km]alphamerge[fg]")
         else:
-            g.append(f"{chain}[fg]")
+            g.append(attach(chain, "null[fg]"))
         if view == "matte":
             g.append("[fg]alphaextract,format=yuv420p[out]")
         elif transparent:
