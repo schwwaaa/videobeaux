@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Videobeaux is a friendly command-line video toolkit for creating effects, repairing media, extracting assets, and automating video workflows.">
+    <meta name="description" content="Videobeaux is a friendly video toolkit for creating effects, repairing media, extracting assets, and automating video workflows.">
     <meta name="theme-color" content="#a8ad23">
     <title>Videobeaux — Break, Bend, Repair & Automate Video</title>
     <link href="assets/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png" />
@@ -1230,6 +1230,23 @@
             letter-spacing: 0.16em;
             text-transform: uppercase;
         }
+
+        /* Video comparison only; existing page styling is unchanged. */
+        .video-shell { --reveal:50%; aspect-ratio:16/9; min-height:0; background:#000; }
+        .video-shell video { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; }
+        #example-video { clip-path:inset(0 0 0 var(--reveal)); }
+        .comparison-divider { position:absolute; left:var(--reveal); top:0; bottom:0; width:3px; background:var(--yellow); pointer-events:none; }
+        .comparison-divider::after { content:'↔'; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); border:2px solid #000; border-radius:50%; background:var(--yellow); color:#000; padding:7px 12px; }
+        #comparison-slider { position:absolute; inset:0; width:100%; height:100%; margin:0; opacity:0; cursor:ew-resize; z-index:3; touch-action:pan-y; }
+        .video-shell:focus-within { outline:3px solid var(--yellow); outline-offset:4px; }
+        .comparison-label { position:absolute; top:10px; padding:3px 8px; background:#000; color:#fff; font:600 12px monospace; pointer-events:none; }
+        .comparison-original { left:10px; } .comparison-processed { right:10px; }
+        .comparison-controls { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:16px; }
+        #comparison-seek { flex:1; min-width:90px; accent-color:var(--ink); }
+        #comparison-time { font:12px monospace; }
+        .video-shell .video-fallback { inset:0 50% 0 0; padding:12px; font-size:12px; }
+        .video-shell:has(video[src]) .video-fallback { display:grid; }
+        .video-shell:has(#original-video[src]) .video-fallback { display:none; }
     </style>
 </head>
 
@@ -1259,7 +1276,7 @@
                 <div>
                     <p class="eyebrow">📺 Friendly multilateral video toolkit</p>
                     <h1>Break, bend, <span class="text-punch">repair</span> &amp; automate video.</h1>
-                    <p class="hero-copy">Videobeaux turns focused command-line programs into an artist-led video-processing system—from controlled datamoshing and frame stutter to conversion, extraction, compositing, and chainable workflows.</p>
+                    <p class="hero-copy">Videobeaux turns focused programs into an artist-led video-processing system—from controlled datamoshing and frame stutter to conversion, extraction, compositing, and chainable workflows.</p>
                     <div class="button-row">
                         <a class="button button-primary" href="#programs">Explore programs</a>
                         <a class="button button-secondary" href="#install">Install Videobeaux</a>
@@ -1298,7 +1315,7 @@
                         <p>documented effects and utilities</p>
                     </article>
                     <article class="stat-card"><span class="stat-number">1</span>
-                        <p>consistent command-line interface</p>
+                        <p>visual processing interface</p>
                     </article>
                     <article class="stat-card"><span class="stat-number">A→B</span>
                         <p>chainable processing workflows</p>
@@ -1326,7 +1343,7 @@
                 <div class="section-heading">
                     <p class="sticker-label">The process</p>
                     <h2 id="process-title">Input. Program. Output. Chain it again.</h2>
-                    <p>Videobeaux uses a consistent global command structure, while individual programs can expose their own arguments when a process needs more control.</p>
+                    <p>Choose a program, adjust its settings, and connect it to your input and output.</p>
                 </div>
                 <div class="process-board" aria-label="Video processing workflow">
                     <img class="process-board-image" src="assets/how-it-works-approved.png" alt="How it works: landscape video input, Videobeaux program television, psychedelic landscape output, and a chain-it-again processing loop">
@@ -1340,7 +1357,7 @@
                     <div class="section-heading" style="margin-bottom:0">
                         <p class="sticker-label" style="color:var(--ink)">Featured programs</p>
                         <h2 id="programs-title">Pick a machine.</h2>
-                        <p>These cards use descriptions and command structures from the project documentation.</p>
+                        <p>These cards use descriptions from the project documentation.</p>
                     </div>
                     <div class="program-filter" role="group" aria-label="Filter programs">
                         <button class="filter-button" type="button" data-filter="all" aria-pressed="true">All</button>
@@ -1364,24 +1381,20 @@
                 <div class="steps-grid">
                     <article class="step-card" style="--step-color:var(--yellow)">
                         <h3>Install</h3>
-                        <p>Run the project install script on macOS or Linux, or configure the documented Windows prerequisites.</p>
+                        <p>Download a desktop build from the project releases and follow its installation notes.</p>
                     </article>
                     <article class="step-card" style="--step-color:var(--cyan)">
                         <h3>Choose</h3>
-                        <p>Use <code>videobeaux --help</code> to inspect available program modes and global options.</p>
+                        <p>Browse the available programs and choose an effect or utility.</p>
                     </article>
                     <article class="step-card" style="--step-color:var(--coral)">
                         <h3>Process</h3>
-                        <p>Pass the program, input, and output. Add program-specific arguments only when needed.</p>
+                        <p>Choose your input and output, then adjust the program settings as needed.</p>
                     </article>
                     <article class="step-card" style="--step-color:var(--purple); color:white">
                         <h3>Chain</h3>
-                        <p>Use <code>chain_builder</code> to pass one processed output directly into the next effect.</p>
+                        <p>Connect one processed output directly to the next effect.</p>
                     </article>
-                </div>
-                <div class="code-panel" style="margin-top:34px">
-                    <button class="copy-button" type="button" data-copy-target="usage-command">Copy</button>
-                    <pre id="usage-command">videobeaux --program PROGRAM --input INPUT_FILE --output OUTPUT_FILE [program options]</pre>
                 </div>
             </div>
         </section>
@@ -1390,19 +1403,32 @@
             <div class="shell">
                 <div class="section-heading">
                     <p class="sticker-label">Working examples</p>
-                    <h2 id="examples-title">See the command. See what came back.</h2>
-                    <p>The documentation includes a basic effect, a parameterized stutter process, and a three-stage chain. Select an example to switch the command and video.</p>
+                    <h2 id="examples-title">See the original. See what came back.</h2>
+                    <p>The documentation includes a basic effect, a parameterized stutter process, and a three-stage chain. Select an example, then drag the slider to compare while both videos play or pause together.</p>
                 </div>
                 <div class="example-layout">
                     <div class="example-tabs" role="tablist" aria-label="Video examples" id="example-tabs"></div>
                     <div class="example-stage">
                         <div class="crt-frame">
                             <div class="video-shell">
-                                <video id="example-video" controls preload="metadata" playsinline></video>
-                                <div class="video-fallback">VIDEO PREVIEW<br>Load the page online to retrieve the documented GitHub-hosted example.</div>
+                                <video id="original-video" muted preload="auto" playsinline></video>
+                                <video id="example-video" muted preload="auto" playsinline></video>
+                                <span class="comparison-label comparison-original">Original</span>
+                                <span class="comparison-label comparison-processed">Processed</span>
+                                <div class="comparison-divider" aria-hidden="true"></div>
+                                <input id="comparison-slider" type="range" min="0" max="100" value="50" aria-label="Reveal original and processed video">
+                                <div class="video-fallback">Choose the matching original below to compare both videos.</div>
                             </div>
                         </div>
-                        <div class="example-command" id="example-command"></div>
+
+                        <div class="comparison-controls">
+                            <button class="filter-button" id="comparison-play" type="button">Play</button>
+                            <button class="filter-button" id="comparison-restart" type="button">Restart</button>
+                            <input id="comparison-seek" type="range" min="0" max="1" value="0" step="0.01" aria-label="Video playback position" disabled>
+                            <output id="comparison-time">0:00 / 0:00</output>
+                        </div>
+                        <p id="comparison-status" role="status" style="font-size:.8rem"></p>
+                        <label style="font-size:.8rem">Matching original video <input id="comparison-original-file" type="file" accept="video/*"></label>
                     </div>
                 </div>
             </div>
@@ -1412,8 +1438,8 @@
             <div class="shell install-grid">
                 <div class="install-copy">
                     <p class="sticker-label" style="color:var(--ink)">Installation</p>
-                    <h2 id="install-title">Put the toolkit in your terminal.</h2>
-                    <p>Use the documented shell installer for macOS/Linux. The Windows tab preserves the prerequisites currently listed in the project docs.</p>
+                    <h2 id="install-title">Put the toolkit on your computer.</h2>
+                    <p>Download an available desktop build and follow the installation notes for your platform.</p>
                     <div class="button-row">
                         <a class="button button-primary" href="https://schwwaaa.github.io/videobeaux/installation.html" target="_blank" rel="noreferrer">Full installation docs</a>
                     </div>
@@ -1421,27 +1447,16 @@
 
                 <div>
                     <div class="install-tabs" role="tablist" aria-label="Installation platform">
-                        <button class="install-tab" type="button" role="tab" data-install="unix" aria-selected="true">macOS / Linux</button>
+                        <button class="install-tab" type="button" role="tab" data-install="unix" aria-selected="true">macOS</button>
                         <button class="install-tab" type="button" role="tab" data-install="windows" aria-selected="false">Windows</button>
                     </div>
 
                     <div class="install-panel" data-panel="unix">
-                        <div class="code-panel">
-                            <div class="terminal-status" aria-hidden="true"><span></span><span></span><span></span></div>
-                            <button class="copy-button" type="button" data-copy-target="unix-command">Copy</button>
-                            <pre id="unix-command">/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/schwwaaa/videobeaux/refs/heads/main/install.sh)"</pre>
-                        </div>
-                        <p>Run this from the directory where you want the project to live. The installer explains its actions before continuing.</p>
+                        <p>Download an available macOS build from the project releases and follow its installation notes.</p>
                     </div>
 
                     <div class="install-panel" data-panel="windows" hidden>
-                        <div class="code-panel">
-                            <div class="terminal-status" aria-hidden="true"><span></span><span></span><span></span></div>
-                            <button class="copy-button" type="button" data-copy-target="windows-command">Copy</button>
-                            <pre id="windows-command">choco install ffmpeg
-setx VIDEOBEAUX_PATH "C:\videobeaux"</pre>
-                        </div>
-                        <p>These are the Windows prerequisites currently shown in the documentation. Follow the full installation page for the remaining project setup.</p>
+                        <p>Download an available Windows build from the project releases and follow its installation notes.</p>
                     </div>
                 </div>
             </div>
@@ -1501,71 +1516,62 @@ setx VIDEOBEAUX_PATH "C:\videobeaux"</pre>
                 type: "effect",
                 accent: "var(--magenta)",
                 description: "A controlled datamoshing engine that manipulates motion vectors, frame order, GOP structure, decay, and A/B source blending for intentional glitch drift.",
-                command: "videobeaux -P crossmosh -i input.mp4 -o output.mp4 [options]"
             }, {
                 name: "lagkage",
                 type: "effect",
                 accent: "var(--purple)",
                 description: "A JSON-driven multilayer compositor for stacking, positioning, resizing, mixing, sequencing, and animating multiple media sources without a traditional timeline.",
-                command: "videobeaux -P lagkage -i input.mp4 -o output.mp4 --layout_json layout.json"
             }, {
                 name: "stutter_pro",
                 type: "effect",
                 accent: "var(--yellow)",
                 description: "A controllable frame-stutter process for rhythmic holds, skips, and timeline hiccups with a user-defined stutter intensity.",
-                command: "videobeaux -P stutter_pro -i input.mp4 -o output.mp4 --stutter 2"
             }, {
                 name: "chain_builder",
                 type: "utility",
                 accent: "var(--cyan)",
                 description: "Runs a comma-separated sequence of compatible programs, using each processed output as the input for the next stage.",
-                command: "videobeaux -P chain_builder -i input.mp4 -o output.mp4 --chain rb_blur,soapblind,lsd_feedback"
             }, {
                 name: "captburn",
                 type: "utility",
                 accent: "var(--coral)",
                 description: "Burns caption or subtitle content into video with controls for typeface, placement, styling, encoding, and output behavior.",
-                command: "videobeaux -P captburn -i input.mp4 -o output.mp4 [caption options]"
             }, {
                 name: "tonemap_hdr_sdr",
                 type: "utility",
                 accent: "var(--lime-bright)",
                 description: "Converts HDR material to SDR using selectable tonemap curves, BT.709 mapping, dithering, pixel-format, CRF, and encoder controls.",
-                command: "videobeaux -P tonemap_hdr_sdr -i input.mp4 -o output.mp4 --algo hable"
             }, {
                 name: "thumbs",
                 type: "utility",
                 accent: "var(--yellow)",
                 description: "Samples frames by time or scene changes and generates thumbnails, labeled stills, or tiled contact sheets for previews and quality control.",
-                command: "videobeaux -P thumbs -i input.mp4 -o output --tile 5x5 --timestamps true"
             }, {
                 name: "extract_frames",
                 type: "utility",
                 accent: "var(--cyan)",
                 description: "Decodes a video into sequential frame images for animation, archival work, visual debugging, datasets, or frame-by-frame art processes.",
-                command: "videobeaux -P extract_frames -i input.mp4 -o frames"
             }, {
                 name: "bad_predator",
                 type: "effect",
                 accent: "var(--coral)",
                 description: "Applies a deliberately broken heat-vision treatment and provides one of the simplest demonstrations of the standard program workflow.",
-                command: "videobeaux -P bad_predator -i input.mp4 -o output.mp4"
             }],
             examples: [{
                 label: "Basic effect",
-                detail: "bad_predator / no extra arguments",
-                video: "https://github.com/user-attachments/assets/fe45aa80-9878-4d15-bc64-87dd25071855",
-                command: "videobeaux --program bad_predator --input example.mp4 --output example_bp.mp4"
+                detail: "bad_predator / default settings",
+                original: "https://schwwaaa.github.io/videobeaux/assets/example_original.mp4", // Add this example’s matching original URL.
+                video: "https://schwwaaa.github.io/videobeaux/media/example_bp.mp4",
             }, {
-                label: "Parameterized effect",
+                label: "Adjustable effect",
                 detail: "stutter_pro / stutter intensity 2",
+                original: "https://schwwaaa.github.io/videobeaux/assets/example_original.mp4", // Add this example’s matching original URL.
                 video: "https://github.com/user-attachments/assets/fec22179-8e40-49e5-b591-c9d5fb07e31b",
-                command: "videobeaux --program stutter_pro -i example.mp4 -o stutter_example.mp4 --stutter 2"
             }, {
                 label: "Three-stage chain",
                 detail: "rb_blur → soapblind → lsd_feedback",
+                original: "https://schwwaaa.github.io/videobeaux/assets/example_original.mp4", // Add this example’s matching original URL.
                 video: "https://github.com/user-attachments/assets/ac321c77-4757-4846-b838-6847472e7e09",
-                command: "videobeaux --program chain_builder --input example.mp4 --output chainedoutput.mp4 --chain rb_blur,soapblind,lsd_feedback --force"
             }]
         };
 
@@ -1593,8 +1599,7 @@ setx VIDEOBEAUX_PATH "C:\videobeaux"</pre>
           <span class="program-index">${String(index + 1).padStart(2, "0")}</span>
         </div>
         <h3>${program.name}</h3>
-        <p>${program.description}</p>
-        <div class="program-command">${program.command}</div>`;
+        <p>${program.description}</p>`;
             programGrid.appendChild(card);
         });
 
@@ -1608,63 +1613,122 @@ setx VIDEOBEAUX_PATH "C:\videobeaux"</pre>
             });
         });
 
-        const tabsContainer = document.querySelector("#example-tabs");
-        const video = document.querySelector("#example-video");
-        const command = document.querySelector("#example-command");
-
-        function selectExample(index) {
-            const item = CONTENT.examples[index];
-            document.querySelectorAll(".example-tab").forEach((tab, tabIndex) => {
-                tab.setAttribute("aria-selected", String(tabIndex === index));
-            });
-            video.pause();
-            video.src = item.video;
-            video.load();
-            command.textContent = item.command;
+        const tabsContainer = document.querySelector('#example-tabs');
+        const video = document.querySelector('#example-video');
+        const originalVideo = document.querySelector('#original-video');
+        const playButton = document.querySelector('#comparison-play');
+        const seekBar = document.querySelector('#comparison-seek');
+        const comparisonStatus = document.querySelector('#comparison-status');
+        // Set each example's `original` property to its matching original video URL.
+        let originalObjectURL, playing = false, playToken = 0;
+        const pair = () => [originalVideo, video].filter(v => v.getAttribute('src'));
+        const sharedDuration = () => Math.min(...pair().map(v => v.duration).filter(d => Number.isFinite(d) && d > 0));
+        function pausePair() {
+            playing = false; ++playToken;
+            [originalVideo, video].forEach(v => { v.pause(); v.playbackRate = 1; });
+            playButton.textContent = 'Play';
         }
-
-        CONTENT.examples.forEach((item, index) => {
-            const tab = document.createElement("button");
-            tab.type = "button";
-            tab.className = "example-tab";
-            tab.setAttribute("role", "tab");
-            tab.setAttribute("aria-selected", String(index === 0));
-            tab.innerHTML = `<strong>${item.label}</strong><span>${item.detail}</span>`;
-            tab.addEventListener("click", () => selectExample(index));
-            tabsContainer.appendChild(tab);
-        });
-        selectExample(0);
-
-        document.querySelectorAll("[data-copy-target]").forEach((button) => {
-            button.addEventListener("click", async() => {
-                const target = document.getElementById(button.dataset.copyTarget);
-                const original = button.textContent;
-                try {
-                    await navigator.clipboard.writeText(target.textContent.trim());
-                    button.textContent = "Copied!";
-                } catch (error) {
-                    const selection = window.getSelection();
-                    const range = document.createRange();
-                    range.selectNodeContents(target);
-                    selection.removeAllRanges();
-                    selection.addRange(range);
-                    button.textContent = "Select text";
+        function seekPair(time) {
+            pair().forEach(v => { if (v.readyState && Number.isFinite(v.duration)) v.currentTime = Math.min(time, v.duration); });
+        }
+        function updateLoaded() {
+            const duration = sharedDuration();
+            seekBar.disabled = !Number.isFinite(duration);
+            if (Number.isFinite(duration)) seekBar.max = duration;
+            if (originalVideo.readyState >= 2 && video.readyState >= 2) {
+                comparisonStatus.textContent = Math.abs(originalVideo.duration - video.duration) > .25
+                    ? 'Durations differ; playback uses the shared duration. Use matching clips for an accurate comparison.'
+                    : 'Drag the slider while playing or paused to compare.';
+            }
+        }
+        async function playPair() {
+            if (playing) { pausePair(); return; }
+            const current = pair();
+            if (!current.every(v => v.readyState >= 2)) {
+                comparisonStatus.textContent = 'The video is still loading. Try Play again when ready.'; return;
+            }
+            const master = current[0];
+            seekPair(master.currentTime >= sharedDuration() - .05 ? 0 : master.currentTime);
+            const token = ++playToken;
+            playing = true; playButton.textContent = 'Pause';
+            try {
+                // Both play calls happen in the same user gesture; moving the divider never pauses playback.
+                await Promise.all(current.map(v => v.play()));
+                if (token !== playToken && !playing) current.forEach(v => v.pause());
+            } catch (error) {
+                if (token === playToken) {
+                    pausePair(); comparisonStatus.textContent = 'Playback failed. Check that both video URLs are accessible and supported by your browser.';
                 }
-                window.setTimeout(() => {
-                    button.textContent = original;
-                }, 1800);
+            }
+        }
+        playButton.addEventListener('click', playPair);
+        document.querySelector('#comparison-restart').addEventListener('click', () => { seekPair(0); });
+        seekBar.addEventListener('input', () => { seekPair(Number(seekBar.value)); });
+        document.querySelector('#comparison-slider').addEventListener('input', event => {
+            const value = Number(event.target.value);
+            document.querySelector('.video-shell').style.setProperty('--reveal', value + '%');
+            event.target.setAttribute('aria-valuetext', `${value}% original, ${100-value}% processed`);
+        });
+        [originalVideo, video].forEach(v => {
+            v.addEventListener('loadedmetadata', updateLoaded);
+            v.addEventListener('loadeddata', updateLoaded);
+            v.addEventListener('ended', pausePair);
+            v.addEventListener('error', () => { pausePair(); comparisonStatus.textContent = 'A video could not load. Check its file path or URL.'; });
+            v.addEventListener('waiting', () => {
+                if (playing) { pausePair(); comparisonStatus.textContent = 'Playback paused while loading to keep both videos together. Press Play to resume.'; }
             });
         });
-
-        document.querySelectorAll(".install-tab").forEach((tab) => {
-            tab.addEventListener("click", () => {
-                const platform = tab.dataset.install;
-                document.querySelectorAll(".install-tab").forEach((item) => item.setAttribute("aria-selected", String(item === tab)));
-                document.querySelectorAll(".install-panel").forEach((panel) => {
-                    panel.hidden = panel.dataset.panel !== platform;
-                });
+        function selectExample(index) {
+            pausePair();
+            const item = CONTENT.examples[index];
+            document.querySelectorAll('.example-tab').forEach((tab, tabIndex) => tab.setAttribute('aria-selected', String(tabIndex === index)));
+            video.src = item.video; video.load();
+            if (item.original) { originalVideo.src = item.original; }
+            else { originalVideo.removeAttribute('src'); }
+            originalVideo.load();
+            if (originalObjectURL) { URL.revokeObjectURL(originalObjectURL); originalObjectURL = null; }
+            document.querySelector('#comparison-original-file').value = '';
+            seekBar.value = 0; seekBar.disabled = true;
+            comparisonStatus.textContent = item.original ? 'Loading both videos…' : 'Matching original not configured. Choose it below; the processed demo can already play.';
+        }
+        CONTENT.examples.forEach((item, index) => {
+            const tab = document.createElement('button');
+            tab.type = 'button'; tab.className = 'example-tab'; tab.setAttribute('role', 'tab');
+            tab.innerHTML = `<strong>${item.label}</strong><span>${item.detail}</span>`;
+            tab.addEventListener('click', () => selectExample(index)); tabsContainer.appendChild(tab);
+        });
+        document.querySelector('#comparison-original-file').addEventListener('change', event => {
+            const file = event.target.files[0]; if (!file) return;
+            pausePair(); seekPair(0);
+            if (originalObjectURL) URL.revokeObjectURL(originalObjectURL);
+            originalObjectURL = URL.createObjectURL(file);
+            originalVideo.src = originalObjectURL; originalVideo.load();
+            comparisonStatus.textContent = 'Loading original video…';
+        });
+        function frame() {
+            const master = pair()[0], duration = sharedDuration();
+            if (master && Number.isFinite(duration)) {
+                if (playing && master.currentTime >= duration - .04) { pausePair(); seekPair(duration); }
+                if (playing && originalVideo.getAttribute('src')) {
+                    const delta = video.currentTime - originalVideo.currentTime;
+                    if (Math.abs(delta) > .15) video.currentTime = originalVideo.currentTime;
+                    else video.playbackRate = Math.abs(delta) > .03 ? (delta > 0 ? .97 : 1.03) : 1;
+                }
+                seekBar.value = master.currentTime;
+                const fmt = t => `${Math.floor(t/60)}:${String(Math.floor(t%60)).padStart(2,'0')}`;
+                document.querySelector('#comparison-time').value = `${fmt(master.currentTime)} / ${fmt(duration)}`;
+            }
+            requestAnimationFrame(frame);
+        }
+        document.addEventListener('visibilitychange', () => { if (document.hidden) pausePair(); });
+        window.addEventListener('pagehide', () => { pausePair(); if (originalObjectURL) URL.revokeObjectURL(originalObjectURL); });
+        document.querySelectorAll('.install-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.install-tab').forEach(item => item.setAttribute('aria-selected', String(item === tab)));
+                document.querySelectorAll('.install-panel').forEach(panel => { panel.hidden = panel.dataset.panel !== tab.dataset.install; });
             });
         });
+        selectExample(0); frame();
 
         const menuButton = document.querySelector(".menu-button");
         const navLinks = document.querySelector("#nav-links");
