@@ -6,6 +6,7 @@ import {
 import { usePrograms } from '../../ProgramsContext'
 import { videoArgsOf, upstreamIsBatch } from '../../pipeline'
 import { useUpdateNodeData } from '../../useCanvasHistory'
+import { ARG_HELPERS } from '../helpers/registry'
 
 /** Choices like "Pack · Name" are shown grouped under their pack; plain choices stay flat. */
 function renderChoices(choices) {
@@ -183,7 +184,72 @@ function KokoroVoicePickerField({ value, onChange }) {
 
 // ── Arg field renderer ──────────────────────────────────────────────────────
 
-function ArgField({ arg, value, onChange }) {
+/** Step for the arrow keys / spinner: explicit, else 1 for integers, else fine enough for the range. */
+function numberStep(arg) {
+  if (arg.step) return arg.step
+  if (arg.integer) return 1
+  const hasRange = arg.min != null && arg.max != null
+  if (hasRange) {
+    const r = arg.max - arg.min
+    if (r <= 2) return 0.01
+    if (r <= 20) return 0.1
+    if (r <= 200) return 1
+    return 1
+  }
+  const d = String(arg.default ?? '').split('.')[1]
+  return d ? Math.max(0.001, Math.pow(10, -d.length)) : (Number.isInteger(arg.default) ? 1 : 0.1)
+}
+
+/**
+ * A plain, typeable number box (arrow keys step it, typed values are clamped to min/max on blur)
+ * plus a slider whenever the argument has a known range. `step="any"` used to make the browser's
+ * arrows do nothing, so every number box now gets a real step.
+ */
+function NumberField({ arg, value, onChange, inputStyle }) {
+  const hasRange = arg.min != null && arg.max != null
+  const step = numberStep(arg)
+  const shown = value !== undefined && value !== '' ? value : (arg.default !== undefined ? arg.default : '')
+  const clamp = (v) => {
+    let n = Number(v)
+    if (!Number.isFinite(n)) return v
+    if (arg.min != null) n = Math.max(arg.min, n)
+    if (arg.max != null) n = Math.min(arg.max, n)
+    return arg.integer ? Math.round(n) : n
+  }
+  const decimals = (String(step).split('.')[1] || '').length
+  return (
+    <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+      {hasRange && (
+        <input
+          className="nodrag"
+          type="range"
+          min={arg.min}
+          max={arg.max}
+          step={step}
+          value={Number.isFinite(Number(shown)) && shown !== '' ? Number(shown) : arg.min}
+          onChange={e => onChange(arg.integer ? Number(e.target.value) : Number(Number(e.target.value).toFixed(decimals + 1)))}
+          style={{ flex: 1, minWidth: 0, accentColor: 'var(--purple)', cursor: 'pointer' }}
+        />
+      )}
+      <input
+        className="nodrag"
+        type="number"
+        style={{ ...inputStyle, width: hasRange ? 68 : '100%', flexShrink: 0 }}
+        value={shown}
+        min={arg.min}
+        max={arg.max}
+        step={step}
+        placeholder={arg.default !== undefined ? String(arg.default) : ''}
+        onChange={e => onChange(e.target.value)}
+        onBlur={e => { if (e.target.value !== '') onChange(clamp(e.target.value)) }}
+      />
+    </div>
+  )
+}
+
+function ArgField({ arg, value, onChange, programId, nodeId }) {
+  const [helperOpen, setHelperOpen] = useState(false)
+  const helper = ARG_HELPERS[programId]?.[arg.name]
   const inputStyle = {
     width: '100%',
     padding: '4px 7px',
@@ -246,6 +312,30 @@ function ArgField({ arg, value, onChange }) {
         >
           …
         </button>
+        {helper && (
+          <>
+            <button
+              className="nodrag"
+              onClick={() => setHelperOpen(true)}
+              title={helper.title}
+              style={{
+                background: 'var(--cyan)', border: '2px solid var(--ink)', borderRadius: 5, color: '#080808',
+                padding: '4px 7px', fontSize: 12, fontWeight: 700, flexShrink: 0, lineHeight: 1
+              }}
+            >
+              ✎
+            </button>
+            {helperOpen && (
+              <helper.Component
+                value={value}
+                onChange={onChange}
+                onClose={() => setHelperOpen(false)}
+                nodeId={nodeId}
+                programId={programId}
+              />
+            )}
+          </>
+        )}
       </div>
     )
   }
@@ -264,19 +354,7 @@ function ArgField({ arg, value, onChange }) {
   }
 
   if (arg.type === 'number') {
-    return (
-      <input
-        className="nodrag"
-        type="number"
-        style={inputStyle}
-        value={value !== undefined && value !== '' ? value : (arg.default !== undefined ? arg.default : '')}
-        min={arg.min}
-        max={arg.max}
-        step={arg.step || 'any'}
-        placeholder={arg.default !== undefined ? String(arg.default) : ''}
-        onChange={e => onChange(e.target.value)}
-      />
-    )
+    return <NumberField arg={arg} value={value} onChange={onChange} inputStyle={inputStyle} />
   }
 
   if (arg.type === 'color') {
@@ -677,6 +755,8 @@ export default function EffectNode({ id, data, selected }) {
                 )}
               </div>
               <ArgField
+                programId={data.program}
+                nodeId={id}
                 arg={arg}
                 value={(data.args || {})[arg.name]}
                 onChange={v => setArg(arg.name, v)}

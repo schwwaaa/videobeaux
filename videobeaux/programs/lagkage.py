@@ -17,6 +17,18 @@ from pathlib import Path
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
 
 
+GUI_METADATA = {
+    'args': {
+        'layout-json': {
+            'type': 'file', 'label': 'Layout JSON',
+            'help': 'The layout file. Press ✎ to design it visually (drag images / GIFs / videos onto a stand-in for '
+                    'your video), or browse to an existing JSON.',
+        },
+        'audio-src': {'type': 'file', 'label': 'External audio', 'help': 'Used when Audio Mode = external.'},
+    }
+}
+
+
 def register_arguments(parser):
     parser.description = (
         "Compose a base video with layered media defined by a JSON layout "
@@ -411,8 +423,14 @@ def run(args):
 
         mode = (layer.get("mode") or "place").lower()
         if mode == "free":
-            x_expr = str(int(layer.get("pos_x", 0)))
-            y_expr = str(int(layer.get("pos_y", 0)))
+            # pos_x_pct / pos_y_pct (percent of the base video's width / height, written by the layout
+            # editor) win over pixel pos_x / pos_y, so a layout works on any resolution.
+            if "pos_x_pct" in layer or "pos_y_pct" in layer:
+                x_expr = str(int(base_w * float(layer.get("pos_x_pct", 0)) / 100.0))
+                y_expr = str(int(base_h * float(layer.get("pos_y_pct", 0)) / 100.0))
+            else:
+                x_expr = str(int(layer.get("pos_x", 0)))
+                y_expr = str(int(layer.get("pos_y", 0)))
         else:
             place = (layer.get("place") or "center").lower()
             px, py = _compute_place_coordinates(place, base_w, base_h, box_w, box_h)

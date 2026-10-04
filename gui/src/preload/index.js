@@ -32,6 +32,12 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // Returns Promise<string[]>, empty if kokoro-tts isn't installed.
   listKokoroVoices: () => ipcRenderer.invoke('kokoro:listVoices'),
 
+  // Helper windows (Lagkage layout editor, ...)
+  readImageDataUrl: (path, layoutPath) => ipcRenderer.invoke('files:readDataUrl', { path, layoutPath }),
+  probeMedia: (path, layoutPath) => ipcRenderer.invoke('media:probe', { path, layoutPath }),
+  writeLayout: (name, json) => ipcRenderer.invoke('layouts:write', { name, json }),
+  readLayout: (path) => ipcRenderer.invoke('layouts:read', path),
+
   // Pre-flight overwrite check — resolves { proceed: boolean }
   confirmOverwrite: (opts) => ipcRenderer.invoke('run:confirmOverwrite', opts),
 

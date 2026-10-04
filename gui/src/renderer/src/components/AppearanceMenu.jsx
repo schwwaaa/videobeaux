@@ -8,7 +8,7 @@ import { useSettings } from '../SettingsContext'
  */
 export default function AppearanceMenu() {
   const { theme, toggleTheme, shadowOffset, shadowColor, shadowsEnabled,
-    setShadowOffset, setShadowColor, setShadowsEnabled } = useSettings()
+    setShadowOffset, setShadowColor, setShadowsEnabled, showSelectionBar, setShowSelectionBar } = useSettings()
   const [open, setOpen] = useState(false)
   const wrapRef = useRef(null)
 
@@ -57,6 +57,24 @@ export default function AppearanceMenu() {
               >
                 {theme === 'dark' ? 'ON' : 'OFF'}
               </button>
+            </div>
+
+            <div style={{ height: 1, background: 'var(--gray)' }} />
+
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: 11 }}>
+                Selection bar
+              </span>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}
+                     title="The small bar with Copy / Delete buttons that appears when programs are selected. Shortcuts keep working when it's off.">
+                <input
+                  type="checkbox"
+                  checked={showSelectionBar}
+                  onChange={e => setShowSelectionBar(e.target.checked)}
+                  style={{ accentColor: 'var(--purple)', cursor: 'pointer' }}
+                />
+                <span style={{ fontSize: 10, color: 'var(--muted-dim)' }}>Show</span>
+              </label>
             </div>
 
             <div style={{ height: 1, background: 'var(--gray)' }} />

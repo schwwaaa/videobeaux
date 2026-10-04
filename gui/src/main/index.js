@@ -324,6 +324,65 @@ app.whenReady().then(async () => {
 
   ipcMain.handle('files:listVideos', (_, dirPath) => listVideoFiles(dirPath))
 
+  // ── Helper-window support (e.g. the Lagkage layout editor) ──────────────────────
+
+  // Same path rules lagkage.py uses for a layer's "filename": absolute paths/URLs as-is,
+  // "../media/x" and "media/x" relative to the project root, anything else next to the JSON.
+  function resolveLayerPath(filename, layoutPath) {
+    if (!filename) return filename
+    if (filename.includes('://') || filename.startsWith('/') || /^[A-Za-z]:[\\/]/.test(filename)) return filename
+    const { vbRoot } = getPaths()
+    if (filename.startsWith('../media/')) return join(vbRoot, 'media', filename.slice('../media/'.length))
+    if (filename.startsWith('media/')) return join(vbRoot, filename)
+    return join(layoutPath ? dirname(layoutPath) : vbRoot, filename)
+  }
+
+  const IMAGE_MIME = { '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif',
+                       '.webp': 'image/webp', '.bmp': 'image/bmp', '.svg': 'image/svg+xml' }
+
+  // Small local images as data: URLs so the sandboxed renderer (CSP: 'self') can preview them.
+  ipcMain.handle('files:readDataUrl', (_, { path, layoutPath }) => {
+    try {
+      const full = resolveLayerPath(path, layoutPath)
+      const mime = IMAGE_MIME[extname(full).toLowerCase()]
+      if (!mime) return null
+      if (statSync(full).size > 30 * 1024 * 1024) return null
+      return `data:${mime};base64,${readFileSync(full).toString('base64')}`
+    } catch { return null }
+  })
+
+  // Width/height/duration of any image or video via ffprobe (managed ffmpeg when we have one).
+  ipcMain.handle('media:probe', async (_, { path, layoutPath }) => {
+    try {
+      const { ffmpegDir } = getPaths()
+      const ffprobe = ffmpegDir ? ffmpegBinaryPath(ffmpegDir, 'ffprobe') : 'ffprobe'
+      const full = resolveLayerPath(path, layoutPath)
+      const { stdout } = await execFileAsync(ffprobe, [
+        '-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width,height:format=duration',
+        '-of', 'json', full], { timeout: 15000 })
+      const j = JSON.parse(stdout)
+      const st = (j.streams || [])[0] || {}
+      return { width: st.width || 0, height: st.height || 0, duration: Number(j.format?.duration) || 0, resolved: full }
+    } catch { return null }
+  })
+
+  // Layout JSON files made by helper windows live under userData/layouts (user-writable, survives updates).
+  ipcMain.handle('layouts:write', (_, { name, json }) => {
+    const dir = join(app.getPath('userData'), 'layouts')
+    mkdirSync(dir, { recursive: true })
+    const safe = String(name || 'layout').replace(/[^A-Za-z0-9._-]+/g, '_').slice(0, 80)
+    const file = join(dir, safe.endsWith('.json') ? safe : `${safe}.json`)
+    writeFileSync(file, typeof json === 'string' ? json : JSON.stringify(json, null, 2), 'utf8')
+    return file
+  })
+
+  ipcMain.handle('layouts:read', (_, path) => {
+    try {
+      if (!path || extname(path).toLowerCase() !== '.json' || statSync(path).size > 2 * 1024 * 1024) return null
+      return readFileSync(path, 'utf8')
+    } catch { return null }
+  })
+
   ipcMain.handle('run:confirmOverwrite', async (_, { outputPath, isBatch }) => {
     let target = outputPath
     let needsConfirm = false

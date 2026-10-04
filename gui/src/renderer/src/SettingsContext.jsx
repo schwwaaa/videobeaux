@@ -7,7 +7,8 @@ const DEFAULTS = {
   shadowOffset: 5,
   shadowColor: '#080808',
   shadowsEnabled: true,
-  setupSeen: false
+  setupSeen: false,
+  showSelectionBar: true
 }
 
 /**
@@ -55,7 +56,8 @@ export function SettingsProvider({ children }) {
     setShadowOffset: (shadowOffset) => update({ shadowOffset }),
     setShadowColor: (shadowColor) => update({ shadowColor }),
     setShadowsEnabled: (shadowsEnabled) => update({ shadowsEnabled }),
-    setSetupSeen: (setupSeen) => update({ setupSeen })
+    setSetupSeen: (setupSeen) => update({ setupSeen }),
+    setShowSelectionBar: (showSelectionBar) => update({ showSelectionBar })
   }
 
   return (

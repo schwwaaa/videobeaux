@@ -114,6 +114,27 @@ def safe_default(default):
 
 # ── Capturing ArgumentParser ──────────────────────────────────────────────────
 
+# Names whose valid range is obvious. Programs can always override with GUI_METADATA min/max/step.
+_UNIT_NAMES = {'amount', 'strength', 'intensity', 'similarity', 'blend', 'mix', 'wet', 'decay', 'feedback',
+               'persistence', 'softness', 'tolerance', 'sensitivity', 'smoothing', 'opacity', 'alpha'}
+_NON_NEGATIVE = {'width', 'height', 'radius', 'duration', 'frames', 'count', 'size', 'crf'}
+
+
+def infer_bounds(name, default):
+    """Conservative (min, max) guesses so the GUI can show a slider / clamp typed values."""
+    n = name.lower().replace('-', '_')
+    last = n.split('_')[-1]
+    if n == 'crf':
+        return 0, 51
+    is_num = isinstance(default, (int, float)) and not isinstance(default, bool)
+    unit_like = last in _UNIT_NAMES or n in _UNIT_NAMES
+    if unit_like and (default is None or (is_num and 0 <= default <= 1)):
+        return 0, 1
+    if last in _NON_NEGATIVE or n in _NON_NEGATIVE:
+        return 0, None
+    return None, None
+
+
 class CapturingParser(argparse.ArgumentParser):
     """
     Intercepts add_argument() calls, prefers --long-flag names, applies
@@ -156,6 +177,15 @@ class CapturingParser(argparse.ArgumentParser):
         if kwargs.get('choices') is not None:
             schema['choices'] = [str(c) for c in kwargs['choices']]
 
+        if arg_type == 'number':
+            if kwargs.get('type') is int:
+                schema['integer'] = True
+            lo, hi = infer_bounds(name, default)
+            if lo is not None:
+                schema['min'] = lo
+            if hi is not None:
+                schema['max'] = hi
+
         self._captured.append(schema)
 
     def set_defaults(self, **kwargs):
@@ -196,7 +226,7 @@ for prog_name in program_names:
 
         for schema in parser._captured:
             if schema['name'] in meta_args:
-                for key in ('type', 'subtype', 'label', 'help', 'default', 'choices', 'min', 'max', 'hidden'):
+                for key in ('type', 'subtype', 'label', 'help', 'default', 'choices', 'min', 'max', 'step', 'hidden'):
                     if key in meta_args[schema['name']]:
                         schema[key] = meta_args[schema['name']][key]
 

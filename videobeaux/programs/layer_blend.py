@@ -11,6 +11,7 @@ from pathlib import Path
 
 from videobeaux.utils import audio_pick
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
+from videobeaux.utils.mixer import fit_chain
 from videobeaux.utils.frame_pipe import probe_video
 
 # label → ffmpeg `blend` all_mode
@@ -58,14 +59,6 @@ def register_arguments(p):
     p.add_argument("--length", choices=LENGTHS, default=LENGTHS[0], help="Output length. Default: A (B loops if shorter).")
     audio_pick.add_audio_argument(p, audio_pick.LAYER_AUDIO, "A", "Which audio to keep: A, B, Mix A + B, or Silent. Default: A.")
     p.add_argument("--crf", type=int, default=18, help="x264 quality. Default: 18.")
-
-
-def fit_chain(fit: str, W: int, H: int) -> str:
-    if fit == "contain":
-        return f"scale={W}:{H}:force_original_aspect_ratio=decrease,pad={W}:{H}:(ow-iw)/2:(oh-ih)/2:black"
-    if fit == "stretch":
-        return f"scale={W}:{H}"
-    return f"scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H}"
 
 
 def build_graph(mode: str, wa: float, wb: float, fit: str, W: int, H: int, fps: float,

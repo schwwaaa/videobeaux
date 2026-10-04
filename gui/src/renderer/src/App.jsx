@@ -81,7 +81,7 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
   const { screenToFlowPosition, getViewport, getNodes, getEdges, deleteElements } = useReactFlow()
   const flowStore = useStoreApi()
   const { programMap } = usePrograms()
-  const { theme } = useSettings()
+  const { theme, showSelectionBar } = useSettings()
   const [runError, setRunError] = useState(null)
   const wrapperRef = useRef(null)
 
@@ -92,6 +92,59 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
     setEdges(snap.edges.map(e => ({ ...e, selected: false })))
   }, [setNodes, setEdges])
   const { record, undo, redo, canUndo, canRedo } = useHistory({ getSnapshot, restore })
+
+  // ── Copy / paste / duplicate ───────────────────────────────────────────────
+  // ⌘C copies the selected programs (and extra Input nodes) together with the connections
+  // between them; ⌘V pastes at the cursor (or offset, when pasted repeatedly); ⌘D duplicates
+  // in place. The original Input/Output nodes are never copied. In-memory only.
+  const clipboardRef = useRef(null)
+  const mouseFlowRef = useRef(null)
+  const pasteCountRef = useRef(0)
+
+  const copySelection = useCallback(() => {
+    const picked = getNodes().filter(n => n.selected && n.deletable !== false)
+    if (!picked.length) return false
+    const ids = new Set(picked.map(n => n.id))
+    clipboardRef.current = {
+      nodes: structuredClone(picked.map(n => ({ type: n.type, position: n.position, data: n.data }))).map((n, i) => ({ ...n, oldId: picked[i].id })),
+      edges: structuredClone(getEdges().filter(e => ids.has(e.source) && ids.has(e.target))
+        .map(e => ({ source: e.source, target: e.target, sourceHandle: e.sourceHandle, targetHandle: e.targetHandle, type: e.type })))
+    }
+    pasteCountRef.current = 0
+    return true
+  }, [getNodes, getEdges])
+
+  const pasteClipboard = useCallback((place = 'cursor') => {
+    const clip = clipboardRef.current
+    if (!clip || !clip.nodes.length) return
+    const minX = Math.min(...clip.nodes.map(n => n.position.x))
+    const minY = Math.min(...clip.nodes.map(n => n.position.y))
+    pasteCountRef.current += 1
+    const nudge = (pasteCountRef.current - 1) * 30
+    const target = place === 'cursor' && mouseFlowRef.current
+      ? { x: mouseFlowRef.current.x + nudge, y: mouseFlowRef.current.y + nudge }
+      : { x: minX + 40 * pasteCountRef.current, y: minY + 40 * pasteCountRef.current }
+    const idMap = new Map()
+    const fresh = clip.nodes.map(n => {
+      const id = `${n.type === 'inputNode' ? 'input' : 'effect'}-${++_nodeCounter}-${Date.now()}`
+      idMap.set(n.oldId, id)
+      return {
+        id, type: n.type, data: structuredClone(n.data), selected: true,
+        position: { x: n.position.x - minX + target.x, y: n.position.y - minY + target.y }
+      }
+    })
+    const freshEdges = clip.edges.map((e, i) => ({
+      id: `e-paste-${Date.now()}-${i}`, source: idMap.get(e.source), target: idMap.get(e.target),
+      sourceHandle: e.sourceHandle, targetHandle: e.targetHandle, type: e.type || 'smoothstep'
+    }))
+    record()
+    setNodes(nds => [...nds.map(n => (n.selected ? { ...n, selected: false } : n)), ...fresh])
+    setEdges(eds => [...eds.map(e => (e.selected ? { ...e, selected: false } : e)), ...freshEdges])
+  }, [record, setNodes, setEdges])
+
+  const duplicateSelection = useCallback(() => {
+    if (copySelection()) pasteClipboard('offset')
+  }, [copySelection, pasteClipboard])
 
   const clearSelection = useCallback(() => {
     setNodes(ns => ns.some(n => n.selected) ? ns.map(n => (n.selected ? { ...n, selected: false } : n)) : ns)
@@ -115,10 +168,13 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
         e.preventDefault()
         setNodes(ns => ns.map(n => (n.selected ? n : { ...n, selected: true })))
       }
+      else if (k === 'c') { if (copySelection()) e.preventDefault() }
+      else if (k === 'v') { if (clipboardRef.current) { e.preventDefault(); pasteClipboard('cursor') } }
+      else if (k === 'd') { e.preventDefault(); duplicateSelection() }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [undo, redo, clearSelection, setNodes, flowStore])
+  }, [undo, redo, clearSelection, setNodes, flowStore, copySelection, pasteClipboard, duplicateSelection])
 
   const connecting = useStore(st => !!st.connectionClickStartHandle)
   const selectedNodes = nodes.filter(n => n.selected)
@@ -450,7 +506,12 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
 
   return (
     <CanvasHistoryContext.Provider value={{ record }}>
-    <div ref={wrapperRef} style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+    <div
+      ref={wrapperRef}
+      style={{ flex: 1, position: 'relative', overflow: 'hidden' }}
+      onMouseMove={e => { mouseFlowRef.current = screenToFlowPosition({ x: e.clientX, y: e.clientY }) }}
+      onMouseLeave={() => { mouseFlowRef.current = null }}
+    >
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -589,26 +650,20 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
           </div>
         </Panel>
 
-        {selectionCount > 0 && (
-          <Panel position="top-center" style={{ marginTop: 58 }}>
+        {selectionCount > 0 && showSelectionBar && (
+          <Panel position="bottom-left" style={{ marginLeft: 56, marginBottom: 12 }}>
             <div className="selection-pill">
-              <span className="selection-pill__count">
-                {selectedNodes.length > 0 && `${selectedNodes.length} program${selectedNodes.length === 1 ? '' : 's'}`}
-                {selectedNodes.length > 0 && selectedEdges.length > 0 && ' + '}
-                {selectedEdges.length > 0 && `${selectedEdges.length} connection${selectedEdges.length === 1 ? '' : 's'}`}
-                {' selected'}
+              <span className="selection-pill__count" title={`${selectedNodes.length} program(s), ${selectedEdges.length} connection(s) selected`}>
+                {selectionCount} selected
               </span>
-              <button
-                className="selection-pill__delete"
-                onClick={deleteSelection}
-                disabled={isRunning || (deletableSelected.length === 0 && selectedEdges.length === 0)}
-                title="Delete the selection (Backspace / Delete)"
-              >
-                ⌫ Delete
-              </button>
-              <button className="selection-pill__clear" onClick={clearSelection} title="Deselect (Esc)">
-                Esc · Clear
-              </button>
+              <button onClick={() => { copySelection() }} disabled={deletableSelected.length === 0}
+                      title="Copy (⌘C) — then paste with ⌘V">⎘</button>
+              <button onClick={duplicateSelection} disabled={isRunning || deletableSelected.length === 0}
+                      title="Duplicate (⌘D)">⧉</button>
+              <button className="selection-pill__delete" onClick={deleteSelection}
+                      disabled={isRunning || (deletableSelected.length === 0 && selectedEdges.length === 0)}
+                      title="Delete (Backspace / Delete)">⌫</button>
+              <button onClick={clearSelection} title="Deselect (Esc)">✕</button>
             </div>
           </Panel>
         )}
@@ -622,7 +677,7 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
               ? 'Now click another dot to connect · Esc or click empty space to cancel'
               : <>
                   Drag or double-click programs from the sidebar · click one dot, then another, to connect<br />
-                  ⌘/Ctrl-click or Shift-drag to select several · Delete removes them · ⌘A selects all
+                  ⌘/Ctrl-click or Shift-drag to select several · ⌘C / ⌘V copy & paste · Delete removes · ⌘A selects all
                 </>}
           </div>
         </Panel>

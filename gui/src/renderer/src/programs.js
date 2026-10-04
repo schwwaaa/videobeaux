@@ -67,7 +67,8 @@ export const CATEGORIES = [
       { id: 'smudge',              label: 'Smudge',             description: 'Temporal median — moving subjects smear and melt into the background', args: [] },
       { id: 'repainting',          label: 'Repainting',         description: 'Median repaint blended with a multi-frame mix — painterly, smeared motion', args: [] },
       { id: 'long_exposure', label: 'Long Exposure', description: 'A slowly fading average of past frames — moving things smear into ghostly trails', args: [] },
-      { id: 'rgb_time_split', label: 'RGB Time Split', description: 'Red channel is now, green and blue lag behind — motion leaves rainbow fringes', args: [] }
+      { id: 'rgb_time_split', label: 'RGB Time Split', description: 'Red channel is now, green and blue lag behind — motion leaves rainbow fringes', args: [] },
+      { id: 'feedback_loop', label: 'Feedback Loop', description: 'Video feedback: the output is fed back zoomed, rotated, shifted and hue-shifted each frame so the picture spirals into itself', args: [] }
     ]
   },
   {
@@ -105,7 +106,9 @@ export const CATEGORIES = [
       { id: 'broken_scroll',        label: 'Broken Scroll',        description: 'Amplified frame differences plus a slow vertical scroll — rolling broken-tracking look', args: [] },
       { id: 'slit_scan', label: 'Slit-Scan', description: 'Different parts of the frame show different moments in time — rows, rings, columns or waves of delay', args: [] },
       { id: 'tunnel', label: 'Tunnel', description: 'The picture wrapped around the inside of a tunnel you fly down', args: [] },
-      { id: 'little_planet', label: 'Little Planet', description: 'Polar-coordinate \'tiny planet\' — the bottom of the picture becomes a small round world with sky all around', args: [] }
+      { id: 'little_planet', label: 'Little Planet', description: 'Polar-coordinate \'tiny planet\' — the bottom of the picture becomes a small round world with sky all around', args: [] },
+      { id: 'strobe_hold', label: 'Strobe Hold', description: 'Stroboscope: hold each picture for N frames (stuttering low-frame-rate look), with optional blink color and random holds', args: [] },
+      { id: 'freeze_frame', label: 'Freeze Frame', description: 'Freeze the picture at a chosen moment — hold in place (same length) or insert the still (longer clip, silence under it)', args: [] }
     ]
   },
   {
@@ -175,7 +178,9 @@ export const CATEGORIES = [
       { id: 'emboss', label: 'Emboss', description: 'Raised-relief emboss lit from any angle, in gray or keeping the colors', args: [] },
       { id: 'oil_paint', label: 'Oil Paint', description: 'Painterly oil-paint look: smoothed brush regions, posterized tones and a little canvas relief', args: [] },
       { id: 'led_wall', label: 'LED Wall', description: 'The picture rebuilt from a grid of round glowing LEDs, like a stadium video wall', args: [] },
-      { id: 'pixelate', label: 'Pixelate', description: 'Chunky square pixels — a mosaic of any block size', args: [] }
+      { id: 'pixelate', label: 'Pixelate', description: 'Chunky square pixels — a mosaic of any block size', args: [] },
+      { id: 'color_pass', label: 'Color Pass', description: 'Keep one color range and turn everything else gray (or remove just that color) — a red dress in a gray world', args: [] },
+      { id: 'proc_amp', label: 'Proc Amp', description: 'Video processing amp: brightness, contrast, saturation, hue rotation, gamma, black/white levels, color temperature, broadcast-safe clamp', args: [] }
     ]
   },
   {
@@ -234,7 +239,10 @@ export const CATEGORIES = [
         ]
       },
       { id: 'lagkage',     label: 'Lagkage',       description: 'JSON-driven multilayer compositor', args: [] },
-      { id: 'layer_blend', label: 'Layer Blend', description: 'Layer two videos with per-layer opacity and a blend mode — multiply, screen, color burn, difference, overlay and more. Choose whose audio to keep', args: [] }
+      { id: 'layer_blend', label: 'Layer Blend', description: 'Layer two videos with per-layer opacity and a blend mode — multiply, screen, color burn, difference, overlay and more. Choose whose audio to keep', args: [] },
+      { id: 'picture_in_picture', label: 'Picture-in-Picture', description: 'A small second video inset over the main one — pick the corner, size, border, opacity and whose audio you hear; swap to flip which is full-screen', args: [] },
+      { id: 'quad_split', label: 'Quad Split', description: 'Split screen: up to four videos in a 2×2 grid, side by side, stacked, or one big plus three small, with adjustable gaps', args: [] },
+      { id: 'video_wall', label: 'Video Wall', description: 'The picture repeated in a grid of tiles — plain repeats, mirrored tiles, or a delay wall where each tile lags a bit more', args: [] }
     ]
   },
   {
@@ -330,7 +338,8 @@ export const CATEGORIES = [
           { name: 'offset', label: 'Transition Offset (s)', type: 'number', required: false, default: 3.0,
             help: 'Where the transition starts in the first video' }
         ]
-      }
+      },
+      { id: 'fade_flash', label: 'Fade & Flash', description: 'Fade in/out from black, white or any color, plus timed flashes that decay or snap on/off; optionally fades the audio too', args: [] }
     ]
   },
   {

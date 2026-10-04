@@ -96,6 +96,10 @@
   --shadow-sm:   var(--shadow-offset-sm) var(--shadow-offset-sm) 0 var(--shadow-color);
   --paper-dot:   #d8d4c2;
 
+  /* Placeholder custom cursors (see assets/cursors/). Swap the SVGs to change them app-wide. */
+  --cursor-arrow:   url('./assets/cursors/arrow.svg') 3 2, default;
+  --cursor-pointer: url('./assets/cursors/pointer.svg') 3 2, pointer;
+
   --font-display: 'Bungee', Impact, sans-serif;
   --font:         'Atkinson Hyperlegible', Arial, sans-serif;
   --font-mono:    'IBM Plex Mono', 'Fira Code', Consolas, monospace;
@@ -120,6 +124,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body, #root {
+  cursor: var(--cursor-arrow);
   height: 100%;
   overflow: hidden;
   background: var(--paper);
@@ -210,24 +215,35 @@ html, body, #root {
 .selection-pill {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 8px 6px 14px;
+  gap: 4px;
+  padding: 3px 4px 3px 9px;
   background: var(--yellow);
   color: #080808;
-  border: var(--border);
+  border: 2px solid #080808;
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-sm);
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 700;
 }
 .selection-pill button {
-  padding: 6px 12px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 5px;
+  font-size: 12px;
+  line-height: 1;
   color: #080808;
   background: #fffdf6;
   border: 2px solid #080808;
+  border-radius: 5px;
 }
 .selection-pill .selection-pill__delete { background: var(--coral); }
+
+/* Things you can click get the pointer cursor (!important beats the inline cursor:pointer styles). */
+button:not(:disabled), select, summary, [role="button"], label[for], input[type="checkbox"], input[type="range"], input[type="color"] {
+  cursor: var(--cursor-pointer) !important;
+}
+button:disabled { cursor: not-allowed !important; }
 
 /* ── Utility ───────────────────────────────────────────────────────────────── */
 button {

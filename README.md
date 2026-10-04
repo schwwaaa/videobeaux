@@ -5,7 +5,7 @@
 <p align="center"><em>The friendly multilateral video toolkit built for artists by artists. It's your best friend.</em></p>
 
 <p align="center">
-  <strong>138 effect/utility programs</strong> · node-based GUI + scriptable CLI · <strong>100% local</strong> — no cloud, no accounts, no API keys
+  <strong>147 effect/utility programs</strong> · node-based GUI + scriptable CLI · <strong>100% local</strong> — no cloud, no accounts, no API keys
 </p>
 
 ---
@@ -15,7 +15,7 @@ Videobeaux is a video-processing toolkit built around one big library of effects
 - **The GUI**: drag effect nodes onto a canvas, wire them together into a pipeline, hit Run.
 - **The CLI**: `python3 -m videobeaux.cli -P <program> -i input.mp4 -o output.mp4 [options]`, script it however you want.
 
-Both sit on the exact same 138 programs — nothing is GUI-exclusive or CLI-exclusive except a couple of legacy modes noted below. Everything runs on your machine. The one genuinely optional exception — AI narration scripting via a local [Ollama](https://ollama.com) model — is opt-in and the app works completely fine without it.
+Both sit on the exact same 147 programs — nothing is GUI-exclusive or CLI-exclusive except a couple of legacy modes noted below. Everything runs on your machine. The one genuinely optional exception — AI narration scripting via a local [Ollama](https://ollama.com) model — is opt-in and the app works completely fine without it.
 
 <p align="center">
   <img width="100%" src="img/gui-canvas.png"/>
@@ -67,7 +67,7 @@ Reopen this screen anytime from the **⚙ Setup** button in the header — it's 
 
 ### What you get
 
-- **A node canvas** — drag any of the 138 programs onto it, wire Input → effects → Output. Multiple effects chain into one pipeline; branch one output into several downstream effects.
+- **A node canvas** — drag any of the 147 programs onto it, wire Input → effects → Output. Multiple effects chain into one pipeline; branch one output into several downstream effects.
 - **Batch mode** — point an Input node at a folder instead of a file and the whole pipeline runs once per video. Programs that natively produce many files from one input (Qwikchop, Qwikchop Deluxe, Extract Frames) fan out automatically.
 - **Save/load presets** — snapshot the whole node graph (including every field you've filled in) to a `.vbpreset.json` file and reload it later.
 - **Live model pickers** — Vosk (speech-to-text), Ollama (local LLM), and kokoro-tts voice dropdowns are all populated by asking the actual installed tool what it has, not a hardcoded list — install a new model and it just shows up.
@@ -77,6 +77,9 @@ Reopen this screen anytime from the **⚙ Setup** button in the header — it's 
 
 - **Connect with two clicks** — click a dot, a line follows your cursor, click another dot. (Dragging still works; Esc or a click on empty space cancels.)
 - **Select several** — ⌘/Ctrl-click, Shift-drag a box, or ⌘A; selected programs get a bold yellow ring and a banner with a Delete button. Backspace/Delete removes them all (undo with ⌘Z).
+- **Copy / paste** — select programs, ⌘C, then ⌘V pastes them (with the connections between them) at your cursor; ⌘D duplicates in place. The small bar at the bottom-left has the same buttons and can be switched off under 🎨 Appearance.
+- **Number fields** — type a value or use the arrow keys; anything with a known range also gets a slider, and typed values are clamped to the range.
+- **Layout editor (Lagkage)** — press ✎ next to *Layout JSON* to drag images, GIFs and videos onto a stand-in for your video instead of writing JSON. Positions are saved as percentages, so a layout works at any resolution. The same ✎ button mechanism (`components/helpers/registry.js`) can host editors for other programs.
 - **Transparent keying** — Chroma Key / Luma Key with *Background = transparent* needs the Output node set to **WEBM** or **MOV**.
 
 ### Add your own photobooth filters
@@ -186,7 +189,7 @@ Speech-recognition models are **not** bundled into the installer (they run ~7GB 
 
 ## Programs
 
-138 programs appear in the GUI sidebar (plus a few CLI-only ones), grouped the same way here. Any program can be run standalone from the CLI regardless of category.
+147 programs appear in the GUI sidebar (plus a few CLI-only ones), grouped the same way here. Any program can be run standalone from the CLI regardless of category.
 
 <details>
 <summary><strong>⚡ Glitch & Corruption</strong> (21)</summary>
@@ -220,7 +223,7 @@ _Signal, pixel and channel corruption — datamosh, RGB shifts, pixel sorting, w
 </details>
 
 <details>
-<summary><strong>≋ Trails & Echoes</strong> (13)</summary>
+<summary><strong>≋ Trails & Echoes</strong> (14)</summary>
 
 _Feedback, ghosting and smear — effects that blend a frame with its own past._
 
@@ -239,11 +242,12 @@ _Feedback, ghosting and smear — effects that blend a frame with its own past._
 | Repainting | Median repaint blended with a multi-frame mix — painterly, smeared motion |
 | Long Exposure | A slowly fading average of past frames — moving things smear into ghostly trails |
 | RGB Time Split | Red channel is now, green and blue lag behind — motion leaves rainbow fringes |
+| Feedback Loop | Video feedback: the output is fed back zoomed, rotated, shifted and hue-shifted each frame so the picture spirals into itself |
 
 </details>
 
 <details>
-<summary><strong>⏱ Time & Motion</strong> (16)</summary>
+<summary><strong>⏱ Time & Motion</strong> (18)</summary>
 
 _Speed, reversal, loops, stutters, freezes and scrolling._
 
@@ -265,11 +269,13 @@ _Speed, reversal, loops, stutters, freezes and scrolling._
 | Slit-Scan | Different parts of the frame show different moments in time — rows, rings, columns or waves of delay |
 | Tunnel | The picture wrapped around the inside of a tunnel you fly down |
 | Little Planet | Polar-coordinate 'tiny planet' — the bottom of the picture becomes a small round world with sky all around |
+| Strobe Hold | Stroboscope: hold each picture for N frames (stuttering low-frame-rate look), with optional blink color and random holds |
+| Freeze Frame | Freeze the picture at a chosen moment — hold in place (same length) or insert the still (longer clip, silence under it) |
 
 </details>
 
 <details>
-<summary><strong>✦ Color & Look</strong> (45)</summary>
+<summary><strong>✦ Color & Look</strong> (47)</summary>
 
 _Colour grading and stylization — grades, LUTs, film/night-vision looks, halftone, duotone, dithering, cartoon and sketch._
 
@@ -320,6 +326,8 @@ _Colour grading and stylization — grades, LUTs, film/night-vision looks, halft
 | Oil Paint | Painterly oil-paint look: smoothed brush regions, posterized tones and a little canvas relief |
 | LED Wall | The picture rebuilt from a grid of round glowing LEDs, like a stadium video wall |
 | Pixelate | Chunky square pixels — a mosaic of any block size |
+| Color Pass | Keep one color range and turn everything else gray (or remove just that color) — a red dress in a gray world |
+| Proc Amp | Video processing amp: brightness, contrast, saturation, hue rotation, gamma, black/white levels, color temperature, broadcast-safe clamp |
 
 </details>
 
@@ -341,7 +349,7 @@ _Computer vision (OpenCV) — face tracking, redaction and reframing, motion iso
 </details>
 
 <details>
-<summary><strong>⊞ Layout & Overlay</strong> (7)</summary>
+<summary><strong>⊞ Layout & Overlay</strong> (10)</summary>
 
 _Put things on top of or next to each other — overlays, stacks, multi-layer composites._
 
@@ -354,11 +362,14 @@ _Put things on top of or next to each other — overlays, stacks, multi-layer co
 | Triptych | Arrange three videos in a symmetric hstack or vstack layout |
 | Lagkage | JSON-driven multilayer compositor |
 | Layer Blend | Layer two videos with per-layer opacity and a blend mode — multiply, screen, color burn, difference, overlay and more. Choose whose audio to keep |
+| Picture-in-Picture | A small second video inset over the main one — pick the corner, size, border, opacity and whose audio you hear; swap to flip which is full-screen |
+| Quad Split | Split screen: up to four videos in a 2×2 grid, side by side, stacked, or one big plus three small, with adjustable gaps |
+| Video Wall | The picture repeated in a grid of tiles — plain repeats, mirrored tiles, or a delay wall where each tile lags a bit more |
 
 </details>
 
 <details>
-<summary><strong>✂ Cut & Assemble</strong> (6)</summary>
+<summary><strong>✂ Cut & Assemble</strong> (7)</summary>
 
 _Cut videos apart and assemble them — trims, splits, joins, inserts, transitions._
 
@@ -370,6 +381,7 @@ _Cut videos apart and assemble them — trims, splits, joins, inserts, transitio
 | Concat | Join two videos back to back — first then second. Good for adding a slate before the main video. |
 | Insert Clip | Inserts a second video into the master at a chosen timestamp, then picks up the master from where it left off — e.g. an intermission slate. Independent transition control at each boundary. |
 | Wipe Transitions | Combine two videos with a transitional wipe using ffmpeg's xfade filter |
+| Fade & Flash | Fade in/out from black, white or any color, plus timed flashes that decay or snap on/off; optionally fades the audio too |
 
 </details>
 
