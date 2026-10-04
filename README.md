@@ -5,7 +5,7 @@
 <p align="center"><em>The friendly multilateral video toolkit built for artists by artists. It's your best friend.</em></p>
 
 <p align="center">
-  <strong>107 effect/utility programs</strong> · node-based GUI + scriptable CLI · <strong>100% local</strong> — no cloud, no accounts, no API keys
+  <strong>138 effect/utility programs</strong> · node-based GUI + scriptable CLI · <strong>100% local</strong> — no cloud, no accounts, no API keys
 </p>
 
 ---
@@ -15,7 +15,7 @@ Videobeaux is a video-processing toolkit built around one big library of effects
 - **The GUI**: drag effect nodes onto a canvas, wire them together into a pipeline, hit Run.
 - **The CLI**: `python3 -m videobeaux.cli -P <program> -i input.mp4 -o output.mp4 [options]`, script it however you want.
 
-Both sit on the exact same 107 programs — nothing is GUI-exclusive or CLI-exclusive except a couple of legacy modes noted below. Everything runs on your machine. The one genuinely optional exception — AI narration scripting via a local [Ollama](https://ollama.com) model — is opt-in and the app works completely fine without it.
+Both sit on the exact same 138 programs — nothing is GUI-exclusive or CLI-exclusive except a couple of legacy modes noted below. Everything runs on your machine. The one genuinely optional exception — AI narration scripting via a local [Ollama](https://ollama.com) model — is opt-in and the app works completely fine without it.
 
 <p align="center">
   <img width="100%" src="img/gui-canvas.png"/>
@@ -67,11 +67,31 @@ Reopen this screen anytime from the **⚙ Setup** button in the header — it's 
 
 ### What you get
 
-- **A node canvas** — drag any of the 107 programs onto it, wire Input → effects → Output. Multiple effects chain into one pipeline; branch one output into several downstream effects.
+- **A node canvas** — drag any of the 138 programs onto it, wire Input → effects → Output. Multiple effects chain into one pipeline; branch one output into several downstream effects.
 - **Batch mode** — point an Input node at a folder instead of a file and the whole pipeline runs once per video. Programs that natively produce many files from one input (Qwikchop, Qwikchop Deluxe, Extract Frames) fan out automatically.
 - **Save/load presets** — snapshot the whole node graph (including every field you've filled in) to a `.vbpreset.json` file and reload it later.
 - **Live model pickers** — Vosk (speech-to-text), Ollama (local LLM), and kokoro-tts voice dropdowns are all populated by asking the actual installed tool what it has, not a hardcoded list — install a new model and it just shows up.
 - **A real-time colour picker** on every colour field (captions, LUTs, watermarks) — a native OS colour wheel, synced with a plain hex field you can also just paste into.
+
+### Canvas tips
+
+- **Connect with two clicks** — click a dot, a line follows your cursor, click another dot. (Dragging still works; Esc or a click on empty space cancels.)
+- **Select several** — ⌘/Ctrl-click, Shift-drag a box, or ⌘A; selected programs get a bold yellow ring and a banner with a Delete button. Backspace/Delete removes them all (undo with ⌘Z).
+- **Transparent keying** — Chroma Key / Luma Key with *Background = transparent* needs the Output node set to **WEBM** or **MOV**.
+
+### Add your own photobooth filters
+
+Drop a `.py` file into `~/.videobeaux/filters/` (or the folder in `VIDEOBEAUX_USER_FILTERS`) and restart:
+
+```python
+from videobeaux.utils.booth_filters import register
+
+@register("My filters", "Invert red")      # shows up in Filter Library → Filter as "My filters · Invert red"
+def invert_red(img, ctx):                  # img: BGR uint8 frame; ctx.t = seconds, ctx.faces = [(x, y, w, h)]
+    out = img.copy()
+    out[..., 2] = 255 - out[..., 2]
+    return out
+```
 
 ### Optional AI features
 
@@ -166,10 +186,10 @@ Speech-recognition models are **not** bundled into the installer (they run ~7GB 
 
 ## Programs
 
-107 programs appear in the GUI sidebar (plus a few CLI-only ones), grouped the same way here. Any program can be run standalone from the CLI regardless of category.
+138 programs appear in the GUI sidebar (plus a few CLI-only ones), grouped the same way here. Any program can be run standalone from the CLI regardless of category.
 
 <details>
-<summary><strong>⚡ Glitch & Corruption</strong> (17)</summary>
+<summary><strong>⚡ Glitch & Corruption</strong> (21)</summary>
 
 _Signal, pixel and channel corruption — datamosh, RGB shifts, pixel sorting, warps, optical-flow smears._
 
@@ -192,11 +212,15 @@ _Signal, pixel and channel corruption — datamosh, RGB shifts, pixel sorting, w
 | Blur Pix | Pixelization with frame lag/mixing and chroma shift — smeared blocky blur |
 | Warp | Swirl, bulge, pinch, ripple, kaleidoscope and mirror distortions, optionally animated |
 | Flow Warp | Optical-flow smear/push — pixels drag along motion like a datamosh melt — or a color flow view |
+| Glitch Tear | RGB channel split plus horizontal tears and scanline dimming, re-rolled every frame |
+| Weak Signal | Edge-of-reception transmission: skew, colour misregistration, noise, streaks and bursts of static |
+| VHS Camcorder | Home-video camcorder look: soft chroma, tape noise, a rolling tracking band and the on-screen PLAY / date stamp |
+| CRT Monitor | Old TV tube: curved glass, scanlines, RGB shadow mask, glow and a dark vignette |
 
 </details>
 
 <details>
-<summary><strong>≋ Trails & Echoes</strong> (11)</summary>
+<summary><strong>≋ Trails & Echoes</strong> (13)</summary>
 
 _Feedback, ghosting and smear — effects that blend a frame with its own past._
 
@@ -213,11 +237,13 @@ _Feedback, ghosting and smear — effects that blend a frame with its own past._
 | T-1000 | Temporal median smoothing with RGB offsets — liquid-mercury shimmer on motion |
 | Smudge | Temporal median — moving subjects smear and melt into the background |
 | Repainting | Median repaint blended with a multi-frame mix — painterly, smeared motion |
+| Long Exposure | A slowly fading average of past frames — moving things smear into ghostly trails |
+| RGB Time Split | Red channel is now, green and blue lag behind — motion leaves rainbow fringes |
 
 </details>
 
 <details>
-<summary><strong>⏱ Time & Motion</strong> (13)</summary>
+<summary><strong>⏱ Time & Motion</strong> (16)</summary>
 
 _Speed, reversal, loops, stutters, freezes and scrolling._
 
@@ -233,14 +259,17 @@ _Speed, reversal, loops, stutters, freezes and scrolling._
 | Nostalgic Stutter | Random-frame stutter with chroma shift and multi-frame mixing, like a corrupted file |
 | Overexposed Stutter | Hard blend modes with random-frame repeats and lag — blown-out corrupted stutter |
 | Looper Pro | Repeats a chosen segment (start frame + length) a set number of times |
-| Frame Interpolate | Motion-interpolated slow-motion / higher frame rate (ffmpeg minterpolate; RIFE/DAIN engines not implemented yet) |
+| Frame Interpolate | Paints in-between frames: smoother motion (30→60 fps) or smooth slow motion. Slow on long clips |
 | Scrolling Pro | Scroll the picture horizontally and/or vertically at a set speed |
 | Broken Scroll | Amplified frame differences plus a slow vertical scroll — rolling broken-tracking look |
+| Slit-Scan | Different parts of the frame show different moments in time — rows, rings, columns or waves of delay |
+| Tunnel | The picture wrapped around the inside of a tunnel you fly down |
+| Little Planet | Polar-coordinate 'tiny planet' — the bottom of the picture becomes a small round world with sky all around |
 
 </details>
 
 <details>
-<summary><strong>✦ Color & Look</strong> (28)</summary>
+<summary><strong>✦ Color & Look</strong> (45)</summary>
 
 _Colour grading and stylization — grades, LUTs, film/night-vision looks, halftone, duotone, dithering, cartoon and sketch._
 
@@ -274,11 +303,28 @@ _Colour grading and stylization — grades, LUTs, film/night-vision looks, halft
 | Cartoon | Flat posterized colors with inked outlines |
 | Sketch | Pencil, colored-pencil, watercolor-style and painterly looks |
 | K-Means Palette | Snap the video to its N dominant colors, optionally dithered |
+| Filter Library | Every photo-booth filter in one list, plus any you drop into `~/.videobeaux/filters/` (Game Boy, CGA/C64/PICO-8, halftone, comic, fisheye… also live in Retro Dither, Halftone, Cartoon, Warp) |
+| ASCII Art | Rebuild the video from text characters — choose character set, colors (matrix green, amber…), size and edge boost |
+| Negative | Invert the picture like a photo negative — or flip only the brightness and keep the colors |
+| Black & White | High-contrast black and white with local contrast boost (faces and texture pop), optional film grain |
+| Sepia & Tones | Antique single-tone looks: sepia, cyanotype blue, rose, forest or gold |
+| Thermal | Thermal-camera false color — pick the heat palette (inferno, jet, turbo, hot, plasma…) |
+| Infrared Film | False-color infrared film look — foliage turns pink and red, skies go dark |
+| Solarize | Darkroom solarization — tones above the threshold flip, giving glowing metallic edges |
+| Posterize | Reduce each color channel to a few flat levels |
+| Lomo | Cross-processed toy-camera look: punchy curves, color cast and dark vignette corners |
+| Hue Cycle | Rotate every color around the color wheel continuously |
+| Pop Art | Warhol-style flat-color panels — four colorways in a 2×2 grid, or one palette over the whole frame |
+| Blueprint | Technical-drawing look — white edge lines on blueprint blue, with an optional grid |
+| Emboss | Raised-relief emboss lit from any angle, in gray or keeping the colors |
+| Oil Paint | Painterly oil-paint look: smoothed brush regions, posterized tones and a little canvas relief |
+| LED Wall | The picture rebuilt from a grid of round glowing LEDs, like a stadium video wall |
+| Pixelate | Chunky square pixels — a mosaic of any block size |
 
 </details>
 
 <details>
-<summary><strong>◉ Vision & Tracking</strong> (5)</summary>
+<summary><strong>◉ Vision & Tracking</strong> (7)</summary>
 
 _Computer vision (OpenCV) — face tracking, redaction and reframing, motion isolation, feature tracking._
 
@@ -289,20 +335,25 @@ _Computer vision (OpenCV) — face tracking, redaction and reframing, motion iso
 | Face Follow | Smart reframe: a smoothed virtual camera that pans and zooms to keep a face in shot |
 | Motion Ghost | Isolate what moves — tint it, show only the movers, or leave glowing motion trails |
 | Feature Trails | Tracking-HUD look: tracked points, trails and connecting lines over the video |
+| Face Warp | Big head, tiny head or big eyes — warps tracked faces (works on several faces at once) |
+| Face Swap | Swap the two biggest faces in the shot, colour-matched with a soft edge |
 
 </details>
 
 <details>
-<summary><strong>⊞ Layout & Overlay</strong> (4)</summary>
+<summary><strong>⊞ Layout & Overlay</strong> (7)</summary>
 
 _Put things on top of or next to each other — overlays, stacks, multi-layer composites._
 
 | Program | Description |
 |---|---|
 | Watermark / Image Overlay | Overlay a watermark or image onto the video — 9-point placement or custom X/Y, scale or exact pixel sizing, opacity, spin, and a timed enable window |
+| Chroma Key | Remove a green/blue screen (or any solid color) and put a color, image or another video behind — or export transparent WebM/MOV. Auto-detects the screen color |
+| Luma Key | Knock out the darks or brights (black backgrounds, white skies); screen/add blend modes for fire, smoke and light leaks |
 | Stack 2× | Stack two videos vertically (input on top, input2 on bottom) |
 | Triptych | Arrange three videos in a symmetric hstack or vstack layout |
 | Lagkage | JSON-driven multilayer compositor |
+| Layer Blend | Layer two videos with per-layer opacity and a blend mode — multiply, screen, color burn, difference, overlay and more. Choose whose audio to keep |
 
 </details>
 

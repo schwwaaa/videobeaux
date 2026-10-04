@@ -23,6 +23,8 @@ from typing import Callable, Optional
 
 import numpy as np
 
+from videobeaux.utils.numpy_check import require_sane_numpy
+
 
 CONVERT_HINT = ("💡 If this file is an unusual format (e.g. a phone .MOV with HDR/HEVC, ProRes, or a "
                 "variable-frame-rate recording), run it through the Convert program first "
@@ -37,6 +39,7 @@ class VideoInfo:
     duration: float
     frames: int
     has_audio: bool
+    transfer: Optional[str] = None   # e.g. "smpte2084" (PQ) / "arib-std-b67" (HLG) for HDR sources
 
 
 def probe_video(path) -> VideoInfo:
@@ -70,7 +73,38 @@ def probe_video(path) -> VideoInfo:
     except ValueError:
         duration = 0.0
     frames = int(round(duration * fps)) if duration else 0
-    return VideoInfo(w, h, fps, duration, frames, any(s.get("codec_type") == "audio" for s in streams))
+    return VideoInfo(w, h, fps, duration, frames, any(s.get("codec_type") == "audio" for s in streams),
+                     v.get("color_transfer"))
+
+
+HDR_TRANSFERS = {"smpte2084", "arib-std-b67"}   # PQ, HLG
+
+# Same zimg chain as the Tone Map program: linearise against a 100-nit white, compress the
+# highlights in float RGB, return to BT.709 limited range. Without it iPhone HDR clips
+# decode flat and washed out.
+_TONEMAP_VF = ("zscale=t=linear:npl=100,format=gbrpf32le,zscale=p=bt709,"
+               "tonemap=tonemap=hable:desat=0,zscale=t=bt709:m=bt709:r=tv")
+
+# Frames reach Python as RGB, so the encoder must convert to YUV with the BT.709 matrix and
+# say so in the file — ffmpeg's default for RGB input is BT.601, which players then
+# misread as 709 (visible hue/saturation shifts: green 40,180,60 came back as 29,159,57).
+_ENCODE_COLOR_VF = ("scale=out_color_matrix=bt709:out_range=tv,"
+                    "setparams=colorspace=bt709:color_primaries=bt709:color_trc=bt709:range=tv")
+_ENCODE_COLOR_TAGS = ["-colorspace", "bt709", "-color_primaries", "bt709",
+                      "-color_trc", "bt709", "-color_range", "tv"]
+
+
+def _hdr_prefilter(info: "VideoInfo") -> str:
+    """Tone-map filter prefix for an HDR source ('' for SDR, or when this ffmpeg lacks zscale)."""
+    if info.transfer not in HDR_TRANSFERS:
+        return ""
+    from videobeaux.utils.ffmpeg_operations import ffmpeg_has_filter
+    if ffmpeg_has_filter("zscale"):
+        print("ℹ️  HDR source detected — tone-mapping to SDR so colours look right.", flush=True)
+        return _TONEMAP_VF + ","
+    print("⚠️  HDR source, but this ffmpeg has no 'zscale' filter, so colours may look flat. "
+          "Run Setup → Repair to get a full ffmpeg, or tone-map first with Color → Tone Map.", flush=True)
+    return ""
 
 
 def _tail(f, n=10) -> str:
@@ -101,6 +135,7 @@ def process_video(
     scaled down to it first (and the output is that smaller size) — useful for
     slow per-pixel effects on 4K phone footage. Returns {"frames": n, "seconds": wall_time}.
     """
+    require_sane_numpy()
     in_path, out_path = Path(in_path), Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     info = probe_video(in_path)
@@ -113,7 +148,7 @@ def process_video(
         scale_vf = f"scale={W}:{H}:flags=area"
         print(f"ℹ️  Processing at {W}x{H} (down from {info.width}x{info.height}) to keep this effect fast.", flush=True)
     if setup:
-        setup(VideoInfo(W, H, info.fps, info.duration, info.frames, info.has_audio))
+        setup(VideoInfo(W, H, info.fps, info.duration, info.frames, info.has_audio, info.transfer))
 
     print(f"Input duration: {info.duration:.2f} seconds", flush=True)
 
@@ -121,15 +156,15 @@ def process_video(
     enc_err = tempfile.TemporaryFile(mode="w+", encoding="utf-8", errors="replace")
 
     dec_cmd = ["ffmpeg", "-v", "error", "-i", str(in_path), "-an",
-               "-vf", f"fps={info.fps:.6f},{scale_vf}",
+               "-vf", f"{_hdr_prefilter(info)}fps={info.fps:.6f},{scale_vf}",
                "-f", "rawvideo", "-pix_fmt", "rgb24", "-"]
     enc_cmd = ["ffmpeg", "-v", "error", "-y" if force else "-n",
                "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}",
                "-framerate", f"{info.fps:.6f}", "-i", "-"]
     if audio and info.has_audio:
         enc_cmd += ["-i", str(in_path), "-map", "0:v:0", "-map", "1:a:0?", "-c:a", "aac", "-shortest"]
-    enc_cmd += ["-c:v", "libx264", "-preset", preset, "-crf", str(crf),
-                "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(out_path)]
+    enc_cmd += ["-vf", _ENCODE_COLOR_VF, "-c:v", "libx264", "-preset", preset, "-crf", str(crf),
+                "-pix_fmt", "yuv420p", *_ENCODE_COLOR_TAGS, "-movflags", "+faststart", str(out_path)]
 
     dec = subprocess.Popen(dec_cmd, stdout=subprocess.PIPE, stderr=dec_err)
     enc = subprocess.Popen(enc_cmd, stdin=subprocess.PIPE, stderr=enc_err)

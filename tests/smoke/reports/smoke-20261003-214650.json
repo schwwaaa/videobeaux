@@ -1,0 +1,305 @@
+{
+  "meta": {
+    "source": "tests/Wil_Willis-OnTheJob_edit_0001.mp4",
+    "start": 6.0,
+    "dur": 5.0,
+    "full_res": false,
+    "ffmpeg": "ffmpeg version 9.0.1 Copyright (c) 2000-2026 the FFmpeg developers"
+  },
+  "counts": {
+    "FAIL": 14,
+    "PASS": 15
+  },
+  "results": [
+    {
+      "program": "black_white",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "FAIL",
+      "seconds": 0.2353501319885254,
+      "detail": "",
+      "error": "TypeError: make_bw.<locals>.fn() takes 1 positional argument but 2 were given",
+      "cmd": "-m videobeaux.cli -P black_white -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/black_white/result.mp4 -F"
+    },
+    {
+      "program": "blueprint",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "FAIL",
+      "seconds": 0.235975980758667,
+      "detail": "",
+      "error": "TypeError: make_blueprint.<locals>.fn() takes 1 positional argument but 2 were given",
+      "cmd": "-m videobeaux.cli -P blueprint -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/blueprint/result.mp4 -F"
+    },
+    {
+      "program": "emboss",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "FAIL",
+      "seconds": 0.24056172370910645,
+      "detail": "",
+      "error": "TypeError: make_emboss.<locals>.fn() takes 1 positional argument but 2 were given",
+      "cmd": "-m videobeaux.cli -P emboss -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/emboss/result.mp4 -F"
+    },
+    {
+      "program": "crt_monitor",
+      "category": "glitch",
+      "category_label": "Glitch & Corruption",
+      "status": "PASS",
+      "seconds": 0.6307392120361328,
+      "detail": "640x360, 5.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P crt_monitor -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/crt_monitor/result.mp4 -F"
+    },
+    {
+      "program": "crossmosh",
+      "category": "glitch",
+      "category_label": "Glitch & Corruption",
+      "status": "PASS",
+      "seconds": 0.851801872253418,
+      "detail": "640x360, 9.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P crossmosh -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/crossmosh/result.mp4 -F --b-input /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip2.mp4"
+    },
+    {
+      "program": "glitch_tear",
+      "category": "glitch",
+      "category_label": "Glitch & Corruption",
+      "status": "FAIL",
+      "seconds": 0.23610687255859375,
+      "detail": "",
+      "error": "TypeError: make_glitch.<locals>.fn() takes 1 positional argument but 2 were given",
+      "cmd": "-m videobeaux.cli -P glitch_tear -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/glitch_tear/result.mp4 -F"
+    },
+    {
+      "program": "face_swap",
+      "category": "vision",
+      "category_label": "Vision & Tracking",
+      "status": "PASS",
+      "seconds": 0.685521125793457,
+      "detail": "640x360, 5.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P face_swap -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/face_swap/result.mp4 -F"
+    },
+    {
+      "program": "infrared",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "FAIL",
+      "seconds": 0.22487282752990723,
+      "detail": "",
+      "error": "TypeError: make_infrared.<locals>.fn() takes 1 positional argument but 2 were given",
+      "cmd": "-m videobeaux.cli -P infrared -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/infrared/result.mp4 -F"
+    },
+    {
+      "program": "face_warp",
+      "category": "vision",
+      "category_label": "Vision & Tracking",
+      "status": "PASS",
+      "seconds": 0.7225301265716553,
+      "detail": "640x360, 5.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P face_warp -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/face_warp/result.mp4 -F"
+    },
+    {
+      "program": "hue_cycle",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 0.5392801761627197,
+      "detail": "640x360, 5.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P hue_cycle -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/hue_cycle/result.mp4 -F"
+    },
+    {
+      "program": "lomo",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "FAIL",
+      "seconds": 0.24560999870300293,
+      "detail": "",
+      "error": "TypeError: make_lomo.<locals>.fn() takes 1 positional argument but 2 were given",
+      "cmd": "-m videobeaux.cli -P lomo -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/lomo/result.mp4 -F"
+    },
+    {
+      "program": "led_wall",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 0.7003560066223145,
+      "detail": "640x360, 5.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P led_wall -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/led_wall/result.mp4 -F"
+    },
+    {
+      "program": "little_planet",
+      "category": "temporal",
+      "category_label": "Time & Motion",
+      "status": "PASS",
+      "seconds": 0.6074879169464111,
+      "detail": "640x360, 5.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P little_planet -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/little_planet/result.mp4 -F"
+    },
+    {
+      "program": "layer_blend",
+      "category": "layout",
+      "category_label": "Layout & Overlay",
+      "status": "PASS",
+      "seconds": 0.8971037864685059,
+      "detail": "640x360, 5.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P layer_blend -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/layer_blend/result.mp4 -F --input2 /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip2.mp4 --mode difference --audio Mix A + B"
+    },
+    {
+      "program": "negative",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "FAIL",
+      "seconds": 0.2253713607788086,
+      "detail": "",
+      "error": "TypeError: make_negative.<locals>.fn() takes 1 positional argument but 2 were given",
+      "cmd": "-m videobeaux.cli -P negative -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/negative/result.mp4 -F"
+    },
+    {
+      "program": "oil_paint",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "FAIL",
+      "seconds": 0.2275078296661377,
+      "detail": "",
+      "error": "TypeError: make_oil.<locals>.fn() takes 1 positional argument but 2 were given",
+      "cmd": "-m videobeaux.cli -P oil_paint -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/oil_paint/result.mp4 -F"
+    },
+    {
+      "program": "long_exposure",
+      "category": "trails",
+      "category_label": "Trails & Echoes",
+      "status": "PASS",
+      "seconds": 0.5366389751434326,
+      "detail": "640x360, 5.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P long_exposure -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/long_exposure/result.mp4 -F"
+    },
+    {
+      "program": "pixelate",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "FAIL",
+      "seconds": 0.22534513473510742,
+      "detail": "",
+      "error": "TypeError: make_pixelate.<locals>.fn() takes 1 positional argument but 2 were given",
+      "cmd": "-m videobeaux.cli -P pixelate -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/pixelate/result.mp4 -F"
+    },
+    {
+      "program": "pop_art",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "FAIL",
+      "seconds": 0.2214341163635254,
+      "detail": "",
+      "error": "TypeError: make_popart.<locals>.fn() takes 1 positional argument but 2 were given",
+      "cmd": "-m videobeaux.cli -P pop_art -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/pop_art/result.mp4 -F"
+    },
+    {
+      "program": "posterize",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "FAIL",
+      "seconds": 0.23331212997436523,
+      "detail": "",
+      "error": "TypeError: make_posterize.<locals>.fn() takes 1 positional argument but 2 were given",
+      "cmd": "-m videobeaux.cli -P posterize -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/posterize/result.mp4 -F"
+    },
+    {
+      "program": "sepia",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "FAIL",
+      "seconds": 0.23051714897155762,
+      "detail": "",
+      "error": "TypeError: make_sepia.<locals>.<lambda>() takes 1 positional argument but 2 were given",
+      "cmd": "-m videobeaux.cli -P sepia -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/sepia/result.mp4 -F"
+    },
+    {
+      "program": "solarize",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "FAIL",
+      "seconds": 0.24266886711120605,
+      "detail": "",
+      "error": "TypeError: make_solarize.<locals>.<lambda>() takes 1 positional argument but 2 were given",
+      "cmd": "-m videobeaux.cli -P solarize -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/solarize/result.mp4 -F"
+    },
+    {
+      "program": "rgb_time_split",
+      "category": "trails",
+      "category_label": "Trails & Echoes",
+      "status": "PASS",
+      "seconds": 0.5137698650360107,
+      "detail": "640x360, 5.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P rgb_time_split -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/rgb_time_split/result.mp4 -F"
+    },
+    {
+      "program": "photobooth",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 0.9962928295135498,
+      "detail": "640x360, 5.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P photobooth -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/photobooth/result.mp4 -F --filter Retro TV \u00b7 VHS"
+    },
+    {
+      "program": "thermal",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "FAIL",
+      "seconds": 0.22330379486083984,
+      "detail": "",
+      "error": "TypeError: make_thermal.<locals>.fn() takes 1 positional argument but 2 were given",
+      "cmd": "-m videobeaux.cli -P thermal -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/thermal/result.mp4 -F"
+    },
+    {
+      "program": "slit_scan",
+      "category": "temporal",
+      "category_label": "Time & Motion",
+      "status": "PASS",
+      "seconds": 0.7668616771697998,
+      "detail": "640x360, 5.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P slit_scan -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/slit_scan/result.mp4 -F"
+    },
+    {
+      "program": "tunnel",
+      "category": "temporal",
+      "category_label": "Time & Motion",
+      "status": "PASS",
+      "seconds": 0.7517759799957275,
+      "detail": "640x360, 5.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P tunnel -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/tunnel/result.mp4 -F"
+    },
+    {
+      "program": "vhs_camcorder",
+      "category": "glitch",
+      "category_label": "Glitch & Corruption",
+      "status": "PASS",
+      "seconds": 0.9769411087036133,
+      "detail": "640x360, 5.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P vhs_camcorder -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/vhs_camcorder/result.mp4 -F"
+    },
+    {
+      "program": "weak_signal",
+      "category": "glitch",
+      "category_label": "Glitch & Corruption",
+      "status": "PASS",
+      "seconds": 1.2564060688018799,
+      "detail": "640x360, 5.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P weak_signal -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_b2b1l515/out/weak_signal/result.mp4 -F"
+    }
+  ]
+}

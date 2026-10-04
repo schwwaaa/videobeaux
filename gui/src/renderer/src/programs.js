@@ -43,7 +43,11 @@ export const CATEGORIES = [
       { id: 'slight_smear',        label: 'Slight Smear',       description: 'Small red/green/blue channel offsets with wrapped edges — a subtle colour smear', args: [] },
       { id: 'blur_pix',            label: 'Blur Pix',           description: 'Pixelization with frame lag/mixing and chroma shift — smeared blocky blur', args: [] },
       { id: 'warp', label: 'Warp', description: 'Swirl, bulge, pinch, ripple, kaleidoscope and mirror distortions, optionally animated', args: [] },
-      { id: 'flow_warp', label: 'Flow Warp', description: 'Optical-flow smear/push — pixels drag along motion like a datamosh melt — or a color flow view', args: [] }
+      { id: 'flow_warp', label: 'Flow Warp', description: 'Optical-flow smear/push — pixels drag along motion like a datamosh melt — or a color flow view', args: [] },
+      { id: 'glitch_tear', label: 'Glitch Tear', description: 'RGB channel split plus horizontal tears and scanline dimming, re-rolled every frame', args: [] },
+      { id: 'weak_signal', label: 'Weak Signal', description: 'Edge-of-reception transmission: skew, colour misregistration, noise, streaks and bursts of static', args: [] },
+      { id: 'vhs_camcorder', label: 'VHS Camcorder', description: 'Home-video camcorder look: soft chroma, tape noise, a rolling tracking band and the on-screen PLAY / date stamp', args: [] },
+      { id: 'crt_monitor', label: 'CRT Monitor', description: 'Old TV tube: curved glass, scanlines, RGB shadow mask, glow and a dark vignette', args: [] }
     ]
   },
   {
@@ -61,7 +65,9 @@ export const CATEGORIES = [
       { id: 'fever',                label: 'Fever',                description: 'Channel-plane shuffling with a frame-difference boost — feverish dream look', args: [] },
       { id: 't1000',             label: 'T-1000',            description: 'Temporal median smoothing with RGB offsets — liquid-mercury shimmer on motion', args: [] },
       { id: 'smudge',              label: 'Smudge',             description: 'Temporal median — moving subjects smear and melt into the background', args: [] },
-      { id: 'repainting',          label: 'Repainting',         description: 'Median repaint blended with a multi-frame mix — painterly, smeared motion', args: [] }
+      { id: 'repainting',          label: 'Repainting',         description: 'Median repaint blended with a multi-frame mix — painterly, smeared motion', args: [] },
+      { id: 'long_exposure', label: 'Long Exposure', description: 'A slowly fading average of past frames — moving things smear into ghostly trails', args: [] },
+      { id: 'rgb_time_split', label: 'RGB Time Split', description: 'Red channel is now, green and blue lag behind — motion leaves rainbow fringes', args: [] }
     ]
   },
   {
@@ -94,9 +100,12 @@ export const CATEGORIES = [
       { id: 'nostalgic_stutter',    label: 'Nostalgic Stutter',    description: 'Random-frame stutter with chroma shift and multi-frame mixing, like a corrupted file', args: [] },
       { id: 'overexposed_stutter',  label: 'Overexposed Stutter',  description: 'Hard blend modes with random-frame repeats and lag — blown-out corrupted stutter', args: [] },
       { id: 'looper_pro',           label: 'Looper Pro',           description: 'Repeats a chosen segment (start frame + length) a set number of times', args: [] },
-      { id: 'frame_interpolate', label: 'Frame Interpolate', description: 'Motion-interpolated slow-motion / higher frame rate (ffmpeg minterpolate; RIFE/DAIN engines not implemented yet)',          args: [] },
+      { id: 'frame_interpolate', label: 'Frame Interpolate', description: 'Paints in-between frames: smoother motion (30→60 fps) or smooth slow motion. Slow on long clips',          args: [] },
       { id: 'scrolling_pro',        label: 'Scrolling Pro',        description: 'Scroll the picture horizontally and/or vertically at a set speed', args: [] },
-      { id: 'broken_scroll',        label: 'Broken Scroll',        description: 'Amplified frame differences plus a slow vertical scroll — rolling broken-tracking look', args: [] }
+      { id: 'broken_scroll',        label: 'Broken Scroll',        description: 'Amplified frame differences plus a slow vertical scroll — rolling broken-tracking look', args: [] },
+      { id: 'slit_scan', label: 'Slit-Scan', description: 'Different parts of the frame show different moments in time — rows, rings, columns or waves of delay', args: [] },
+      { id: 'tunnel', label: 'Tunnel', description: 'The picture wrapped around the inside of a tunnel you fly down', args: [] },
+      { id: 'little_planet', label: 'Little Planet', description: 'Polar-coordinate \'tiny planet\' — the bottom of the picture becomes a small round world with sky all around', args: [] }
     ]
   },
   {
@@ -149,7 +158,24 @@ export const CATEGORIES = [
       { id: 'neon_edges', label: 'Neon Edges', description: 'Glowing colored edge outlines over a dimmed, original or black background', args: [] },
       { id: 'cartoon', label: 'Cartoon', description: 'Flat posterized colors with inked outlines', args: [] },
       { id: 'sketch', label: 'Sketch', description: 'Pencil, colored-pencil, watercolor-style and painterly looks', args: [] },
-      { id: 'kmeans_palette', label: 'K-Means Palette', description: 'Snap the video to its N dominant colors, optionally dithered', args: [] }
+      { id: 'kmeans_palette', label: 'K-Means Palette', description: 'Snap the video to its N dominant colors, optionally dithered', args: [] },
+      { id: 'photobooth', label: 'Filter Library', description: 'Every photo-booth filter in one list — plus any you drop into ~/.videobeaux/filters/ (Negative, Game Boy, VHS, CRT, halftone, comic, fisheye…)', args: [] },
+      { id: 'ascii_art', label: 'ASCII Art', description: 'Rebuild the video from text characters — choose character set, colors (matrix green, amber…), size and edge boost', args: [] },
+      { id: 'negative', label: 'Negative', description: 'Invert the picture like a photo negative — or flip only the brightness and keep the colors', args: [] },
+      { id: 'black_white', label: 'Black & White', description: 'High-contrast black and white with local contrast boost (faces and texture pop), optional film grain', args: [] },
+      { id: 'sepia', label: 'Sepia & Tones', description: 'Antique single-tone looks: sepia, cyanotype blue, rose, forest or gold', args: [] },
+      { id: 'thermal', label: 'Thermal', description: 'Thermal-camera false color — pick the heat palette (inferno, jet, turbo, hot, plasma…)', args: [] },
+      { id: 'infrared', label: 'Infrared Film', description: 'False-color infrared film look — foliage turns pink and red, skies go dark', args: [] },
+      { id: 'solarize', label: 'Solarize', description: 'Darkroom solarization — tones above the threshold flip, giving glowing metallic edges', args: [] },
+      { id: 'posterize', label: 'Posterize', description: 'Reduce each color channel to a few flat levels', args: [] },
+      { id: 'lomo', label: 'Lomo', description: 'Cross-processed toy-camera look: punchy curves, color cast and dark vignette corners', args: [] },
+      { id: 'hue_cycle', label: 'Hue Cycle', description: 'Rotate every color around the color wheel continuously', args: [] },
+      { id: 'pop_art', label: 'Pop Art', description: 'Warhol-style flat-color panels — four colorways in a 2×2 grid, or one palette over the whole frame', args: [] },
+      { id: 'blueprint', label: 'Blueprint', description: 'Technical-drawing look — white edge lines on blueprint blue, with an optional grid', args: [] },
+      { id: 'emboss', label: 'Emboss', description: 'Raised-relief emboss lit from any angle, in gray or keeping the colors', args: [] },
+      { id: 'oil_paint', label: 'Oil Paint', description: 'Painterly oil-paint look: smoothed brush regions, posterized tones and a little canvas relief', args: [] },
+      { id: 'led_wall', label: 'LED Wall', description: 'The picture rebuilt from a grid of round glowing LEDs, like a stadium video wall', args: [] },
+      { id: 'pixelate', label: 'Pixelate', description: 'Chunky square pixels — a mosaic of any block size', args: [] }
     ]
   },
   {
@@ -161,7 +187,9 @@ export const CATEGORIES = [
       { id: 'face_redact', label: 'Face Redact', description: 'Blur, pixelate, fill or dither over tracked faces — or hide everything except the faces', args: [] },
       { id: 'face_follow', label: 'Face Follow', description: 'Smart reframe: a smoothed virtual camera that pans and zooms to keep a face in shot', args: [] },
       { id: 'motion_ghost', label: 'Motion Ghost', description: 'Isolate what moves — tint it, show only the movers, or leave glowing motion trails', args: [] },
-      { id: 'feature_trails', label: 'Feature Trails', description: 'Tracking-HUD look: tracked points, trails and connecting lines over the video', args: [] }
+      { id: 'feature_trails', label: 'Feature Trails', description: 'Tracking-HUD look: tracked points, trails and connecting lines over the video', args: [] },
+      { id: 'face_warp', label: 'Face Warp', description: 'Big head, tiny head or big eyes — warps tracked faces (works on several faces at once)', args: [] },
+      { id: 'face_swap', label: 'Face Swap', description: 'Swap the two biggest faces in the shot, colour-matched with a soft edge', args: [] }
     ]
   },
   {
@@ -175,6 +203,8 @@ export const CATEGORIES = [
         description: 'Overlay a watermark or image onto the video — 9-point placement or custom X/Y, scale or exact pixel sizing, opacity, spin, and a timed enable window',
         args: []
       },
+      { id: 'chroma_key', label: 'Chroma Key', description: 'Remove a green/blue screen (or any solid color) and put a color, image or another video behind — or export transparent WebM/MOV. Auto-detects the screen color', args: [] },
+      { id: 'luma_key', label: 'Luma Key', description: 'Knock out the darks or brights (black backgrounds, white skies); screen/add blend modes for fire, smoke and light leaks', args: [] },
       {
         id: 'stack_2x',
         label: 'Stack 2×',
@@ -203,7 +233,8 @@ export const CATEGORIES = [
           { name: 'vol3',         label: 'Volume 3',      type: 'number', required: false, default: 1.0, min: 0 }
         ]
       },
-      { id: 'lagkage',     label: 'Lagkage',       description: 'JSON-driven multilayer compositor', args: [] }
+      { id: 'lagkage',     label: 'Lagkage',       description: 'JSON-driven multilayer compositor', args: [] },
+      { id: 'layer_blend', label: 'Layer Blend', description: 'Layer two videos with per-layer opacity and a blend mode — multiply, screen, color burn, difference, overlay and more. Choose whose audio to keep', args: [] }
     ]
   },
   {

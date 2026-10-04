@@ -11,6 +11,7 @@
 import os, tempfile, shutil
 from pathlib import Path
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
+from videobeaux.utils import audio_pick
 
 GUI_METADATA = {
     'args': {
@@ -19,6 +20,11 @@ GUI_METADATA = {
             'subtype': 'video',
             'label': 'B Clip (Second Video)',
             'help': 'The second clip that gets datamoshed into.',
+        },
+        'audio': {
+            'type': 'select', 'label': 'Audio', 'default': 'A then B (follows the picture)',
+            'choices': list(audio_pick.CROSSMOSH_AUDIO),
+            'help': "Which clip's sound is used. The picture plays A then B, so 'A then B' keeps each sound with its own picture.",
         },
     }
 }
@@ -41,6 +47,9 @@ def register_arguments(p):
     p.add_argument("--gop", type=int, default=9999,
                    help="Large GOP to minimize I-frames. Default: 9999")
     p.add_argument("--keep-temp", action="store_true", help="Keep intermediates")
+    audio_pick.add_audio_argument(
+        p, audio_pick.CROSSMOSH_AUDIO, "A then B (follows the picture)",
+        "Which audio to use: A then B (default), A only, B only (after A), Mix A + B (together from the start), or Silent.")
 
     # New “melt” options
     p.add_argument("--mode", choices=["proto", "smear"], default="proto",
@@ -131,8 +140,19 @@ def run(args):
             run_ffmpeg_with_progress(_force(cmd_smear, getattr(args, "force", False)), str(moshed), str(smeared))
             final_src = smeared
 
-        # Deliver
+        # Audio: the mosh itself is video-only; add the chosen track (A, B, both or none).
         final_src = Path(final_src)
+        total = audio_pick.duration_of(final_src)
+        wav = audio_pick.build_audio_track(args.audio, audio_pick.CROSSMOSH_AUDIO, A, B, total,
+                                           tmp / "audio.wav", a_dur=audio_pick.duration_of(A))
+        if wav is not None:
+            with_audio = tmp / "mosh_audio.avi"
+            cmd_mux = ["ffmpeg", "-i", str(final_src), "-i", str(wav), "-map", "0:v", "-map", "1:a",
+                       "-c:v", "copy", *audio_pick.audio_codec_for_avi(), "-t", f"{total:.3f}", str(with_audio)]
+            run_ffmpeg_with_progress(_force(cmd_mux, getattr(args, "force", False)), str(final_src), str(with_audio))
+            final_src = with_audio
+
+        # Deliver
         if final_src.resolve() != out.resolve():
             out.parent.mkdir(parents=True, exist_ok=True)
             shutil.move(str(final_src), str(out))

@@ -1,0 +1,94 @@
+{
+  "meta": {
+    "source": "/var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_src_om8q6go9/synthetic.mp4",
+    "start": 6.0,
+    "dur": 8.0,
+    "full_res": false,
+    "ffmpeg": "ffmpeg version 9.0.1 Copyright (c) 2000-2026 the FFmpeg developers"
+  },
+  "counts": {
+    "PASS": 8
+  },
+  "results": [
+    {
+      "program": "chroma_key",
+      "category": "layout",
+      "category_label": "Layout & Overlay",
+      "status": "PASS",
+      "seconds": 0.8459842205047607,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P chroma_key -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_msrv3wf5/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_msrv3wf5/out/chroma_key/result.mp4 -F --auto_key --bg_video /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_msrv3wf5/fixtures/clip2.mp4"
+    },
+    {
+      "program": "dither",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 0.8688356876373291,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P dither -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_msrv3wf5/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_msrv3wf5/out/dither/result.mp4 -F --colors 8 --pixel_size 2"
+    },
+    {
+      "program": "ascii_art",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 1.0538172721862793,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P ascii_art -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_msrv3wf5/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_msrv3wf5/out/ascii_art/result.mp4 -F --columns 80 --color_mode matrix green"
+    },
+    {
+      "program": "luma_key",
+      "category": "layout",
+      "category_label": "Layout & Overlay",
+      "status": "PASS",
+      "seconds": 0.6130449771881104,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P luma_key -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_msrv3wf5/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_msrv3wf5/out/luma_key/result.mp4 -F --key dark --tolerance 0.3 --bg_color #2244ff"
+    },
+    {
+      "program": "neon_edges",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 1.04402494430542,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P neon_edges -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_msrv3wf5/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_msrv3wf5/out/neon_edges/result.mp4 -F"
+    },
+    {
+      "program": "photobooth",
+      "category": "look",
+      "category_label": "Color & Look",
+      "status": "PASS",
+      "seconds": 1.484961986541748,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P photobooth -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_msrv3wf5/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_msrv3wf5/out/photobooth/result.mp4 -F --filter Retro TV \u00b7 VHS"
+    },
+    {
+      "program": "pixel_sort",
+      "category": "glitch",
+      "category_label": "Glitch & Corruption",
+      "status": "PASS",
+      "seconds": 2.335062026977539,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P pixel_sort -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_msrv3wf5/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_msrv3wf5/out/pixel_sort/result.mp4 -F"
+    },
+    {
+      "program": "frame_interpolate",
+      "category": "temporal",
+      "category_label": "Time & Motion",
+      "status": "PASS",
+      "seconds": 5.352335214614868,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P frame_interpolate -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_msrv3wf5/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_msrv3wf5/out/frame_interpolate/result.mp4 -F --multiplier 2"
+    }
+  ]
+}

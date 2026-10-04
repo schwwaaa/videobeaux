@@ -527,6 +527,18 @@ app.whenReady().then(async () => {
     shell.openPath(modelsDir)
   })
 
+  // Imports the core packages and runs numpy through a large-array self-test: numpy 2.2.x on
+  // Python 3.14 silently miscomputes big images (see videobeaux/utils/numpy_check.py), so an
+  // "importable" numpy isn't proof it works. A failure here sends the user to Setup → Repair.
+  const PYTHON_HEALTH_CHECK = [
+    'import vosk, numpy as np, PIL',
+    'n=480*640; i=np.arange(n); m=(i%7)>2; b=m.copy()',
+    'p=np.empty(n,dtype=bool); p[0]=False; p[1:]=m[:-1]',
+    '_=m&(~p|(i%640==0))',
+    'assert (m==b).all(), "numpy %s miscomputes large arrays on this Python - Repair will update it" % np.__version__',
+    'print("ok")'
+  ].join('\n')
+
   async function environmentStatus() {
     const { ffmpegDir } = getPaths()
     const python = findPython()
@@ -554,7 +566,7 @@ app.whenReady().then(async () => {
     })
 
     const [pythonResult, ffmpegInfo, ffprobeResult] = await Promise.all([
-      check(python, ['-c', 'import vosk, numpy, PIL; print("ok")']),
+      check(python, ['-c', PYTHON_HEALTH_CHECK]),
       inspectFfmpeg(ffmpegBin),
       check(ffprobeBin, ['-version'])
     ])

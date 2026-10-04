@@ -161,12 +161,73 @@ html, body, #root {
 }
 .react-flow__edge-path { stroke: var(--ink) !important; stroke-width: 3 !important; }
 .react-flow__edge.selected .react-flow__edge-path { stroke: var(--magenta) !important; }
+.react-flow__edge.selected .react-flow__edge-path { stroke-width: 5 !important; }
 .react-flow__handle {
   width: 12px !important;
   height: 12px !important;
   border-radius: 50% !important;
   border: 2px solid var(--ink) !important;
+  cursor: crosshair;
 }
+/* Invisible padding makes the dots easy to hit for click-to-connect. */
+.react-flow__handle::after {
+  content: '';
+  position: absolute;
+  inset: -9px;
+  border-radius: 50%;
+}
+.react-flow__handle:hover { box-shadow: 0 0 0 3px var(--yellow), 0 0 0 5px var(--ink); }
+
+/* Two-click connect: the dot that was clicked pulses; every dot it can connect to glows. */
+.react-flow__handle.clickconnecting {
+  background: var(--yellow) !important;
+  animation: vb-handle-pulse 0.9s ease-in-out infinite;
+}
+.react-flow__handle.connectionindicator:not(.clickconnecting) {
+  box-shadow: 0 0 0 3px var(--yellow), 0 0 0 5px var(--ink);
+}
+@keyframes vb-handle-pulse {
+  0%, 100% { box-shadow: 0 0 0 3px var(--yellow), 0 0 0 5px var(--ink); }
+  50%      { box-shadow: 0 0 0 7px var(--yellow), 0 0 0 9px var(--ink); }
+}
+
+/* ── Selection ─────────────────────────────────────────────────────────────── */
+/* A selected node gets a yellow band hugging its border plus a thin outline, drawn ABOVE the
+   offset drop shadow (earlier entries in a box-shadow list paint on top). The shadow is pushed
+   out by the ring thickness so it still reads as a clean shadow behind the ring. Targets
+   React Flow's wrapper's first child, so it works for every node type. */
+.react-flow__node.selected > div:first-child {
+  box-shadow:
+    0 0 0 3px var(--yellow),
+    0 0 0 5px var(--ink),
+    calc(var(--shadow-offset) + 5px) calc(var(--shadow-offset) + 5px) 0 var(--shadow-color) !important;
+}
+.react-flow__nodesselection-rect, .react-flow__selection {
+  background: rgba(255, 229, 0, 0.12) !important;
+  border: 2px dashed var(--ink) !important;
+}
+
+.selection-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px 6px 14px;
+  background: var(--yellow);
+  color: #080808;
+  border: var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+}
+.selection-pill button {
+  padding: 6px 12px;
+  color: #080808;
+  background: #fffdf6;
+  border: 2px solid #080808;
+}
+.selection-pill .selection-pill__delete { background: var(--coral); }
 
 /* ── Utility ───────────────────────────────────────────────────────────────── */
 button {

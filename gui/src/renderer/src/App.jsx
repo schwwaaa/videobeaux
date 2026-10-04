@@ -9,12 +9,15 @@ import {
   Controls,
   MiniMap,
   useReactFlow,
+  useStoreApi,
+  useStore,
   Panel
 } from '@xyflow/react'
 
 import InputNode  from './components/nodes/InputNode'
 import EffectNode from './components/nodes/EffectNode'
 import OutputNode from './components/nodes/OutputNode'
+import ClickConnectLine from './components/ClickConnectLine'
 import Sidebar    from './components/Sidebar'
 import LogPanel   from './components/LogPanel'
 import SetupScreen from './components/SetupScreen'
@@ -75,7 +78,8 @@ let _nodeCounter = 2
 function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progress, setProgress, registerCanvasActions }) {
   const [nodes, setNodes, onNodesChange] = useNodesState(INITIAL_NODES)
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
-  const { screenToFlowPosition, getViewport, getNodes, getEdges } = useReactFlow()
+  const { screenToFlowPosition, getViewport, getNodes, getEdges, deleteElements } = useReactFlow()
+  const flowStore = useStoreApi()
   const { programMap } = usePrograms()
   const { theme } = useSettings()
   const [runError, setRunError] = useState(null)
@@ -89,18 +93,41 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
   }, [setNodes, setEdges])
   const { record, undo, redo, canUndo, canRedo } = useHistory({ getSnapshot, restore })
 
+  const clearSelection = useCallback(() => {
+    setNodes(ns => ns.some(n => n.selected) ? ns.map(n => (n.selected ? { ...n, selected: false } : n)) : ns)
+    setEdges(es => es.some(e => e.selected) ? es.map(e => (e.selected ? { ...e, selected: false } : e)) : es)
+  }, [setNodes, setEdges])
+
   useEffect(() => {
     const onKey = (e) => {
-      if (!(e.metaKey || e.ctrlKey) || e.altKey) return
       const t = e.target
       if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable)) return
+      if (e.key === 'Escape') {
+        flowStore.setState({ connectionClickStartHandle: null })
+        clearSelection()
+        return
+      }
+      if (!(e.metaKey || e.ctrlKey) || e.altKey) return
       const k = e.key.toLowerCase()
       if (k === 'z' && !e.shiftKey) { e.preventDefault(); undo() }
       else if ((k === 'z' && e.shiftKey) || k === 'y') { e.preventDefault(); redo() }
+      else if (k === 'a') {
+        e.preventDefault()
+        setNodes(ns => ns.map(n => (n.selected ? n : { ...n, selected: true })))
+      }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [undo, redo])
+  }, [undo, redo, clearSelection, setNodes, flowStore])
+
+  const connecting = useStore(st => !!st.connectionClickStartHandle)
+  const selectedNodes = nodes.filter(n => n.selected)
+  const selectedEdges = edges.filter(e => e.selected)
+  const deletableSelected = selectedNodes.filter(n => n.deletable !== false)
+  const selectionCount = selectedNodes.length + selectedEdges.length
+  const deleteSelection = useCallback(() => {
+    deleteElements({ nodes: deletableSelected.map(n => ({ id: n.id })), edges: selectedEdges.map(e => ({ id: e.id })) })
+  }, [deleteElements, deletableSelected, selectedEdges])
 
   // Synchronous mirror of `progress` (React state updates aren't readable
   // synchronously) and the index of the in-place-updating progress line
@@ -431,6 +458,7 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         onNodeDragStart={() => record()}
+        onPaneClick={() => flowStore.setState({ connectionClickStartHandle: null })}
         onBeforeDelete={async (d) => { record(); return d }}
         isValidConnection={isValidConnection}
         onDrop={onDrop}
@@ -442,6 +470,7 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
         defaultEdgeOptions={{ type: 'smoothstep' }}
         colorMode={theme === 'dark' ? 'dark' : 'light'}
       >
+        <ClickConnectLine />
         <Background color={theme === 'dark' ? '#34323c' : '#d8d4c2'} gap={24} size={1.5} />
         <Controls />
         <MiniMap
@@ -519,7 +548,7 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
               <button
                 onClick={handleCancel}
                 style={{
-                  background: 'var(--coral)', color: 'var(--ink)',
+                  background: 'var(--coral)', color: '#080808',
                   padding: '9px 20px', borderRadius: 'var(--radius-sm)',
                   fontFamily: 'var(--font-display)', fontSize: 12,
                   border: 'var(--border)', boxShadow: 'var(--shadow-sm)'
@@ -534,7 +563,7 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
               <button
                 onClick={handleRun}
                 style={{
-                  background: 'var(--yellow)', color: 'var(--ink)',
+                  background: 'var(--yellow)', color: '#080808',
                   padding: '9px 20px', borderRadius: 'var(--radius-sm)',
                   fontFamily: 'var(--font-display)', fontSize: 12,
                   border: 'var(--border)', boxShadow: 'var(--shadow-sm)'
@@ -560,12 +589,41 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
           </div>
         </Panel>
 
+        {selectionCount > 0 && (
+          <Panel position="top-center" style={{ marginTop: 58 }}>
+            <div className="selection-pill">
+              <span className="selection-pill__count">
+                {selectedNodes.length > 0 && `${selectedNodes.length} program${selectedNodes.length === 1 ? '' : 's'}`}
+                {selectedNodes.length > 0 && selectedEdges.length > 0 && ' + '}
+                {selectedEdges.length > 0 && `${selectedEdges.length} connection${selectedEdges.length === 1 ? '' : 's'}`}
+                {' selected'}
+              </span>
+              <button
+                className="selection-pill__delete"
+                onClick={deleteSelection}
+                disabled={isRunning || (deletableSelected.length === 0 && selectedEdges.length === 0)}
+                title="Delete the selection (Backspace / Delete)"
+              >
+                ⌫ Delete
+              </button>
+              <button className="selection-pill__clear" onClick={clearSelection} title="Deselect (Esc)">
+                Esc · Clear
+              </button>
+            </div>
+          </Panel>
+        )}
+
         <Panel position="bottom-center">
           <div style={{
             fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--muted)',
-            pointerEvents: 'none'
+            pointerEvents: 'none', textAlign: 'center', lineHeight: 1.6
           }}>
-            Drag or double-click programs from the sidebar → connect → Run Pipeline
+            {connecting
+              ? 'Now click another dot to connect · Esc or click empty space to cancel'
+              : <>
+                  Drag or double-click programs from the sidebar · click one dot, then another, to connect<br />
+                  ⌘/Ctrl-click or Shift-drag to select several · Delete removes them · ⌘A selects all
+                </>}
           </div>
         </Panel>
       </ReactFlow>

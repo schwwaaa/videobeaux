@@ -185,20 +185,3 @@ gui/resources/
 .tools/
 venv.old-*/
 .python-extract-*/
-voices-*.bin
-
-# Model files are downloaded by the in-app Setup, never committed (GitHub rejects files > 100 MB).
-# Any .onnx / voice-bank / weights file is ignored anywhere in the repo...
-*.onnx
-voices-*.bin
-*.safetensors
-*.pt
-*.pth
-*.ckpt
-# ...except the small face-detection model the app ships with.
-!videobeaux/assets/face_detection_yunet_2023mar.onnx
-
-# Installers / build output
-gui/dist/
-*.dmg
-*.blockmap

@@ -1,27 +1,23 @@
 # videobeaux/programs/frame_interpolate.py
-# Frame Interpolation — Create slow motion / higher FPS
-# Backends:
-#   - ffmpeg (minterpolate) ✅ fully implemented
-#   - rife-ncnn (external tool) 🚧 scaffold only
-#   - dain-ncnn (external tool) 🚧 scaffold only
+# Frame Interpolation — smoother motion and smooth slow motion.
 #
-# Usage (examples at bottom):
-#   videobeaux -P frame_interpolate -i in.mp4 --outfile out_60fps.mp4 --fps 60
+# ffmpeg's 'minterpolate' filter estimates how things move between two frames and
+# paints new in-between frames, so 30 fps footage can become 60 fps (smoother), or be
+# slowed to half speed without looking like a slideshow.
 #
-# Notes:
-# - Prefers global -o/--output; --outfile is a fallback.
-# - If you prefer a multiplier (e.g., 2x), pass --multiplier 2 and omit --fps.
-#   We'll compute FPS via ffprobe.
-# - Default engine is 'ffmpeg' (pure minterpolate).
+# Usage (examples):
+#   videobeaux -P frame_interpolate -i in.mp4 -o smooth.mp4                    # 2x the frame rate
+#   videobeaux -P frame_interpolate -i in.mp4 -o slow.mp4 --multiplier 1 --slow_motion 2
+#   videobeaux -P frame_interpolate -i in.mp4 -o out_60.mp4 --fps 60
 #
 from __future__ import annotations
 
 import json
-import math
 import subprocess
 from pathlib import Path
 
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
+from videobeaux.utils.media import has_audio
 
 
 def _probe_fps(input_path: str) -> float:
@@ -64,199 +60,112 @@ def _probe_fps(input_path: str) -> float:
 
 # The GUI always supplies the output path (-o) from the connected Output node,
 # so this program-specific fallback flag is hidden from the node's fields.
-GUI_METADATA = {'args': {'outfile': {'hidden': True}}}
+GUI_METADATA = {'args': {
+    'outfile': {'hidden': True},
+    'multiplier': {'label': 'Frame rate multiplier',
+                   'help': '2 = twice as many frames per second (30 → 60: smoother motion). 1 = keep the frame rate (use with Slow motion).',
+                   'min': 1, 'max': 8},
+    'slow_motion': {'label': 'Slow motion',
+                    'help': '1 = normal speed. 2 = half speed, 4 = quarter speed — the extra frames are painted in so it stays smooth.',
+                    'min': 1, 'max': 16},
+    'fps': {'label': 'Target FPS (optional)',
+            'help': 'Set an exact output frame rate (e.g. 60). Leave empty to use the multiplier.'},
+    'mi_mode': {'label': 'Quality', 'help': "mci = best (moves detail along with motion, slowest). blend = fast cross-fade. dup = repeat frames."},
+    # expert knobs — sensible defaults, kept off the node to keep it simple
+    'me-mode': {'hidden': True}, 'mc-mode': {'hidden': True}, 'vsbmc': {'hidden': True},
+    'scd': {'hidden': True}, 'x264-preset': {'hidden': True}, 'copy-audio': {'hidden': True},
+}}
 
 
 def register_arguments(parser):
     parser.description = (
-        "Frame Interpolation\n"
-        "Create slow motion or higher FPS output using one of:\n"
-        "  • ffmpeg 'minterpolate' (default, no extra installs)\n"
-        "  • rife-ncnn (external binary; scaffold only)\n"
-        "  • dain-ncnn (external binary; scaffold only)\n"
+        "Frame Interpolation — makes motion smoother, or slows footage down smoothly.\n"
+        "It looks at how things move between frames and paints new in-between frames "
+        "(ffmpeg 'minterpolate'). Default: doubles the frame rate (30→60 fps). Add --slow_motion 2 "
+        "for half speed. It analyses motion, so it's slow on long or large clips; fast scenes can "
+        "show warping around moving edges."
     )
-
-    # Output path — prefers the global -o/--output (the GUI always sets it);
-    # --outfile is a fallback for direct CLI use without -o.
-    parser.add_argument(
-        "--outfile",
-        required=False,
-        help="Output file path for the interpolated result (mp4 recommended). Falls back to -o/--output when omitted."
-    )
-
-    # Engine selection
-    parser.add_argument(
-        "--engine",
-        choices=["ffmpeg", "rife-ncnn", "dain-ncnn"],
-        default="ffmpeg",
-        help="Interpolation backend. Default: ffmpeg (minterpolate)."
-    )
-
-    # Target FPS OR multiplier
-    parser.add_argument(
-        "--fps",
-        type=float,
-        help="Target output FPS (e.g., 60, 120). If omitted, you can use --multiplier."
-    )
-    parser.add_argument(
-        "--multiplier",
-        type=float,
-        help="Multiply input FPS by this factor (e.g., 2.0 → 30→60). Ignored if --fps is provided."
-    )
-
-    # FFmpeg minterpolate knobs (expert)
-    parser.add_argument(
-        "--mi-mode",
-        choices=["dup", "blend", "mci"],
-        default="mci",
-        help="Motion interpolation mode. 'mci' gives best quality. Default: mci"
-    )
-    parser.add_argument(
-        "--me-mode",
-        choices=["bidir", "bilat"],
-        default="bidir",
-        help="Motion estimation mode. Default: bidir"
-    )
-    parser.add_argument(
-        "--mc-mode",
-        choices=["obmc", "aobmc"],
-        default="aobmc",
-        help="Motion compensation mode. Default: aobmc"
-    )
-    parser.add_argument(
-        "--vsbmc",
-        type=int,
-        choices=[0, 1],
-        default=1,
-        help="Variable-size block motion compensation. 1 = on (better). Default: 1"
-    )
-    parser.add_argument(
-        "--scd",
-        choices=["none", "fdiff", "mv"],
-        default="fdiff",
-        help="Scene change detection. Default: fdiff"
-    )
-
-    # Encoding controls
-    parser.add_argument(
-        "--x264-preset",
-        default="medium",
-        help="libx264 preset (ultrafast..placebo). Default: medium"
-    )
-    parser.add_argument(
-        "--crf",
-        type=float,
-        default=18.0,
-        help="CRF for libx264. Lower = higher quality/larger file. Default: 18"
-    )
-    parser.add_argument(
-        "--copy-audio",
-        action="store_true",
-        help="Copy audio stream instead of re-encoding."
-    )
-
-    # External binary paths (scaffolds)
-    parser.add_argument(
-        "--rife-bin",
-        default="rife-ncnn-vulkan",
-        help="[rife-ncnn] Path to rife-ncnn-vulkan executable (if using --engine rife-ncnn)."
-    )
-    parser.add_argument(
-        "--dain-bin",
-        default="dain-ncnn-vulkan",
-        help="[dain-ncnn] Path to dain-ncnn-vulkan executable (if using --engine dain-ncnn)."
-    )
+    parser.add_argument("--outfile", required=False,
+                        help="Output file path (mp4 recommended). Falls back to -o/--output when omitted.")
+    parser.add_argument("--multiplier", type=float, default=2.0,
+                        help="Multiply the frame rate by this (2 = 30→60 fps). 1 keeps it. Default: 2.")
+    parser.add_argument("--slow_motion", type=float, default=1.0,
+                        help="Slow down by this factor (2 = half speed). 1 = normal speed. Default: 1.")
+    parser.add_argument("--fps", type=float, default=None,
+                        help="Exact target frame rate; overrides --multiplier.")
+    parser.add_argument("--mi_mode", "--mi-mode", dest="mi_mode", choices=["dup", "blend", "mci"], default="mci",
+                        help="Interpolation quality: mci (best), blend (fast), dup (repeat). Default: mci")
+    parser.add_argument("--me-mode", choices=["bidir", "bilat"], default="bidir",
+                        help="Motion estimation mode. Default: bidir")
+    parser.add_argument("--mc-mode", choices=["obmc", "aobmc"], default="aobmc",
+                        help="Motion compensation mode. Default: aobmc")
+    parser.add_argument("--vsbmc", type=int, choices=[0, 1], default=1,
+                        help="Variable-size block motion compensation. 1 = on (better). Default: 1")
+    parser.add_argument("--scd", choices=["none", "fdiff", "mv"], default="fdiff",
+                        help="Scene change detection. Default: fdiff")
+    parser.add_argument("--x264-preset", default="medium", help="libx264 preset (ultrafast..placebo). Default: medium")
+    parser.add_argument("--crf", type=float, default=18.0,
+                        help="CRF for libx264. Lower = higher quality/larger file. Default: 18")
+    parser.add_argument("--copy-audio", action="store_true", help="Copy the audio stream instead of re-encoding it.")
 
 
 def _resolve_target_fps(args) -> float:
+    """Playback frame rate of the result."""
     if args.fps and args.fps > 0:
         return float(args.fps)
-    if args.multiplier and args.multiplier > 0:
-        src_fps = _probe_fps(args.input)
-        if src_fps <= 0:
-            raise RuntimeError("Could not determine source FPS via ffprobe; please pass --fps explicitly.")
-        return float(src_fps * args.multiplier)
-    raise RuntimeError("You must provide either --fps or --multiplier.")
+    src_fps = _probe_fps(args.input)
+    if src_fps <= 0:
+        raise RuntimeError("Could not determine the source frame rate; set Target FPS explicitly.")
+    mult = args.multiplier if args.multiplier and args.multiplier > 0 else 2.0
+    return float(src_fps * mult)
+
+
+def _atempo_chain(factor: float) -> str:
+    """atempo only accepts 0.5–100 per instance; chain halvings for stronger slowdowns."""
+    parts = []
+    f = factor
+    while f < 0.5:
+        parts.append("atempo=0.5")
+        f /= 0.5
+    parts.append(f"atempo={f:.6f}")
+    return ",".join(parts)
 
 
 def _run_ffmpeg_minterpolate(args, target_fps: float):
-    """
-    Build and run a pure-FFmpeg minterpolate pipeline.
-    """
-    # Construct minterpolate filter
+    slow = args.slow_motion if args.slow_motion and args.slow_motion > 1 else 1.0
+    # Paint frames at (playback fps × slowdown), then stretch time so they play at target_fps.
+    interp_fps = target_fps * slow
     mi = (
-        f"minterpolate=fps={target_fps}:mi_mode={args.mi_mode}:"
+        f"minterpolate=fps={interp_fps:.6f}:mi_mode={args.mi_mode}:"
         f"me_mode={args.me_mode}:mc_mode={args.mc_mode}:vsbmc={args.vsbmc}:scd={args.scd}"
     )
-
-    filtergraph = f"{mi},format=yuv420p"
+    vf = mi + (f",setpts=PTS*{slow:.6f}" if slow > 1 else "") + ",format=yuv420p"
     command = [
-        "ffmpeg",
-        "-err_detect", "ignore_err",
-        "-fflags", "+genpts+discardcorrupt",
+        "ffmpeg", "-err_detect", "ignore_err", "-fflags", "+genpts+discardcorrupt",
         "-i", args.input,
-
-        "-vf", filtergraph,
-
-        # Keep SDR tagging sane
-        "-colorspace", "bt709",
-        "-color_trc", "bt709",
-        "-color_primaries", "bt709",
-
-        "-r", f"{target_fps}",               # ensure container/timebase reflects new fps
-        "-c:v", "libx264",
-        "-preset", f"{args.x264_preset}",
-        "-crf", f"{args.crf}",
-
-        "-c:a", "copy" if getattr(args, "copy_audio", False) else "aac",
-        args.outfile,
+        "-vf", vf,
+        "-colorspace", "bt709", "-color_trc", "bt709", "-color_primaries", "bt709",
+        "-r", f"{target_fps:.6f}",
+        "-c:v", "libx264", "-preset", f"{args.x264_preset}", "-crf", f"{args.crf}",
     ]
+    if has_audio(args.input):
+        if slow > 1:
+            command += ["-af", _atempo_chain(1.0 / slow), "-c:a", "aac"]
+        else:
+            command += ["-c:a", "copy" if getattr(args, "copy_audio", False) else "aac"]
+    else:
+        command += ["-an"]
+    command.append(args.outfile)
     final_cmd = (command[:1] + ["-y"] + command[1:]) if getattr(args, "force", False) else command
     run_ffmpeg_with_progress(final_cmd, args.input, args.outfile)
-
-
-def _run_rife_scaffold(args, target_fps: float):
-    """
-    Scaffold placeholder for RIFE. Left as a clear error with guidance.
-    """
-    raise NotImplementedError(
-        "RIFE backend is scaffolded but not implemented here.\n"
-        "Install rife-ncnn-vulkan and wire a frames→frames workflow:\n"
-        "  1) ffmpeg: extract frames (source fps) to a temp dir\n"
-        "  2) rife-ncnn-vulkan: interpolate to target fps (temp dir → temp dir)\n"
-        "  3) ffmpeg: encode interpolated frames + original audio → --outfile\n"
-        "For now, use --engine ffmpeg (minterpolate) which is fully implemented."
-    )
-
-
-def _run_dain_scaffold(args, target_fps: float):
-    """
-    Scaffold placeholder for DAIN. Left as a clear error with guidance.
-    """
-    raise NotImplementedError(
-        "DAIN backend is scaffolded but not implemented here.\n"
-        "Install dain-ncnn-vulkan and wire a frames→frames workflow similar to RIFE.\n"
-        "For now, use --engine ffmpeg (minterpolate) which is fully implemented."
-    )
 
 
 def run(args):
     args.outfile = getattr(args, "output", None) or args.outfile
     if not args.outfile:
         raise SystemExit("❌ Missing output. Provide -o/--output or --outfile.")
-    outfile = Path(args.outfile)
-    if outfile.suffix.lower() != ".mp4":
-        # We allow any extension, but mp4+x264 is what most of videobeaux uses.
-        pass
-
     target_fps = _resolve_target_fps(args)
-
-    if args.engine == "ffmpeg":
-        _run_ffmpeg_minterpolate(args, target_fps)
-        return
-    elif args.engine == "rife-ncnn":
-        _run_rife_scaffold(args, target_fps)
-    elif args.engine == "dain-ncnn":
-        _run_dain_scaffold(args, target_fps)
-    else:
-        raise RuntimeError(f"Unknown engine: {args.engine}")
+    print(f"ℹ️  Output plays at {target_fps:g} fps"
+          + (f", {args.slow_motion:g}× slower" if args.slow_motion and args.slow_motion > 1 else "")
+          + ". Motion analysis is slow — be patient on long clips.", flush=True)
+    _run_ffmpeg_minterpolate(args, target_fps)

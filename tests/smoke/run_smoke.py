@@ -298,6 +298,11 @@ SPECS: dict[str, dict] = {
     "wbflare_pro":      {"args": lambda fx: ["--sigma", "5"]},
     "lut_apply":        {"args": lambda fx: ["--lut", str(fx.lut), "--intensity", "0.7"]},
     "frame_interpolate": {"args": lambda fx: ["--multiplier", "2"], "timeout": 600},
+    "photobooth":       {"args": lambda fx: ["--filter", "Retro TV · VHS"]},
+    "layer_blend":      {"args": lambda fx: ["--input2", str(fx.clip2), "--mode", "difference", "--audio", "Mix A + B"]},
+    "ascii_art":        {"args": lambda fx: ["--columns", "80", "--color_mode", "matrix green"]},
+    "chroma_key":       {"args": lambda fx: ["--auto_key", "--bg_video", str(fx.clip2)]},
+    "luma_key":         {"args": lambda fx: ["--key", "dark", "--tolerance", "0.3", "--bg_color", "#2244ff"]},
     "chain_builder":    {"args": lambda fx: ["--chain", "reverse,boomerang"]},
     "chain_builder_pro": {"args": lambda fx: ["--chain_config", str(fx.chain_config)]},
 

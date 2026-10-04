@@ -7,6 +7,26 @@ import { usePrograms } from '../../ProgramsContext'
 import { videoArgsOf, upstreamIsBatch } from '../../pipeline'
 import { useUpdateNodeData } from '../../useCanvasHistory'
 
+/** Choices like "Pack · Name" are shown grouped under their pack; plain choices stay flat. */
+function renderChoices(choices) {
+  if (!choices.some(c => c.includes(' · '))) {
+    return choices.map(c => <option key={c} value={c}>{c}</option>)
+  }
+  const groups = []
+  for (const c of choices) {
+    const [pack, ...rest] = c.split(' · ')
+    const name = rest.join(' · ') || c
+    let g = groups.find(x => x.pack === pack)
+    if (!g) { g = { pack, items: [] }; groups.push(g) }
+    g.items.push([c, name])
+  }
+  return groups.map(g => (
+    <optgroup key={g.pack} label={g.pack}>
+      {g.items.map(([value, name]) => <option key={value} value={value}>{name}</option>)}
+    </optgroup>
+  ))
+}
+
 // ── Model picker ─────────────────────────────────────────────────────────────
 //
 // Dropdown of whatever's actually in videobeaux-gui/models/ right now (fetched
@@ -238,7 +258,7 @@ function ArgField({ arg, value, onChange }) {
         value={value !== undefined && value !== '' ? value : (arg.default || arg.choices[0])}
         onChange={e => onChange(e.target.value)}
       >
-        {arg.choices.map(c => <option key={c} value={c}>{c}</option>)}
+        {renderChoices(arg.choices)}
       </select>
     )
   }
@@ -498,10 +518,9 @@ export default function EffectNode({ id, data, selected }) {
     deleteElements({ nodes: [{ id }] })
   }
 
-  // Selected: colored ring added around the usual comic-black border/shadow
-  const boxShadow = selected
-    ? `var(--shadow), 0 0 0 3px ${color}`
-    : `var(--shadow)`
+  // The selected look (ring above the shadow) lives in index.css (.react-flow__node.selected)
+  // so every node type shares it.
+  const boxShadow = 'var(--shadow)'
 
   const hasCollapsible = plainArgs.length > 0
   const hasAnyBody      = hasCollapsible || videoArgs.length > 0
