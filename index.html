@@ -1629,7 +1629,12 @@
             playButton.textContent = 'Play';
         }
         function seekPair(time) {
-            pair().forEach(v => { if (v.readyState && Number.isFinite(v.duration)) v.currentTime = Math.min(time, v.duration); });
+            pair().forEach(v => {
+                if (v.readyState && Number.isFinite(v.duration)) {
+                    const target = Math.min(time, v.duration);
+                    if (Math.abs(v.currentTime - target) > .025) v.currentTime = target;
+                }
+            });
         }
         function updateLoaded() {
             const duration = sharedDuration();
@@ -1644,11 +1649,9 @@
         async function playPair() {
             if (playing) { pausePair(); return; }
             const current = pair();
-            if (!current.every(v => v.readyState >= 2)) {
-                comparisonStatus.textContent = 'The video is still loading. Try Play again when ready.'; return;
-            }
+            if (!current.length) return;
             const master = current[0];
-            seekPair(master.currentTime >= sharedDuration() - .05 ? 0 : master.currentTime);
+            if (master.ended || (Number.isFinite(sharedDuration()) && master.currentTime >= sharedDuration() - .05)) seekPair(0);
             const token = ++playToken;
             playing = true; playButton.textContent = 'Pause';
             try {
@@ -1656,6 +1659,7 @@
                 await Promise.all(current.map(v => v.play()));
                 if (token !== playToken && !playing) current.forEach(v => v.pause());
             } catch (error) {
+                if (error.name === 'AbortError') return;
                 if (token === playToken) {
                     pausePair(); comparisonStatus.textContent = 'Playback failed. Check that both video URLs are accessible and supported by your browser.';
                 }
@@ -1672,10 +1676,11 @@
         [originalVideo, video].forEach(v => {
             v.addEventListener('loadedmetadata', updateLoaded);
             v.addEventListener('loadeddata', updateLoaded);
+            v.addEventListener('playing', () => { if (playing) comparisonStatus.textContent = 'Playing. Drag the slider to compare.'; });
             v.addEventListener('ended', pausePair);
             v.addEventListener('error', () => { pausePair(); comparisonStatus.textContent = 'A video could not load. Check its file path or URL.'; });
             v.addEventListener('waiting', () => {
-                if (playing) { pausePair(); comparisonStatus.textContent = 'Playback paused while loading to keep both videos together. Press Play to resume.'; }
+                if (playing) comparisonStatus.textContent = 'Buffering video… Playback will continue automatically.';
             });
         });
         function selectExample(index) {
@@ -1709,9 +1714,9 @@
             const master = pair()[0], duration = sharedDuration();
             if (master && Number.isFinite(duration)) {
                 if (playing && master.currentTime >= duration - .04) { pausePair(); seekPair(duration); }
-                if (playing && originalVideo.getAttribute('src')) {
+                if (playing && originalVideo.getAttribute('src') && pair().every(v => v.readyState >= 3 && !v.seeking)) {
                     const delta = video.currentTime - originalVideo.currentTime;
-                    if (Math.abs(delta) > .15) video.currentTime = originalVideo.currentTime;
+                    if (Math.abs(delta) > .5) video.currentTime = originalVideo.currentTime;
                     else video.playbackRate = Math.abs(delta) > .03 ? (delta > 0 ? .97 : 1.03) : 1;
                 }
                 seekBar.value = master.currentTime;
