@@ -180,6 +180,7 @@ models/
 node_modules/
 gui/out/
 gui/resources/
+gui/.ffmpeg-build/
 
 # App-managed tools (downloaded by the in-app Setup)
 .tools/

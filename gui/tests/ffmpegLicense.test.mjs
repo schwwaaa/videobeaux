@@ -115,3 +115,46 @@ test('the bundled ffmpeg (when present) meets every required feature and is not 
   assert.deepEqual(r.missing, [])
   assert.notEqual(r.license.flavor, 'nonfree')
 })
+
+// ── bundling a locally built ffmpeg (npm run dist before our release is published) ───────────────────────────────
+import { adoptLocalFfmpeg, findLocalFfmpegDir } from '../src/main/toolsSetup.js'
+
+function fakeFfmpegDir(configLine, { start = true } = {}) {
+  const dir = mkdtempSync(join(tmpdir(), 'vb-local-ff-'))
+  const body = start
+    ? `#!/bin/sh\necho "ffmpeg version 7.1.1 Copyright"\necho "  configuration: ${configLine}"\n`
+    : '#!/bin/sh\nexit 1\n'
+  for (const t of ['ffmpeg', 'ffprobe']) {
+    writeFileSync(join(dir, t), body)
+    chmodSync(join(dir, t), 0o755)
+  }
+  return dir
+}
+
+test('a locally built GPL ffmpeg is copied into the bundle', { skip: process.platform === 'win32' }, async () => {
+  const src = fakeFfmpegDir('--enable-gpl --enable-libx264 --enable-libsvtav1')
+  const dst = mkdtempSync(join(tmpdir(), 'vb-bundle-'))
+  const r = await adoptLocalFfmpeg({ sourceDir: src, targetDir: join(dst, 'ffmpeg'), platform: process.platform })
+  assert.equal(r.license.flavor, 'gpl')
+  assert.equal(existsSync(join(dst, 'ffmpeg', 'ffmpeg')), true)
+  assert.equal(existsSync(join(dst, 'ffmpeg', 'ffprobe')), true)
+})
+
+test('a nonfree or non-starting local ffmpeg is refused and nothing is copied', { skip: process.platform === 'win32' }, async () => {
+  const dst = mkdtempSync(join(tmpdir(), 'vb-bundle-'))
+  await assert.rejects(
+    adoptLocalFfmpeg({ sourceDir: fakeFfmpegDir('--enable-gpl --enable-nonfree'), targetDir: join(dst, 'a'), platform: process.platform }),
+    /nonfree/)
+  await assert.rejects(
+    adoptLocalFfmpeg({ sourceDir: fakeFfmpegDir('', { start: false }), targetDir: join(dst, 'b'), platform: process.platform }),
+    /won't start/)
+  assert.equal(existsSync(join(dst, 'a', 'ffmpeg')), false)
+  assert.equal(existsSync(join(dst, 'b', 'ffmpeg')), false)
+})
+
+test('findLocalFfmpegDir returns the first candidate that has both binaries', { skip: process.platform === 'win32' }, () => {
+  const good = fakeFfmpegDir('--enable-gpl')
+  const empty = mkdtempSync(join(tmpdir(), 'vb-empty-'))
+  assert.equal(findLocalFfmpegDir([undefined, '/definitely/not/here', empty, good]), good)
+  assert.equal(findLocalFfmpegDir([empty, null]), null)
+})

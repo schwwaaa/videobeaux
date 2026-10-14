@@ -19,6 +19,8 @@
 
 ## Before charging for the app (checklist)
 
+0. An installer built with `npm run ffmpeg:local` (a locally built ffmpeg) is for your own use and testing. To distribute it, publish that
+   build's `sources-*.tar` and `SOURCES.txt` (from `gui/.ffmpeg-build/dist/sources/`) alongside it.
 1. Publish the ffmpeg release (`ffmpeg-7.1.1-vb2`), paste `ffmpeg-runtime.sha256.json` into `gui/ffmpeg-runtime.json`, and delete
    the `devFallback` block (it points at a *nonfree* third-party build that is only tolerated for local development).
 2. Keep that release's `sources-*.tar` online for as long as you distribute the binaries.

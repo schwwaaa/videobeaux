@@ -219,6 +219,19 @@ npm run dist
 
 This stages a self-contained Python environment (via [python-build-standalone](https://github.com/astral-sh/python-build-standalone), with all of `requirements.txt` pre-installed) and static ffmpeg binaries into `gui/resources/` (see `gui/scripts/build-python-env.mjs`), then packages everything with electron-builder into `gui/dist/`. Building for Windows currently needs to run on a Windows machine/CI runner (`pip install`s compiled wheels for whatever platform the build script itself runs on).
 
+**ffmpeg for the installer.** The build bundles *our* ffmpeg (GPL, never `--enable-nonfree`). Until its release
+(`ffmpeg-7.1.1-vb2`, see `.github/workflows/ffmpeg-build.yml`) is published, build it locally once and `npm run dist` will pick it up:
+
+```bash
+cd gui
+npm run ffmpeg:local        # ~15 min the first time; writes gui/.ffmpeg-build/dist/{ffmpeg,ffprobe}
+npm run dist
+```
+
+Any folder containing `ffmpeg` + `ffprobe` also works: `VIDEOBEAUX_FFMPEG_DIR=/path/to/folder npm run dist`. A build configured with
+`--enable-nonfree` is refused. A locally built installer is fine for your own use; before you distribute it, publish the matching source
+archives (see [`LICENSES/README.md`](LICENSES/README.md)).
+
 Speech-recognition models are **not** bundled into the installer (they run ~7GB combined) — the in-app Setup screen handles that separately, after install.
 
 ## Programs

@@ -1,5 +1,5 @@
-import { chmodSync, createReadStream, createWriteStream, existsSync, mkdirSync, renameSync, rmSync } from 'fs'
-import { join } from 'path'
+import { chmodSync, copyFileSync, createReadStream, createWriteStream, existsSync, mkdirSync, renameSync, rmSync } from 'fs'
+import { join, resolve } from 'path'
 import { tmpdir } from 'os'
 import { spawn } from 'child_process'
 import { pipeline } from 'stream/promises'
@@ -173,4 +173,43 @@ async function installFfmpegFrom({
     throw err
   }
   return { dir: targetDir, license }
+}
+
+/**
+ * First existing directory (holding ffmpeg + ffprobe for `platform`) among the candidates, in order.
+ * Used by the installer build so a developer can bundle an ffmpeg they built themselves (tools/ffmpeg-build/).
+ */
+export function findLocalFfmpegDir(candidates, platform = process.platform) {
+  for (const c of candidates) {
+    if (!c) continue
+    const dir = resolve(c)
+    if (existsSync(ffmpegBinaryPath(dir, 'ffmpeg', platform)) && existsSync(ffmpegBinaryPath(dir, 'ffprobe', platform))) return dir
+  }
+  return null
+}
+
+/**
+ * Copy a locally built ffmpeg + ffprobe into `targetDir` for bundling. It must start, and must not be an
+ * --enable-nonfree build (not redistributable) — the same rule the downloaded build is held to.
+ */
+export async function adoptLocalFfmpeg({ sourceDir, targetDir, platform = process.platform }) {
+  const tools = ['ffmpeg', 'ffprobe']
+  for (const t of tools) {
+    if (!existsSync(ffmpegBinaryPath(sourceDir, t, platform))) throw new Error(`${t} not found in ${sourceDir}`)
+  }
+  const bin = ffmpegBinaryPath(sourceDir, 'ffmpeg', platform)
+  const check = await runCapture(bin, ['-version'])
+  if (check.code !== 0) throw new Error(`The ffmpeg in ${sourceDir} won't start: ${check.out.split('\n')[0]}`)
+  const license = await ffmpegLicense(bin)
+  if (license?.nonfree) {
+    throw new Error(`The ffmpeg in ${sourceDir} was built with --enable-nonfree and cannot be bundled in a redistributable installer. ` +
+      'Use the build from tools/ffmpeg-build/ (npm run ffmpeg:local).')
+  }
+  mkdirSync(targetDir, { recursive: true })
+  for (const t of tools) {
+    const dest = ffmpegBinaryPath(targetDir, t, platform)
+    copyFileSync(ffmpegBinaryPath(sourceDir, t, platform), dest)
+    if (platform !== 'win32') chmodSync(dest, 0o755)
+  }
+  return { dir: targetDir, license, version: check.out.split('\n')[0] }
 }

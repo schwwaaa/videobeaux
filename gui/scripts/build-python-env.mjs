@@ -13,12 +13,13 @@
 // for the *running* interpreter's platform) — cross-building for another
 // OS needs to run this script on a machine/runner of that OS.
 
-import { mkdirSync, rmSync, readdirSync, statSync, copyFileSync, createWriteStream, readFileSync, writeFileSync } from 'fs'
+import { mkdirSync, rmSync, readdirSync, statSync, copyFileSync, createWriteStream, readFileSync, writeFileSync, existsSync, mkdtempSync } from 'fs'
+import { tmpdir } from 'os'
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { spawnSync } from 'child_process'
 import { pipeline } from 'stream/promises'
-import { installFfmpeg, ffmpegBinaryPath, ffmpegLicense } from '../src/main/toolsSetup.js'
+import { installFfmpeg, ffmpegBinaryPath, ffmpegLicense, adoptLocalFfmpeg, findLocalFfmpegDir } from '../src/main/toolsSetup.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const GUI_ROOT = join(__dirname, '..')
@@ -124,18 +125,51 @@ async function stagePython() {
 // the installed app. (No libvidstab: nothing here uses it.)  What the app requires of a build is
 // listed in videobeaux/assets/ffmpeg_requirements.json.
 
-async function stageFfmpeg() {
+// Where a locally built ffmpeg may come from (first match wins), so `npm run dist` works before our release is published:
+//   --ffmpeg-dir=PATH  or  VIDEOBEAUX_FFMPEG_DIR=PATH   any folder containing ffmpeg + ffprobe
+//   gui/.ffmpeg-build/dist                               what `npm run ffmpeg:local` produces
+// Either is refused if it is an --enable-nonfree build. Otherwise our published release is downloaded.
+const ffmpegDirArg = process.argv.find(a => a.startsWith('--ffmpeg-dir='))
+const LOCAL_FFMPEG_CANDIDATES = [
+  ffmpegDirArg && ffmpegDirArg.split('=')[1],
+  process.env.VIDEOBEAUX_FFMPEG_DIR,
+  join(GUI_ROOT, '.ffmpeg-build', 'dist')
+]
+
+async function stageFfmpeg(localDir) {
+  const target = join(RESOURCES, 'ffmpeg')
+  if (localDir) {
+    if (targetPlatform !== process.platform) {
+      throw new Error(`A local ffmpeg can only be bundled for this machine's platform (${process.platform}); `
+        + `use the published release for ${targetPlatform}.`)
+    }
+    const r = await adoptLocalFfmpeg({ sourceDir: localDir, targetDir: target, platform: targetPlatform })
+    console.log(`Using your locally built ffmpeg from ${localDir}\n  ${r.version}\n  licence flavor: ${r.license?.flavor || 'unknown'}`)
+    return
+  }
   const runtime = JSON.parse(readFileSync(join(GUI_ROOT, 'ffmpeg-runtime.json'), 'utf8'))
-  await installFfmpeg({
-    targetDir: join(RESOURCES, 'ffmpeg'),
-    runtime,
-    platform: targetPlatform,
-    arch: process.arch,
-    onProgress: p => { if (p.message && p.received === 0) console.log(p.message) }
-  })
+  try {
+    await installFfmpeg({
+      targetDir: target,
+      runtime,
+      platform: targetPlatform,
+      arch: process.arch,
+      onProgress: p => { if (p.message && p.received === 0) console.log(p.message) }
+    })
+  } catch (e) {
+    if (/HTTP 404/.test(e.message)) {
+      throw new Error(
+        `Our ffmpeg release "${runtime.tag}" has not been published yet (HTTP 404), and the installer never falls back to a ` +
+        `third-party build.\n\nBuild it yourself and re-run:\n` +
+        `    npm run ffmpeg:local && npm run dist\n` +
+        `(or point at any non-nonfree build:  VIDEOBEAUX_FFMPEG_DIR=/path/to/folder npm run dist)\n\n` +
+        `Or publish the release: GitHub → Actions → "Build redistributable ffmpeg", then push tag ${runtime.tag}.`)
+    }
+    throw e
+  }
   // Release guard: installFfmpeg already refuses a --enable-nonfree binary (it can't be redistributed).
   // Report the flavor so it is visible in the build log, and enforce it for binaries staged some other way.
-  const bin = ffmpegBinaryPath(join(RESOURCES, 'ffmpeg'), 'ffmpeg', targetPlatform)
+  const bin = ffmpegBinaryPath(target, 'ffmpeg', targetPlatform)
   if (targetPlatform === process.platform) {
     const lic = await ffmpegLicense(bin)
     if (lic) {
@@ -176,11 +210,19 @@ function stageVideobeaux() {
 
 async function main() {
   console.log(`Staging gui/resources/ for platform: ${targetPlatform}`)
+  // A local ffmpeg may live inside gui/resources itself (e.g. the one a previous run staged) — keep a copy across the wipe.
+  let localDir = findLocalFfmpegDir(LOCAL_FFMPEG_CANDIDATES, targetPlatform)
+  if (localDir && (localDir === RESOURCES || localDir.startsWith(RESOURCES + '/') || localDir.startsWith(RESOURCES + '\\'))) {
+    const keep = mkdtempSync(join(tmpdir(), 'vb-ffmpeg-keep-'))
+    for (const t of ['ffmpeg', 'ffprobe']) copyFileSync(ffmpegBinaryPath(localDir, t, targetPlatform), ffmpegBinaryPath(keep, t, targetPlatform))
+    localDir = keep
+  }
+  if (ffmpegDirArg && !localDir) throw new Error(`--ffmpeg-dir: no ffmpeg + ffprobe found in ${ffmpegDirArg.split('=')[1]}`)
   rmrf(RESOURCES)
   mkdirSync(RESOURCES, { recursive: true })
 
   await stagePython()
-  await stageFfmpeg()
+  await stageFfmpeg(localDir)
   stageVideobeaux()
 
   console.log('\n✓ gui/resources/ staged:')

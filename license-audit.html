@@ -1,0 +1,2082 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Videobeaux License Audit</title>
+<style>
+body{font-family:system-ui,-apple-system,sans-serif;max-width:1400px;margin:40px auto;padding:0 24px;line-height:1.45}
+h1,h2{margin-top:1.5em} .warning{padding:16px;border:2px solid currentColor}
+.cards{display:flex;gap:12px;flex-wrap:wrap} .card{border:1px solid #aaa;padding:12px 18px;min-width:120px}
+table{border-collapse:collapse;width:100%;font-size:14px} th,td{border:1px solid #bbb;padding:8px;text-align:left;vertical-align:top}
+th{position:sticky;top:0;background:Canvas} code{overflow-wrap:anywhere} small{opacity:.8}
+</style></head><body>
+<h1>Videobeaux Commercial Redistribution / License Health Audit</h1>
+<div class="warning"><strong>Engineering triage only — not legal advice or legal clearance.</strong>
+A LOW/NOTICE result means this scanner found no obvious blocker; it does not establish legal eligibility.</div>
+<p><b>Generated:</b> 2026-10-04T15:38:26Z<br>
+<b>Source root:</b> <code>/Users/bozer/schwwaaa/videobeaux</code><br>
+<b>Packaged app/directory:</b> <code>not supplied</code><br>
+<b>Overall triage status:</b> <strong>HIGH</strong></p>
+<div class="cards">
+<div class="card"><b>HIGH</b><br>1</div>
+<div class="card"><b>REVIEW</b><br>9</div>
+<div class="card"><b>UNKNOWN</b><br>5</div>
+<div class="card"><b>NOTICE</b><br>0</div>
+<div class="card"><b>LOW</b><br>0</div>
+<div class="card"><b>Components</b><br>7</div>
+</div>
+<h2>Priority findings</h2>
+<table><thead><tr><th>Severity</th><th>Category</th><th>Subject</th><th>Finding / action</th><th>Path</th></tr></thead>
+<tbody><tr><td><strong>HIGH</strong></td><td>ffmpeg-build</td><td>--enable-nonfree</td><td>FFmpeg was built with --enable-nonfree. FFmpeg describes nonfree builds as not redistributable.<br><small><b>Evidence:</b> --enable-nonfree</small><br><small><b>Action:</b> STOP commercial redistribution of this binary until the build is replaced/reviewed.</small></td><td><code>/Users/bozer/schwwaaa/videobeaux/gui/resources/ffmpeg/ffmpeg</code></td></tr><tr><td><strong>REVIEW</strong></td><td>ffmpeg-build</td><td>--enable-gpl</td><td>The bundled FFmpeg build has GPL components enabled.<br><small><b>Evidence:</b> --enable-gpl</small><br><small><b>Action:</b> Review GPL compliance, corresponding-source obligations, notices, and how Videobeaux invokes/distributes FFmpeg.</small></td><td><code>/Users/bozer/schwwaaa/videobeaux/gui/resources/ffmpeg/ffmpeg</code></td></tr><tr><td><strong>REVIEW</strong></td><td>ffmpeg-library</td><td>libvidstab</td><td>FFmpeg documents GPL implications for some external libraries.<br><small><b>Evidence:</b> --enable-libvidstab</small><br><small><b>Action:</b> Verify this library&#x27;s exact license and FFmpeg&#x27;s resulting distribution obligations.</small></td><td><code>/Users/bozer/schwwaaa/videobeaux/gui/resources/ffmpeg/ffmpeg</code></td></tr><tr><td><strong>REVIEW</strong></td><td>ffmpeg-library</td><td>libx264</td><td>GPL-enabled FFmpeg commonly uses libx264; verify exact license/build.<br><small><b>Evidence:</b> --enable-libx264</small><br><small><b>Action:</b> Verify this library&#x27;s exact license and FFmpeg&#x27;s resulting distribution obligations.</small></td><td><code>/Users/bozer/schwwaaa/videobeaux/gui/resources/ffmpeg/ffmpeg</code></td></tr><tr><td><strong>REVIEW</strong></td><td>ffmpeg-library</td><td>libx265</td><td>GPL-enabled FFmpeg commonly uses libx265; verify exact license/build.<br><small><b>Evidence:</b> --enable-libx265</small><br><small><b>Action:</b> Verify this library&#x27;s exact license and FFmpeg&#x27;s resulting distribution obligations.</small></td><td><code>/Users/bozer/schwwaaa/videobeaux/gui/resources/ffmpeg/ffmpeg</code></td></tr><tr><td><strong>REVIEW</strong></td><td>python-license</td><td>certifi==2026.7.22</td><td>Installed Python package license: MPL-2.0. Conditional/copy-left license; distribution method and modifications matter.<br><small><b>Evidence:</b> Interpreter: /opt/homebrew/opt/python@3.14/bin/python3.14</small><br><small><b>Action:</b> Verify canonical package metadata/LICENSE and whether this package is actually bundled.</small></td><td><code></code></td></tr><tr><td><strong>REVIEW</strong></td><td>python-license</td><td>openvino-telemetry==2025.2.0</td><td>Installed Python package license: OSI Approved :: Apache Software License. License was detected but is not confidently classified by this scanner.<br><small><b>Evidence:</b> Interpreter: /opt/homebrew/opt/python@3.14/bin/python3.14</small><br><small><b>Action:</b> Verify canonical package metadata/LICENSE and whether this package is actually bundled.</small></td><td><code></code></td></tr><tr><td><strong>REVIEW</strong></td><td>python-license</td><td>TBB==2023.1.0</td><td>Installed Python package license: Dual license: Apache or Proprietary. License was detected but is not confidently classified by this scanner.<br><small><b>Evidence:</b> Interpreter: /opt/homebrew/opt/python@3.14/bin/python3.14</small><br><small><b>Action:</b> Verify canonical package metadata/LICENSE and whether this package is actually bundled.</small></td><td><code></code></td></tr><tr><td><strong>REVIEW</strong></td><td>source-license-header</td><td>__init__.py</td><td>Source file declares SPDX license GPL-3.0-only. GPL signal; proprietary aggregation/linking/distribution details require review.<br><small><b>Evidence:</b> SPDX-License-Identifier: GPL-3.0-only</small><br><small><b>Action:</b> Verify the file&#x27;s provenance and comply with its declared license.</small></td><td><code>gui/resources/python/lib/python3.12/site-packages/pymupdf/__init__.py</code></td></tr><tr><td><strong>REVIEW</strong></td><td>source-license-header</td><td>__init__.py</td><td>Source file declares SPDX license LGPL-2.1-or-later. Conditional/copy-left license; distribution method and modifications matter.<br><small><b>Evidence:</b> SPDX-License-Identifier: LGPL-2.1-or-later</small><br><small><b>Action:</b> Verify the file&#x27;s provenance and comply with its declared license.</small></td><td><code>gui/resources/python/lib/python3.12/site-packages/soxr/__init__.py</code></td></tr><tr><td><strong>UNKNOWN</strong></td><td>distribution</td><td>Packaged artifact</td><td>No packaged app/directory was supplied, so the actual customer-delivered artifact was not audited.<br><small><b>Action:</b> Re-run with --app pointing at the exact release .app/directory.</small></td><td><code></code></td></tr><tr><td><strong>UNKNOWN</strong></td><td>python-license</td><td>numpy==2.5.3</td><td>Installed Python package license: UNKNOWN. No license metadata detected.<br><small><b>Evidence:</b> Interpreter: /opt/homebrew/opt/python@3.14/bin/python3.14</small><br><small><b>Action:</b> Verify canonical package metadata/LICENSE and whether this package is actually bundled.</small></td><td><code></code></td></tr><tr><td><strong>UNKNOWN</strong></td><td>python-license</td><td>openvino==2026.4.0</td><td>Installed Python package license: UNKNOWN. No license metadata detected.<br><small><b>Evidence:</b> Interpreter: /opt/homebrew/opt/python@3.14/bin/python3.14</small><br><small><b>Action:</b> Verify canonical package metadata/LICENSE and whether this package is actually bundled.</small></td><td><code></code></td></tr><tr><td><strong>UNKNOWN</strong></td><td>python-license</td><td>pip==26.2.1</td><td>Installed Python package license: UNKNOWN. No license metadata detected.<br><small><b>Evidence:</b> Interpreter: /opt/homebrew/opt/python@3.14/bin/python3.14</small><br><small><b>Action:</b> Verify canonical package metadata/LICENSE and whether this package is actually bundled.</small></td><td><code></code></td></tr><tr><td><strong>UNKNOWN</strong></td><td>python-license</td><td>wheel==0.47.0</td><td>Installed Python package license: UNKNOWN. No license metadata detected.<br><small><b>Evidence:</b> Interpreter: /opt/homebrew/opt/python@3.14/bin/python3.14</small><br><small><b>Action:</b> Verify canonical package metadata/LICENSE and whether this package is actually bundled.</small></td><td><code></code></td></tr></tbody></table>
+<h2>Dependency inventory</h2>
+<table><thead><tr><th>Status</th><th>Ecosystem</th><th>Package</th><th>Version</th><th>License</th><th>Path</th></tr></thead>
+<tbody><tr><td>REVIEW</td><td>python-installed</td><td>certifi</td><td>2026.7.22</td><td>MPL-2.0</td><td></td></tr><tr><td>REVIEW</td><td>python-installed</td><td>openvino-telemetry</td><td>2025.2.0</td><td>OSI Approved :: Apache Software License</td><td></td></tr><tr><td>REVIEW</td><td>python-installed</td><td>TBB</td><td>2023.1.0</td><td>Dual license: Apache or Proprietary</td><td></td></tr><tr><td>UNKNOWN</td><td>python-installed</td><td>numpy</td><td>2.5.3</td><td>UNKNOWN</td><td></td></tr><tr><td>UNKNOWN</td><td>python-installed</td><td>openvino</td><td>2026.4.0</td><td>UNKNOWN</td><td></td></tr><tr><td>UNKNOWN</td><td>python-installed</td><td>pip</td><td>26.2.1</td><td>UNKNOWN</td><td></td></tr><tr><td>UNKNOWN</td><td>python-installed</td><td>wheel</td><td>0.47.0</td><td>UNKNOWN</td><td></td></tr></tbody></table>
+<h2>FFmpeg</h2>
+<pre>{
+  &quot;path&quot;: &quot;/Users/bozer/schwwaaa/videobeaux/gui/resources/ffmpeg/ffmpeg&quot;,
+  &quot;version_output&quot;: &quot;ffmpeg version 6.0 Copyright (c) 2000-2023 the FFmpeg developers\nbuilt with Apple clang version 13.1.6 (clang-1316.0.21.2.5)\nconfiguration: --prefix=/Volumes/tempdisk/sw --extra-cflags=-fno-stack-check --arch=arm64 --cc=/usr/bin/clang --enable-gpl --enable-libvmaf --enable-libbluray --enable-libopenjpeg --enable-libopus --enable-libmp3lame --enable-libx264 --enable-libx265 --enable-libvpx --enable-libwebp --enable-libass --enable-libfreetype --enable-fontconfig --enable-libtheora --enable-libvorbis --enable-libsnappy --enable-libaom --enable-libvidstab --enable-libzimg --enable-libsvtav1 --enable-libkvazaar --enable-version3 --pkg-config-flags=--static --enable-ffplay --enable-postproc --enable-nonfree --enable-neon --enable-runtime-cpudetect --disable-indev=qtkit --disable-indev=x11grab_xcb\nlibavutil      58.  2.100 / 58.  2.100\nlibavcodec     60.  3.100 / 60.  3.100\nlibavformat    60.  3.100 / 60.  3.100\nlibavdevice    60.  1.100 / 60.  1.100\nlibavfilter     9.  3.100 /  9.  3.100\nlibswscale      7.  1.100 /  7.  1.100\nlibswresample   4. 10.100 /  4. 10.100\nlibpostproc    57.  1.100 / 57.  1.100&quot;,
+  &quot;buildconf_output&quot;: &quot;configuration:\n    --prefix=/Volumes/tempdisk/sw\n    --extra-cflags=-fno-stack-check\n    --arch=arm64\n    --cc=/usr/bin/clang\n    --enable-gpl\n    --enable-libvmaf\n    --enable-libbluray\n    --enable-libopenjpeg\n    --enable-libopus\n    --enable-libmp3lame\n    --enable-libx264\n    --enable-libx265\n    --enable-libvpx\n    --enable-libwebp\n    --enable-libass\n    --enable-libfreetype\n    --enable-fontconfig\n    --enable-libtheora\n    --enable-libvorbis\n    --enable-libsnappy\n    --enable-libaom\n    --enable-libvidstab\n    --enable-libzimg\n    --enable-libsvtav1\n    --enable-libkvazaar\n    --enable-version3\n    --pkg-config-flags=--static\n    --enable-ffplay\n    --enable-postproc\n    --enable-nonfree\n    --enable-neon\n    --enable-runtime-cpudetect\n    --disable-indev=qtkit\n    --disable-indev=x11grab_xcb\nffmpeg version 6.0 Copyright (c) 2000-2023 the FFmpeg developers\n  built with Apple clang version 13.1.6 (clang-1316.0.21.2.5)\n  configuration: --prefix=/Volumes/tempdisk/sw --extra-cflags=-fno-stack-check --arch=arm64 --cc=/usr/bin/clang --enable-gpl --enable-libvmaf --enable-libbluray --enable-libopenjpeg --enable-libopus --enable-libmp3lame --enable-libx264 --enable-libx265 --enable-libvpx --enable-libwebp --enable-libass --enable-libfreetype --enable-fontconfig --enable-libtheora --enable-libvorbis --enable-libsnappy --enable-libaom --enable-libvidstab --enable-libzimg --enable-libsvtav1 --enable-libkvazaar --enable-version3 --pkg-config-flags=--static --enable-ffplay --enable-postproc --enable-nonfree --enable-neon --enable-runtime-cpudetect --disable-indev=qtkit --disable-indev=x11grab_xcb\n  libavutil      58.  2.100 / 58.  2.100\n  libavcodec     60.  3.100 / 60.  3.100\n  libavformat    60.  3.100 / 60.  3.100\n  libavdevice    60.  1.100 / 60.  1.100\n  libavfilter     9.  3.100 /  9.  3.100\n  libswscale      7.  1.100 /  7.  1.100\n  libswresample   4. 10.100 /  4. 10.100\n  libpostproc    57.  1.100 / 57.  1.100&quot;,
+  &quot;returncodes&quot;: [
+    0,
+    0
+  ],
+  &quot;configure_flags&quot;: [
+    &quot;--disable-indev&quot;,
+    &quot;--enable-ffplay&quot;,
+    &quot;--enable-fontconfig&quot;,
+    &quot;--enable-gpl&quot;,
+    &quot;--enable-libaom&quot;,
+    &quot;--enable-libass&quot;,
+    &quot;--enable-libbluray&quot;,
+    &quot;--enable-libfreetype&quot;,
+    &quot;--enable-libkvazaar&quot;,
+    &quot;--enable-libmp3lame&quot;,
+    &quot;--enable-libopenjpeg&quot;,
+    &quot;--enable-libopus&quot;,
+    &quot;--enable-libsnappy&quot;,
+    &quot;--enable-libsvtav1&quot;,
+    &quot;--enable-libtheora&quot;,
+    &quot;--enable-libvidstab&quot;,
+    &quot;--enable-libvmaf&quot;,
+    &quot;--enable-libvorbis&quot;,
+    &quot;--enable-libvpx&quot;,
+    &quot;--enable-libwebp&quot;,
+    &quot;--enable-libx264&quot;,
+    &quot;--enable-libx265&quot;,
+    &quot;--enable-libzimg&quot;,
+    &quot;--enable-neon&quot;,
+    &quot;--enable-nonfree&quot;,
+    &quot;--enable-postproc&quot;,
+    &quot;--enable-runtime-cpudetect&quot;,
+    &quot;--enable-version3&quot;
+  ]
+}</pre>
+<h2>Potential bundled models / weights</h2>
+<pre>[]</pre>
+<h2>Native/binary inventory</h2>
+<p>0 potential native/binary files detected. Full list is in the JSON report.</p>
+<h2>Source provenance URLs</h2>
+<pre>[
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/blob/main/img/videobeaux-1.png?raw=true&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/user-attachments/assets/fe45aa80-9878-4d15-bc64-87dd25071855&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/user-attachments/assets/fec22179-8e40-49e5-b591-c9d5fb07e31b&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/user-attachments/assets/ac321c77-4757-4846-b838-6847472e7e09&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/user-attachments/assets/1fa8de04-98ef-49f7-9415-616e07210f0e&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/9ba59b08-79a8-4a09-8b18-c0fe90a6c5e2&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/0968ad50-cc97-4336-938f-01b47d86a7bd&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/user-attachments/assets/10e703a5-5036-4c3e-83f6-be04476ad089&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/65403294-3e34-4ff8-816a-5de7c80c811d&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/4cdebccc-8519-45c6-aded-089db73d20d2&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/user-attachments/assets/23958066-f384-4801-9d91-5b2df6081a31&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/83d30a18-40d1-42e4-aff3-dbd50d67a7d1&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/b476426f-0ca6-4667-be40-97df932b9909&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/871ccdb9-ae2b-46e1-8b0f-0514eb92e1aa&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/0a727474-25cf-42ab-a717-583e12b4a04d&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/5ab60f24-b4e2-4e0e-abc0-cfab62e09cda&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/a88284bc-ca7e-4355-8f95-377434c61d13&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/acf571e7-7162-413f-80f8-769815093267&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/f717d419-687b-4cc3-ac07-64f45c763531&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/user-attachments/assets/87c8b569-5165-485d-ae09-7a8bbbe74051&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/9653929c-30ad-4c72-81c8-e3777c590783&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/01090d49-8626-4fc0-b55c-807d100a78fa&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/a3dea5c6-03a6-4f65-951d-211f50457b63&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/3cef37d9-093f-4bd9-850c-4b163e8a3e01&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/f7250a1e-3cf5-4826-977a-a5a18b231ddb&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/387bfff5-fbdd-423d-b482-8ab4d5ce744f&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/user-attachments/assets/1770144d-4448-4719-8ef3-e44b720ec857&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/74367227-6fee-455f-af36-804a1e6d6cb6&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/e84cfb49-f72d-449e-833a-0271903704f4&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/19c6eef1-2bc0-4d84-b531-55f9ca07a912&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/4a4272de-e074-4e37-8c2d-a282f2d8be57&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/user-attachments/assets/25f65267-60fa-421a-aaf3-02918844a488&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/a7bca4c5-46b5-4b51-a827-6b8137d0117d&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/user-attachments/assets/9bb80e0b-bf16-49e7-b4e1-6c0c79b59c32&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/user-attachments/assets/28070fe5-52cd-42c9-93b7-a417c83add2d&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/c27efdb1-ae81-4d8d-a153-de6294b7fedf&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/user-attachments/assets/b6c13707-aaa8-416e-9f80-5ca6a386cd0f&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/6f244aba-e741-46c9-9863-7fc43527a8d6&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/eea99448-9352-48f1-a1ec-b2cac6ad056d&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/03e234fb-d0fe-4d72-a11c-dff1bc59fa83&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/e6d8c14a-9f20-4365-bb1f-5f473289a855&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux/assets/7625379/864835ba-dc9d-4392-aa77-2cc062e2b700&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/user-attachments/assets/5de6db36-f8d4-426e-9262-b9dbeb2095ae&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/user-attachments/assets/e2a5f065-163e-4bb9-8fd3-1edbfbdbab2a&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/user-attachments/assets/cad79483-b21f-43b8-a1cd-91ed8406574a&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/user-attachments/assets/c9644cd5-a584-4f0d-ada3-13046e6938a5&quot;,
+    &quot;path&quot;: &quot;EXAMPLES.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/schwwaaa/videobeaux&quot;,
+    &quot;path&quot;: &quot;mkdocs.yaml&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/nazdridoy/kokoro-tts&quot;,
+    &quot;path&quot;: &quot;README.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/astral-sh/python-build-standalone&quot;,
+    &quot;path&quot;: &quot;README.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/danielgatis/rembg/releases/download/v0.0.0&quot;,
+    &quot;path&quot;: &quot;videobeaux/utils/bgremove.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/antiboredom/videogrep&quot;,
+    &quot;path&quot;: &quot;videobeaux/programs/transcraibe.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/blob/master/yt_dlp/YoutubeDL.py#L181&quot;,
+    &quot;path&quot;: &quot;videobeaux/programs/download_yt.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp?tab=readme-ov-file#output-template&quot;,
+    &quot;path&quot;: &quot;videobeaux/programs/download_yt.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/eugeneware/ffmpeg-static/releases/download&quot;,
+    &quot;path&quot;: &quot;gui/ffmpeg-runtime.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sponsors/gjtorikian/&quot;,
+    &quot;path&quot;: &quot;gui/package-lock.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sponsors/isaacs&quot;,
+    &quot;path&quot;: &quot;gui/package-lock.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/chalk/ansi-regex?sponsor=1&quot;,
+    &quot;path&quot;: &quot;gui/package-lock.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/chalk/ansi-styles?sponsor=1&quot;,
+    &quot;path&quot;: &quot;gui/package-lock.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sponsors/sindresorhus&quot;,
+    &quot;path&quot;: &quot;gui/package-lock.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/chalk/strip-ansi?sponsor=1&quot;,
+    &quot;path&quot;: &quot;gui/package-lock.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/chalk/wrap-ansi?sponsor=1&quot;,
+    &quot;path&quot;: &quot;gui/package-lock.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sponsors/malept&quot;,
+    &quot;path&quot;: &quot;gui/package-lock.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sindresorhus/is?sponsor=1&quot;,
+    &quot;path&quot;: &quot;gui/package-lock.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sponsors/epoberezkin&quot;,
+    &quot;path&quot;: &quot;gui/package-lock.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sponsors/feross&quot;,
+    &quot;path&quot;: &quot;gui/package-lock.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sponsors/ai&quot;,
+    &quot;path&quot;: &quot;gui/package-lock.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/chalk/chalk?sponsor=1&quot;,
+    &quot;path&quot;: &quot;gui/package-lock.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sponsors/sibiraj-s&quot;,
+    &quot;path&quot;: &quot;gui/package-lock.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sponsors/ljharb&quot;,
+    &quot;path&quot;: &quot;gui/package-lock.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sindresorhus/got?sponsor=1&quot;,
+    &quot;path&quot;: &quot;gui/package-lock.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sponsors/jet2jet&quot;,
+    &quot;path&quot;: &quot;gui/package-lock.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/vitejs/vite?sponsor=1&quot;,
+    &quot;path&quot;: &quot;gui/package-lock.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/astral-sh/python-build-standalone/releases&quot;,
+    &quot;path&quot;: &quot;gui/python-runtime.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/astral-sh/python-build-standalone/releases/download&quot;,
+    &quot;path&quot;: &quot;gui/python-runtime.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/pull/26258&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/include/python3.12/internal/pycore_code.h&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/numpy/numpy/issues/22098&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/include/python3.12/internal/pycore_long.h&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/pull/7160#discussion_r195405230&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/shutil.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/issues/122400&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/filecmp.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sethmlarson/selectors2/blob/master/selectors2.py&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/selectors.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/issues/112826&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/threading.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/issues&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/platform.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/issues/90716&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/_pylong.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/typing/issues/508&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/dataclasses.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/issues/86361&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/typing.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://gist.github.com/4325783&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/socket.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/issues/98433&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/encodings/idna.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/issues/98624&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/unittest/mock.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/issues/88887&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/multiprocessing/resource_tracker.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ipython/ipython/issues/4698&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/multiprocessing/spawn.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/issues/95865&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/urllib/parse.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/importlib_metadata/wiki/Development-Methodology&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/zipfile/_path/__init__.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/IntelPython/smp&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/threadpoolctl.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/joblib/threadpoolctl/issues/230&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/threadpoolctl.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/OpenMathLib/OpenBLAS/issues/5806&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/threadpoolctl.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/joblib/threadpoolctl/issues&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/threadpoolctl.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/joblib/threadpoolctl/pull/169#issuecomment-1946696449&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/threadpoolctl.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/emscripten-core/emscripten/issues/21354&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/threadpoolctl.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/joblib/threadpoolctl/pull/169#issuecomment-1947946728&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/threadpoolctl.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/joblib/threadpoolctl/blob/master/multiple_openmp.md&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/threadpoolctl.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/spatialaudio/python-sounddevice/issues/72&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sounddevice.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/spatialaudio/python-sounddevice/issues/490&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sounddevice.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/spatialaudio/python-rtmixer&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sounddevice.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/spatialaudio/python-sounddevice/issues/487&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sounddevice.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/PortAudio/portaudio/blob/master/&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sounddevice.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/numpy/numpy/pull/4246&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sounddevice.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/libsndfile/libsndfile/blob/c81375f070f3c6764969a738eacded64f53a076e/docs/command.md&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/soundfile.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/bastibe/python-soundfile/issues/199&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/soundfile.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;http://github.com/erikd/libsndfile/issues/77&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/soundfile.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/erikd/libsndfile/issues/610&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/soundfile.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/typing_extensions/issues/310&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/typing_extensions.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/blob/986a4e1b6fcae7fe7a1d0a26aea446107dd58dd2/Objects/genericaliasobject.c#L568-L582&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/typing_extensions.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/pymupdf/PyMuPDF/blob/master/COPYING&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/pymupdf-1.28.2.dist-info/README.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/pymupdf/PyMuPDF/stargazers&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/pymupdf-1.28.2.dist-info/README.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://huggingface.co/artifex-software&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/pymupdf-1.28.2.dist-info/README.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/pymupdf/PyMuPDF/&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/pymupdf-1.28.2.dist-info/README.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/pymupdf/pymupdf4llm&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/pymupdf-1.28.2.dist-info/README.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/pymupdf/PyMuPDF/issues&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/pymupdf-1.28.2.dist-info/README.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/CPJKU/onset_db&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/librosa/onset.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/CPJKU/onset_detection/blob/master/onset_program.py&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/librosa/util/utils.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/pypa/pip/issues/3383#issuecomment-173267692&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/packaging/tags.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/pull/107795&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/packaging/version.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/pypa/packaging&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/packaging/__init__.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/blob/fcf1d003bf4f0100c/Lib/platform.py#L175-L183&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/packaging/_manylinux.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/pypa/hatch/blob/5352e44/backend/src/hatchling/licenses/parse.py&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/packaging/licenses/__init__.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/jsvine/pdfplumber/blob/stable/LICENSE.txt&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/pymupdf/table.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/tabulapdf/tabula-extractor/issues/16&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/pymupdf/table.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/rust-lang/crates.io-index#archery@1.2.2&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/orium/archery&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/rust-lang/crates.io-index#heck@0.5.0&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/withoutboats/heck&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/rust-lang/crates.io-index#libc@0.2.177&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/rust-lang/libc&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/rust-lang/crates.io-index#once_cell@1.21.3&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/matklad/once_cell&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/rust-lang/crates.io-index#proc-macro2@1.0.103&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/dtolnay/proc-macro2&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/rust-lang/crates.io-index#pyo3-build-config@0.29.0&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/PyO3&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/pyo3/pyo3&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/rust-lang/crates.io-index#pyo3-ffi@0.29.0&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/rust-lang/crates.io-index#pyo3-macros-backend@0.29.0&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/rust-lang/crates.io-index#pyo3-macros@0.29.0&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/rust-lang/crates.io-index#pyo3@0.29.0&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/rust-lang/crates.io-index#quote@1.0.42&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/dtolnay/quote&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/rust-lang/crates.io-index#rpds@1.2.1&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/orium/rpds&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/rust-lang/crates.io-index#smallvec@1.15.1&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/servo/rust-smallvec&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/rust-lang/crates.io-index#syn@2.0.111&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/dtolnay/syn&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/rust-lang/crates.io-index#target-lexicon@0.13.3&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/bytecodealliance/target-lexicon&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/rust-lang/crates.io-index#triomphe@0.1.15&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/Manishearth/triomphe&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/rust-lang/crates.io-index#unicode-ident@1.0.22&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/dtolnay/unicode-ident&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/networkx/networkx/pull/1048&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/networkx/readwrite/tests/test_gml.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/networkx/networkx/issues/1061&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/networkx/readwrite/tests/test_gml.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/erocarrera/pydot&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/networkx/drawing/nx_pydot.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://gitlab.com/graphviz/graphviz/-/issues/1767&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/networkx/drawing/nx_agraph.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/scipy/scipy/issues/3592&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/networkx/linalg/algebraicconnectivity.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/scipy/scipy/pull/3594&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/networkx/linalg/algebraicconnectivity.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/bjedwards&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/networkx/linalg/laplacianmatrix.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/networkx/networkx/issues/8367&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/networkx/classes/tests/test_graph.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sagemath/sage/blob/master/src/sage/combinat/posets/hasse_diagram.py&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/networkx/algorithms/dag.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/networkx/networkx/issues/7806&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/networkx/algorithms/graph_hashing.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/networkx/networkx/pull/1474&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/networkx/algorithms/triads.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/networkx/networkx/issues/1144&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/networkx/algorithms/tree/tests/test_recognition.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/networkx/networkx/issues/4846&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/networkx/algorithms/approximation/tests/test_traveling_salesman.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/networkx/networkx/issues/2323&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/networkx/algorithms/tests/test_cycles.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/networkx/networkx/issues/2439&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/networkx/algorithms/tests/test_cycles.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/jfbeaumont&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/networkx/algorithms/tests/test_similarity.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/networkx/networkx/issues/2071&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/networkx/algorithms/tests/test_dominance.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/networkx/networkx/issues/2070&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/networkx/algorithms/tests/test_dominance.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/networkx/networkx/pull/6869#issuecomment-1944799534&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/networkx/utils/misc.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/networkx/networkx/issues/4732&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/networkx/utils/decorators.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/networkx/networkx/pull/3224&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/networkx/utils/tests/test_unionfind.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://api.github.com/repos&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/update.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/11813&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/update.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/{self.requested_repo}/releases/{path}/{name}&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/update.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/{self.requested_repo}/releases/{path}&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/update.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp#readme&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/options.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/7271&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/cookies.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/libyal/dtformats/blob/main/documentation/Safari%20Cookies.asciidoc&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/cookies.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/jaraco/keyring/issues/556&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/cookies.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/10927&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/cookies.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/blob/v3.10.7/Lib/http/cookies.py&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/cookies.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/4776&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/cookies.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/blob/8d999cbf4adea053be6dbb612b9844635c4dfb8e/Lib/http/cookiejar.py#L2091-L2117&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/cookies.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/cookies.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/blob/3.7/Lib/http/cookiejar.py#L1360&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/cookies.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/commit/49c5293014bc11ec8c009856cd63cffa6296c1e1&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/__init__.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/204&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/__init__.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/faissaloo/SponSkrub/issues/29&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/__init__.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/2191&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/__init__.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://gist.github.com/bluec0re/cafd3764412967417fd3&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/socks.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/921&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/webvtt.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/issues/74534&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/jsinterp.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/2711&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/YoutubeDL.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/4485&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/YoutubeDL.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/blackjack4494/youtube-dlc/issues/85&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/YoutubeDL.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/security/advisories/GHSA-v8mc-9377-rwjj&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/YoutubeDL.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/pull/11163&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/YoutubeDL.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/27833&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/YoutubeDL.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/4369&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/YoutubeDL.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp#dependencies&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/YoutubeDL.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/pulls/8797&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/YoutubeDL.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/1282&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/YoutubeDL.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/10268&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/YoutubeDL.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/blob/3.11/Lib/imghdr.py&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/compat/imghdr.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/792&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/compat/__init__.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/issues/86793&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/compat/urllib/request.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/blob/51f1ae5ceb0673316c4e4b0175384e892e33cc6e/Lib/urllib/request.py#L2683-L2698&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/compat/urllib/request.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/6457&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/networking/_urllib.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/blob/master/Lib/urllib/request.py&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/networking/_urllib.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/issues/91306&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/networking/_urllib.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/1309&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/networking/_urllib.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/blob/987b712b4aeeece336eed24fcc87a950a756c3e2/Lib/http/client.py#L1256&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/networking/_urllib.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python-websockets/websockets/blame/de768cf65e7e2b1a3b67854fb9e08816a5ff7050/src/websockets/sync/connection.py#L93&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/networking/_websockets.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python-websockets/websockets&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/networking/_websockets.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/8922&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/networking/_websockets.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/1060&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/networking/_helper.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/1151&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/networking/_helper.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/blob/main/Lib/ssl.py&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/networking/_helper.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/issues/85140&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/networking/_helper.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/3878&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/networking/_helper.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/commit/e983252b516edb15d4338b0a47631b59ef1e2536&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/networking/_helper.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/4627&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/networking/_helper.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/pull/5294&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/networking/_helper.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/commit/5b9f253fa0aee996cf1ed30185d4b502e00609c4#commitcomment-89054368&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/networking/_helper.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/blob/main/Lib/socket.py#L810&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/networking/_helper.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/lexiforest/curl_cffi?tab=readme-ov-file#supported-impersonate-browsers&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/networking/_curlcffi.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/lexiforest/curl-impersonate?tab=readme-ov-file#supported-browsers&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/networking/_curlcffi.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yifeikong/curl_cffi/issues/156&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/networking/_curlcffi.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/streamlink/streamlink/pull/4003&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/networking/_requests.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/urllib3/urllib3/commit/a2697e7c6b275f05879b60f593c5854a816489f0&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/networking/_requests.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/urllib3/urllib3/issues/517&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/networking/_requests.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/psf/requests/issues/5000&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/networking/_requests.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/9020&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/networking/_requests.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/psf/requests&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/networking/_requests.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/2&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/postprocessor/ffmpeg.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/1870&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/postprocessor/ffmpeg.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/1385&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/postprocessor/ffmpeg.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/xibr/ytdlp-lazy/issues/1&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/postprocessor/embedthumbnail.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/2125&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/postprocessor/embedthumbnail.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/411&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/postprocessor/embedthumbnail.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/8152&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/dependencies/__init__.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/544&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/dependencies/__init__.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/pull/5039&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/downloader/hls.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/pull/27660&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/downloader/fragment.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/6057#issuecomment-126129799&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/downloader/http.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/pull/6176&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/downloader/http.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/6215#issuecomment-121704244&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/downloader/f4m.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/7823&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/downloader/f4m.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/9214&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/downloader/f4m.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/5931&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/downloader/external.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/276&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/downloader/external.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/20312&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/downloader/external.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/aria2/aria2/issues/1373&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/downloader/external.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/httpie/httpie/security/advisories/GHSA-9w4w-cpc8-h2fq&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/downloader/external.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/11800#issuecomment-275037127&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/downloader/external.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/8300&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/downloader/external.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/urllib3/urllib3/blob/ba49f5c4e19e6bca6827282feb77a3c9f937e64b/src/urllib3/util/url.py#L263&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/utils/networking.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/blob/3.9/Lib/asyncio/runners.py&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/utils/_legacy.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/9706&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/utils/_legacy.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/blob/3.11/Lib/email/_parseaddr.py#L36-L42&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/utils/_utils.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/3124&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/utils/_utils.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/15649&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/utils/_utils.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/7518&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/utils/_utils.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/11259&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/utils/_utils.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/4573&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/utils/_utils.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/{REPOSITORY}/issues?q=&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/utils/_utils.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/pyinstaller/pyinstaller/pull/7217&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/utils/_utils.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/8816&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/utils/_utils.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/4541&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/utils/_utils.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/5185&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/utils/_utils.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/issues/94414&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/utils/_utils.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/6706#issuecomment-1496842642&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/utils/_utils.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/955#issuecomment-209789656&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/utils/_utils.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/11082&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/utils/_utils.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/6543#issuecomment-1477169870&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/utils/_utils.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/dlitz/pycrypto/blob/master/lib/Crypto/Util/number.py#L387&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/utils/_utils.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/5498&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/utils/_utils.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/commit/dfe5fa49aed02cf36ba9f743b11b0903554b5e56&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/utils/_utils.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/security/advisories/GHSA-79w7-vh3h-8g4j&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/utils/_utils.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/pull/5821&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/utils/_utils.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/Rich-Harris/devalue/blob/f3fd2aa93d79f21746555671f955a897335edb1b/src/parse.js&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/utils/jslib/devalue.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/14046&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/googledrive.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/21294&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/genericembeds.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/8147&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/bbc.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/10848&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/adobepass.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/7766&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/pluralsight.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/pull/6989&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/pluralsight.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/6842&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/pluralsight.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/6275&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/rtlnl.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/8731#issuecomment-1874398283&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/ard.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/birgire/wpse-playlist&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/wordpress.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/4309&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/unsupported.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/1719&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/unsupported.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/1548&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/unsupported.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/4122&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/unsupported.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/1922&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/unsupported.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/1140&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/unsupported.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/3544&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/unsupported.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/3533&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/unsupported.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/2934&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/unsupported.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/2743&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/unsupported.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/3287&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/unsupported.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/2744&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/unsupported.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/5557&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/unsupported.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/3072&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/unsupported.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/7323&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/unsupported.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/6125&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/unsupported.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/5740&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/unsupported.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/5767&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/unsupported.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/pull/8570&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/unsupported.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/5683&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/rcs.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/kaltura/server/blob/master/plugins/content/caption/base/lib/model/enums/CaptionType.php&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/kaltura.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/12744&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/udemy.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/27355&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/yandexmusic.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/6666&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/yandexmusic.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/pull/6242&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/prosiebensat1.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/6215&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/prosiebensat1.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/9965&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/brightcove.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/2253&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/brightcove.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/3541&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/brightcove.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/2283&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/brightcove.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/1553&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/brightcove.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/1608&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/brightcove.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/10854&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/vimeo.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/5308&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/vimeo.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/20070&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/vimeo.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/27093&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/archiveorg.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/internetarchive/wayback/blob/master/wayback-cdx-server/README.md&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/archiveorg.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/11335&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/generic.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp#impersonation&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/generic.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/2448&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/generic.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/pull/16735&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/generic.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/11537&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/afreecatv.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/11594&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/pornhub.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/27853&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/pornhub.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/13994&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/toutv.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/7946&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/hotstar.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/396&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/hotstar.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/542&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/facebook.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/12119#issuecomment-280037031&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/ceskatelevize.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/streamlink/streamlink&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/abematv.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/11413&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/common.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/python/cpython/commit/15409c720be0503131713e3d3abc1acd0da07378&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/common.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/nuxt/nuxt/commit/9e503be0f2a24f4df72a3ccab2db4d3e63511f57&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/common.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/nuxt/nuxt/pull/19205&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/common.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/8573&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/common.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/12211&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/common.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/18923&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/common.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/339&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/common.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/11178&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/common.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/16867&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/common.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/11605&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/common.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/pull/14844&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/common.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/11356&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/common.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/11979&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/common.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/jwplayer/jwplayer/blob/v7.7.0/src/js/playlist/playlist.js#L10&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/common.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/jwplayer/jwplayer/blob/v7.4.3/src/js/api/config.js#L81-L96&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/common.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/jwplayer/jwplayer/blob/v7.4.3/src/js/playlist/item.js#L29-L35&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/common.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/jwplayer/jwplayer/blob/master/src/js/utils/validator.js#L32&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/common.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/jwplayer/jwplayer/blob/master/src/js/providers/default.js#L67&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/common.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/9841#issuecomment-227871201&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/common.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/github/markup/issues/1153&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/common.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/872&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/soundcloud.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/2277&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/patreon.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/4608&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/patreon.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/Redgifs/api/wiki/Temporary-tokens&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/redgifs.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/7382&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/redgifs.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/8117&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/twitter.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/7536&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/twitter.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/12192&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/nrk.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/pull/18609&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/radiocanada.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/10713&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/nhl.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/6549#issuecomment-1473771047&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/iwara.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/9366&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/vevo.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/11034&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/tiktok.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/12044&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/theplatform.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/7385&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/theplatform.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/986&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/itv.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/add-ons/plugin.video.viervijfzes/blob/master/resources/lib/viervijfzes/auth_awsidp.py&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/goplay.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/michaelarnauts&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/goplay.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/aws/amazon-cognito-identity-js/blob/master/src/AuthenticationHelper.js#L22&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/goplay.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/aws/amazon-cognito-identity-js/blob/master/src/AuthenticationHelper.js#L49&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/goplay.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/zedeus/nitter/wiki/Instances&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/nitter.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/2990&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/ustream.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/4656#issuecomment-1214461092&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/redbee.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/9458&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/imgur.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/pull/16674&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/imgur.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/pull/21693&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/imgur.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/pull/3874#discussion_r891903846&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/radiofrance.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/7059&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/pbs.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/13801&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/pbs.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/commit/cbc032c8b70a038a69259378c92b4ba97b42d491#commitcomment-17313656&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/pbs.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/382&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/twitcasting.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/TeamNewPipe/NewPipeExtractor/issues/680#issuecomment-1002724558&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_base.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/pull/557&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_base.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/iv-org/documentation/blob/master/docs/instances.md&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_base.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/TeamPiped/Piped/wiki/Instances&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_base.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_base.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/393&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_base.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/pull/519&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_base.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/233&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_base.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/28023&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_base.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/28289&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_base.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/507#issuecomment-880188210&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_base.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/839&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_base.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/28194&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_base.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/28702&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_tab.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/12933&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_tab.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/2237#issuecomment-1013694714&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_tab.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/116&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_tab.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/21844&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_tab.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/2694&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_tab.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/wiki/PO-Token-Guide&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/4559&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/pull/575#issuecomment-888837000&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/4421&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/4431&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/pull/6097&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/8536&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/7468&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/1892&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/8164&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/10059&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/27216&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/pull/28094&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/ytdl-org/youtube-dl/issues/28685&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/8543&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/195&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/iv-org/invidious/pull/1730&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/6290&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/6712&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/4669&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/TeamNewPipe/NewPipe/issues/8713&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/501&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/12563&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/12482&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/2823&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/3372&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/13511&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/wiki/Extractors#this-content-isnt-available-try-again-later&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/issues/340&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/yt-dlp/yt-dlp/pull/2223#issuecomment-1008485139&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/_video.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/topics/yt-dlp-pot-provider&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/yt_dlp/extractor/youtube/pot/README.md&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/pygae/galgebra&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/galgebra.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/19453&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/series/limits.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/15323#issuecomment-478639399&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/series/gruntz.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/21075&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/series/tests/test_nseries.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/21598&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/series/tests/test_limits.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/18363&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/series/tests/test_limits.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/14478&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/series/tests/test_limits.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/14355#issuecomment-372121314&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/series/tests/test_limits.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/9449&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/series/tests/test_limits.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/12398&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/series/tests/test_limits.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/18501&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/series/tests/test_limits.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/18997&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/series/tests/test_limits.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/19026&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/series/tests/test_limits.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/20704&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/series/tests/test_limits.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/21606&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/series/tests/test_limits.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/12312&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/series/tests/test_limits.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/22220#issuecomment-972727694&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/series/tests/test_limits.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/22220#issuecomment-1077618340&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/series/tests/test_limits.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/pull/20549&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/kind.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/symengine/symengine.py/issues/363&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/backend.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/8873&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/symbol.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/pull/20033&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/numbers.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/4596}&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/mul.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/5728}&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/mul.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/5706}&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/mul.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/pull/19463&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/operations.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/20124&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/sympify.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/13924&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/sympify.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/numpy/numpy/issues/10404&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/sympify.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/numpy/numpy/issues/1697&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/function.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/7649&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/assumptions.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/25399&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/tests/test_basic.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/27323&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/tests/test_basic.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/20796&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/tests/test_numbers.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/17034&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/tests/test_numbers.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/5931&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/tests/test_relational.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/3531&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/tests/test_arit.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/pull/18116&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/tests/test_arit.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/2633#issuecomment-29545524&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/tests/test_arit.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/4357&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/tests/test_equal.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/pull/9583&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/tests/test_assumptions.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/11003&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/tests/test_function.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/27163&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/tests/test_function.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/17708&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/tests/test_expr.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/21177&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/tests/test_expr.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/21245&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/tests/test_expr.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/26991&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/tests/test_expr.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/3346&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/tests/test_expr.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/27142&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/tests/test_expr.py&quot;
+  },
+  {
+    &quot;url&quot;: &quot;https://github.com/sympy/sympy/issues/5190&quot;,
+    &quot;path&quot;: &quot;gui/resources/python/lib/python3.12/site-packages/sympy/core/tests/test_expr.py&quot;
+  }
+]</pre>
+<h2>Interpretation</h2>
+<p><b>HIGH:</b> likely release blocker until manually resolved. <b>REVIEW:</b> obligations/context need review.
+<b>UNKNOWN:</b> insufficient license data. <b>NOTICE:</b> generally permissive signal but notices/license text may be required.
+<b>LOW:</b> no obvious concern detected for that specific check.</p>
+</body></html>
