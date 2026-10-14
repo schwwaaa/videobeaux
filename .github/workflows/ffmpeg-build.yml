@@ -1,0 +1,126 @@
+name: Build redistributable ffmpeg
+
+# Produces the static ffmpeg/ffprobe that Videobeaux installers bundle (see tools/ffmpeg-build/ and gui/ffmpeg-runtime.json).
+# The build is GPL (libx264/libx265) and NEVER --enable-nonfree; each job fails if the result is nonfree, and fails if it
+# lacks anything listed as required in videobeaux/assets/ffmpeg_requirements.json (python -m videobeaux.utils.ffmpeg_caps).
+#
+# Run manually (workflow_dispatch) for a dry run — it builds and tests everything but publishes nothing.
+# Push a tag like ffmpeg-7.1.1-vb2 to publish a GitHub Release with the binaries, the exact source tarballs, the
+# configure line, a licence summary and ffmpeg-runtime.sha256.json (paste its contents into gui/ffmpeg-runtime.json "sha256").
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['ffmpeg-*']
+
+jobs:
+  macos:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: macos-14, arch: arm64 }          # Apple silicon runner
+          - { os: macos-15-intel, arch: x64 }      # Intel runner (macos-13 was retired by GitHub)
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install nasm (x86 assembly for x264, dav1d, SVT-AV1)
+        if: matrix.arch == 'x64'
+        run: brew install nasm
+      - name: Build
+        run: tools/ffmpeg-build/build-macos.sh --work "$RUNNER_TEMP/ffbuild"
+      - name: Required features present, not nonfree
+        run: python3 -m videobeaux.utils.ffmpeg_caps --ffmpeg "$RUNNER_TEMP/ffbuild/dist/ffmpeg"
+      - name: Self-test (H.264/AAC MP4, AV1 round trip, drawtext without fontconfig)
+        run: |
+          F="$RUNNER_TEMP/ffbuild/dist/ffmpeg"; T="$RUNNER_TEMP/selftest"; mkdir -p "$T"
+          "$F" -hide_banner -loglevel error -f lavfi -i testsrc2=s=320x240:d=1 -f lavfi -i sine=d=1 \
+               -c:v libx264 -pix_fmt yuv420p -movflags +faststart -c:a aac "$T/a.mp4"
+          "$F" -hide_banner -loglevel error -i "$T/a.mp4" -c:v libsvtav1 -crf 40 -an "$T/a.webm"
+          "$F" -hide_banner -loglevel error -i "$T/a.webm" -f null -
+          "$F" -hide_banner -loglevel error -f lavfi -i testsrc2=s=320x240:d=1 \
+               -vf "drawtext=fontfile=videobeaux/assets/fonts/DejaVuSans.ttf:text=ok:fontsize=24:fontcolor=white" -f null -
+      - name: Package
+        run: |
+          cd "$RUNNER_TEMP/ffbuild/dist"
+          gzip -9 -k ffmpeg ffprobe
+          mv ffmpeg.gz "ffmpeg-darwin-${{ matrix.arch }}.gz"
+          mv ffprobe.gz "ffprobe-darwin-${{ matrix.arch }}.gz"
+          shasum -a 256 *.gz > "SHA256SUMS-darwin-${{ matrix.arch }}.txt"
+          tar -C sources -cf "sources-darwin-${{ matrix.arch }}.tar" .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ffmpeg-darwin-${{ matrix.arch }}
+          path: |
+            ${{ runner.temp }}/ffbuild/dist/*.gz
+            ${{ runner.temp }}/ffbuild/dist/BUILDCONF.txt
+            ${{ runner.temp }}/ffbuild/dist/FFMPEG-LICENSES.txt
+            ${{ runner.temp }}/ffbuild/dist/SOURCES.txt
+            ${{ runner.temp }}/ffbuild/dist/SHA256SUMS-*.txt
+            ${{ runner.temp }}/ffbuild/dist/sources-*.tar
+
+  windows:
+    # Stopgap until a Windows source build exists: BtbN publishes GPL (never nonfree) win64 builds. We pin a dated
+    # release, find the 7.1 GPL asset in it by pattern (the file name carries a git hash, so it can't be hard-coded),
+    # verify it is not nonfree, and republish it with its build info so the source offer is ours to keep.
+    runs-on: windows-2022
+    env:
+      BTBN_TAG: autobuild-2025-01-31-12-58
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download pinned BtbN GPL 7.1 build
+        shell: bash
+        run: |
+          gh release download "$BTBN_TAG" -R BtbN/FFmpeg-Builds -p '*win64-gpl-7.1.zip' -O ff.zip
+          unzip -q ff.zip -d ff
+          d=$(ls -d ff/*/ | head -1)
+          mkdir -p dist
+          cp "${d}bin/ffmpeg.exe" "${d}bin/ffprobe.exe" dist/
+          cp "${d}LICENSE.txt" dist/FFMPEG-LICENSES.txt
+          dist/ffmpeg.exe -hide_banner -buildconf > dist/BUILDCONF.txt || true
+          if grep -q -- "--enable-nonfree" dist/BUILDCONF.txt; then echo "nonfree build — refusing"; exit 1; fi
+      - name: Required features present, not nonfree
+        shell: bash
+        run: python -m videobeaux.utils.ffmpeg_caps --ffmpeg dist/ffmpeg.exe
+      - name: Package
+        shell: bash
+        run: |
+          cd dist
+          gzip -9 -k ffmpeg.exe ffprobe.exe
+          mv ffmpeg.exe.gz ffmpeg-win32-x64.gz && mv ffprobe.exe.gz ffprobe-win32-x64.gz
+          sha256sum *.gz > SHA256SUMS-win32-x64.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ffmpeg-win32-x64
+          path: dist/*
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/ffmpeg-')
+    needs: [macos, windows]
+    runs-on: ubuntu-latest
+    permissions: { contents: write }
+    steps:
+      - uses: actions/download-artifact@v4
+        with: { path: out, merge-multiple: true }
+      - name: Build ffmpeg-runtime.sha256.json (paste into gui/ffmpeg-runtime.json -> "sha256")
+        run: |
+          python3 - <<'EOF'
+          import glob, json, re
+          out = {}
+          for f in glob.glob("out/SHA256SUMS-*.txt"):
+              for line in open(f):
+                  m = re.match(r"([0-9a-f]{64})\s+\*?(ffmpeg|ffprobe)-(darwin|win32)-(arm64|x64)\.gz", line.strip())
+                  if m:
+                      out.setdefault(f"{m.group(3)}_{m.group(4)}", {})[m.group(2)] = m.group(1)
+          json.dump(out, open("out/ffmpeg-runtime.sha256.json", "w"), indent=2)
+          print(json.dumps(out, indent=2))
+          EOF
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: out/*
+          body: |
+            Static ffmpeg/ffprobe for Videobeaux. GPL build, **not** `--enable-nonfree`.
+            Source archives for every component are attached (`sources-*.tar`), with `SOURCES.txt` (SHA-256),
+            `BUILDCONF.txt` (configure line) and `FFMPEG-LICENSES.txt`.
+            `ffmpeg-runtime.sha256.json` holds the checksums to pin in `gui/ffmpeg-runtime.json`.

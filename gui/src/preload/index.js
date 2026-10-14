@@ -32,6 +32,23 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // Returns Promise<string[]>, empty if kokoro-tts isn't installed.
   listKokoroVoices: () => ipcRenderer.invoke('kokoro:listVoices'),
 
+  // Layout snapshot: PNG of the canvas + preset JSON, saved together
+  saveSnapshot: (opts) => ipcRenderer.invoke('layout:snapshot', opts),
+
+  // Preview thumbnails rendered from the user's own clip (see tools/make_module_art.py)
+  artStatus: () => ipcRenderer.invoke('art:status'),
+  artGenerate: (opts) => ipcRenderer.invoke('art:generate', opts),
+  artCancel: () => ipcRenderer.invoke('art:cancel'),
+  artReset: () => ipcRenderer.invoke('art:reset'),
+  onArtProgress: (cb) => {
+    const handler = (_, data) => cb(data)
+    ipcRenderer.on('art:progress', handler)
+    return () => ipcRenderer.removeListener('art:progress', handler)
+  },
+  // A single frame of a video as a PNG data URL (key-colour picker), and a playable URL for local media
+  grabFrame: (path, seconds) => ipcRenderer.invoke('media:frame', { path, seconds }),
+  mediaUrl: (path) => 'vbmedia://local/' + encodeURIComponent(path),
+
   // Helper windows (Lagkage layout editor, ...)
   // Electron 32 removed File.path — this is how a dropped File maps back to its location on disk.
   pathForFile: (file) => { try { return webUtils.getPathForFile(file) } catch { return '' } },

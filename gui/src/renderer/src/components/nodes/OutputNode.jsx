@@ -1,21 +1,27 @@
-import React from 'react'
-import { Handle, Position, useReactFlow } from '@xyflow/react'
+import React, { useEffect, useRef } from 'react'
+import { Handle, Position, useReactFlow, useStore } from '@xyflow/react'
 import { useUpdateNodeData } from '../../useCanvasHistory'
+import { usePrograms } from '../../ProgramsContext'
 
-const FORMATS = ['mp4', 'mov', 'avi', 'mkv', 'webm']
+// Grouped for the dropdown. Keep in step with ALLOWED_OUTPUT_EXTS in videobeaux/cli.py.
+const FORMAT_GROUPS = [
+  ['Video', ['mp4', 'mov', 'avi', 'mkv', 'webm', 'gif']],
+  ['Audio', ['mp3', 'wav', 'm4a', 'flac']],
+  ['Data / image', ['json', 'png']]
+]
 const ACCENT = 'var(--coral)'
 
 const styles = {
   node: {
     background: 'var(--paper)',
-    border: '3px solid var(--ink)',
+    border: '3px solid var(--line, var(--ink))',
     borderRadius: 12,
     minWidth: 220,
     boxShadow: 'var(--shadow)'
   },
   header: {
     background: ACCENT,
-    borderBottom: '3px solid var(--ink)',
+    borderBottom: '3px solid var(--line, var(--ink))',
     borderRadius: '9px 9px 0 0',
     padding: '7px 12px',
     display: 'flex',
@@ -94,6 +100,14 @@ const styles = {
   }
 }
 
+/** What file kind each program output type is written as, and which formats are acceptable for it. */
+const OUTPUT_KIND = {
+  json:  { formats: ['json'], preferred: 'json', label: 'a JSON report' },
+  image: { formats: ['png'], preferred: 'png', label: 'images' },
+  audio: { formats: ['mp3', 'wav', 'm4a', 'flac'], preferred: 'wav', label: 'audio' }
+}
+const VIDEO_FORMATS = ['mp4', 'mov', 'avi', 'mkv', 'webm', 'gif']
+
 /** Strip any existing extension from a path and append a new one. */
 function replaceExt(filePath, ext) {
   const stem = filePath.replace(/\.[^./\\]+$/, '')
@@ -102,6 +116,32 @@ function replaceExt(filePath, ext) {
 
 export default function OutputNode({ id, data }) {
   const updateNodeData = useUpdateNodeData()
+  const { programMap } = usePrograms()
+
+  // The program feeding this Output decides what kind of file it is: Media Info → JSON, Extract Sound → audio, …
+  const upstreamProgram = useStore(s => {
+    const e = s.edges.find(x => x.target === id)
+    return e ? s.nodeLookup.get(e.source)?.data?.program : undefined
+  })
+  const upstreamType = upstreamProgram ? (programMap?.[upstreamProgram]?.outputType || 'video') : null
+  const kind = OUTPUT_KIND[upstreamType] || null
+
+  // Keep the format valid for what's connected — but only react when the upstream kind changes (or on first mount when
+  // it is already wrong), so a user's own valid choice (e.g. MP3 vs WAV) is never overridden.
+  const lastType = useRef(null)
+  useEffect(() => {
+    if (!upstreamType || lastType.current === upstreamType) return
+    lastType.current = upstreamType
+    const fmt = data.format || 'mp4'
+    let want = null
+    if (kind && !kind.formats.includes(fmt)) want = kind.preferred
+    if (!kind && upstreamType === 'video' && !VIDEO_FORMATS.includes(fmt)) want = 'mp4'
+    if (want && want !== fmt) {
+      const update = { format: want }
+      if (data.filePath) update.filePath = replaceExt(data.filePath, want)
+      updateNodeData(id, update)
+    }
+  }, [upstreamType]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSave = async () => {
     const ext = data.format || 'mp4'
@@ -166,6 +206,11 @@ export default function OutputNode({ id, data }) {
           </button>
         </div>
 
+        {kind && (
+          <div style={{ ...styles.label, color: 'var(--ink)' }}>
+            The connected step produces {kind.label}.
+          </div>
+        )}
         <div style={styles.label}>Container format</div>
         <select
           className="nodrag"
@@ -173,8 +218,10 @@ export default function OutputNode({ id, data }) {
           value={data.format || 'mp4'}
           onChange={e => handleFormatChange(e.target.value)}
         >
-          {FORMATS.map(f => (
-            <option key={f} value={f}>{f.toUpperCase()}</option>
+          {FORMAT_GROUPS.map(([label, list]) => (
+            <optgroup key={label} label={label}>
+              {list.map(f => <option key={f} value={f}>{f.toUpperCase()}</option>)}
+            </optgroup>
           ))}
         </select>
       </div>

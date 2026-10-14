@@ -182,7 +182,8 @@ export const CATEGORIES = [
       { id: 'pixelate', label: 'Pixelate', description: 'Chunky square pixels — a mosaic of any block size', args: [] },
       { id: 'color_pass', label: 'Color Pass', description: 'Keep one color range and turn everything else gray (or remove just that color) — a red dress in a gray world', args: [] },
       { id: 'proc_amp', label: 'Proc Amp', description: 'Video processing amp: brightness, contrast, saturation, hue rotation, gamma, black/white levels, color temperature, broadcast-safe clamp', args: [] },
-      { id: 'beauxtrix', label: 'Beauxtrix', description: 'A video blending matrix (homage to the LZX Video Blending Matrix): three R/G/B mixers summing videos A–D with −2…+2 levels, bias, and sum or absolute (solarize) outputs', args: [] }
+      { id: 'beauxtrix', label: 'Beauxtrix', description: 'A video blending matrix (homage to the LZX Video Blending Matrix): three R/G/B mixers summing videos A–D with −2…+2 levels, bias, and sum or absolute (solarize) outputs', args: [] },
+      { id: 'topobeaux', label: 'Topobeaux', description: 'Slice the picture into up to 6 tonal bands (luma, color channel, saturation, hue or motion) — false color, tint, contour lines, a different video per band, or a matte cutout. Homage to the LZX Topogram', args: [] }
     ]
   },
   {
@@ -245,7 +246,10 @@ export const CATEGORIES = [
       { id: 'layer_blend', label: 'Layer Blend', description: 'Layer two videos with per-layer opacity and a blend mode — multiply, screen, color burn, difference, overlay and more. Choose whose audio to keep', args: [] },
       { id: 'picture_in_picture', label: 'Picture-in-Picture', description: 'A small second video inset over the main one — pick the corner, size, border, opacity and whose audio you hear; swap to flip which is full-screen', args: [] },
       { id: 'quad_split', label: 'Quad Split', description: 'Split screen: up to four videos in a 2×2 grid, side by side, stacked, or one big plus three small, with adjustable gaps', args: [] },
-      { id: 'video_wall', label: 'Video Wall', description: 'The picture repeated in a grid of tiles — plain repeats, mirrored tiles, or a delay wall where each tile lags a bit more', args: [] }
+      { id: 'video_wall', label: 'Video Wall', description: 'The picture repeated in a grid of tiles — plain repeats, mirrored tiles, or a delay wall where each tile lags a bit more', args: [] },
+      { id: 'rotate', label: 'Rotate', description: 'Turn the picture upside down, on its side, tilted at any angle (45°…) or slowly spinning — the output file really is rotated, with a choice of what happens to the corners', args: [] },
+      { id: 'shape_synth', label: 'Shape Synth', description: 'Two animated shape generators (circle, ring, diamond, square, cross, stripes, checker, vortex) with folding, curves, stretch, spin and drift — painted over, used as a window, a warp, or a cutout. Homage to the LZX DSG3', args: [] },
+      { id: 'stackadelic', label: 'Stackadelic', description: 'Three stacked rectangle / rhombus layers with layer priority — each cuts out of the ones beneath, showing a color, input A/B/C or A keyed by brightness; tile into mosaics. Homage to the LZX Stacker', args: [] }
     ]
   },
   {
@@ -342,7 +346,8 @@ export const CATEGORIES = [
             help: 'Where the transition starts in the first video' }
         ]
       },
-      { id: 'fade_flash', label: 'Fade & Flash', description: 'Fade in/out from black, white or any color, plus timed flashes that decay or snap on/off; optionally fades the audio too', args: [] }
+      { id: 'fade_flash', label: 'Fade & Flash', description: 'Fade in/out from black, white or any color, plus timed flashes that decay or snap on/off; optionally fades the audio too', args: [] },
+      { id: 'soundtrack', label: 'Add Audio', description: 'Put your own music or audio under a video — replace the sound, mix it in, or duck it under the original voice', args: [] }
     ]
   },
   {
@@ -494,51 +499,7 @@ export const CATEGORIES = [
         id: 'convert_mux',
         label: 'Convert',
         description: 'General-purpose converter — codec, quality, and format control. Output container is set by the Output node.',
-        args: [
-          { name: 'profile', label: 'Quick Preset', type: 'select', required: false,
-            choices: [
-              'mp4_h264', 'mp4_hevc', 'mp4_av1',
-              'webm_vp9', 'webm_av1',
-              'prores_422', 'prores_4444', 'dnxhr_hq',
-              'lossless_ffv1',
-              'avi_mjpeg_fast', 'avi_mpeg4_fast'
-            ],
-            help: 'Overrides the codec/quality settings below. Leave blank to use them instead. Must match the Output node\'s format.' },
-          { name: 'vcodec', label: 'Video Codec', type: 'select', required: false, default: 'libx264',
-            choices: ['libx264', 'libx265', 'libvpx-vp9', 'libsvtav1', 'prores_ks', 'mpeg4', 'mjpeg', 'ffv1', 'dnxhd'] },
-          { name: 'acodec', label: 'Audio Codec', type: 'select', required: false, default: 'aac',
-            choices: ['aac', 'libmp3lame', 'libopus', 'flac', 'pcm_s16le', 'pcm_s24le'] },
-          { name: 'crf', label: 'Quality (CRF)', type: 'number', required: false, default: 23,
-            help: 'Lower = higher quality. Tuned for the default libx264 codec — x265/VP9/AV1 typically want higher values (~28-35).' },
-          { name: 'bitrate', label: 'Video Bitrate', type: 'text', required: false,
-            help: 'e.g. 5M. Overrides CRF-based quality if set.' },
-          { name: 'maxrate', label: 'Video Max Rate', type: 'text', required: false },
-          { name: 'bufsize', label: 'VBV Buffer Size', type: 'text', required: false },
-          { name: 'preset', label: 'Encoder Preset', type: 'select', required: false, default: 'medium',
-            choices: ['ultrafast', 'superfast', 'veryfast', 'faster', 'fast', 'medium', 'slow', 'slower', 'veryslow'],
-            help: 'x264/x265 speed-vs-quality preset. Leave blank for other codecs.' },
-          { name: 'profile-v', label: 'Codec Profile', type: 'select', required: false,
-            choices: ['baseline', 'main', 'high', 'high10', 'high422', 'high444'],
-            help: 'x264/x265 profile restriction. Leave blank to let the encoder choose.' },
-          { name: 'level', label: 'Codec Level', type: 'select', required: false,
-            choices: ['3.0', '3.1', '4.0', '4.1', '4.2', '5.0', '5.1', '5.2'],
-            help: 'Leave blank to let the encoder choose.' },
-          { name: 'pix-fmt', label: 'Pixel Format', type: 'select', required: false, default: 'yuv420p',
-            choices: ['yuv420p', 'yuv422p', 'yuv444p', 'yuv420p10le', 'yuv422p10le', 'yuva444p10le'] },
-          { name: 'gop', label: 'GOP Size', type: 'number', required: false, help: 'Keyframe interval in frames.' },
-          { name: 'r', label: 'Frame Rate', type: 'select', required: false,
-            choices: ['23.976', '24', '25', '29.97', '30', '50', '59.94', '60'],
-            help: 'Leave blank to keep the source frame rate.' },
-          { name: 'vf', label: 'Video Filtergraph', type: 'text', required: false },
-          { name: 'tagv', label: 'Video Tag (fourcc)', type: 'text', required: false, help: 'e.g. hvc1 for HEVC in MP4.' },
-          { name: 'abitrate', label: 'Audio Bitrate', type: 'text', required: false, default: '192k' },
-          { name: 'ac', label: 'Audio Channels', type: 'select', required: false, default: '2',
-            choices: ['1', '2', '6', '8'] },
-          { name: 'ar', label: 'Audio Sample Rate', type: 'select', required: false, default: '48000',
-            choices: ['22050', '44100', '48000', '96000'] },
-          { name: 'copy', label: 'Stream Copy (no re-encode)', type: 'checkbox', required: false,
-            help: 'Skip re-encoding entirely when the source is already compatible. Ignores every setting above.' }
-        ]
+        args: []   // fields come from the program itself (Simple / Advanced) — see videobeaux/programs/convert_mux.py
       },
       {
         id: 'convert_dims',

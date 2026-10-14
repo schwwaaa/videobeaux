@@ -17,8 +17,46 @@ from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress  # progr
 # left without a default — a wrong default for a mismatched codec (e.g.
 # -preset on libvpx-vp9) makes ffmpeg hard-error, and there's no "unset"
 # escape hatch once a GUI field has a default.
+MODE_SIMPLE = "Simple (pick a format)"
+MODE_ADVANCED = "Advanced (every setting)"
+TARGETS = {
+    "MP4 · H.264 — plays everywhere":   dict(ext=("mp4", "m4v"), v="libx264", a="aac", crf=(18, 23, 28), pix="yuv420p", extra=["-profile:v", "high", "-movflags", "+faststart"]),
+    "MP4 · HEVC (H.265) — smaller files": dict(ext=("mp4", "mov", "m4v"), v="libx265", a="aac", crf=(20, 25, 31), pix="yuv420p", extra=["-tag:v", "hvc1", "-movflags", "+faststart"]),
+    "MOV · ProRes 422 — for editing":   dict(ext=("mov",), v="prores_ks", a="pcm_s16le", crf=None, pix="yuv422p10le", extra=["-profile:v", "2"]),
+    "WebM · VP9 — for the web":         dict(ext=("webm",), v="libvpx-vp9", a="libopus", crf=(24, 32, 40), pix="yuv420p", extra=["-b:v", "0", "-row-mt", "1"]),
+    "MKV · H.264":                      dict(ext=("mkv",), v="libx264", a="aac", crf=(18, 23, 28), pix="yuv420p", extra=[]),
+    "GIF — short looping picture":      dict(ext=("gif",), gif=True),
+    "MP3 — audio only":                 dict(ext=("mp3",), audio=["-vn", "-c:a", "libmp3lame", "-b:a", "{abr}"], abr=("320k", "192k", "128k")),
+    "WAV — audio only (uncompressed)":  dict(ext=("wav",), audio=["-vn", "-c:a", "pcm_s16le"]),
+    "M4A — audio only (AAC)":           dict(ext=("m4a",), audio=["-vn", "-c:a", "aac", "-b:a", "{abr}"], abr=("256k", "192k", "128k")),
+}
+SIZES = {
+    "Original size": None,
+    "4K wide (3840)": ("w", 3840), "1080p wide (1920)": ("w", 1920), "720p wide (1280)": ("w", 1280), "480p wide (854)": ("w", 854),
+    "Square 1080×1080 (crops)": ("crop", 1080, 1080), "Vertical 1080×1920 (crops)": ("crop", 1080, 1920),
+    "Custom width × height": ("custom",),
+}
+QUALITIES = ["High (large file)", "Balanced", "Small file"]
+
+
+def _only_when(mode):
+    return {'show_if': {'mode': mode}}
+
+
 GUI_METADATA = {
     'args': {
+        'mode': {'type': 'select', 'label': 'Mode', 'default': MODE_SIMPLE, 'choices': [MODE_SIMPLE, MODE_ADVANCED],
+                 'help': 'Simple: pick a target format, size and quality and everything else is chosen for you. '
+                         'Advanced: set codecs, bitrates and filters yourself.'},
+        'target': {'type': 'select', 'label': 'Convert to', 'default': list(TARGETS)[0], 'choices': list(TARGETS),
+                   'help': "Set the Output node's Container format to match (MP4, MOV, WEBM, MKV, GIF, MP3, WAV or M4A).",
+                   **_only_when(MODE_SIMPLE)},
+        'size': {'type': 'select', 'label': 'Size', 'default': "Original size", 'choices': list(SIZES), **_only_when(MODE_SIMPLE)},
+        'width': {'label': 'Custom width (px)', 'min': 16, 'max': 7680, **{'show_if': {'mode': MODE_SIMPLE, 'size': "Custom width × height"}}},
+        'height': {'label': 'Custom height (px)', 'min': 16, 'max': 4320, 'help': 'Use -2 style "keep aspect" by leaving 0.',
+                   **{'show_if': {'mode': MODE_SIMPLE, 'size': "Custom width × height"}}},
+        'quality': {'type': 'select', 'label': 'Quality', 'default': QUALITIES[1], 'choices': QUALITIES,
+                    'help': 'Higher quality = larger file. Balanced is right for almost everything.', **_only_when(MODE_SIMPLE)},
         'profile': {
             'type': 'select', 'label': 'Quick Preset',
             'choices': [
@@ -81,6 +119,21 @@ GUI_METADATA = {
         },
         'copy': {'label': 'Stream Copy (no re-encode)', 'help': 'Skip re-encoding entirely when the source is already compatible. Ignores every setting above.'},
     }
+}
+
+GUI_METADATA['args'].setdefault('format', {'label': 'Container hint', 'help': 'Force the container (mp4, mov, webm, matroska…). Normally taken from the Output node.'})
+for _name, _meta in GUI_METADATA['args'].items():
+    if _name != 'mode' and 'show_if' not in _meta:
+        _meta['show_if'] = {'mode': MODE_ADVANCED}
+GUI_METADATA['args']['vf'].update(label='Extra ffmpeg filters (optional)',
+    help='A raw ffmpeg video filter chain, e.g.  scale=1280:-2,eq=contrast=1.1  — leave empty if unsure.')
+GUI_METADATA['args']['copy']['help'] = 'Skip re-encoding when the source already fits (fast, lossless). Ignores the settings above.'
+GUI_METADATA['presets'] = {
+    'Web · small MP4': {'mode': MODE_SIMPLE, 'target': list(TARGETS)[0], 'size': "1080p wide (1920)", 'quality': QUALITIES[2]},
+    'Share · 720p MP4': {'mode': MODE_SIMPLE, 'target': list(TARGETS)[0], 'size': "720p wide (1280)", 'quality': QUALITIES[1]},
+    'Editing · ProRes': {'mode': MODE_SIMPLE, 'target': "MOV · ProRes 422 — for editing", 'size': "Original size"},
+    'Audio · MP3': {'mode': MODE_SIMPLE, 'target': "MP3 — audio only", 'quality': QUALITIES[0]},
+    'GIF · 480': {'mode': MODE_SIMPLE, 'target': "GIF — short looping picture", 'size': "480p wide (854)"},
 }
 
 # ------------------------------
@@ -369,6 +422,15 @@ def register_arguments(parser):
     """
     parser.description = "Black-box FFmpeg converter: any format in → mp4/mov/avi/mkv/webm out (container chosen by the -o extension)."
 
+    # Simple mode (the GUI's default): a target format + size + quality instead of codec-level settings
+    parser.add_argument("--mode", choices=[MODE_SIMPLE, MODE_ADVANCED], default=MODE_ADVANCED,
+                        help="Simple = use --target/--size/--quality; Advanced (CLI default) = the individual flags below.")
+    parser.add_argument("--target", choices=list(TARGETS), default=list(TARGETS)[0], help="Simple mode: what to convert to.")
+    parser.add_argument("--size", choices=list(SIZES), default="Original size", help="Simple mode: output size.")
+    parser.add_argument("--width", type=int, default=0, help="Simple mode, custom size: width in pixels.")
+    parser.add_argument("--height", type=int, default=0, help="Simple mode, custom size: height in pixels (0 = keep aspect).")
+    parser.add_argument("--quality", choices=QUALITIES, default=QUALITIES[1], help="Simple mode: quality / file size.")
+
     # Container/format control
     parser.add_argument("--format", help="Force container/muxer hint (mp4, mov, webm, matroska, mxf, gif, image2, avi)")
     parser.add_argument("--profile", choices=sorted(_PROFILES().keys()), help="Apply a curated preset")
@@ -401,10 +463,56 @@ def register_arguments(parser):
     parser.add_argument("ffmpeg_args", nargs=argparse.REMAINDER, help="Raw args after -- go straight to ffmpeg")
 
 
+def _apply_simple(args):
+    """Translate target / size / quality into the individual fields the command builder understands."""
+    t = TARGETS[args.target]
+    q = QUALITIES.index(args.quality) if args.quality in QUALITIES else 1
+    ext = _ext_lower(args.output)
+    if ext not in t["ext"]:
+        want = " or ".join(e.upper() for e in t["ext"])
+        raise SystemExit(f"❌ '{args.target}' needs the Output node's Container format to be {want} (it is {ext.upper() or 'not set'}).")
+    size = SIZES.get(args.size)
+    vf = None
+    if size:
+        if size[0] == "w":
+            vf = f"scale={size[1]}:-2:flags=lanczos"
+        elif size[0] == "crop":
+            vf = (f"scale={size[1]}:{size[2]}:force_original_aspect_ratio=increase:flags=lanczos,crop={size[1]}:{size[2]}")
+        else:
+            w, h = int(args.width or 0), int(args.height or 0)
+            if w <= 0 and h <= 0:
+                raise SystemExit("❌ Custom size needs a width and/or a height.")
+            vf = f"scale={w if w > 0 else -2}:{h if h > 0 else -2}:flags=lanczos"
+    # start from a clean slate so Advanced leftovers can't leak in
+    for k in ("profile", "vcodec", "acodec", "crf", "bitrate", "maxrate", "bufsize", "preset", "profile_v", "level",
+              "pix_fmt", "gop", "r", "vf", "tagv", "abitrate", "ac", "ar", "format"):
+        setattr(args, k, None)
+    args.copy = False
+    if t.get("gif"):
+        args.profile = "gif"
+        args.vf = "fps=15," + (vf or "scale=iw:-2:flags=lanczos")
+        return
+    if "audio" in t:
+        rep = t.get("abr", ("", "", ""))[q]
+        args.ffmpeg_args = [a.replace("{abr}", rep) for a in t["audio"]]
+        args.vcodec = args.acodec = None
+        return
+    args.vcodec, args.acodec, args.pix_fmt = t["v"], t["a"], t.get("pix")
+    if t.get("crf"):
+        args.crf = t["crf"][q]
+    if vf:
+        args.vf = vf
+    args.ffmpeg_args = list(t.get("extra", []))
+    if t["a"] == "aac":
+        args.abitrate = ("256k", "192k", "128k")[q]
+
+
 def run(args):
     """
     Build command and execute through videobeaux's progress runner.
     """
+    if getattr(args, "mode", MODE_ADVANCED) == MODE_SIMPLE:
+        _apply_simple(args)
     cmd = _build_ffmpeg_command(args)
 
     # Friendly echo so users can see exactly what will run (quoted like your original)

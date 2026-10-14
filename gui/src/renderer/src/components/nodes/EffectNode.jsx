@@ -4,6 +4,8 @@ import {
   useNodeConnections, useNodesData, useUpdateNodeInternals
 } from '@xyflow/react'
 import { usePrograms } from '../../ProgramsContext'
+import { familyOf, motifOf } from '../../looks/registry'
+import { NodeGlyph, NodeArt } from '../../looks/NodeArt'
 import { videoArgsOf, upstreamIsBatch } from '../../pipeline'
 import { useUpdateNodeData } from '../../useCanvasHistory'
 import { ARG_HELPERS } from '../helpers/registry'
@@ -261,6 +263,8 @@ function NumberField({ arg, value, onChange, inputStyle }) {
             step={step}
             value={Math.min(hi, Math.max(lo, numeric))}
             onChange={e => { setDraft(null); onChange(arg.integer ? Number(e.target.value) : Number(Number(e.target.value).toFixed(decimals + 1))) }}
+            onDoubleClick={() => { if (hasDefault) { setDraft(null); onChange(arg.default) } }}
+            title="Double-click to reset"
             style={{ width: '100%', display: 'block', accentColor: 'var(--slider)', cursor: 'pointer' }}
           />
           {hasGood && (
@@ -303,6 +307,94 @@ function NumberField({ arg, value, onChange, inputStyle }) {
       )}
       {hint && <span style={{ fontSize: 10, color: 'var(--coral)', fontFamily: 'var(--font-mono)', flexShrink: 0 }}>{hint}</span>}
     </div>
+  )
+}
+
+/**
+ * The ⓘ next to a field label: a clearly visible round button. Click toggles the help text inline under the label
+ * (tooltips are slow and easy to miss); the native tooltip stays as a bonus.
+ */
+function InfoBadge({ text, open, onToggle }) {
+  return (
+    <button
+      className="nodrag info-badge"
+      onClick={e => { e.stopPropagation(); onToggle() }}
+      title={text}
+      aria-label="What does this do?"
+      aria-expanded={open}
+      style={{ background: open ? 'var(--ink)' : 'var(--select)', color: open ? 'var(--paper)' : 'var(--on-color)' }}
+    >
+      i
+    </button>
+  )
+}
+
+/** Field label row + inline help. */
+function ArgLabel({ arg, children }) {
+  const [helpOpen, setHelpOpen] = useState(false)
+  return (
+    <>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 3 }}>
+        <span style={{ fontSize: 11, color: 'var(--muted-dim)' }}>{arg.label}</span>
+        {arg.required && <span style={{ fontSize: 10, color: 'var(--coral)' }}>*</span>}
+        {arg.help && <InfoBadge text={arg.help} open={helpOpen} onToggle={() => setHelpOpen(o => !o)} />}
+        {children}
+      </div>
+      {helpOpen && arg.help && (
+        <div style={{ fontSize: 11, lineHeight: 1.4, color: 'var(--ink)', background: 'var(--paper-dim)', border: '2px solid var(--ink)',
+                      borderRadius: 6, padding: '4px 7px', margin: '0 0 5px', whiteSpace: 'pre-wrap' }}>
+          {arg.help}
+        </div>
+      )}
+    </>
+  )
+}
+
+/** show_if: { argName: value | [values] } — all conditions must hold (against current values incl. defaults). */
+function isVisible(arg, values) {
+  const cond = arg.show_if
+  if (!cond) return true
+  return Object.entries(cond).every(([k, want]) => {
+    const have = values[k]
+    const list = Array.isArray(want) ? want : [want]
+    return list.some(w => String(w) === String(have ?? ''))
+  })
+}
+
+/**
+ * ✎ button for args whose editor isn't the file field itself (e.g. Topobeaux "Cut points", Stackadelic "Layer 1 left").
+ * The editor gets every arg of the node (`values`) and can set several at once (`setArgs`).
+ */
+function ArgHelperButton({ programId, arg, nodeId, values, setArgs, onChange, inputPath }) {
+  const [open, setOpen] = useState(false)
+  const helper = ARG_HELPERS[programId]?.[arg.name]
+  if (!helper || arg.type === 'file') return null
+  return (
+    <>
+      <button
+        className="nodrag"
+        onClick={() => setOpen(true)}
+        title={helper.title}
+        style={{
+          background: 'var(--cyan)', border: '2px solid var(--ink)', borderRadius: 5, color: '#080808',
+          padding: '0 6px', fontSize: 11, fontWeight: 700, lineHeight: '16px', marginLeft: 'auto'
+        }}
+      >
+        ✎ edit
+      </button>
+      {open && (
+        <helper.Component
+          value={values[arg.name]}
+          values={values}
+          onChange={onChange}
+          setArgs={setArgs}
+          inputPath={inputPath}
+          onClose={() => setOpen(false)}
+          nodeId={nodeId}
+          programId={programId}
+        />
+      )}
+    </>
   )
 }
 
@@ -487,7 +579,7 @@ function ArgField({ arg, value, onChange, programId, nodeId }) {
 // "connected to <upstream node>" pill (edge wins) or falls back to the
 // ordinary file-picker (today's behavior) when nothing is connected.
 
-function MediaInputRow({ nodeId, arg, value, onChange, color }) {
+function MediaInputRow({ nodeId, arg, value, onChange, color, inactive = false }) {
   const { deleteElements } = useReactFlow()
   const { programMap } = usePrograms()
   const connections = useNodeConnections({ id: nodeId, handleType: 'target', handleId: arg.name })
@@ -512,7 +604,8 @@ function MediaInputRow({ nodeId, arg, value, onChange, color }) {
   const missing = arg.required && !conn && !value
 
   return (
-    <div style={{ position: 'relative', padding: '5px 10px 5px 16px' }}>
+    <div style={{ position: 'relative', padding: '5px 10px 5px 16px', opacity: inactive ? 0.5 : 1 }}
+         title={inactive ? "Not used by the current settings — it stays connected, but this program ignores it until you change the option that needs it." : undefined}>
       <Handle
         id={arg.name}
         type="target"
@@ -525,15 +618,10 @@ function MediaInputRow({ nodeId, arg, value, onChange, color }) {
         }}
       />
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 3 }}>
-        <span style={{ fontSize: 11, color: 'var(--muted-dim)' }}>{arg.label}</span>
+      <ArgLabel arg={{ ...arg, required: false }}>
         {missing && <span style={{ fontSize: 10, color: 'var(--coral)' }}>*</span>}
-        {arg.help && (
-          <span title={arg.help} style={{ fontSize: 9, color: 'var(--cyan)', cursor: 'help', opacity: 0.9, userSelect: 'none' }}>
-            ⓘ
-          </span>
-        )}
-      </div>
+        {inactive && <span style={{ fontSize: 10, color: 'var(--muted-dim)', fontStyle: 'italic' }}>not used right now</span>}
+      </ArgLabel>
 
       {conn ? (
         <div style={{
@@ -601,7 +689,8 @@ export default function EffectNode({ id, data, selected }) {
   const realEdges = useRealEdges()
   const updateNodeData = useUpdateNodeData()
   const { programMap }     = usePrograms()
-  const [expanded, setExpanded] = useState(true)
+  // Collapsed state lives in the node's data (not component state) so it is saved in presets, undoable and survives reloads.
+  const expanded = !data.collapsed
 
   const prog      = programMap[data.program]
   const videoArgs = videoArgsOf(prog)
@@ -616,7 +705,7 @@ export default function EffectNode({ id, data, selected }) {
   // change the hook order between the unknown/known-program renders.
   const updateNodeInternals = useUpdateNodeInternals()
   const handleKey = videoArgs.map(a => a.name).join('|')
-  useEffect(() => { updateNodeInternals(id) }, [id, handleKey, updateNodeInternals])
+  useEffect(() => { updateNodeInternals(id) }, [id, handleKey, data.collapsed, updateNodeInternals])
 
   // Primary-handle connection, tracked for the batch badge below — hooks
   // must stay above the early return too, for the same reason as above.
@@ -627,8 +716,17 @@ export default function EffectNode({ id, data, selected }) {
   if (!prog) return <div style={{ color: 'var(--coral)', padding: 8 }}>Unknown: {data.program}</div>
 
   const color = prog.categoryColor || 'var(--muted)'
+  const family = familyOf(data.program, prog.categoryId)
+  const motif = motifOf(data.program, prog.categoryId)
   const videoNames = new Set(videoArgs.map(a => a.name))
   const plainArgs  = (prog.args || []).filter(a => !videoNames.has(a.name) && !a.hidden)
+  const effectiveValues = {
+    ...Object.fromEntries((prog.args || []).filter(a => a.default !== undefined).map(a => [a.name, a.default])),
+    ...(data.args || {})
+  }
+  const visibleArgs = plainArgs.filter(a => isVisible(a, effectiveValues))
+  const defaultsMap = Object.fromEntries((prog.args || []).filter(a => a.default !== undefined && !a.hidden).map(a => [a.name, a.default]))
+  const anyChanged = Object.entries(data.args || {}).some(([k, v]) => k in defaultsMap && String(v) !== String(defaultsMap[k]))
 
   // Batch badge: only meaningful when the primary input traces back to a
   // batch source (a folder-mode Input, or a program that natively fans out
@@ -662,17 +760,25 @@ export default function EffectNode({ id, data, selected }) {
 
   const hasCollapsible = plainArgs.length > 0
   const hasAnyBody      = hasCollapsible || videoArgs.length > 0
+  // Every program can be folded: nodes with settings hide them, nodes without any hide their description.
+  const canCollapse     = hasCollapsible || !hasAnyBody
+  const toggleCollapsed = () => updateNodeData(id, { collapsed: !data.collapsed })
+  const bareHeader      = !expanded && videoArgs.length === 0 && !isBatchUpstream   // folded and nothing below the header
   // Arg-heavy nodes (e.g. Convert, with 17 options) run off the bottom of the
   // canvas as a single tall column — past this threshold, lay them out as a
   // 2-column grid instead and widen the node to fit. Small nodes are
   // unaffected (this only ever kicks in well above what any other current
   // program has).
-  const useGrid = plainArgs.length > 6
+  const useGrid = visibleArgs.length > 6
 
   return (
-    <div style={{
+    <div
+      data-collapsed={expanded ? undefined : 'true'}
+      data-family={family}
+      style={{
+      '--node-color': color,
       background: 'var(--paper)',
-      border: '3px solid var(--ink)',
+      border: '3px solid var(--line, var(--ink))',
       borderRadius: 12,
       minWidth: useGrid ? 420 : 230,
       maxWidth: useGrid ? 480 : 280,
@@ -688,10 +794,14 @@ export default function EffectNode({ id, data, selected }) {
 
       {/* Header */}
       <div
+        className="node-header"
+        data-family={family}
+        data-motif={motif || undefined}
+        onDoubleClick={canCollapse ? (e => { e.stopPropagation(); toggleCollapsed() }) : undefined}
         style={{
-          background: color,
-          borderBottom: '3px solid var(--ink)',
-          borderRadius: hasAnyBody ? '9px 9px 0 0' : 9,
+          backgroundColor: color,
+          borderBottom: bareHeader ? 'none' : '3px solid var(--line, var(--ink))',
+          borderRadius: (hasAnyBody && !bareHeader) ? '9px 9px 0 0' : 9,
           padding: '7px 8px 7px 10px',
           display: 'flex',
           alignItems: 'center',
@@ -700,6 +810,8 @@ export default function EffectNode({ id, data, selected }) {
           userSelect: 'none'
         }}
       >
+        <NodeGlyph programId={data.program} family={family} />
+
         {/* Colour dot */}
         <div style={{ width: 9, height: 9, borderRadius: '50%', background: 'var(--paper)', border: '2px solid var(--ink)', flexShrink: 0 }} />
 
@@ -716,10 +828,10 @@ export default function EffectNode({ id, data, selected }) {
         </span>
 
         {/* Collapse / expand — only this button toggles, so clicking the header or name just selects the node */}
-        {hasCollapsible && (
+        {canCollapse && (
           <button
             className="nodrag node-caret"
-            onClick={e => { e.stopPropagation(); setExpanded(x => !x) }}
+            onClick={e => { e.stopPropagation(); toggleCollapsed() }}
             title={expanded ? 'Collapse' : 'Expand'}
             aria-label={expanded ? 'Collapse program' : 'Expand program'}
           >
@@ -753,6 +865,8 @@ export default function EffectNode({ id, data, selected }) {
         </button>
       </div>
 
+      <NodeArt programId={data.program} family={family} motif={motif} description={prog.description} />
+
       {/* Batch badge — shown only when this node's primary input traces back
           to a batch source, so the runner will run this node once per file. */}
       {isBatchUpstream && (
@@ -783,6 +897,7 @@ export default function EffectNode({ id, data, selected }) {
               value={(data.args || {})[arg.name]}
               onChange={v => setArg(arg.name, v)}
               color={color}
+              inactive={!isVisible(arg, effectiveValues)}
             />
           ))}
         </div>
@@ -794,10 +909,18 @@ export default function EffectNode({ id, data, selected }) {
           ? { padding: '8px 10px', display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: 14, rowGap: 7 }
           : { padding: '8px 10px', display: 'flex', flexDirection: 'column', gap: 7 }
         }>
-          {prog.presets && Object.keys(prog.presets).length > 0 && (
+          {((prog.presets && Object.keys(prog.presets).length > 0) || anyChanged) && (
             <div style={{ gridColumn: '1 / -1', display: 'flex', flexWrap: 'wrap', gap: 5, alignItems: 'center' }}>
-              <span style={{ fontSize: 10, color: 'var(--muted-dim)', fontFamily: 'var(--font-mono)' }}>Presets</span>
-              {Object.entries(prog.presets).map(([name, vals]) => {
+              {prog.presets && <span style={{ fontSize: 10, color: 'var(--muted-dim)', fontFamily: 'var(--font-mono)' }}>Presets</span>}
+              {anyChanged && (
+                <button className="nodrag" title="Put every setting back to its default"
+                        onClick={() => updateNodeData(id, { args: { ...defaultsMap } })}
+                        style={{ padding: '1px 8px', fontSize: 10, fontFamily: 'var(--font-mono)', borderRadius: 999, fontWeight: 700,
+                                 background: 'var(--coral)', color: '#080808' }}>
+                  ↺ Reset all
+                </button>
+              )}
+              {Object.entries(prog.presets || {}).map(([name, vals]) => {
                 const active = Object.entries(vals).every(([k, v]) => Number((data.args || {})[k] ?? NaN) === Number(v) || (data.args || {})[k] === v)
                 return (
                   <button key={name} className="nodrag" onClick={() => updateNodeData(id, { args: { ...(data.args || {}), ...vals } })}
@@ -809,27 +932,19 @@ export default function EffectNode({ id, data, selected }) {
               })}
             </div>
           )}
-          {plainArgs.map(arg => (
+          {visibleArgs.map(arg => (
             <div key={arg.name}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 3 }}>
-                <span style={{ fontSize: 11, color: 'var(--muted-dim)' }}>{arg.label}</span>
-                {arg.required && <span style={{ fontSize: 10, color: 'var(--coral)' }}>*</span>}
-                {arg.help && (
-                  <span
-                    title={arg.help}
-                    style={{
-                      fontSize: 9,
-                      color: 'var(--cyan)',
-                      cursor: 'help',
-                      lineHeight: 1,
-                      opacity: 0.9,
-                      userSelect: 'none'
-                    }}
-                  >
-                    ⓘ
-                  </span>
-                )}
-              </div>
+              <ArgLabel arg={arg}>
+                <ArgHelperButton
+                  programId={data.program}
+                  arg={arg}
+                  nodeId={id}
+                  values={effectiveValues}
+                  setArgs={patch => updateNodeData(id, { args: { ...(data.args || {}), ...patch } })}
+                  onChange={v => setArg(arg.name, v)}
+                  inputPath={primaryUpstream?.type === 'inputNode' ? primaryUpstream.data?.filePath : undefined}
+                />
+              </ArgLabel>
               <ArgField
                 programId={data.program}
                 nodeId={id}
@@ -843,7 +958,7 @@ export default function EffectNode({ id, data, selected }) {
       )}
 
       {/* No-args description */}
-      {!hasAnyBody && (
+      {!hasAnyBody && expanded && (
         <div style={{ padding: '6px 10px 8px', fontSize: 11, color: 'var(--muted)', fontStyle: 'italic' }}>
           {prog.description}
         </div>

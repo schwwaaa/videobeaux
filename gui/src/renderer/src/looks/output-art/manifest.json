@@ -1,0 +1,717 @@
+{
+  "ffmpeg": "ffmpeg version 7.1.1 Copyright (c) 2000-2025 the FFmpeg developers",
+  "generated": "2026-10-13T01:18:29",
+  "programs": {
+    "ascii_art": {
+      "file": "ascii_art.webp",
+      "h": 108,
+      "w": 192
+    },
+    "auto_narrate": {
+      "file": "auto_narrate.webp",
+      "h": 108,
+      "w": 192
+    },
+    "bad_animation": {
+      "file": "bad_animation.webp",
+      "h": 108,
+      "w": 192
+    },
+    "bad_contrast": {
+      "file": "bad_contrast.webp",
+      "h": 108,
+      "w": 192
+    },
+    "bad_predator": {
+      "file": "bad_predator.webp",
+      "h": 108,
+      "w": 192
+    },
+    "ball_point_pen": {
+      "file": "ball_point_pen.webp",
+      "h": 108,
+      "w": 192
+    },
+    "beauxtrix": {
+      "file": "beauxtrix.webp",
+      "h": 108,
+      "w": 192
+    },
+    "black_white": {
+      "file": "black_white.webp",
+      "h": 108,
+      "w": 192
+    },
+    "blueprint": {
+      "file": "blueprint.webp",
+      "h": 108,
+      "w": 192
+    },
+    "blur_pix": {
+      "file": "blur_pix.webp",
+      "h": 108,
+      "w": 192
+    },
+    "boomerang": {
+      "file": "boomerang.webp",
+      "h": 108,
+      "w": 192
+    },
+    "broken_scroll": {
+      "file": "broken_scroll.webp",
+      "h": 108,
+      "w": 192
+    },
+    "cartoon": {
+      "file": "cartoon.webp",
+      "h": 108,
+      "w": 192
+    },
+    "chain_builder": {
+      "file": "chain_builder.webp",
+      "h": 108,
+      "w": 192
+    },
+    "chain_builder_pro": {
+      "file": "chain_builder_pro.webp",
+      "h": 108,
+      "w": 192
+    },
+    "chroma_key": {
+      "file": "chroma_key.webp",
+      "h": 108,
+      "w": 192
+    },
+    "chromatic_pulse": {
+      "file": "chromatic_pulse.webp",
+      "h": 108,
+      "w": 192
+    },
+    "color_pass": {
+      "file": "color_pass.webp",
+      "h": 108,
+      "w": 192
+    },
+    "concat": {
+      "file": "concat.webp",
+      "h": 108,
+      "w": 192
+    },
+    "convert": {
+      "file": "convert.webp",
+      "h": 108,
+      "w": 192
+    },
+    "convert_dims": {
+      "file": "convert_dims.webp",
+      "h": 108,
+      "w": 192
+    },
+    "convert_mux": {
+      "file": "convert_mux.webp",
+      "h": 108,
+      "w": 192
+    },
+    "crossmosh": {
+      "file": "crossmosh.webp",
+      "h": 108,
+      "w": 192
+    },
+    "crt_monitor": {
+      "file": "crt_monitor.webp",
+      "h": 108,
+      "w": 192
+    },
+    "deep_fry": {
+      "file": "deep_fry.webp",
+      "h": 108,
+      "w": 192
+    },
+    "digital_boss": {
+      "file": "digital_boss.webp",
+      "h": 108,
+      "w": 192
+    },
+    "dither": {
+      "file": "dither.webp",
+      "h": 108,
+      "w": 192
+    },
+    "double_cup": {
+      "file": "double_cup.webp",
+      "h": 108,
+      "w": 192
+    },
+    "duotone": {
+      "file": "duotone.webp",
+      "h": 108,
+      "w": 192
+    },
+    "emboss": {
+      "file": "emboss.webp",
+      "h": 108,
+      "w": 192
+    },
+    "face_follow": {
+      "file": "face_follow.webp",
+      "h": 108,
+      "w": 192
+    },
+    "face_redact": {
+      "file": "face_redact.webp",
+      "h": 108,
+      "w": 192
+    },
+    "face_swap": {
+      "file": "face_swap.webp",
+      "h": 108,
+      "w": 192
+    },
+    "face_track": {
+      "file": "face_track.webp",
+      "h": 108,
+      "w": 192
+    },
+    "face_warp": {
+      "file": "face_warp.webp",
+      "h": 108,
+      "w": 192
+    },
+    "fade_flash": {
+      "file": "fade_flash.webp",
+      "h": 108,
+      "w": 192
+    },
+    "feature_trails": {
+      "file": "feature_trails.webp",
+      "h": 108,
+      "w": 192
+    },
+    "feedback_loop": {
+      "file": "feedback_loop.webp",
+      "h": 108,
+      "w": 192
+    },
+    "fever": {
+      "file": "fever.webp",
+      "h": 108,
+      "w": 192
+    },
+    "flow_warp": {
+      "file": "flow_warp.webp",
+      "h": 108,
+      "w": 192
+    },
+    "frame_delay_pro1": {
+      "file": "frame_delay_pro1.webp",
+      "h": 108,
+      "w": 192
+    },
+    "frame_delay_pro2": {
+      "file": "frame_delay_pro2.webp",
+      "h": 108,
+      "w": 192
+    },
+    "frame_interpolate": {
+      "file": "frame_interpolate.webp",
+      "h": 108,
+      "w": 192
+    },
+    "freeze_frame": {
+      "file": "freeze_frame.webp",
+      "h": 108,
+      "w": 192
+    },
+    "freeze_punch": {
+      "file": "freeze_punch.webp",
+      "h": 108,
+      "w": 192
+    },
+    "gamma_fix": {
+      "file": "gamma_fix.webp",
+      "h": 108,
+      "w": 192
+    },
+    "ghostee": {
+      "file": "ghostee.webp",
+      "h": 108,
+      "w": 192
+    },
+    "glitch_tear": {
+      "file": "glitch_tear.webp",
+      "h": 108,
+      "w": 192
+    },
+    "grep_supercut": {
+      "file": "grep_supercut.webp",
+      "h": 108,
+      "w": 192
+    },
+    "halftone": {
+      "file": "halftone.webp",
+      "h": 108,
+      "w": 192
+    },
+    "hue_cycle": {
+      "file": "hue_cycle.webp",
+      "h": 108,
+      "w": 192
+    },
+    "infrared": {
+      "file": "infrared.webp",
+      "h": 108,
+      "w": 192
+    },
+    "insert_clip": {
+      "file": "insert_clip.webp",
+      "h": 108,
+      "w": 192
+    },
+    "kinetic_captions": {
+      "file": "kinetic_captions.webp",
+      "h": 108,
+      "w": 192
+    },
+    "kmeans_palette": {
+      "file": "kmeans_palette.webp",
+      "h": 108,
+      "w": 192
+    },
+    "lagkage": {
+      "file": "lagkage.webp",
+      "h": 108,
+      "w": 192
+    },
+    "layer_blend": {
+      "file": "layer_blend.webp",
+      "h": 108,
+      "w": 192
+    },
+    "led_wall": {
+      "file": "led_wall.webp",
+      "h": 108,
+      "w": 192
+    },
+    "light_snow": {
+      "file": "light_snow.webp",
+      "h": 108,
+      "w": 192
+    },
+    "little_planet": {
+      "file": "little_planet.webp",
+      "h": 108,
+      "w": 192
+    },
+    "lomo": {
+      "file": "lomo.webp",
+      "h": 108,
+      "w": 192
+    },
+    "long_exposure": {
+      "file": "long_exposure.webp",
+      "h": 108,
+      "w": 192
+    },
+    "looper_pro": {
+      "file": "looper_pro.webp",
+      "h": 108,
+      "w": 192
+    },
+    "lsd_feedback": {
+      "file": "lsd_feedback.webp",
+      "h": 108,
+      "w": 192
+    },
+    "lsd_feedback_pro": {
+      "file": "lsd_feedback_pro.webp",
+      "h": 108,
+      "w": 192
+    },
+    "luma_key": {
+      "file": "luma_key.webp",
+      "h": 108,
+      "w": 192
+    },
+    "lut_apply": {
+      "file": "lut_apply.webp",
+      "h": 108,
+      "w": 192
+    },
+    "mince": {
+      "file": "mince.webp",
+      "h": 108,
+      "w": 192
+    },
+    "mirror_delay": {
+      "file": "mirror_delay.webp",
+      "h": 108,
+      "w": 192
+    },
+    "motion_ghost": {
+      "file": "motion_ghost.webp",
+      "h": 108,
+      "w": 192
+    },
+    "negative": {
+      "file": "negative.webp",
+      "h": 108,
+      "w": 192
+    },
+    "neon_edges": {
+      "file": "neon_edges.webp",
+      "h": 108,
+      "w": 192
+    },
+    "night_vision": {
+      "file": "night_vision.webp",
+      "h": 108,
+      "w": 192
+    },
+    "nostalgic_stutter": {
+      "file": "nostalgic_stutter.webp",
+      "h": 108,
+      "w": 192
+    },
+    "oil_paint": {
+      "file": "oil_paint.webp",
+      "h": 108,
+      "w": 192
+    },
+    "old_film_damage": {
+      "file": "old_film_damage.webp",
+      "h": 108,
+      "w": 192
+    },
+    "ordered_dither": {
+      "file": "ordered_dither.webp",
+      "h": 108,
+      "w": 192
+    },
+    "overexposed_stutter": {
+      "file": "overexposed_stutter.webp",
+      "h": 108,
+      "w": 192
+    },
+    "photobooth": {
+      "file": "photobooth.webp",
+      "h": 108,
+      "w": 192
+    },
+    "pickle_juice": {
+      "file": "pickle_juice.webp",
+      "h": 108,
+      "w": 192
+    },
+    "picture_in_picture": {
+      "file": "picture_in_picture.webp",
+      "h": 108,
+      "w": 192
+    },
+    "pixel_sort": {
+      "file": "pixel_sort.webp",
+      "h": 108,
+      "w": 192
+    },
+    "pixelate": {
+      "file": "pixelate.webp",
+      "h": 108,
+      "w": 192
+    },
+    "pop_art": {
+      "file": "pop_art.webp",
+      "h": 108,
+      "w": 192
+    },
+    "posterize": {
+      "file": "posterize.webp",
+      "h": 108,
+      "w": 192
+    },
+    "proc_amp": {
+      "file": "proc_amp.webp",
+      "h": 108,
+      "w": 192
+    },
+    "quad_split": {
+      "file": "quad_split.webp",
+      "h": 108,
+      "w": 192
+    },
+    "rb_blur": {
+      "file": "rb_blur.webp",
+      "h": 108,
+      "w": 192
+    },
+    "rb_blur_pro": {
+      "file": "rb_blur_pro.webp",
+      "h": 108,
+      "w": 192
+    },
+    "recalled_sensor": {
+      "file": "recalled_sensor.webp",
+      "h": 108,
+      "w": 192
+    },
+    "recalled_sensor_pro": {
+      "file": "recalled_sensor_pro.webp",
+      "h": 108,
+      "w": 192
+    },
+    "remove_background": {
+      "file": "remove_background.webp",
+      "h": 108,
+      "w": 192
+    },
+    "repainting": {
+      "file": "repainting.webp",
+      "h": 108,
+      "w": 192
+    },
+    "resize": {
+      "file": "resize.webp",
+      "h": 108,
+      "w": 192
+    },
+    "retro_dither": {
+      "file": "retro_dither.webp",
+      "h": 108,
+      "w": 192
+    },
+    "reverse": {
+      "file": "reverse.webp",
+      "h": 108,
+      "w": 192
+    },
+    "rgb_time_split": {
+      "file": "rgb_time_split.webp",
+      "h": 108,
+      "w": 192
+    },
+    "scrolling_pro": {
+      "file": "scrolling_pro.webp",
+      "h": 108,
+      "w": 192
+    },
+    "sepia": {
+      "file": "sepia.webp",
+      "h": 108,
+      "w": 192
+    },
+    "septic": {
+      "file": "septic.webp",
+      "h": 108,
+      "w": 192
+    },
+    "shape_synth": {
+      "file": "shape_synth.webp",
+      "h": 108,
+      "w": 192
+    },
+    "shortify": {
+      "file": "shortify.webp",
+      "h": 108,
+      "w": 192
+    },
+    "sketch": {
+      "file": "sketch.webp",
+      "h": 108,
+      "w": 192
+    },
+    "slight_smear": {
+      "file": "slight_smear.webp",
+      "h": 108,
+      "w": 192
+    },
+    "slit_scan": {
+      "file": "slit_scan.webp",
+      "h": 108,
+      "w": 192
+    },
+    "smudge": {
+      "file": "smudge.webp",
+      "h": 108,
+      "w": 192
+    },
+    "soapblind": {
+      "file": "soapblind.webp",
+      "h": 108,
+      "w": 192
+    },
+    "solarize": {
+      "file": "solarize.webp",
+      "h": 108,
+      "w": 192
+    },
+    "soundtrack": {
+      "file": "soundtrack.webp",
+      "h": 108,
+      "w": 192
+    },
+    "speed": {
+      "file": "speed.webp",
+      "h": 108,
+      "w": 192
+    },
+    "splitting": {
+      "file": "splitting.webp",
+      "h": 108,
+      "w": 192
+    },
+    "splitting_pro": {
+      "file": "splitting_pro.webp",
+      "h": 108,
+      "w": 192
+    },
+    "stabilize": {
+      "file": "stabilize.webp",
+      "h": 108,
+      "w": 192
+    },
+    "stack_2x": {
+      "file": "stack_2x.webp",
+      "h": 108,
+      "w": 192
+    },
+    "stackadelic": {
+      "file": "stackadelic.webp",
+      "h": 108,
+      "w": 192
+    },
+    "steel_wash": {
+      "file": "steel_wash.webp",
+      "h": 108,
+      "w": 192
+    },
+    "strobe_cut": {
+      "file": "strobe_cut.webp",
+      "h": 108,
+      "w": 192
+    },
+    "strobe_hold": {
+      "file": "strobe_hold.webp",
+      "h": 108,
+      "w": 192
+    },
+    "stutter_pro": {
+      "file": "stutter_pro.webp",
+      "h": 108,
+      "w": 192
+    },
+    "t1000": {
+      "file": "t1000.webp",
+      "h": 108,
+      "w": 192
+    },
+    "thermal": {
+      "file": "thermal.webp",
+      "h": 108,
+      "w": 192
+    },
+    "thumbs": {
+      "file": "thumbs.webp",
+      "h": 108,
+      "w": 192
+    },
+    "time_ramp": {
+      "file": "time_ramp.webp",
+      "h": 108,
+      "w": 192
+    },
+    "tonemap_hdr_sdr": {
+      "file": "tonemap_hdr_sdr.webp",
+      "h": 108,
+      "w": 192
+    },
+    "topobeaux": {
+      "file": "topobeaux.webp",
+      "h": 108,
+      "w": 192
+    },
+    "trim": {
+      "file": "trim.webp",
+      "h": 108,
+      "w": 192
+    },
+    "triptych": {
+      "file": "triptych.webp",
+      "h": 108,
+      "w": 192
+    },
+    "tunnel": {
+      "file": "tunnel.webp",
+      "h": 108,
+      "w": 192
+    },
+    "twociz": {
+      "file": "twociz.webp",
+      "h": 108,
+      "w": 192
+    },
+    "twociz_pro": {
+      "file": "twociz_pro.webp",
+      "h": 108,
+      "w": 192
+    },
+    "vhs_camcorder": {
+      "file": "vhs_camcorder.webp",
+      "h": 108,
+      "w": 192
+    },
+    "vhs_tracking": {
+      "file": "vhs_tracking.webp",
+      "h": 108,
+      "w": 192
+    },
+    "video_wall": {
+      "file": "video_wall.webp",
+      "h": 108,
+      "w": 192
+    },
+    "warp": {
+      "file": "warp.webp",
+      "h": 108,
+      "w": 192
+    },
+    "watermark": {
+      "file": "watermark.webp",
+      "h": 108,
+      "w": 192
+    },
+    "wbflare": {
+      "file": "wbflare.webp",
+      "h": 108,
+      "w": 192
+    },
+    "wbflare_pro": {
+      "file": "wbflare_pro.webp",
+      "h": 108,
+      "w": 192
+    },
+    "weak_signal": {
+      "file": "weak_signal.webp",
+      "h": 108,
+      "w": 192
+    },
+    "wipe_transitions": {
+      "file": "wipe_transitions.webp",
+      "h": 108,
+      "w": 192
+    },
+    "xpiritualism": {
+      "file": "xpiritualism.webp",
+      "h": 108,
+      "w": 192
+    },
+    "xrgb": {
+      "file": "xrgb.webp",
+      "h": 108,
+      "w": 192
+    },
+    "zapruder": {
+      "file": "zapruder.webp",
+      "h": 108,
+      "w": 192
+    }
+  },
+  "source": "procedural clip (tools/make_module_art.py)"
+}

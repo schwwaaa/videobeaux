@@ -22,7 +22,18 @@ GUI_METADATA = {
         'composite': {'type': 'select', 'label': 'Composite', 'default': COMPOSITES[0], 'choices': COMPOSITES,
                       'help': 'key = cut out with transparency. screen / add / lighten = blend onto the background '
                               '(best for fire, smoke, light on black).'},
-    }
+        # First run should *show* the removal: a checkerboard behind the subject (switch View to composite to use a Background).
+        'view': {'type': 'select', 'label': 'View', 'default': 'checkerboard', 'choices': keying.VIEWS,
+                 'help': 'checkerboard = see what was removed (start here) · matte = white kept / black removed · '
+                         'composite = the final result over your Background.'},
+    },
+    'presets': {
+        'Remove black': {'key': 'dark', 'tolerance': 0.12, 'softness': 0.08, 'composite': COMPOSITES[0], 'view': 'checkerboard', 'invert': False},
+        'Remove white / sky': {'key': 'bright', 'tolerance': 0.15, 'softness': 0.1, 'composite': COMPOSITES[0], 'view': 'checkerboard', 'invert': False},
+        'Fire / smoke overlay': {'key': 'dark', 'composite': 'screen', 'view': 'composite'},
+        'Light leak': {'key': 'dark', 'composite': 'add', 'view': 'composite'},
+        'Final: over background': {'composite': COMPOSITES[0], 'view': 'composite', 'background': 'auto'},
+    },
 }
 
 

@@ -12,7 +12,17 @@ const DEFAULTS = {
   sliderColor: '#8654aa',
   selectionColor: 'auto',       // 'auto' = yellow in light mode, cyan in dark mode
   sidebarCollapsed: false,
-  consoleCollapsed: false
+  consoleCollapsed: false,
+  consoleHeight: 220,
+  autoOverwrite: false,
+  // Appearance: connection lines / node outlines, canvas wallpaper, visual "Look"
+  lineMode: 'ink',              // 'ink' (default) | 'category' (each line takes its source module's colour) | 'custom'
+  lineColor: '#080808',         // used when lineMode === 'custom' (also recolours node frames)
+  lineWidth: 3,
+  canvasBg: '',                 // absolute path of a JPEG/PNG/WebP, or '' for none
+  canvasBgOpacity: 0.35,
+  canvasBgFit: 'cover',         // 'cover' | 'contain' | 'tile'
+  look: 'classic'               // see looks/index.js — 'classic' is exactly the original appearance
 }
 
 /**
@@ -47,6 +57,22 @@ export function SettingsProvider({ children }) {
     else root.style.removeProperty('--select')
   }, [settings.theme, settings.shadowOffset, settings.shadowColor, settings.shadowsEnabled, settings.sliderColor, settings.selectionColor])
 
+  // Lines + Look. Defaults remove every override, so the stock appearance is untouched.
+  useEffect(() => {
+    const root = document.documentElement
+    const w = Number(settings.lineWidth)
+    if (w && w !== 3) root.style.setProperty('--edge-width', String(w)); else root.style.removeProperty('--edge-width')
+    if (settings.lineMode === 'custom') {
+      root.style.setProperty('--edge-color', settings.lineColor)
+      root.style.setProperty('--line', settings.lineColor)
+    } else {
+      root.style.removeProperty('--edge-color')
+      root.style.removeProperty('--line')
+    }
+    if (settings.look && settings.look !== 'classic') root.setAttribute('data-look', settings.look)
+    else root.removeAttribute('data-look')
+  }, [settings.lineMode, settings.lineColor, settings.lineWidth, settings.look])
+
   function update(patch) {
     setSettingsState(prev => {
       const next = { ...prev, ...patch }
@@ -68,7 +94,16 @@ export function SettingsProvider({ children }) {
     setSliderColor: (sliderColor) => update({ sliderColor }),
     setSelectionColor: (selectionColor) => update({ selectionColor }),
     setSidebarCollapsed: (sidebarCollapsed) => update({ sidebarCollapsed }),
-    setConsoleCollapsed: (consoleCollapsed) => update({ consoleCollapsed })
+    setConsoleCollapsed: (consoleCollapsed) => update({ consoleCollapsed }),
+    setConsoleHeight: (consoleHeight) => update({ consoleHeight }),
+    setAutoOverwrite: (autoOverwrite) => update({ autoOverwrite }),
+    setLineMode: (lineMode) => update({ lineMode }),
+    setLineColor: (lineColor) => update({ lineColor }),
+    setLineWidth: (lineWidth) => update({ lineWidth }),
+    setCanvasBg: (canvasBg) => update({ canvasBg }),
+    setCanvasBgOpacity: (canvasBgOpacity) => update({ canvasBgOpacity }),
+    setCanvasBgFit: (canvasBgFit) => update({ canvasBgFit }),
+    setLook: (look) => update({ look })
   }
 
   return (

@@ -1,0 +1,38 @@
+name: CI
+
+# Fast checks on every push / pull request: Python unit tests against a *capable* ffmpeg, and the GUI's node tests + build.
+# (Releases of ffmpeg itself are in ffmpeg-build.yml.)
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  python:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12', cache: pip }
+      - name: Install Python requirements
+        run: pip install -r requirements.txt
+      - name: Install a full-featured ffmpeg (plain ffmpeg has no drawtext, libass or zscale)
+        run: |
+          brew install ffmpeg-full
+          echo "$(brew --prefix ffmpeg-full)/bin" >> "$GITHUB_PATH"
+      - name: ffmpeg meets Videobeaux's requirements
+        run: python -m videobeaux.utils.ffmpeg_caps
+      - name: Unit tests
+        run: python -m unittest discover -s tests/unit
+
+  gui:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: gui } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm, cache-dependency-path: gui/package-lock.json }
+      - run: npm ci
+      - run: npm test
+      - run: npm run build

@@ -1,4 +1,6 @@
 from videobeaux.utils.media import ensure_audio
+from videobeaux.utils.timeparse import parse_time
+from videobeaux.utils.encode import h264_mp4_args, even
 import re
 import subprocess
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
@@ -14,22 +16,11 @@ GUI_METADATA = {
     }
 }
 
-_TIMESTAMP_RE = re.compile(r"^(?:(\d+):)?(\d{1,2}):(\d{1,2}(?:\.\d+)?)$|^(\d+(?:\.\d+)?)$")
-
-
 def _parse_timestamp(ts, arg_name):
-    ts = ts.strip()
-    m = _TIMESTAMP_RE.match(ts)
-    if not m:
-        raise SystemExit(
-            f"❌ Could not parse {arg_name} {ts!r}. Use seconds (12.5) or HH:MM:SS(.ms) (01:02:03.5)."
-        )
-    if m.group(4) is not None:
-        return float(m.group(4))
-    h = int(m.group(1)) if m.group(1) else 0
-    mi = int(m.group(2))
-    s = float(m.group(3))
-    return h * 3600 + mi * 60 + s
+    try:
+        return parse_time(ts, arg_name)
+    except ValueError as e:
+        raise SystemExit(f"❌ {e}")
 
 
 def _get_video_dims_fps(input_file):
@@ -181,15 +172,17 @@ def run(args):
         )
 
     w, h, fps = _get_video_dims_fps(args.input)
+    w, h = even(w), even(h)
+    A_NORM = "aresample=48000,aformat=sample_fmts=fltp:channel_layouts=stereo"
 
     parts = [
-        f"[0:v]trim=start=0:end={insert_at:.6f},setpts=PTS-STARTPTS,fps={fps},setsar=1[mA_v]",
-        f"[0:a]atrim=start=0:end={insert_at:.6f},asetpts=PTS-STARTPTS[mA_a]",
-        f"[0:v]trim=start={insert_at:.6f},setpts=PTS-STARTPTS,fps={fps},setsar=1[mB_v]",
-        f"[0:a]atrim=start={insert_at:.6f},asetpts=PTS-STARTPTS[mB_a]",
+        f"[0:v]crop={w}:{h}:0:0,trim=start=0:end={insert_at:.6f},setpts=PTS-STARTPTS,fps={fps},setsar=1[mA_v]",
+        f"[0:a]{A_NORM},atrim=start=0:end={insert_at:.6f},asetpts=PTS-STARTPTS[mA_a]",
+        f"[0:v]crop={w}:{h}:0:0,trim=start={insert_at:.6f},setpts=PTS-STARTPTS,fps={fps},setsar=1[mB_v]",
+        f"[0:a]{A_NORM},atrim=start={insert_at:.6f},asetpts=PTS-STARTPTS[mB_a]",
         f"[1:v]scale={w}:{h}:force_original_aspect_ratio=decrease,"
         f"pad={w}:{h}:(ow-iw)/2:(oh-ih)/2,setsar=1,fps={fps}[ins_v]",
-        f"[1:a]asetpts=PTS-STARTPTS[ins_a]",
+        f"[1:a]{A_NORM},asetpts=PTS-STARTPTS[ins_a]",
     ]
 
     v1, a1, dur1 = _join(
@@ -210,8 +203,7 @@ def run(args):
         "-filter_complex", filter_complex,
         "-map", f"[{v2}]",
         "-map", f"[{a2}]",
-        "-c:v", "libx264",
-        "-c:a", "aac",
+        *h264_mp4_args(),
         args.output
     ]
 

@@ -3,6 +3,8 @@ import re
 import sys
 import tempfile
 import time
+from videobeaux.utils.encode import harden_command
+from videobeaux.utils.ffmpeg_caps import check_command, MissingCapability
 from tqdm import tqdm
 from pathlib import Path
 
@@ -56,6 +58,10 @@ def run_ffmpeg_with_progress(command, input_file, output_file, show_ffmpeg_outpu
     # source's total duration and the bar appears to stall short of 100%.
     duration = duration_override if duration_override is not None else get_video_duration(input_file)
     print(f"Input duration: {duration:.2f} seconds")
+    command = harden_command(list(command))   # QuickLook/QuickTime-safe MP4/MOV output (see utils/encode.py)
+    missing = check_command(command)          # e.g. AV1 on a build without SVT-AV1 → a sentence, not a stack trace
+    if missing:
+        raise MissingCapability(f"❌ {missing}")
     output_idx = len(command) - 1
     command = command[:output_idx] + ["-progress", "pipe:1"] + command[output_idx:]
     # ffmpeg's stderr goes to a temp file (not DEVNULL) so that when it

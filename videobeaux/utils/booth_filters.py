@@ -35,10 +35,12 @@ _rng = np.random.default_rng()
 class Ctx:
     """Per-frame information for effects and stickers."""
 
-    def __init__(self, t=0.0, dt=1 / 30, faces=(), eyes=None):
+    def __init__(self, t=0.0, dt=1 / 30, faces=(), eyes=None, landmarks=None):
         self.t = t                  # seconds (monotonic)
         self.dt = dt                # seconds since the previous frame
         self.faces = list(faces)    # smoothed (x, y, w, h) per face
+        # per face: (5, 2) landmarks (right eye, left eye, nose, mouth right, mouth left) or None
+        self.landmarks = list(landmarks) if landmarks is not None else [None] * len(self.faces)
         self.eyes = eyes or []      # per face: [(cx, cy, r), (cx, cy, r)]
         self.message = None         # (unused here; kept for compatibility with booth filters)
 
@@ -1004,16 +1006,128 @@ def _paste_face(dst, src_img, sbox, dbox, softness=0.06):
                                 255).astype(np.uint8)
 
 
-def make_face_swap(softness=0.06):
+FACE_SWAP_MODES = ["Swap two faces", "Biggest face onto the others", "Photo onto every face"]
+
+# Where the five landmarks sit inside a face box when the detector gave none (fractions of width / height).
+_CANON_LM = np.float32([[0.30, 0.40], [0.70, 0.40], [0.50, 0.58], [0.37, 0.78], [0.63, 0.78]])
+
+
+def _face_points(box, lm):
+    """(5, 2) landmarks for a face: the tracker's, else typical positions inside its box."""
+    if lm is not None:
+        return np.asarray(lm, np.float32).reshape(5, 2)
+    x, y, w, h = [float(v) for v in box]
+    return _CANON_LM * np.float32([w, h]) + np.float32([x, y])
+
+
+def _face_mask(shape, pts, softness):
+    """Soft face-shaped oval, tilted with the eye line and sized from the eye distance."""
+    H, W = shape[:2]
+    eye_d = float(np.hypot(*(pts[1] - pts[0])))
+    ang = float(np.degrees(np.arctan2(pts[1, 1] - pts[0, 1], pts[1, 0] - pts[0, 0])))
+    c = pts.mean(0) - np.float32([0, 0.30 * eye_d])
+    axes = (int(max(4, eye_d * 1.12)), int(max(4, eye_d * 1.5)))
+    mask = np.zeros((H, W), np.float32)
+    cv2.ellipse(mask, (int(c[0]), int(c[1])), axes, ang, 0, 360, 1.0, -1)
+    return cv2.GaussianBlur(mask, (0, 0), max(1.0, eye_d * max(0.06, softness * 2.5)))
+
+
+def _match_colour(warped, dst, mask, strength):
+    """Move the pasted face's colour statistics (LAB, inside the mask) towards the destination's skin."""
+    m = mask > 0.5
+    if strength <= 0 or int(m.sum()) < 60:
+        return warped
+    lw = cv2.cvtColor(warped, cv2.COLOR_BGR2LAB).astype(np.float32)
+    ld = cv2.cvtColor(dst, cv2.COLOR_BGR2LAB).astype(np.float32)
+    for ch in range(3):
+        mw, sw = lw[..., ch][m].mean(), lw[..., ch][m].std() + 1e-3
+        md, sd = ld[..., ch][m].mean(), ld[..., ch][m].std() + 1e-3
+        matched = (lw[..., ch] - mw) * (sd / sw) + md
+        lw[..., ch] = lw[..., ch] * (1 - strength) + matched * strength
+    return cv2.cvtColor(np.clip(lw, 0, 255).astype(np.uint8), cv2.COLOR_LAB2BGR)
+
+
+def _swap_into(dst, src_img, src_pts, dst_pts, softness=0.06, match=0.85):
+    """Warp the face of `src_img` (landmarks `src_pts`) onto the face at `dst_pts` inside `dst`, in place."""
+    M, _ = cv2.estimateAffinePartial2D(np.float32(src_pts), np.float32(dst_pts), method=cv2.LMEDS)
+    if M is None:
+        return
+    H, W = dst.shape[:2]
+    warped = cv2.warpAffine(src_img, M, (W, H), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE)
+    mask = _face_mask(dst.shape, np.float32(dst_pts), softness)
+    warped = _match_colour(warped, dst, mask, match)
+    m3 = mask[..., None]
+    dst[:] = np.clip(dst.astype(np.float32) * (1 - m3) + warped.astype(np.float32) * m3, 0, 255).astype(np.uint8)
+
+
+def _load_photo_face(path):
+    """(bgr image, 5 landmarks) of the biggest face in a photo; typical landmark positions if none is found."""
+    img = cv2.imread(str(path))
+    if img is None:
+        raise SystemExit(f"❌ Could not read the face photo: {path}")
+    h, w = img.shape[:2]
+    if max(h, w) > 1280:
+        k = 1280.0 / max(h, w)
+        img = cv2.resize(img, (int(w * k), int(h * k)), interpolation=cv2.INTER_AREA)
+        h, w = img.shape[:2]
+    pts = None
+    try:
+        from videobeaux.utils.face_tracking import FaceTracker
+        det = FaceTracker(w, h)._detect(np.ascontiguousarray(img[..., ::-1]))
+        if det:
+            best = max(det, key=lambda d: d[2])
+            pts = best[5] if len(best) > 5 and best[5] is not None else _face_points(best[:4], None)
+    except SystemExit:
+        pass
+    if pts is None:
+        print("ℹ️  No face found in the photo — assuming it is a close-up of one face.", flush=True)
+        pts = _face_points((0, 0, w, h), None)
+    return img, pts
+
+
+def make_face_swap(softness=0.06, mode=FACE_SWAP_MODES[0], photo=None, match=0.85):
+    stats = {"frames": 0, "two": 0, "one": 0, "none": 0}
+    photo_img, photo_pts = (None, None)
+    if mode == FACE_SWAP_MODES[2]:
+        if not photo:
+            raise SystemExit("❌ Mode 'Photo onto every face' needs a Face photo (choose one in the node).")
+        photo_img, photo_pts = _load_photo_face(photo)
+
     def fn(img, ctx):
-        if len(ctx.faces) < 2:
-            ctx.message = 'Face swap needs 2 faces'
-            return img
-        a, b = sorted(ctx.faces, key=lambda f: -f[2])[:2]
+        n = len(ctx.faces)
+        stats["frames"] += 1
+        stats["two" if n >= 2 else "one" if n == 1 else "none"] += 1
+        lms = getattr(ctx, "landmarks", None) or [None] * n
+        faces = [(box, _face_points(box, lm)) for box, lm in zip(ctx.faces, lms)]
         out = img.copy()
-        _paste_face(out, img, a, b, softness)
-        _paste_face(out, img, b, a, softness)
+        if mode == FACE_SWAP_MODES[2]:
+            for box, pts in faces:
+                _swap_into(out, photo_img, photo_pts, pts, softness, match)
+            return out
+        if n < 2:
+            return img
+        faces.sort(key=lambda f: -f[0][2])                    # biggest first
+        if mode == FACE_SWAP_MODES[1]:
+            src_pts = faces[0][1]
+            for _, pts in faces[1:]:
+                _swap_into(out, img, src_pts, pts, softness, match)
+        else:
+            (_, a), (_, b) = faces[0], faces[1]
+            _swap_into(out, img, a, b, softness, match)
+            _swap_into(out, img, b, a, softness, match)
         return out
+
+    def summary():
+        f = max(1, stats["frames"])
+        line = (f"Faces seen: 2 or more in {stats['two']} of {stats['frames']} frames, "
+                f"exactly one in {stats['one']}, none in {stats['none']}.")
+        if mode != FACE_SWAP_MODES[2] and stats["two"] == 0:
+            line += ("\n⚠️  Nothing was swapped: this mode needs two faces in the same frame. "
+                     "With one person, set Mode to 'Photo onto every face' and choose a face photo.")
+        elif mode == FACE_SWAP_MODES[2] and stats["one"] + stats["two"] == 0:
+            line += "\n⚠️  No faces were found in the video, so nothing was changed."
+        return line
+    fn.summary = summary
     return fn
 
 

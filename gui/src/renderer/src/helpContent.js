@@ -18,7 +18,9 @@ export const HELP_SECTIONS = [
       '**Select several** — ⌘/Ctrl-click or Shift-drag a box around them. **⌘G** groups them so they move together; the caret on a group folds it into one card.',
       '**Copy & paste** — ⌘C / ⌘V copy programs and the connections between them; ⌘D duplicates. **⌘Z** undoes (also after Clear).',
       '**Clear** empties the canvas after asking you to confirm. **Save/Load Preset** keeps a whole setup.',
-      '**Layout editors** — a ✎ button next to a field (e.g. Lagkage → Layout JSON) opens a visual editor.'
+      '**Fold a program** — ▾ (or double-click its header) hides its settings; **▤ / ▦** in the bottom-left controls fold or unfold all. Folded state is saved in presets.',
+      '**Look & lines** — 🎨 Appearance changes the *Look* (Classic is the original), the colour of connection lines, and puts an image behind the canvas.',
+      '**Visual editors** — a ✎ button next to a field opens a purpose-built editor: Lagkage → Layout JSON (drop in images), Topobeaux → Cut points (drag band dividers), Stackadelic → Layer 1 left (drag three boxes).'
     ]
   },
   {
@@ -43,6 +45,14 @@ export const HELP_SECTIONS = [
       'Phone or HDR clips misbehaving: run **Convert** first (to mp4), then use that file.',
       'AI features (speech, narration, background removal) need a one-time download in **Setup → Local AI features**; afterwards everything works offline.',
       'A field says “max …”: that value is out of range and was set to the limit.'
+    ]
+  },
+  {
+    title: 'Licenses & source',
+    bullets: [
+      'Videobeaux runs **ffmpeg** as a separate program. The bundled build is a GPL build (libx264 / libx265) that is never built with the non-redistributable `--enable-nonfree` option.',
+      'The exact source code of that ffmpeg and every library in it is published alongside each release of the build; the licence summary ships in the app\'s `LICENSES` folder.',
+      'You can use your own ffmpeg instead (Setup). AI models you download (speech, narration, background removal) keep their own licences.'
     ]
   }
 ]

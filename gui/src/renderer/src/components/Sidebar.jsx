@@ -1,5 +1,9 @@
 import React, { useState } from 'react'
 import { usePrograms } from '../ProgramsContext'
+import { useSettings } from '../SettingsContext'
+import { familyOf, familyOfCategory, FAMILIES, FAMILY_COLOR, motifOf, categoryMotif } from '../looks/registry'
+import { resolveLook } from '../looks'
+import { artFor, useArtVersion } from '../looks/output-art/art'
 
 const ICON = {
   glitch:   '⚡',
@@ -14,13 +18,34 @@ const ICON = {
 }
 
 export default function Sidebar({ canvasActions, collapsed = false, onToggle = () => {} }) {
-  const { categories, ready } = usePrograms()
+  const { categories: categoryList, ready } = usePrograms()
+  const { look } = useSettings()
+  useArtVersion()
   const [open, setOpen] = useState({})
   const [search, setSearch] = useState('')
+  // "Group by family" only exists in the non-Classic looks.
+  const canGroup = resolveLook(look) !== 'classic'
+  const [groupBy, setGroupByState] = useState(() => { try { return localStorage.getItem('vb.sidebar.groupBy') || 'category' } catch { return 'category' } })
+  const setGroupBy = (g) => { setGroupByState(g); try { localStorage.setItem('vb.sidebar.groupBy', g) } catch { /* private mode etc. */ } }
+  const byFamily = canGroup && groupBy === 'family'
+  const [preview, setPreview] = useState(null)   // { id, label, description, y } — only in the Output art look
+  const showPreviews = canGroup                  // every non-Classic look: branded preview card instead of the system tooltip
+  const categories = React.useMemo(() => {
+    if (!byFamily) return categoryList
+    const groups = new Map()
+    for (const cat of categoryList) {
+      for (const p of cat.programs) {
+        const fam = familyOf(p.id, cat.id)
+        if (!groups.has(fam)) groups.set(fam, { id: fam, label: FAMILIES[fam]?.label || fam, color: FAMILY_COLOR[fam] || cat.color, programs: [] })
+        groups.get(fam).programs.push({ ...p, categoryId: p.categoryId || cat.id })
+      }
+    }
+    return Object.keys(FAMILIES).filter(f => groups.has(f)).map(f => groups.get(f))
+  }, [categoryList, byFamily])
 
   // Open all categories once data arrives (runs once when ready flips true)
   React.useEffect(() => {
-    if (ready) setOpen(Object.fromEntries(categories.map(c => [c.id, true])))
+    if (ready) setOpen(Object.fromEntries(categoryList.map(c => [c.id, true])))
   }, [ready]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const toggle = (id) => setOpen(s => ({ ...s, [id]: !s[id] }))
@@ -58,6 +83,20 @@ export default function Sidebar({ canvasActions, collapsed = false, onToggle = (
         <span style={{ flex: 1, fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--muted-dim)' }}>Programs</span>
         <button className="node-caret" onClick={onToggle} title="Hide programs (⌘B)">◂</button>
       </div>
+
+      {canGroup && (
+        <div style={{ display: 'flex', gap: 5, padding: '6px 10px 0' }}>
+          {[['category', 'By category'], ['family', 'By family']].map(([id, label]) => (
+            <button key={id} onClick={() => setGroupBy(id)}
+                    title={id === 'family' ? 'Group modules by what they look like and do — glitch, trails, texture…' : 'Group modules by category'}
+                    style={{ flex: 1, padding: '2px 4px', fontSize: 10, fontFamily: 'var(--font-mono)', fontWeight: 700, borderRadius: 999,
+                             background: groupBy === id ? 'var(--select)' : 'var(--paper)', color: groupBy === id ? '#080808' : 'var(--ink)',
+                             border: '2px solid var(--ink)', cursor: 'pointer' }}>
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Sources — add another Input node to feed a second/third video into a
           multi-input effect (e.g. stack_2x's second clip). Pinned above the
@@ -132,7 +171,7 @@ export default function Sidebar({ canvasActions, collapsed = false, onToggle = (
             <div key={cat.id}>
               {/* Category header */}
               <button
-                onClick={() => toggle(cat.id)}
+                onClick={() => setOpen(s => ({ ...s, [cat.id]: !(s[cat.id] ?? true) }))}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -147,14 +186,16 @@ export default function Sidebar({ canvasActions, collapsed = false, onToggle = (
                 }}
               >
                 <span style={{ fontSize: 12 }}>{ICON[cat.id] || '◆'}</span>
-                <span style={{
+                <span className="cat-chip" data-family={FAMILIES[cat.id] ? cat.id : familyOfCategory(cat.id)}
+                      data-motif={FAMILIES[cat.id] ? undefined : (categoryMotif(cat.id) || undefined)} style={{
+                  '--node-color': cat.color,
                   fontFamily: 'var(--font-mono)',
                   fontSize: 10,
                   fontWeight: 700,
                   letterSpacing: '0.1em',
                   textTransform: 'uppercase',
                   color: 'var(--on-color)',
-                  background: cat.color,
+                  backgroundColor: cat.color,
                   border: '2px solid var(--ink)',
                   borderRadius: 4,
                   padding: '1px 6px',
@@ -163,12 +204,12 @@ export default function Sidebar({ canvasActions, collapsed = false, onToggle = (
                   {cat.label}
                 </span>
                 <span style={{ fontSize: 10, color: 'var(--ink)' }}>
-                  {open[cat.id] ? '▾' : '▸'}
+                  {(open[cat.id] ?? true) ? '▾' : '▸'}
                 </span>
               </button>
 
               {/* Programs */}
-              {(open[cat.id] || q) && (
+              {((open[cat.id] ?? true) || q) && (
                 <div style={{ paddingBottom: 4 }}>
                   {filtered.map(prog => (
                     <div
@@ -176,7 +217,8 @@ export default function Sidebar({ canvasActions, collapsed = false, onToggle = (
                       draggable
                       onDragStart={e => onDragStart(e, prog.id)}
                       onDoubleClick={() => canvasActions?.addProgram(prog.id)}
-                      title={`${prog.description || prog.label}\n\nDrag onto the canvas, or double-click to add at center.`}
+                      title={showPreviews ? undefined : `${prog.description || prog.label}\n\nDrag onto the canvas, or double-click to add at center.`}
+                      data-no-tip={showPreviews ? '' : undefined}
                       style={{
                         padding: '5px 12px 5px 22px',
                         fontSize: 12,
@@ -192,16 +234,22 @@ export default function Sidebar({ canvasActions, collapsed = false, onToggle = (
                       onMouseOver={e => {
                         e.currentTarget.style.background = `${cat.color}33`
                         e.currentTarget.style.color = 'var(--ink)'
+                        if (showPreviews) {
+                          const r = e.currentTarget.getBoundingClientRect()
+                          setPreview({ id: prog.id, label: prog.label, description: prog.description, y: Math.min(r.top, window.innerHeight - 190) })
+                        }
                       }}
                       onMouseOut={e => {
                         e.currentTarget.style.background = 'transparent'
                         e.currentTarget.style.color = 'var(--ink)'
+                        setPreview(null)
                       }}
                     >
-                      <span style={{
+                      <span className="prog-dot" data-family={familyOf(prog.id, prog.categoryId || cat.id)}
+                            data-motif={motifOf(prog.id, prog.categoryId || cat.id) || undefined} style={{
                         width: 7, height: 7,
                         borderRadius: '50%',
-                        background: cat.color,
+                        backgroundColor: cat.color,
                         border: '1.5px solid var(--ink)',
                         flexShrink: 0
                       }} />
@@ -218,12 +266,12 @@ export default function Sidebar({ canvasActions, collapsed = false, onToggle = (
                           <span
                             title={tip}
                             style={{
-                              fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--ink)',
-                              background: 'var(--gray)', border: '1.5px solid var(--ink)',
-                              borderRadius: 3, padding: '1px 4px', cursor: 'help'
+                              fontFamily: 'var(--font-mono)', fontSize: 10, fontWeight: 700, color: 'var(--ink)',
+                              background: reqCount > 0 ? 'var(--yellow)' : 'var(--gray)', border: '1.5px solid var(--ink)',
+                              borderRadius: 3, padding: '1px 5px', cursor: 'help'
                             }}
                           >
-                            {reqCount > 0 ? '⚙' : '•'}
+                            {reqCount > 0 ? '⚙ ' : ''}{prog.args.length}
                           </span>
                         )
                       })()}
@@ -235,6 +283,15 @@ export default function Sidebar({ canvasActions, collapsed = false, onToggle = (
           )
         })}
       </div>
+
+      {preview && (
+        <div className="art-preview" style={{ left: 250, top: preview.y }}>
+          {artFor(preview.id) && <img src={artFor(preview.id)} alt="" />}
+          <b>{preview.label}</b>
+          <span>{(preview.description || '').slice(0, 220)}</span>
+          <span style={{ fontStyle: 'italic', color: 'var(--muted)' }}>Drag onto the canvas, or double-click to add.</span>
+        </div>
+      )}
 
       {/* Footer hint */}
       <div style={{

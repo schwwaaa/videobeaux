@@ -1,0 +1,4 @@
+/* Look: "Motifs" — header patterns that depict what each module does (see ../shared/motifs.css, tools/gen_motifs.py and
+   ui_design/pattern-map.md). The motif rules themselves are shared with Signatures and Output art; this look adds nothing else,
+   so it is the quickest way to judge the patterns on their own. Scoped to :root[data-look="motifs"]. */
+:root[data-look="motifs"] .node-header[data-motif] { background-position: 0 0; }

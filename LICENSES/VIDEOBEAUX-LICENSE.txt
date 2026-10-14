@@ -1,0 +1,4 @@
+PLACEHOLDER — Videobeaux's own licence has not been chosen yet.
+
+Pick the licence you want to distribute Videobeaux under (for a paid product this is typically a proprietary
+end-user licence agreement; for open source, a licence such as MIT, Apache-2.0 or GPL-3.0) and replace this file.

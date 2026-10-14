@@ -22,11 +22,11 @@ class AudioHandling(unittest.TestCase):
         self.assertEqual(bad, [])
 
     def test_audio_filter_graphs_ensure_a_track_first(self):
-        """Programs whose filter graphs reference [N:a] must call ensure_audio on their inputs."""
+        """Programs whose filter graphs reference [N:a] must call ensure_audio on their inputs (or guard with has_audio)."""
         missing = []
         for p in PROGRAMS:
             src = p.read_text(encoding="utf-8")
-            if re.search(r'\[\d:a\]', src) and "ensure_audio(" not in src:
+            if re.search(r'\[\d:a\]', src) and "ensure_audio(" not in src and "has_audio(" not in src:
                 missing.append(p.name)
         self.assertEqual(missing, [])
 

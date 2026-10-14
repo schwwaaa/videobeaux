@@ -1,0 +1,4 @@
+/* Look: "Patterns" (shot 1).
+   Header strips, sidebar category chips and sidebar swatches wear their family's pattern (see ../shared/patterns.css).
+   Everything here is scoped to :root[data-look="patterns"], so switching to Classic removes it completely. */
+

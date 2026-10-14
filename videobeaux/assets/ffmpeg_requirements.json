@@ -1,0 +1,17 @@
+{
+  "_comment": "What Videobeaux needs from an ffmpeg build. Read by videobeaux/utils/ffmpeg_caps.py (CLI + friendly errors) and by the GUI's Setup screen (gui/src/main/toolsSetup.js). `any` = at least one of the names. required=true means the app is not 'ready' without it; required=false only produces a warning and a clear per-program error. kind: encoder | decoder | filter.",
+  "features": [
+    {"id": "h264",      "label": "H.264 video (libx264)",           "kind": "encoder", "any": ["libx264"],                      "required": true,  "usedBy": "nearly every program"},
+    {"id": "aac",       "label": "AAC audio",                       "kind": "encoder", "any": ["aac", "libfdk_aac"],            "required": true,  "usedBy": "MP4/MOV output"},
+    {"id": "text",      "label": "Text overlays (drawtext)",        "kind": "filter",  "any": ["drawtext"],                     "required": true,  "usedBy": "Thumbs, labels, Booth"},
+    {"id": "subtitles", "label": "Caption burning (libass)",        "kind": "filter",  "any": ["ass", "subtitles"],             "required": true,  "usedBy": "Burn Captions"},
+    {"id": "hdr",       "label": "HDR tone mapping (zscale)",       "kind": "filter",  "any": ["zscale"],                       "required": true,  "usedBy": "HDR → SDR, frame programs"},
+    {"id": "hevc",      "label": "HEVC / H.265 (libx265)",          "kind": "encoder", "any": ["libx265"],                      "required": false, "usedBy": "Convert → HEVC"},
+    {"id": "vp9",       "label": "VP9 / WebM (libvpx-vp9)",         "kind": "encoder", "any": ["libvpx-vp9"],                   "required": false, "usedBy": "Convert → WebM"},
+    {"id": "opus",      "label": "Opus audio (libopus)",            "kind": "encoder", "any": ["libopus"],                      "required": false, "usedBy": "Convert → WebM"},
+    {"id": "mp3",       "label": "MP3 audio (libmp3lame)",          "kind": "encoder", "any": ["libmp3lame"],                   "required": false, "usedBy": "Convert → MP3, Output .mp3"},
+    {"id": "prores",    "label": "ProRes (prores_ks)",              "kind": "encoder", "any": ["prores_ks", "prores"],          "required": false, "usedBy": "Convert → ProRes"},
+    {"id": "av1_enc",   "label": "AV1 encoding (SVT-AV1 / libaom)", "kind": "encoder", "any": ["libsvtav1", "libaom-av1"],      "required": false, "usedBy": "Convert → AV1"},
+    {"id": "av1_dec",   "label": "AV1 decoding (dav1d / libaom)",   "kind": "decoder", "any": ["libdav1d", "libaom-av1"],       "required": false, "usedBy": "Opening AV1 clips (YouTube, some phones)"}
+  ]
+}

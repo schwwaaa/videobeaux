@@ -1,4 +1,5 @@
 from videobeaux.utils.media import ensure_audio
+from videobeaux.utils.encode import h264_mp4_args, even
 import subprocess
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
 
@@ -84,10 +85,13 @@ def run(args):
     # for the same reason: mismatched geometry makes ffmpeg fail deep inside
     # the encoder with an opaque error rather than a clear one.
     w1, h1, fps1 = _get_video_dims_fps(args.input)
+    w1, h1 = even(w1), even(h1)
+    an = "aresample=48000,aformat=sample_fmts=fltp:channel_layouts=stereo"   # both clips → the same audio format
     norm = (
         f"[1:v]scale={w1}:{h1}:force_original_aspect_ratio=decrease,"
         f"pad={w1}:{h1}:(ow-iw)/2:(oh-ih)/2,setsar=1,fps={fps1}[v1n];"
-        f"[0:v]fps={fps1},setsar=1[v0n]"
+        f"[0:v]crop={w1}:{h1}:0:0,fps={fps1},setsar=1[v0n];"
+        f"[0:a]{an}[a0];[1:a]{an}[a1]"
     )
 
     if args.crossfade > 0:
@@ -99,19 +103,19 @@ def run(args):
         filter_complex = (
             f"{norm};"
             f"[v0n][v1n]xfade=transition=fade:duration={args.crossfade}:offset={offset}[v];"
-            f"[0:a][1:a]acrossfade=duration={args.crossfade}[a]"
+            f"[a0][a1]acrossfade=duration={args.crossfade}[a]"
         )
     elif args.gap > 0:
         filter_complex = (
             f"{norm};"
             f"color=black:size={w1}x{h1}:rate={fps1}:duration={args.gap}[gapv];"
             f"anullsrc=channel_layout=stereo:sample_rate=48000:duration={args.gap}[gapa];"
-            f"[v0n][0:a][gapv][gapa][v1n][1:a]concat=n=3:v=1:a=1[v][a]"
+            f"[v0n][a0][gapv][gapa][v1n][a1]concat=n=3:v=1:a=1[v][a]"
         )
     else:
         filter_complex = (
             f"{norm};"
-            f"[v0n][0:a][v1n][1:a]concat=n=2:v=1:a=1[v][a]"
+            f"[v0n][a0][v1n][a1]concat=n=2:v=1:a=1[v][a]"
         )
 
     command = [
@@ -121,8 +125,7 @@ def run(args):
         "-filter_complex", filter_complex,
         "-map", "[v]",
         "-map", "[a]",
-        "-c:v", "libx264",
-        "-c:a", "aac",
+        *h264_mp4_args(),
         args.output
     ]
 

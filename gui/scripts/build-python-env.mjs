@@ -18,7 +18,7 @@ import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { spawnSync } from 'child_process'
 import { pipeline } from 'stream/promises'
-import { installFfmpeg } from '../src/main/toolsSetup.js'
+import { installFfmpeg, ffmpegBinaryPath, ffmpegLicense } from '../src/main/toolsSetup.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const GUI_ROOT = join(__dirname, '..')
@@ -119,9 +119,10 @@ async function stagePython() {
 
 // ── Step 2: static ffmpeg/ffprobe ────────────────────────────────────────────
 // Same fully-featured static build the in-app dev setup downloads (gui/ffmpeg-runtime.json):
-// native arm64 + x64 on macOS and x64 on Windows, with libx264/x265, libass, libfreetype,
-// libzimg and libvidstab — so HDR tone mapping, caption burning and stabilization work in
-// the installed app.
+// native arm64 + x64 on macOS and x64 on Windows, with libx264/x265, libvpx, libass, libfreetype,
+// libzimg and SVT-AV1/dav1d — so HDR tone mapping, caption burning, text overlays and AV1 work in
+// the installed app. (No libvidstab: nothing here uses it.)  What the app requires of a build is
+// listed in videobeaux/assets/ffmpeg_requirements.json.
 
 async function stageFfmpeg() {
   const runtime = JSON.parse(readFileSync(join(GUI_ROOT, 'ffmpeg-runtime.json'), 'utf8'))
@@ -132,6 +133,16 @@ async function stageFfmpeg() {
     arch: process.arch,
     onProgress: p => { if (p.message && p.received === 0) console.log(p.message) }
   })
+  // Release guard: installFfmpeg already refuses a --enable-nonfree binary (it can't be redistributed).
+  // Report the flavor so it is visible in the build log, and enforce it for binaries staged some other way.
+  const bin = ffmpegBinaryPath(join(RESOURCES, 'ffmpeg'), 'ffmpeg', targetPlatform)
+  if (targetPlatform === process.platform) {
+    const lic = await ffmpegLicense(bin)
+    if (lic) {
+      console.log(`ffmpeg licence flavor: ${lic.flavor}${lic.version3 ? ' (v3)' : ''}`)
+      if (lic.nonfree) throw new Error('Refusing to package an --enable-nonfree ffmpeg: it is not redistributable.')
+    }
+  }
 }
 
 // ── Step 3: videobeaux package + discover_programs.py ───────────────────────
@@ -152,6 +163,13 @@ function stageVideobeaux() {
   mkdirSync(guiDest, { recursive: true })
   copyFileSync(join(GUI_ROOT, 'discover_programs.py'), join(guiDest, 'discover_programs.py'))
   copyFileSync(join(GUI_ROOT, 'arg_ranges.py'), join(guiDest, 'arg_ranges.py'))
+  // The "Appearance → Module previews → Choose clip…" feature renders thumbnails from the user's own video with these
+  // two scripts (they find videobeaux/ and gui/ relative to their own location, so they sit at the same depth as in the repo).
+  for (const [from, to] of [[join(REPO_ROOT, 'tools', 'make_module_art.py'), join(RESOURCES, 'tools', 'make_module_art.py')],
+                            [join(REPO_ROOT, 'tests', 'smoke', 'run_smoke.py'), join(RESOURCES, 'tests', 'smoke', 'run_smoke.py')]]) {
+    mkdirSync(dirname(to), { recursive: true })
+    copyFileSync(from, to)
+  }
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────

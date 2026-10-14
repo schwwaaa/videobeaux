@@ -204,7 +204,10 @@ def build_fixtures(root: Path, source: Path, start: float, dur: float, full_res:
         # Synthetic PQ / BT.2020 clip so tonemap_hdr_sdr gets a real HDR input.
         hdr = root / "hdr.mp4"
         r = sh(["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", str(clip),
-                "-vf", "zscale=rin=tv:pin=bt709:tin=bt709:min=bt709,zscale=t=linear:npl=100,format=gbrpf32le,zscale=p=bt2020,"
+                # setparams first: an untagged source (synthetic / screen recording) makes zscale fail with
+                # "no path between colorspaces" on ffmpeg 7+, which silently skipped this program.
+                "-vf", "setparams=colorspace=bt709:color_primaries=bt709:color_trc=bt709:range=tv,"
+                       "zscale=t=linear:npl=100,format=gbrpf32le,zscale=p=bt2020,"
                        "zscale=t=smpte2084:m=bt2020nc:r=tv,format=yuv420p10le",
                 "-c:v", "libx265", "-preset", "ultrafast", "-crf", "22", "-x265-params", "log-level=error",
                 "-tag:v", "hvc1", "-color_primaries", "bt2020", "-color_trc", "smpte2084",
@@ -303,6 +306,10 @@ SPECS: dict[str, dict] = {
     "picture_in_picture": {"args": lambda fx: ["--input2", str(fx.clip2), "--position", "top right", "--audio", "Mix A + B"]},
     "quad_split":       {"args": lambda fx: ["--input2", str(fx.clip2), "--input3", str(fx.clip3), "--audio", "Mix all"]},
     "remove_background": {"args": lambda fx: ["--smoothing", "0.3", "--bg_color", "#00aa66"]},
+    "topobeaux":        {"args": lambda fx: ["--input2", str(fx.clip2), "--style", "bands from inputs", "--smooth", "2"]},
+    "shape_synth":      {"args": lambda fx: ["--a_shape", "ring", "--a_fold", "3", "--combine", "xor"]},
+    "stackadelic":      {"args": lambda fx: ["--input2", str(fx.clip2), "--l2_opacity", "1", "--l2_source", "input B"]},
+    "soundtrack":       {"args": lambda fx: ["--audio", str(fx.clip2), "--mode", "Mix under the original", "--fade_out", "1"]},
     "key_feedback":     {"args": lambda fx: ["--insert_key", "luma AND color", "--fb_key", "luma"]},
     "beauxtrix":        {"args": lambda fx: ["--input2", str(fx.clip2), "--r_b", "-1", "--r_out", "absolute"]},
     "freeze_frame":     {"args": lambda fx: ["--at", "1", "--length", "1"]},

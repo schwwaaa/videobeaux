@@ -1,0 +1,33 @@
+/* Look: "Signatures" (shot 2) — builds on the Patterns look (same header patterns, from ../shared/patterns.css) and adds:
+     · a small cartoon glyph chip in every module header (family glyph, or a hand-drawn one for flagship modules)
+     · a recognisable strip under a *collapsed* module: big glyph + what it does
+     · the sidebar's "Group by: Category | Family" switch (see Sidebar.jsx)
+   Scoped to :root[data-look="signatures"] — Classic is untouched. */
+
+
+:root[data-look="signatures"] .node-glyph {
+  display: inline-flex; width: 24px; height: 24px; flex-shrink: 0;
+  background: var(--paper); border: 2px solid var(--line, var(--ink)); border-radius: 7px; padding: 1px;
+}
+
+/* Collapsed: header keeps its rule + rounded top; the strip supplies the bottom of the card. */
+:root[data-look="signatures"] [data-collapsed="true"] .node-header {
+  border-bottom: 3px solid var(--line, var(--ink)) !important;
+  border-radius: 9px 9px 0 0 !important;
+}
+:root[data-look="signatures"] [data-collapsed="true"] .node-art {
+  display: flex; align-items: center; gap: 9px; padding: 7px 10px 8px;
+  border-radius: 0 0 9px 9px;
+  background-color: color-mix(in srgb, var(--node-color, #999) 24%, var(--paper));
+  background-image: var(--pat);
+  background-size: 96px 48px;
+}
+:root[data-look="signatures"] .node-art-glyph {
+  width: 38px; height: 38px; flex-shrink: 0; background: var(--paper);
+  border: 2.5px solid var(--line, var(--ink)); border-radius: 9px; padding: 2px; box-shadow: var(--shadow-sm);
+}
+:root[data-look="signatures"] .node-art-text {
+  font-family: var(--font); font-size: 11px; line-height: 1.25; color: var(--ink); font-style: italic;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+  background: color-mix(in srgb, var(--paper) 78%, transparent); border-radius: 5px; padding: 1px 4px;
+}

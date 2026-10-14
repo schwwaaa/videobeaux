@@ -21,12 +21,18 @@
 
 from videobeaux.utils.media import ensure_audio
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
+from videobeaux.utils.frame_pipe import probe_video
 
 GUI_METADATA = {
     'args': {
         'input2':         {'type': 'file', 'subtype': 'video', 'label': 'Second Video'},
         'input3':         {'type': 'file', 'subtype': 'video', 'label': 'Third Video'},
         'audio-external': {'type': 'file', 'label': 'External Audio'},
+        'panel_size': {'label': 'Panel size (px, 0 = match first video)', 'min': 0, 'max': 4320, 'good_min': 0, 'good_max': 1080,
+                       'help': 'hstack: height of every panel; vstack: width. 0 uses the first video. Smaller = much faster.'},
+        'zoom1': {'label': 'Zoom 1', 'min': 1, 'max': 4, 'step': 0.05},
+        'zoom2': {'label': 'Zoom 2', 'min': 1, 'max': 4, 'step': 0.05},
+        'zoom3': {'label': 'Zoom 3', 'min': 1, 'max': 4, 'step': 0.05},
     }
 }
 
@@ -67,6 +73,10 @@ def register_arguments(parser):
     )
 
     # Per-video zoom controls
+    parser.add_argument(
+        "--panel_size", type=int, default=0,
+        help="Panel height (hstack) / width (vstack) in pixels; 0 = match the first video. Default: 0.",
+    )
     parser.add_argument(
         "--zoom1",
         type=float,
@@ -142,44 +152,51 @@ def register_arguments(parser):
     )
 
 
-def _build_video_filter_complex(layout, zoom1, zoom2, zoom3):
-    """
-    Build the ffmpeg -filter_complex graph for VIDEO ONLY.
+MAX_SIDE = 7680   # keep the stacked frame within 8K so encoding stays fast
 
-    Outputs:
-      - [out_v]
+
+def panel_sizes(layout, dims, panel_size=0):
     """
-    # Sanity: zoom must be > 0
-    for z in (zoom1, zoom2, zoom3):
+    Panel sizes [(w, h), ...] for the three inputs. hstack: all panels share one height (the first video's, or
+    `panel_size`), each keeps its own aspect ratio; vstack: all share one width. The stacked frame is capped at MAX_SIDE.
+    """
+    even = lambda n: max(2, int(round(n)) // 2 * 2)
+    if layout == "hstack":
+        h = even(panel_size or dims[0][1])
+        widths = [h * w / max(1, hh) for (w, hh) in dims]
+        if sum(widths) > MAX_SIDE:
+            h = even(h * MAX_SIDE / sum(widths))
+            widths = [h * w / max(1, hh) for (w, hh) in dims]
+        return [(even(wd), h) for wd in widths]
+    w = even(panel_size or dims[0][0])
+    heights = [w * hh / max(1, ww) for (ww, hh) in dims]
+    if sum(heights) > MAX_SIDE:
+        w = even(w * MAX_SIDE / sum(heights))
+        heights = [w * hh / max(1, ww) for (ww, hh) in dims]
+    return [(w, even(hv)) for hv in heights]
+
+
+def _build_video_filter_complex(layout, zoom1, zoom2, zoom3, sizes=None, fps=30.0):
+    """
+    Build the ffmpeg -filter_complex graph for VIDEO ONLY → [out_v].
+
+    Every input is scaled to its panel size *first* (so stacking is cheap), then zoomed by cropping into the panel
+    (zoom 1 = whole picture, 2 = the central half) — the output no longer grows with the zoom value.
+    """
+    zooms = (zoom1, zoom2, zoom3)
+    for z in zooms:
         if z <= 0:
             raise ValueError("All zoom values must be > 0 (got one <= 0).")
-
-    chains = []
-
-    # Base zoomed streams
-    chains.append(f"[0:v]scale=iw*{zoom1}:ih*{zoom1},setsar=1[v0z]")
-    chains.append(f"[1:v]scale=iw*{zoom2}:ih*{zoom2},setsar=1[v1z]")
-    chains.append(f"[2:v]scale=iw*{zoom3}:ih*{zoom3},setsar=1[v2z]")
-
-    if layout == "hstack":
-        # Horizontal triptych: match heights using scale2ref
-        chains.append("[v1z][v0z]scale2ref=w=-1:h=ih[v1m][v0m]")
-        chains.append("[v2z][v0m]scale2ref=w=-1:h=ih[v2m][v0mm]")
-        chains.append(
-            "[v0mm][v1m][v2m]hstack=inputs=3:shortest=1,format=yuv420p[out_v]"
-        )
-
-    elif layout == "vstack":
-        # Vertical triptych: match widths using scale2ref
-        chains.append("[v1z][v0z]scale2ref=w=iw:h=-1[v1m][v0m]")
-        chains.append("[v2z][v0m]scale2ref=w=iw:h=-1[v2m][v0mm]")
-        chains.append(
-            "[v0mm][v1m][v2m]vstack=inputs=3:shortest=1,format=yuv420p[out_v]"
-        )
-
-    else:
+    if layout not in ("hstack", "vstack"):
         raise ValueError(f"Unsupported layout: {layout}")
-
+    sizes = sizes or [(640, 360)] * 3
+    chains = []
+    for i, (z, (pw, ph)) in enumerate(zip(zooms, sizes)):
+        zw, zh = max(pw, int(round(pw * max(z, 1.0)))), max(ph, int(round(ph * max(z, 1.0))))
+        zw, zh = zw // 2 * 2, zh // 2 * 2
+        crop = f",crop={pw}:{ph}"      # always: rounding in "increase" can overshoot the panel by a pixel
+        chains.append(f"[{i}:v]fps={fps:.6f},scale={zw}:{zh}:force_original_aspect_ratio=increase{crop},setsar=1[p{i}]")
+    chains.append(f"[p0][p1][p2]{layout}=inputs=3:shortest=1,format=yuv420p[out_v]")
     return ";".join(chains)
 
 
@@ -192,12 +209,14 @@ def run(args):
     if getattr(args, 'input3', None):
         args.input3 = ensure_audio(args.input3)
     # --- Build VIDEO filtergraph ---
+    infos = [probe_video(args.input), probe_video(args.input2), probe_video(args.input3)]
+    sizes = panel_sizes(args.layout, [(i.width, i.height) for i in infos], getattr(args, "panel_size", 0) or 0)
     video_filter = _build_video_filter_complex(
-        layout=args.layout,
-        zoom1=args.zoom1,
-        zoom2=args.zoom2,
-        zoom3=args.zoom3,
+        layout=args.layout, zoom1=args.zoom1, zoom2=args.zoom2, zoom3=args.zoom3, sizes=sizes, fps=infos[0].fps,
     )
+    tw = sum(w for w, _ in sizes) if args.layout == "hstack" else sizes[0][0]
+    th = sizes[0][1] if args.layout == "hstack" else sum(h for _, h in sizes)
+    print(f"ℹ️  Triptych output: {tw}x{th} ({args.layout}, panels {sizes})", flush=True)
 
     # --- ffmpeg base command & inputs ---
     command = [

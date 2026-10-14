@@ -29,7 +29,7 @@ def main():
     )
     parser.add_argument("-P", "--program", help="Name of the effect program to run (e.g. convert, glitch)")
     parser.add_argument("-i", "--input", help="Input video file")
-    parser.add_argument("-o", "--output", help="Output file name. No extension saves as mp4; or use .mp4/.mov/.avi/.mkv/.webm.")
+    parser.add_argument("-o", "--output", help="Output file name. No extension saves as mp4; or use .mp4/.mov/.avi/.mkv/.webm (also .gif/.mp3/.wav/.m4a/.flac/.json/.png for programs that make them).")
     #parser.add_argument("-c", "--config", help="Optional config file")
     parser.add_argument("-F", "--force", action="store_true", help="Force overwrite output file")
     parser.add_argument("-h", "--help", action="store_true", help="Show help message and exit")
@@ -42,8 +42,8 @@ def main():
     # extend both together if that list ever grows.
     # Non-video extensions cover programs with json/audio/image/text output
     # (the GUI passes temp paths like vb_<uuid>.json for those steps).
-    ALLOWED_OUTPUT_EXTS = {".mp4", ".mov", ".avi", ".mkv", ".webm",
-                           ".json", ".wav", ".png", ".txt",
+    ALLOWED_OUTPUT_EXTS = {".mp4", ".mov", ".avi", ".mkv", ".webm", ".gif",
+                           ".json", ".wav", ".mp3", ".m4a", ".flac", ".png", ".txt",
                            ".srt", ".vtt", ".ass"}
     if global_args.output:
         output_path = Path(global_args.output)
@@ -134,6 +134,10 @@ def main():
     try:
         mod.run(combined_args)
     except Exception as e:
+        from videobeaux.utils.ffmpeg_caps import MissingCapability
+        if isinstance(e, MissingCapability):          # not a crash: this ffmpeg just lacks something — say so plainly
+            print(f"\n{e}")
+            sys.exit(1)
         import traceback
         print("\n💥 Program crashed with an unhandled exception:\n")
         traceback.print_exc()

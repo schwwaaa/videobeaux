@@ -19,6 +19,7 @@ from pathlib import Path
 from typing import List
 
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress, ffmpeg_has_filter
+from videobeaux.utils.fonts import default_font, drawtext_escape_path
 
 DEFAULT_EXT = "jpg"
 
@@ -63,8 +64,9 @@ def _drawtext_chain(timestamps: bool, fontfile: str | None) -> list[str]:
     chain: list[str] = []
     if timestamps:
         dt = "drawtext=text='%{pts\\:hms}':x=10:y=h-th-10:fontsize=20:fontcolor=white"
-        if fontfile:
-            dt += f":fontfile='{_escape_text(fontfile)}'"
+        font = fontfile or default_font()          # never rely on fontconfig: the bundled ffmpeg doesn't have it
+        if font:
+            dt += f":fontfile='{drawtext_escape_path(font)}'"
         chain.append(dt)
     return chain
 
@@ -185,8 +187,9 @@ def run(args: argparse.Namespace):
         if args.label:
             label_txt = _escape_text(in_path.name)
             label = f"drawtext=text='{label_txt}':x=10:y=h-th-10:fontsize=22:fontcolor=white"
-            if args.fontfile:
-                label += f":fontfile='{_escape_text(args.fontfile)}'"
+            font = args.fontfile or default_font()
+            if font:
+                label += f":fontfile='{drawtext_escape_path(font)}'"
             filters.append(label)
 
         full_chain = ",".join(filters)

@@ -1,8 +1,9 @@
-import { app, BrowserWindow, ipcMain, dialog, shell } from 'electron'
+import { app, BrowserWindow, ipcMain, dialog, shell, protocol, net } from 'electron'
+import { pathToFileURL } from 'url'
 import { join, dirname, extname, parse, delimiter } from 'path'
 import { fileURLToPath } from 'url'
 import { spawn } from 'child_process'
-import { unlinkSync, statSync, existsSync, readdirSync, writeFileSync, readFileSync, rmSync, mkdirSync, createWriteStream } from 'fs'
+import { unlinkSync, renameSync, statSync, existsSync, readdirSync, writeFileSync, readFileSync, rmSync, mkdirSync, createWriteStream } from 'fs'
 import { tmpdir } from 'os'
 import { randomUUID } from 'crypto'
 import { execFile } from 'child_process'
@@ -28,7 +29,23 @@ const __dirname = dirname(__filename)
 // signed/notarized .app's Resources folder is effectively read-only by
 // convention, and a Program Files install needs admin rights to write —
 // models need a genuinely user-writable location from the start.
+// "Use my own ffmpeg": a folder (containing ffmpeg and ffprobe) chosen in Setup, stored in settings.json.
+function userFfmpegDir() {
+  try {
+    const raw = JSON.parse(readFileSync(join(app.getPath('userData'), 'settings.json'), 'utf8'))
+    const dir = raw.ffmpegDir
+    if (dir && existsSync(ffmpegBinaryPath(dir, 'ffmpeg')) && existsSync(ffmpegBinaryPath(dir, 'ffprobe'))) return dir
+  } catch { /* no settings yet */ }
+  return null
+}
+
 function getPaths() {
+  const own = userFfmpegDir()
+  const base = getBasePaths()
+  return own ? { ...base, ffmpegDir: own } : base
+}
+
+function getBasePaths() {
   if (app.isPackaged) {
     // vbRoot is resourcesPath itself (not resources/videobeaux) — it must be
     // the PARENT of the videobeaux/ package dir, exactly mirroring dev mode
@@ -73,6 +90,13 @@ function findFullFfmpegDir() {
   }
   return null
 }
+
+// vbmedia://local/<encoded absolute path> streams a local media file to the renderer (range requests included) so the
+// Trim editor can play the clip. Only media files are served; everything else is refused.
+protocol.registerSchemesAsPrivileged([
+  { scheme: 'vbmedia', privileges: { standard: true, secure: true, supportFetchAPI: true, stream: true, bypassCSP: false } }
+])
+const MEDIA_EXTS = new Set(['.mp4', '.mov', '.m4v', '.mkv', '.webm', '.avi', '.mp3', '.wav', '.m4a', '.flac', '.gif', '.png', '.jpg', '.jpeg', '.webp', '.mpg', '.mpeg', '.mts', '.m2ts'])
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
@@ -132,6 +156,13 @@ async function syncShellPath() {
 }
 
 app.whenReady().then(async () => {
+  protocol.handle('vbmedia', (req) => {
+    try {
+      const p = decodeURIComponent(new URL(req.url).pathname.replace(/^\//, ''))
+      if (!MEDIA_EXTS.has(extname(p).toLowerCase()) || !existsSync(p)) return new Response('Not found', { status: 404 })
+      return net.fetch(pathToFileURL(p).toString(), { headers: req.headers })
+    } catch { return new Response('Bad request', { status: 400 }) }
+  })
   await syncShellPath()
   const win = createWindow()
 
@@ -207,7 +238,8 @@ app.whenReady().then(async () => {
     shadowOffset: 5,
     shadowColor: '#080808',
     shadowsEnabled: true,
-    setupSeen: false
+    setupSeen: false,
+    ffmpegDir: ''
   }
 
   function settingsPath() {
@@ -323,6 +355,37 @@ app.whenReady().then(async () => {
   }
 
   ipcMain.handle('files:listVideos', (_, dirPath) => listVideoFiles(dirPath))
+
+  // ── Layout snapshot ───────────────────────────────────────────────────────────
+  // The renderer fit the patch into view and sends the canvas rectangle; we capture the page region, ask for a
+  // base name, and write <name>.png + <name>.vbpreset.json side by side.
+  ipcMain.handle('layout:snapshot', async (_, { rect, preset }) => {
+    const image = await win.webContents.capturePage(rect)
+    const picked = await dialog.showSaveDialog(win, {
+      title: 'Save layout snapshot',
+      defaultPath: 'videobeaux-layout.png',
+      filters: [{ name: 'PNG image', extensions: ['png'] }]
+    })
+    if (picked.canceled || !picked.filePath) return { ok: false, canceled: true }
+    const png = picked.filePath.replace(/\.png$/i, '') + '.png'
+    const json = png.replace(/\.png$/i, '.vbpreset.json')
+    writeFileSync(png, image.toPNG())
+    writeFileSync(json, JSON.stringify(preset, null, 2), 'utf8')
+    return { ok: true, png, json }
+  })
+
+  // One frame of a video as a PNG data URL (used by the key-colour picker).
+  ipcMain.handle('media:frame', async (_, { path, seconds }) => {
+    try {
+      const { ffmpegDir } = getPaths()
+      const ffmpeg = ffmpegDir ? ffmpegBinaryPath(ffmpegDir, 'ffmpeg') : 'ffmpeg'
+      const { stdout } = await execFileAsync(ffmpeg, [
+        '-v', 'error', '-ss', String(Math.max(0, Number(seconds) || 0)), '-i', path, '-frames:v', '1',
+        '-vf', 'scale=min(1280\\,iw):-2', '-f', 'image2pipe', '-vcodec', 'png', '-'
+      ], { encoding: 'buffer', maxBuffer: 64 * 1024 * 1024, timeout: 30000 })
+      return stdout.length ? `data:image/png;base64,${stdout.toString('base64')}` : null
+    } catch { return null }
+  })
 
   // ── Helper-window support (e.g. the Lagkage layout editor) ──────────────────────
 
@@ -639,8 +702,15 @@ app.whenReady().then(async () => {
     'print("ok")'
   ].join('\n')
 
+  // The same list the Python side uses (videobeaux/assets/ffmpeg_requirements.json); undefined → built-in minimum.
+  function loadFfmpegRequirements(root) {
+    try {
+      return JSON.parse(readFileSync(join(root, 'videobeaux', 'assets', 'ffmpeg_requirements.json'), 'utf8')).features
+    } catch { return undefined }
+  }
+
   async function environmentStatus() {
-    const { ffmpegDir } = getPaths()
+    const { ffmpegDir, vbRoot } = getPaths()
     const python = findPython()
     const ffmpegBin = ffmpegDir ? ffmpegBinaryPath(ffmpegDir, 'ffmpeg') : 'ffmpeg'
     const ffprobeBin = ffmpegDir ? ffmpegBinaryPath(ffmpegDir, 'ffprobe') : 'ffprobe'
@@ -667,10 +737,13 @@ app.whenReady().then(async () => {
 
     const [pythonResult, ffmpegInfo, ffprobeResult] = await Promise.all([
       check(python, ['-c', PYTHON_HEALTH_CHECK]),
-      inspectFfmpeg(ffmpegBin),
+      inspectFfmpeg(ffmpegBin, loadFfmpegRequirements(vbRoot)),
       check(ffprobeBin, ['-version'])
     ])
-    const ffmpegResult = { ok: ffmpegInfo.ok, detail: ffmpegInfo.detail }
+    const ffmpegResult = {
+      ok: ffmpegInfo.ok, detail: ffmpegInfo.detail, license: ffmpegInfo.license?.flavor || null, custom: !!userFfmpegDir(), dir: ffmpegDir || null,
+      features: ffmpegInfo.features || [], missing: ffmpegInfo.missing || [], optionalMissing: ffmpegInfo.optionalMissing || []
+    }
     // A source checkout also needs a *capable* ffmpeg (HDR tone mapping, caption burning and
     // text labels need zscale/libass/drawtext, which a plain system build often lacks); the
     // installer always bundles one.
@@ -684,6 +757,73 @@ app.whenReady().then(async () => {
       canInstallPython: !app.isPackaged
     }
   }
+
+  // ── Module preview thumbnails (Looks → Output art) ────────────────────────────────────────────────────
+  // The thumbnails are what every module produces for one clip. Bundled ones ship with the app; this lets the user render
+  // them from their own footage into <userData>/module-art, which the renderer prefers over the bundled set.
+  const artDir = () => join(app.getPath('userData'), 'module-art')
+  let artProc = null
+
+  ipcMain.handle('art:status', () => {
+    try {
+      const manifest = JSON.parse(readFileSync(join(artDir(), 'manifest.json'), 'utf8'))
+      return { dir: artDir(), programs: manifest.programs || {}, source: manifest.source || '', generated: manifest.generated || '' }
+    } catch { return { dir: artDir(), programs: {}, source: '', generated: '' } }
+  })
+
+  ipcMain.handle('art:reset', () => {
+    try { rmSync(artDir(), { recursive: true, force: true }) } catch { /* nothing to remove */ }
+    return true
+  })
+
+  ipcMain.handle('art:cancel', () => { try { artProc?.kill() } catch { /* already gone */ } return true })
+
+  ipcMain.handle('art:generate', (event, { source, start = 0.5, duration = 4 } = {}) => new Promise((resolveArt) => {
+    if (artProc) return resolveArt({ ok: false, error: 'Already running.' })
+    if (!source || !existsSync(source)) return resolveArt({ ok: false, error: 'Choose a video first.' })
+    const { vbRoot, ffmpegDir } = getPaths()
+    const script = join(vbRoot, 'tools', 'make_module_art.py')
+    if (!existsSync(script)) return resolveArt({ ok: false, error: 'The preview tool is not part of this build.' })
+    const out = artDir()
+    const args = [script, '--source', source, '--start', String(start), '--duration', String(duration), '--out', out + '.tmp']
+    const proc = spawn(findPython(), args, {
+      cwd: vbRoot,
+      env: { ...process.env, PYTHONUNBUFFERED: '1', PYTHONUTF8: '1', PYTHONIOENCODING: 'utf-8',
+             VIDEOBEAUX_MODELS_DIR: getPaths().modelsDir,
+             ...(ffmpegDir ? { PATH: `${ffmpegDir}${delimiter}${process.env.PATH}` } : {}) },
+      windowsHide: true
+    })
+    artProc = proc
+    let buf = ''
+    let lastLine = ''
+    const feed = (chunk) => {
+      buf += chunk.toString('utf8')
+      const parts = buf.split(/\r?\n/)
+      buf = parts.pop() ?? ''
+      for (const line of parts) {
+        if (!line.trim()) continue
+        lastLine = line
+        const m = /\[\s*(\d+)\/(\d+)\]/.exec(line)
+        event.sender.send('art:progress', { line, done: m ? Number(m[1]) : null, total: m ? Number(m[2]) : null })
+      }
+    }
+    proc.stdout.on('data', feed)
+    proc.stderr.on('data', feed)
+    proc.on('error', err => { artProc = null; resolveArt({ ok: false, error: err.message }) })
+    proc.on('close', code => {
+      artProc = null
+      if (code === 0) {
+        try {
+          rmSync(out, { recursive: true, force: true })
+          renameSync(out + '.tmp', out)
+          const manifest = JSON.parse(readFileSync(join(out, 'manifest.json'), 'utf8'))
+          return resolveArt({ ok: true, count: Object.keys(manifest.programs || {}).length })
+        } catch (err) { return resolveArt({ ok: false, error: err.message }) }
+      }
+      try { rmSync(out + '.tmp', { recursive: true, force: true }) } catch { /* ignore */ }
+      resolveArt({ ok: false, error: code === null ? 'Cancelled.' : lastLine || `The preview tool exited with code ${code}.` })
+    })
+  }))
 
   ipcMain.handle('setup:checkEnvironment', () => environmentStatus())
 
@@ -708,7 +848,7 @@ app.whenReady().then(async () => {
           if (!r.ok) return { ok: false, error: r.error }
         } else {
           await installFfmpeg({
-            targetDir: managedFfmpegDir(vbRoot), runtime: ffmpegRuntime,
+            targetDir: managedFfmpegDir(vbRoot), runtime: ffmpegRuntime, allowFallback: true,
             onProgress: p => send({ ...meta, ...p })
           })
         }

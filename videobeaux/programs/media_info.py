@@ -155,7 +155,7 @@ def format_summary(r: dict) -> str:
 def register_arguments(parser: argparse.ArgumentParser):
     parser.description = (
         "Concise media report: dimensions, duration, fps, codecs, bitrate, size and audio "
-        "details. Prints a readable summary to the log and writes the same data as JSON."
+        "details. Prints a readable summary and the JSON to the log (copy it from the console) and writes the JSON file."
     )
     parser.add_argument("--no_json", action="store_true",
                         help="Only print the summary; don't write a JSON file.")
@@ -168,6 +168,10 @@ def run(args: argparse.Namespace):
 
     report = build_report(in_path)
     print(format_summary(report))
+    # The same data as JSON, in the log too, so it can be copied straight from the console (Copy button / select + ⌘C).
+    print("\n── JSON ─────────────────────────────")
+    print(json.dumps(report, indent=2, ensure_ascii=False))
+    print("─────────────────────────────────────")
 
     if getattr(args, "no_json", False):
         return

@@ -230,7 +230,7 @@ for prog_name in program_names:
 
         for schema in parser._captured:
             if schema['name'] in meta_args:
-                for key in ('type', 'subtype', 'label', 'help', 'default', 'choices', 'min', 'max', 'step', 'free', 'good_min', 'good_max', 'hidden'):
+                for key in ('type', 'subtype', 'label', 'help', 'default', 'choices', 'min', 'max', 'step', 'free', 'good_min', 'good_max', 'show_if', 'hidden'):
                     if key in meta_args[schema['name']]:
                         schema[key] = meta_args[schema['name']][key]
 

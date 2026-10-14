@@ -22,7 +22,22 @@ GUI_METADATA = {
         'blend': {'label': 'Edge softness', 'min': 0, 'max': 1, 'help': 'Gradual transparency at the edge of the key.'},
         'spill': {'label': 'Spill removal', 'min': 0, 'max': 1,
                   'help': 'Removes the green/blue tint reflected onto the subject. 0 = off.'},
-    }
+        # First run should *show* the removal: a checkerboard behind the subject (switch View to composite to use a Background).
+        'view': {'type': 'select', 'label': 'View', 'default': 'checkerboard', 'choices': keying.VIEWS,
+                 'help': 'checkerboard = see what was removed (start here) · matte = white kept / black removed · '
+                         'composite = the final result over your Background.'},
+    },
+    'presets': {
+        'Green screen': {'key_color': '#00B140', 'auto_key': False, 'method': METHODS[0], 'similarity': 0.18, 'blend': 0.06,
+                         'spill': 0.4, 'view': 'checkerboard'},
+        'Blue screen': {'key_color': '#0047BB', 'auto_key': False, 'method': METHODS[0], 'similarity': 0.18, 'blend': 0.06,
+                        'spill': 0.4, 'view': 'checkerboard'},
+        'Find the screen for me': {'auto_key': True, 'method': METHODS[0], 'similarity': 0.2, 'blend': 0.06, 'spill': 0.4,
+                                   'view': 'checkerboard'},
+        'Tight edges (cleaner)': {'similarity': 0.12, 'blend': 0.02, 'spill': 0.5, 'shrink': 2, 'feather': 1},
+        'Final: over background': {'view': 'composite', 'background': 'auto'},
+        'Export with transparency': {'view': 'composite', 'background': 'transparent'},
+    },
 }
 
 

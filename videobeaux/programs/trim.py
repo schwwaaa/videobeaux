@@ -1,22 +1,22 @@
-import re
+from videobeaux.utils.encode import h264_mp4_args
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress, get_video_duration
+from videobeaux.utils.timeparse import parse_time
 
-_TIMESTAMP_RE = re.compile(r"^(?:(\d+):)?(\d{1,2}):(\d{1,2}(?:\.\d+)?)$|^(\d+(?:\.\d+)?)$")
+GUI_METADATA = {
+    'args': {
+        'start': {'type': 'text', 'label': 'Start', 'help': 'Seconds (12.5, .5) or HH:MM:SS(.ms). Press ✎ to pick it on a timeline.'},
+        'end': {'type': 'text', 'label': 'End', 'help': 'Where to stop. Leave empty to keep everything after Start.'},
+        'duration': {'type': 'text', 'label': 'Length instead of End', 'help': 'Alternative to End: how long to keep, from Start.'},
+        'copy': {'label': 'Fast cut (no re-encode)', 'help': 'Much faster, but the cut snaps to the nearest keyframe instead of the exact time.'},
+    }
+}
 
 
 def _parse_timestamp(ts, arg_name):
-    ts = ts.strip()
-    m = _TIMESTAMP_RE.match(ts)
-    if not m:
-        raise SystemExit(
-            f"❌ Could not parse {arg_name} {ts!r}. Use seconds (12.5) or HH:MM:SS(.ms) (01:02:03.5)."
-        )
-    if m.group(4) is not None:
-        return float(m.group(4))
-    h = int(m.group(1)) if m.group(1) else 0
-    mi = int(m.group(2))
-    s = float(m.group(3))
-    return h * 3600 + mi * 60 + s
+    try:
+        return parse_time(ts, arg_name)
+    except ValueError as e:
+        raise SystemExit(f"❌ {e}")
 
 
 def register_arguments(parser):
@@ -66,7 +66,7 @@ def run(args):
     if args.copy:
         command += ["-c", "copy"]
     else:
-        command += ["-c:v", "libx264", "-c:a", "aac"]
+        command += h264_mp4_args()
     command += [args.output]
 
     run_ffmpeg_with_progress(

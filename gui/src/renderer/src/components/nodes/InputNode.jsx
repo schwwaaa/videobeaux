@@ -7,14 +7,14 @@ const ACCENT = 'var(--cyan)'
 const styles = {
   node: {
     background: 'var(--paper)',
-    border: '3px solid var(--ink)',
+    border: '3px solid var(--line, var(--ink))',
     borderRadius: 12,
     minWidth: 220,
     boxShadow: 'var(--shadow)'
   },
   header: {
     background: ACCENT,
-    borderBottom: '3px solid var(--ink)',
+    borderBottom: '3px solid var(--line, var(--ink))',
     borderRadius: '9px 9px 0 0',
     padding: '7px 12px',
     display: 'flex',

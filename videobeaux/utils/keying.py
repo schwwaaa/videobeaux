@@ -19,6 +19,8 @@ from videobeaux.utils.media import has_audio
 BACKGROUNDS = ["auto", "color", "image", "video", "transparent"]
 VIEWS = ["composite", "matte", "checkerboard"]
 
+KEY_AUDIO = ["Foreground video", "Background video", "Mix both", "Silent"]
+
 BACKGROUND_HELP = (
     "What shows behind the subject. auto = the connected/picked Background video, else the Background image, "
     "else the Background color. transparent = no background at all: save as .webm or .mov (Output node format)."
@@ -34,6 +36,8 @@ GUI_COMMON = {
                  'help': 'Connect a video here (or browse) to put the subject on top of it. Loops if shorter.'},
     'view': {'type': 'select', 'label': 'View', 'default': 'composite', 'choices': VIEWS,
              'help': 'Use matte / checkerboard while tuning: white = kept, black = removed.'},
+    'audio': {'type': 'select', 'label': 'Audio', 'default': KEY_AUDIO[0], 'choices': KEY_AUDIO,
+              'help': 'Which sound the result keeps. Background video / Mix need a Background video connected.'},
     'shrink': {'label': 'Edge shrink', 'min': 0, 'max': 10, 'help': 'Eat into the edge of the subject to lose fringing (pixels).'},
     'feather': {'label': 'Edge feather', 'min': 0, 'max': 10, 'help': 'Soften the edge of the matte (pixels).'},
 }
@@ -46,6 +50,8 @@ def add_common_arguments(p):
     p.add_argument("--bg_video", type=str, default=None, help="Background video (loops if shorter than the subject clip).")
     p.add_argument("--view", choices=VIEWS, default="composite",
                    help="composite = the result; matte = the cut-out mask; checkerboard = subject on a checkerboard.")
+    p.add_argument("--audio", choices=KEY_AUDIO, default=KEY_AUDIO[0],
+                   help="Audio to keep: the foreground video (default), the background video, both mixed, or silence.")
     p.add_argument("--shrink", type=int, default=1, help="Edge shrink in pixels (0-10). Default: 1.")
     p.add_argument("--feather", type=float, default=1.0, help="Edge feather in pixels (0-10). Default: 1.")
     p.add_argument("--crf", type=int, default=18, help="x264 quality. Default: 18.")
@@ -124,6 +130,10 @@ def run_key(args, key_chain: str, *, spill: str | None = None, spill_mix: float 
     lighten...) no matte is used: the clip is blended straight onto the background instead. When `matte_path`
     is given, that grayscale video (white = keep) supplies the alpha instead of a key filter.
     """
+    if getattr(args, "audio", KEY_AUDIO[0]) == KEY_AUDIO[2] and getattr(args, "bg_video", None):
+        from videobeaux.utils.media import ensure_audio
+        args.input = ensure_audio(args.input)
+        args.bg_video = ensure_audio(args.bg_video)
     info = probe_video(args.input)
     W, H = info.width - info.width % 2, info.height - info.height % 2
     fps = info.fps
@@ -208,6 +218,21 @@ def run_key(args, key_chain: str, *, spill: str | None = None, spill_mix: float 
 
     v_args, a_args = _encode_args(out, transparent, getattr(args, "crf", 18),
                                   has_audio(args.input) and view == "composite")
+    choice = getattr(args, "audio", KEY_AUDIO[0])
+    acodec = [x for x in a_args if x not in ("-map", "0:a?")] or ["-c:a", "libopus" if out.suffix.lower() == ".webm" else "aac"]
+    if view != "composite":
+        a_args = []                                                  # matte / checkerboard views are picture-only
+    elif choice == KEY_AUDIO[3]:
+        a_args = []                                                  # silent
+    elif choice in (KEY_AUDIO[1], KEY_AUDIO[2]) and bg_kind == "video" and not transparent:
+        fmt = "aresample=48000,aformat=sample_fmts=fltp:channel_layouts=stereo"
+        bg_idx = 1                                                   # the background video is always input 1 here
+        if choice == KEY_AUDIO[1]:
+            a_args = ["-map", f"{bg_idx}:a?", *acodec]
+        else:
+            g.append(f"[0:a]{fmt}[fa];[{bg_idx}:a]{fmt}[ba];"
+                     f"[fa][ba]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.95[aout]")
+            a_args = ["-map", "[aout]", *acodec]
     cmd += ["-filter_complex", ";".join(x for x in g if x), "-map", "[out]", *v_args, *a_args,
             "-r", f"{fps:.6f}", "-shortest", str(out)]
     if getattr(args, "force", False):

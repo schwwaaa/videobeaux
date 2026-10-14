@@ -29,6 +29,7 @@ class Param:
     min: float | None = None
     max: float | None = None
     choices: list = field(default_factory=list)
+    show_if: dict | None = None      # GUI: show this field only when the named options have these values
 
 
 COMMON = [
@@ -59,6 +60,10 @@ def _meta(p: Param) -> dict:
         m["help"] = p.help
     if p.kind == "color":
         m["type"] = "color"
+    if p.kind == "file":
+        m["type"] = "file"
+    if p.show_if:
+        m["show_if"] = p.show_if
     if p.kind == "select":
         m.update(type="select", choices=list(p.choices), default=p.default)
     if p.min is not None:
@@ -68,7 +73,7 @@ def _meta(p: Param) -> dict:
     return m
 
 
-def make_program(description: str, params: list, build, *, faces=False, eyes=False):
+def make_program(description: str, params: list, build, *, faces=False, eyes=False, tracker=None):
     """
     Returns (register_arguments, run, GUI_METADATA).
       build(args) -> effect callable fn(bgr, ctx);   faces/eyes: the effect needs face boxes (and eye points).
@@ -84,7 +89,7 @@ def make_program(description: str, params: list, build, *, faces=False, eyes=Fal
         parser.add_argument("--crf", type=int, default=18, help="x264 quality. Default: 18.")
 
     def run(args):
-        run_effect(args, build, faces=faces, eyes=eyes)
+        run_effect(args, build, faces=faces, eyes=eyes, tracker=tracker)
 
     gui = {"args": {p.name: _meta(p) for p in all_params}}
     gui["args"]["seed"] = {"hidden": True}
@@ -116,7 +121,7 @@ def eyes_for(face):
     return [(x + 0.31 * w, y + 0.40 * h, r), (x + 0.69 * w, y + 0.40 * h, r)]
 
 
-def run_effect(args, build, *, faces=False, eyes=False, label=None):
+def run_effect(args, build, *, faces=False, eyes=False, label=None, tracker=None):
     cv2 = require_cv2()
     from videobeaux.utils import booth_filters
     from videobeaux.utils.booth_filters import Ctx
@@ -142,18 +147,20 @@ def run_effect(args, build, *, faces=False, eyes=False, label=None):
         if faces or eyes:
             from videobeaux.utils.face_tracking import FaceTracker
             w, h = st["size"] or (info.width, info.height)
-            st["tracker"] = FaceTracker(w, h)
+            st["tracker"] = FaceTracker(w, h, **(tracker or {}))
 
     def frame_fn(frame, i, t):
         size = st["size"]
         work = cv2.resize(frame, size, interpolation=cv2.INTER_AREA) if size else frame
-        boxes, eye_pts = [], []
+        boxes, eye_pts, lms = [], [], []
         if st["tracker"] is not None:
-            boxes = [tr.box for tr in st["tracker"].update(work, i)]
+            tracks = st["tracker"].update(work, i)
+            boxes = [tr.box for tr in tracks]
+            lms = [tr.lm for tr in tracks]
             if eyes:
                 eye_pts = [eyes_for(b) for b in boxes]
         bgr = np.ascontiguousarray(work[..., ::-1])
-        out = fn(bgr, Ctx(t=t, dt=st["dt"], faces=boxes, eyes=eye_pts))
+        out = fn(bgr, Ctx(t=t, dt=st["dt"], faces=boxes, eyes=eye_pts, landmarks=lms))
         out = np.ascontiguousarray(out[..., ::-1])
         if out.shape != work.shape:
             out = cv2.resize(out, (work.shape[1], work.shape[0]), interpolation=cv2.INTER_LINEAR)
@@ -165,6 +172,9 @@ def run_effect(args, build, *, faces=False, eyes=False, label=None):
 
     stats = process_video(args.input, args.output, frame_fn, crf=getattr(args, "crf", 18),
                           force=bool(getattr(args, "force", False)), setup=setup)
+    summary = getattr(fn, "summary", None)
+    if callable(summary):
+        print(summary(), flush=True)
     print(f"✅ {stats['frames']} frames in {stats['seconds']:.1f}s")
 
 

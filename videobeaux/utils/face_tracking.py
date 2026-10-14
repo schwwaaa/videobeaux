@@ -35,6 +35,7 @@ class Track:
     vy: float = 0.0
     missed: int = 0                 # detection cycles since last match
     age: int = 0
+    lm: object = None               # (5, 2) landmarks: right eye, left eye, nose tip, right mouth corner, left mouth corner
     trail: deque = field(default_factory=lambda: deque(maxlen=40))
 
     @property
@@ -105,7 +106,8 @@ class FaceTracker:
             self._yunet.setInputSize((self.dw, self.dh))
             _, faces = self._yunet.detect(np.ascontiguousarray(small[..., ::-1]))   # YuNet wants BGR
             for f in (faces if faces is not None else []):
-                out.append((f[0] * inv, f[1] * inv, f[2] * inv, f[3] * inv, float(f[14])))
+                lm = (np.asarray(f[4:14], np.float32).reshape(5, 2) * inv)
+                out.append((f[0] * inv, f[1] * inv, f[2] * inv, f[3] * inv, float(f[14]), lm))
         else:
             gray = cv2.cvtColor(small, cv2.COLOR_RGB2GRAY)
             for (x, y, w, h) in self._haar.detectMultiScale(gray, 1.1, 5, minSize=(30, 30)):
@@ -117,6 +119,8 @@ class FaceTracker:
         for t in self.tracks:
             t.x += t.vx
             t.y += t.vy
+            if t.lm is not None:
+                t.lm = t.lm + np.float32([t.vx, t.vy])
             t.vx *= 0.9
             t.vy *= 0.9
 
@@ -143,6 +147,8 @@ class FaceTracker:
             t.y += (d[1] - t.y) * alpha
             t.w += (d[2] - t.w) * alpha
             t.h += (d[3] - t.h) * alpha
+            if len(d) > 5 and d[5] is not None:
+                t.lm = d[5] if t.lm is None else t.lm + (d[5] - t.lm) * alpha
             nx, ny = t.center
             gap = max(1, gap_frames)
             t.vx = 0.5 * t.vx + 0.5 * (nx - ox) / gap
@@ -154,7 +160,7 @@ class FaceTracker:
                 t.missed += 1
         for di, d in enumerate(dets):
             if di not in used_d:
-                self.tracks.append(Track(self._next_id, d[0], d[1], d[2], d[3], d[4]))
+                self.tracks.append(Track(self._next_id, d[0], d[1], d[2], d[3], d[4], lm=(d[5] if len(d) > 5 else None)))
                 self._next_id += 1
         self.tracks = [t for t in self.tracks if t.missed <= self.max_missed]
 

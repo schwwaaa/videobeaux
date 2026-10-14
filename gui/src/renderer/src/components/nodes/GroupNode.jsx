@@ -21,7 +21,7 @@ export default function GroupNode({ id, data, selected }) {
 
   const header = (
     <div style={{
-      background: color, color: 'var(--on-color)', borderBottom: '3px solid var(--ink)',
+      background: color, color: 'var(--on-color)', borderBottom: '3px solid var(--line, var(--ink))',
       borderRadius: data.collapsed ? '9px 9px 0 0' : '9px 9px 0 0',
       padding: '5px 6px 5px 8px', display: 'flex', alignItems: 'center', gap: 6, minHeight: 34, userSelect: 'none'
     }}>
@@ -58,7 +58,7 @@ export default function GroupNode({ id, data, selected }) {
     return (
       <div style={{
         width: 230, minHeight: Math.max(96, HANDLE_TOP + rows * HANDLE_GAP + 8), background: 'var(--paper)',
-        border: '3px solid var(--ink)', borderRadius: 12, boxShadow: 'var(--shadow)', position: 'relative'
+        border: '3px solid var(--line, var(--ink))', borderRadius: 12, boxShadow: 'var(--shadow)', position: 'relative'
       }}>
         {header}
         <div style={{ padding: '8px 10px', display: 'flex', flexWrap: 'wrap', gap: 4 }}>

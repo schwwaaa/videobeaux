@@ -152,6 +152,9 @@ html, body, #root {
 /* ── ReactFlow overrides ───────────────────────────────────────────────────── */
 .react-flow__background { background: var(--paper) !important; }
 .react-flow__background pattern circle { fill: var(--paper-dot, #d8d4c2) !important; }
+/* Canvas wallpaper (Appearance → Canvas background): the dot grid stays, its paper fill goes transparent. */
+.has-canvas-bg .react-flow, .has-canvas-bg .react-flow__background { background: transparent !important; }
+.canvas-bg-layer { position: absolute; inset: 0; z-index: 0; pointer-events: none; background-repeat: no-repeat; background-position: center; }
 .react-flow__controls {
   background: var(--paper) !important;
   border: var(--border) !important;
@@ -172,7 +175,8 @@ html, body, #root {
   border-radius: var(--radius) !important;
   box-shadow: var(--shadow) !important;
 }
-.react-flow__edge-path { stroke: var(--ink) !important; stroke-width: 3 !important; }
+/* --edge-color / --edge-width / --line are only set by Appearance → Lines (or per edge for "by category"). */
+.react-flow__edge-path { stroke: var(--edge-color, var(--ink)) !important; stroke-width: var(--edge-width, 3) !important; }
 .react-flow__edge.selected .react-flow__edge-path { stroke: var(--magenta) !important; }
 .react-flow__edge.selected .react-flow__edge-path { stroke-width: 5 !important; }
 .react-flow__handle {
@@ -297,3 +301,36 @@ input:focus, select:focus { box-shadow: 2px 2px 0 var(--ink); }
 input::placeholder { color: #8a8a80; }
 
 select option { background: var(--paper); }
+
+/* ⓘ help badge next to field labels — a real button, clearly visible on every node color in both themes. */
+.info-badge {
+  width: 17px; height: 17px; padding: 0; flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 2px solid var(--ink); border-radius: 50%;
+  font-family: var(--font-mono); font-size: 11px; font-weight: 800; font-style: italic; line-height: 1;
+  cursor: help;
+}
+.info-badge:hover { transform: scale(1.12); }
+
+/* Overwrite toggle (🔥 in the bottom-left controls): flames flicker while it is ON. */
+.react-flow__controls-button.overwrite-on {
+  background: linear-gradient(to top, #ff6847, #ffe500) !important;
+  box-shadow: 0 0 0 2px var(--ink), 0 0 12px 2px rgba(255, 104, 71, 0.85);
+  animation: vb-flame 0.9s ease-in-out infinite alternate;
+}
+@keyframes vb-flame {
+  from { box-shadow: 0 0 0 2px var(--ink), 0 0 8px 1px rgba(255, 104, 71, 0.7); }
+  to   { box-shadow: 0 0 0 2px var(--ink), 0 0 16px 4px rgba(255, 229, 0, 0.9); }
+}
+
+
+/* ── Looks: elements the non-Classic looks switch on (hidden otherwise) ─────────────────────────────────────────── */
+.node-glyph, .node-art, .node-art-thumb { display: none; }
+
+/* Branded tooltip (BrandedTooltips.jsx) — only mounted in non-Classic looks. */
+.vb-tip {
+  position: fixed; z-index: 100000; pointer-events: none;
+  background: var(--paper); color: var(--ink);
+  border: 2px solid var(--ink); border-radius: 8px; box-shadow: var(--shadow-sm);
+  padding: 5px 9px; font-family: var(--font); font-size: 12px; line-height: 1.35; white-space: pre-line;
+}

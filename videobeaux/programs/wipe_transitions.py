@@ -1,4 +1,5 @@
 from videobeaux.utils.media import ensure_audio
+from videobeaux.utils.encode import h264_mp4_args, even
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
 from pathlib import Path
 import sys
@@ -130,6 +131,8 @@ def run(args):
     # blending. Without this, ffmpeg fails deep inside the encoder with an
     # opaque "Invalid argument" error rather than a clear message.
     w1, h1, fps1 = get_video_dims_fps(args.input)
+    w1, h1 = even(w1), even(h1)
+    an = "aresample=48000,aformat=sample_fmts=fltp:channel_layouts=stereo"
 
     # acrossfade only takes `duration` — unlike xfade, it has no `offset`
     # concept (it assumes a plain sequential concat with an overlap at the
@@ -137,9 +140,9 @@ def run(args):
     filter_complex = (
         f"[1:v]scale={w1}:{h1}:force_original_aspect_ratio=decrease,"
         f"pad={w1}:{h1}:(ow-iw)/2:(oh-ih)/2,setsar=1,fps={fps1}[v1n];"
-        f"[0:v]fps={fps1},setsar=1[v0n];"
+        f"[0:v]crop={w1}:{h1}:0:0,fps={fps1},setsar=1[v0n];"
         f"[v0n][v1n]xfade=transition={args.preset}:duration={args.duration}:offset={args.offset}[v];"
-        f"[0:a][1:a]acrossfade=duration={args.duration}[a]"
+        f"[0:a]{an}[a0];[1:a]{an}[a1];[a0][a1]acrossfade=duration={args.duration}[a]"
     )
 
     command = [
@@ -149,9 +152,7 @@ def run(args):
         "-filter_complex", filter_complex,
         "-map", "[v]",
         "-map", "[a]",
-        "-c:v", "libx264",  # Use H.264 for compatibility
-        "-c:a", "aac",      # Use AAC for audio compatibility
-        "-b:v", "5000k",    # Set reasonable video bitrate
+        *h264_mp4_args(),    # H.264 4:2:0 + AAC, faststart: opens in Finder/QuickTime, not just VLC
         str(clean_output)
     ]
 

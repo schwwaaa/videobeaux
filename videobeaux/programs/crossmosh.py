@@ -12,6 +12,7 @@ import os, tempfile, shutil
 from pathlib import Path
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
 from videobeaux.utils import audio_pick
+from videobeaux.utils.encode import h264_mp4_args
 
 GUI_METADATA = {
     'args': {
@@ -145,17 +146,29 @@ def run(args):
         total = audio_pick.duration_of(final_src)
         wav = audio_pick.build_audio_track(args.audio, audio_pick.CROSSMOSH_AUDIO, A, B, total,
                                            tmp / "audio.wav", a_dur=audio_pick.duration_of(A))
-        if wav is not None:
-            with_audio = tmp / "mosh_audio.avi"
-            cmd_mux = ["ffmpeg", "-i", str(final_src), "-i", str(wav), "-map", "0:v", "-map", "1:a",
-                       "-c:v", "copy", *audio_pick.audio_codec_for_avi(), "-t", f"{total:.3f}", str(with_audio)]
-            run_ffmpeg_with_progress(_force(cmd_mux, getattr(args, "force", False)), str(final_src), str(with_audio))
-            final_src = with_audio
-
-        # Deliver
-        if final_src.resolve() != out.resolve():
+        to_mp4_like = out.suffix.lower() in (".mp4", ".mov", ".m4v", ".mkv")
+        if to_mp4_like:
+            # The mosh itself must be MPEG-4 Part 2 in an AVI (P-frames only), which Finder / QuickTime / phones can't
+            # open. Deliver a normal H.264 4:2:0 + AAC file instead; the moshed look is baked into the pixels.
             out.parent.mkdir(parents=True, exist_ok=True)
-            shutil.move(str(final_src), str(out))
+            cmd_final = ["ffmpeg", "-i", str(final_src)]
+            if wav is not None:
+                cmd_final += ["-i", str(wav)]
+            cmd_final += ["-map", "0:v"] + (["-map", "1:a"] if wav is not None else []) + [
+                "-vf", "scale=trunc(iw/2)*2:trunc(ih/2)*2,setsar=1", "-t", f"{total:.3f}",
+                *(h264_mp4_args(crf=18) if wav is not None else h264_mp4_args(crf=18)[:h264_mp4_args().index("-c:a")]),
+                str(out)]
+            run_ffmpeg_with_progress(_force(cmd_final, getattr(args, "force", False)), str(final_src), str(out))
+        else:
+            if wav is not None:
+                with_audio = tmp / "mosh_audio.avi"
+                cmd_mux = ["ffmpeg", "-i", str(final_src), "-i", str(wav), "-map", "0:v", "-map", "1:a",
+                           "-c:v", "copy", *audio_pick.audio_codec_for_avi(), "-t", f"{total:.3f}", str(with_audio)]
+                run_ffmpeg_with_progress(_force(cmd_mux, getattr(args, "force", False)), str(final_src), str(with_audio))
+                final_src = with_audio
+            if final_src.resolve() != out.resolve():
+                out.parent.mkdir(parents=True, exist_ok=True)
+                shutil.move(str(final_src), str(out))
         print(f"✅ crossmosh → {out}")
 
         # Cleanup

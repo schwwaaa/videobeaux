@@ -109,9 +109,46 @@ function ProgressBar({ progress }) {
 
 // ── LogPanel ──────────────────────────────────────────────────────────────────
 
-export default function LogPanel({ logs, isRunning, progress, onClear, onToggle, collapsed }) {
+export default function LogPanel({ logs, isRunning, progress, onClear, onToggle, collapsed, height = 220, onResize, onCopyNotice }) {
   const bottomRef = useRef(null)
+  const textRef = useRef(null)
   const [dragBlocked, setDragBlocked] = useState(false)
+  const [copied, setCopied] = useState('')
+
+  // The live progress line updates ~4×/s; keeping it out of the selectable text means a selection (to copy into
+  // an editor) isn't wiped by those re-renders.
+  let liveIdx = -1
+  if (isRunning) for (let i = logs.length - 1; i >= 0; i--) { if (logs[i].type === 'progress-line') { liveIdx = i; break } }
+  const liveLine = liveIdx >= 0 ? logs[liveIdx] : null
+
+  const copyText = async () => {
+    const sel = window.getSelection?.()?.toString() || ''
+    const inside = sel && textRef.current && textRef.current.contains(window.getSelection().anchorNode)
+    const text = inside ? sel : logs.filter(l => l.type !== 'progress-line').map(l => l.text).join('')
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopied(inside ? 'Copied selection' : 'Copied all')
+    } catch {
+      setCopied('Copy failed')
+    }
+    setTimeout(() => setCopied(''), 1600)
+  }
+
+  // Drag the top edge to resize; double-click toggles collapse.
+  const startResize = (e) => {
+    e.preventDefault()
+    const startY = e.clientY, startH = collapsed ? 34 : height
+    const onMove = (ev) => {
+      const h = Math.max(34, Math.min(Math.round(window.innerHeight * 0.75), startH + (startY - ev.clientY)))
+      if (h <= 40) { if (!collapsed) onToggle() } else {
+        if (collapsed) onToggle()
+        onResize?.(h)
+      }
+    }
+    const onUp = () => { window.removeEventListener('pointermove', onMove); window.removeEventListener('pointerup', onUp) }
+    window.addEventListener('pointermove', onMove)
+    window.addEventListener('pointerup', onUp)
+  }
 
   useEffect(() => {
     if (bottomRef.current) {
@@ -159,8 +196,8 @@ export default function LogPanel({ logs, isRunning, progress, onClear, onToggle,
         boxShadow: dragBlocked ? 'inset 0 0 0 3px var(--coral)' : 'none',
         display: 'flex',
         flexDirection: 'column',
-        height: collapsed ? 34 : 220,
-        transition: 'height 0.2s ease',
+        height: collapsed ? 34 : height,
+        transition: 'none',
         overflow: 'hidden',
         position: 'relative'
       }}
@@ -176,6 +213,14 @@ export default function LogPanel({ logs, isRunning, progress, onClear, onToggle,
           🚫 Drop on the canvas, not here
         </div>
       )}
+      {/* Resize divider (drag), double-click to collapse / restore */}
+      <div
+        onPointerDown={startResize}
+        onDoubleClick={onToggle}
+        title="Drag to resize · double-click to hide/show"
+        style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 7, cursor: 'ns-resize', zIndex: 6,
+                 background: 'linear-gradient(to bottom, rgba(255,255,255,0.28), transparent)' }}
+      />
       {/* Toolbar */}
       <div style={{
         display: 'flex',
@@ -222,6 +267,21 @@ export default function LogPanel({ logs, isRunning, progress, onClear, onToggle,
 
         {collapsed && isRunning && progress ? <MiniProgress progress={progress} /> : <div style={{ flex: 1 }} />}
 
+        {copied && <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--lime-bright)' }}>{copied}</span>}
+        {logs.length > 0 && (
+          <button
+            onClick={copyText}
+            title="Copy the selected text, or the whole log if nothing is selected"
+            style={{
+              background: 'transparent', color: 'var(--screen-ink-dim)', border: 'none',
+              fontFamily: 'var(--font-mono)', fontSize: 11, cursor: 'pointer', padding: '2px 6px', borderRadius: 3
+            }}
+            onMouseOver={e => e.currentTarget.style.color = 'var(--yellow)'}
+            onMouseOut={e => e.currentTarget.style.color = 'var(--screen-ink-dim)'}
+          >
+            Copy
+          </button>
+        )}
         {logs.length > 0 && (
           <button
             onClick={onClear}
@@ -244,7 +304,7 @@ export default function LogPanel({ logs, isRunning, progress, onClear, onToggle,
 
       {/* Log text */}
       {!collapsed && (
-        <div style={{
+        <div ref={textRef} style={{
           flex: 1,
           overflowY: 'auto',
           padding: '6px 12px 8px',
@@ -253,18 +313,24 @@ export default function LogPanel({ logs, isRunning, progress, onClear, onToggle,
           lineHeight: 1.6,
           color: 'var(--screen-ink)',
           whiteSpace: 'pre-wrap',
-          wordBreak: 'break-all'
+          wordBreak: 'break-all',
+          userSelect: 'text',
+          WebkitUserSelect: 'text',
+          cursor: 'text'
         }}>
           {logs.length === 0 ? (
             <span style={{ color: 'var(--screen-ink-dim)', fontStyle: 'italic' }}>
               Log output will appear here when the pipeline runs…
             </span>
           ) : (
-            logs.map((entry, i) => (
+            logs.map((entry, i) => (i === liveIdx ? null : (
               <span key={i} style={TYPE_STYLE[entry.type] || TYPE_STYLE.stdout}>
                 {entry.text}
               </span>
-            ))
+            )))
+          )}
+          {liveLine && (
+            <div style={{ ...TYPE_STYLE['progress-line'], userSelect: 'none' }}>{liveLine.text}</div>
           )}
           <div ref={bottomRef} />
         </div>

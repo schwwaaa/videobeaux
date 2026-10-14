@@ -229,7 +229,16 @@ export default function SetupScreen({ onClose }) {
               </div>
             </div>
           ) : env.ready ? (
-            <div style={styles.row}><Badge ok={true} /> <b>Videobeaux is ready.</b></div>
+            <div>
+              <div style={styles.row}><Badge ok={true} /> <b>Videobeaux is ready.</b></div>
+              {env.ffmpeg.optionalMissing?.length > 0 && (
+                <div style={{ ...styles.mono, marginTop: 6 }}>
+                  This ffmpeg doesn't include: {env.ffmpeg.optionalMissing.join(', ')}. The programs that need
+                  {env.ffmpeg.optionalMissing.length > 1 ? ' them' : ' it'} will say so; everything else works.
+                  Use the bundled build (Repair) to get all formats.
+                </div>
+              )}
+            </div>
           ) : (
             <div>
               <div style={styles.row}>
@@ -254,9 +263,22 @@ export default function SetupScreen({ onClose }) {
               <summary style={{ ...styles.mono, cursor: 'pointer' }}>Technical details</summary>
               <div style={{ ...styles.mono, marginTop: 4, whiteSpace: 'pre-wrap' }}>
                 {`Engine: ${env.python.ok ? 'ok' : env.python.detail || 'not ready'}
-Video tools: ${env.ffmpeg.ok && env.ffprobe.ok ? (env.ffmpegCapable ? 'ok' : 'present but missing features') : 'not found'}`}
+Video tools: ${env.ffmpeg.ok && env.ffprobe.ok ? (env.ffmpegCapable ? 'ok' : 'present but missing features') : 'not found'}${env.ffmpeg.license ? ` (ffmpeg ${env.ffmpeg.license}${env.ffmpeg.license === 'nonfree' ? ' — NOT redistributable; do not ship this build' : ''})` : ''}${env.ffmpeg.detail ? `\n${env.ffmpeg.detail}` : ''}${env.ffmpeg.ok ? `\nUsing: ${env.ffmpeg.dir || 'ffmpeg found on PATH'}` : ''}${env.ffmpeg.features?.length ? '\n' + env.ffmpeg.features.map(f => `${f.ok ? '✓' : f.required ? '✗' : '–'} ${f.label}${f.ok ? '' : f.required ? '  (required)' : '  (optional — not in this build)'}`).join('\n') : ''}`}
               </div>
-              <button style={{ ...styles.buttonSmall(), marginTop: 6 }} onClick={checkEnv} {...press(false)}>Check again</button>
+              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 6 }}>
+                <button style={styles.buttonSmall()} onClick={checkEnv} {...press(false)}>Check again</button>
+                <button style={styles.buttonSmall()} {...press(false)}
+                        title="Pick the folder that contains your own ffmpeg and ffprobe (for example an LGPL build)"
+                        onClick={async () => {
+                          const dir = await window.electronAPI.openDirectory()
+                          if (dir) { await window.electronAPI.setSettings({ ffmpegDir: dir }); checkEnv() }
+                        }}>Use my own ffmpeg…</button>
+                {env.ffmpeg.custom && (
+                  <button style={styles.buttonSmall()} {...press(false)}
+                          onClick={async () => { await window.electronAPI.setSettings({ ffmpegDir: '' }); checkEnv() }}>Use the bundled ffmpeg</button>
+                )}
+              </div>
+              {env.ffmpeg.custom && <div style={{ ...styles.mono, marginTop: 4 }}>Using your ffmpeg: {env.ffmpeg.dir}</div>}
             </details>
           )}
         </div>

@@ -9,6 +9,8 @@ export default defineConfig({
     plugins: [externalizeDepsPlugin()]
   },
   renderer: {
-    plugins: [react()]
+    plugins: [react()],
+    // Look thumbnails are ~3 KB each; keep them as files instead of base64 inside the JS bundle.
+    build: { assetsInlineLimit: 0 }
   }
 })

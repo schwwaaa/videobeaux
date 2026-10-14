@@ -7,6 +7,7 @@ import {
   addEdge,
   Background,
   Controls,
+  ControlButton,
   MiniMap,
   useReactFlow,
   useStoreApi,
@@ -23,6 +24,8 @@ import Sidebar    from './components/Sidebar'
 import LogPanel   from './components/LogPanel'
 import SetupScreen from './components/SetupScreen'
 import AppearanceMenu from './components/AppearanceMenu'
+import BrandedTooltips from './components/BrandedTooltips'
+import { refreshArtOverrides } from './looks/output-art/art'
 import HelpWindow from './components/HelpWindow'
 import ConfirmDialog from './components/ConfirmDialog'
 import { ProgramsProvider, usePrograms } from './ProgramsContext'
@@ -91,7 +94,9 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
   edgesRef.current = edges
   const flowStore = useStoreApi()
   const { programMap } = usePrograms()
-  const { theme, showSelectionBar } = useSettings()
+  const { theme, showSelectionBar, autoOverwrite, setAutoOverwrite,
+          lineMode, canvasBg, canvasBgOpacity, canvasBgFit } = useSettings()
+  const { fitView } = useReactFlow()
   const modalLocked = useModalLocked()
   const [runError, setRunError] = useState(null)
   const wrapperRef = useRef(null)
@@ -184,8 +189,28 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
   }, [copySelection, pasteClipboard])
 
   // ── Grouping ───────────────────────────────────────────────────────────────
+  useEffect(() => { refreshArtOverrides() }, [])
+
   const grouping = useGrouping({ setNodes, getNodes, record, newId })
   const groupView = useMemo(() => deriveGroupView(nodes, edges, programMap), [nodes, edges, programMap])
+  // Appearance → Lines → "By category": each connection takes the colour of the module it leaves.
+  const displayEdges = useMemo(() => {
+    if (lineMode !== 'category') return groupView.displayEdges
+    const byId = new Map(nodes.map(n => [n.id, n]))
+    return groupView.displayEdges.map(e => {
+      const src = byId.get(e.source)
+      const c = src?.type === 'inputNode' ? '#32b9df'
+        : src?.type === 'effectNode' ? programMap[src.data?.program]?.categoryColor : null
+      return c ? { ...e, style: { ...(e.style || {}), '--edge-color': c } } : e
+    })
+  }, [groupView.displayEdges, lineMode, nodes, programMap])
+
+  // Fold / unfold every program at once (Controls). One undo step.
+  const setAllCollapsed = useCallback((collapsed) => {
+    record()
+    setNodes(nds => nds.map(n => n.type === 'effectNode' ? { ...n, data: { ...n.data, collapsed } } : n))
+  }, [record, setNodes])
+
   const groupCtx = useMemo(() => ({
     boundary: groupView.boundary, members: groupView.members,
     toggleCollapse: grouping.toggleCollapse, ungroup: grouping.ungroup,
@@ -234,7 +259,12 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
         e.preventDefault()
         setNodes(ns => ns.map(n => (n.selected ? n : { ...n, selected: true })))
       }
-      else if (k === 'c') { if (copySelection()) e.preventDefault() }
+      else if (k === 'c') {
+        // A highlighted piece of text (e.g. in the console) always wins: let the native copy happen.
+        const picked = window.getSelection?.()?.toString() || ''
+        if (picked.trim()) return
+        if (copySelection()) e.preventDefault()
+      }
       else if (k === 'v') { if (clipboardRef.current) { e.preventDefault(); pasteClipboard('cursor') } }
       else if (k === 'd') { e.preventDefault(); duplicateSelection() }
       else if (k === 'g') { e.preventDefault(); if (e.shiftKey) grouping.ungroupSelection(); else grouping.groupSelection() }
@@ -283,6 +313,7 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
   const onDragOver = useCallback(e => {
     e.preventDefault()
     e.dataTransfer.dropEffect = 'copy'
+    if (e.dataTransfer.types?.includes('Files')) setFileDragOver(true)
   }, [])
 
   // Shared by drag-drop (onDrop below) and double-click-to-add (Sidebar, via
@@ -351,8 +382,49 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
     })
   }, [registerCanvasActions, addProgramNode, addInputNode, viewportCenterPosition])
 
+  // ── Files dropped from the OS ─────────────────────────────────────────────
+  const [fileDragOver, setFileDragOver] = useState(false)
+  const [dropNote, setDropNote] = useState('')
+  const VIDEO_EXT = /\.(mp4|mov|m4v|avi|mkv|webm|mts|m2ts|mpg|mpeg|mxf|gif)$/i
+  const AUDIO_EXT = /\.(mp3|wav|m4a|aac|flac|ogg|opus)$/i
+  const dropFiles = useCallback(async (files, position) => {
+    const paths = files.map(f => window.electronAPI.pathForFile?.(f)).filter(Boolean)
+    const videos = paths.filter(p => VIDEO_EXT.test(p))
+    const others = paths.filter(p => !VIDEO_EXT.test(p))
+    if (!videos.length) {
+      setDropNote(others.some(p => AUDIO_EXT.test(p))
+        ? 'Audio files go onto a program\'s audio field (e.g. Add Audio → Music file). Drop it on that field, or use its Browse button.'
+        : 'Drop video files here to use them as inputs.')
+      setTimeout(() => setDropNote(''), 5000)
+      return
+    }
+    record()
+    const all = getNodes()
+    const firstInput = all.find(n => n.id === 'input-1' && n.type === 'inputNode')
+    let list = [...videos]
+    const changes = []
+    if (firstInput && !firstInput.data?.filePath && !firstInput.data?.folderPath) {
+      changes.push([firstInput.id, list.shift()])
+    }
+    setNodes(nds => nds.map(n => (changes.find(c => c[0] === n.id) ? { ...n, data: { ...n.data, filePath: changes.find(c => c[0] === n.id)[1] } } : n)))
+    list.forEach((path, i) => {
+      const id = newId('input')
+      setNodes(nds => {
+        const used = new Set([1])
+        for (const n of nds) {
+          const m = /^Input (\d+)$/.exec(n.data?.label || '')
+          if (m) used.add(parseInt(m[1], 10))
+        }
+        let num = 2
+        while (used.has(num)) num++
+        return [...nds, { id, type: 'inputNode', position: { x: position.x + i * 30, y: position.y + i * 30 }, data: { filePath: path, label: `Input ${num}` } }]
+      })
+    })
+  }, [getNodes, setNodes, record, newId])
+
   const onDrop = useCallback(e => {
     e.preventDefault()
+    setFileDragOver(false)
 
     const nodeKind = e.dataTransfer.getData('application/videobeaux-node')
     if (nodeKind === 'inputNode') {
@@ -361,9 +433,16 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
     }
 
     const programId = e.dataTransfer.getData('application/videobeaux-program')
-    if (!programId) return
-    addProgramNode(programId, screenToFlowPosition({ x: e.clientX, y: e.clientY }))
-  }, [screenToFlowPosition, addInputNode, addProgramNode])
+    if (programId) {
+      addProgramNode(programId, screenToFlowPosition({ x: e.clientX, y: e.clientY }))
+      return
+    }
+
+    // Files dragged in from Finder / Explorer: each video becomes an Input node at the drop point
+    // (the first one fills the original Input if it is still empty).
+    const files = Array.from(e.dataTransfer.files || [])
+    if (files.length) dropFiles(files, screenToFlowPosition({ x: e.clientX, y: e.clientY }))
+  }, [screenToFlowPosition, addInputNode, addProgramNode, dropFiles])
 
   // IPC event listeners
   useEffect(() => {
@@ -473,11 +552,13 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
     // Pre-flight: ask before silently overwriting an existing output file or
     // a non-empty batch output folder. A "Cancel" here just quietly aborts —
     // same as never having clicked Run.
-    const { proceed } = await window.electronAPI.confirmOverwrite({
-      outputPath: pipeline.outputPath,
-      isBatch: pipeline.finalProducesBatch
-    })
-    if (!proceed) return
+    if (!autoOverwrite) {
+      const { proceed } = await window.electronAPI.confirmOverwrite({
+        outputPath: pipeline.outputPath,
+        isBatch: pipeline.finalProducesBatch
+      })
+      if (!proceed) return
+    }
 
     setLogs([])
     liveLineIndexRef.current = null
@@ -502,9 +583,15 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
   // a React Flow node (measured, selected, dragging, …) is transient render
   // state that gets recomputed on next render, not part of the pipeline.
   const handleSave = async () => {
-    const cleanNodes = nodes.map(({ id, type, position, data, deletable }) => ({
+    // Only what's needed to rebuild the canvas. Group membership (parentId), group size and the hidden flag of
+    // collapsed members must be kept or a saved group would come back as loose, overlapping nodes.
+    const cleanNodes = nodes.map(({ id, type, position, data, deletable, parentId, expandParent, width, height, style, hidden, draggable, zIndex }) => ({
       id, type, position, data,
-      ...(deletable === false ? { deletable } : {})
+      ...(deletable === false ? { deletable } : {}),
+      ...(parentId ? { parentId, expandParent: true } : {}),
+      ...(type === 'groupNode' ? { width, height, style, zIndex: -1 } : {}),
+      ...(hidden ? { hidden: true } : {}),
+      ...(draggable === false ? { draggable: false } : {})
     }))
     const cleanEdges = edges.map(({ id, source, target, sourceHandle, targetHandle, type }) => ({
       id, source, target,
@@ -524,6 +611,39 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
       }
     } catch (err) {
       setLogs(prev => [...prev, { text: `❌ Could not save preset: ${err.message}\n`, type: 'error' }])
+    }
+  }
+
+  // Snapshot: fit the whole patch in view, capture the canvas as a PNG and save it next to the preset JSON
+  // (same base name) — the picture is the visual reference, the JSON is what you can load back.
+  const handleSnapshot = async () => {
+    const cleanPreset = () => ({
+      presetFormatVersion: 1,
+      savedAt: new Date().toISOString(),
+      nodes: nodes.map(({ id, type, position, data, deletable, parentId, expandParent, width, height, style, hidden, draggable }) => ({
+        id, type, position, data,
+        ...(deletable === false ? { deletable } : {}),
+        ...(parentId ? { parentId, expandParent: true } : {}),
+        ...(type === 'groupNode' ? { width, height, style, zIndex: -1 } : {}),
+        ...(hidden ? { hidden: true } : {}),
+        ...(draggable === false ? { draggable: false } : {})
+      })),
+      edges: edges.map(({ id, source, target, sourceHandle, targetHandle, type }) => ({
+        id, source, target, sourceHandle: sourceHandle ?? null, targetHandle: targetHandle ?? null, type
+      }))
+    })
+    try {
+      clearSelection()
+      await fitView({ padding: 0.12, duration: 0, minZoom: 0.05 })
+      await new Promise(r => setTimeout(r, 350))                  // let the viewport + edges settle before the capture
+      const r = wrapperRef.current.getBoundingClientRect()
+      const res = await window.electronAPI.saveSnapshot({
+        rect: { x: Math.round(r.left), y: Math.round(r.top), width: Math.round(r.width), height: Math.round(r.height) },
+        preset: cleanPreset()
+      })
+      if (res?.ok) setLogs(prev => [...prev, { text: `📸 Saved ${res.png}\n   and ${res.json}\n`, type: 'log' }])
+    } catch (err) {
+      setLogs(prev => [...prev, { text: `❌ Could not save snapshot: ${err.message}\n`, type: 'error' }])
     }
   }
 
@@ -579,13 +699,25 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
     <RealEdgesContext.Provider value={edges}>
     <div
       ref={wrapperRef}
+      className={canvasBg ? 'has-canvas-bg' : undefined}
       style={{ flex: 1, position: 'relative', overflow: 'hidden' }}
       onMouseMove={e => { mouseFlowRef.current = screenToFlowPosition({ x: e.clientX, y: e.clientY }) }}
       onMouseLeave={() => { mouseFlowRef.current = null }}
     >
+      {canvasBg && (
+        <div
+          className="canvas-bg-layer"
+          style={{
+            backgroundImage: `url("${window.electronAPI.mediaUrl(canvasBg)}")`,
+            opacity: canvasBgOpacity,
+            backgroundSize: canvasBgFit === 'tile' ? 'auto' : canvasBgFit,
+            backgroundRepeat: canvasBgFit === 'tile' ? 'repeat' : 'no-repeat'
+          }}
+        />
+      )}
       <ReactFlow
         nodes={nodes}
-        edges={groupView.displayEdges}
+        edges={displayEdges}
         onNodesChange={onNodesChange}
         onEdgesChange={handleEdgesChange}
         onConnect={onConnect}
@@ -603,13 +735,33 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
         nodeTypes={NODE_TYPES}
         deleteKeyCode={modalLocked ? null : ['Backspace', 'Delete']}
         fitView
-        fitViewOptions={{ padding: 0.2 }}
+        fitViewOptions={{ padding: 0.2, minZoom: 0.05 }}
+        minZoom={0.05}
+        maxZoom={3}
+        onDragLeave={() => setFileDragOver(false)}
         defaultEdgeOptions={{ type: 'smoothstep' }}
         colorMode={theme === 'dark' ? 'dark' : 'light'}
       >
         <ClickConnectLine />
         <Background color={theme === 'dark' ? '#34323c' : '#d8d4c2'} gap={24} size={1.5} />
-        <Controls />
+        <Controls>
+          <ControlButton onClick={() => setAllCollapsed(true)} title="Fold every program (header only)" aria-label="Collapse all programs">
+            <span style={{ fontSize: 13, lineHeight: 1 }}>▤</span>
+          </ControlButton>
+          <ControlButton onClick={() => setAllCollapsed(false)} title="Unfold every program" aria-label="Expand all programs">
+            <span style={{ fontSize: 13, lineHeight: 1 }}>▦</span>
+          </ControlButton>
+          <ControlButton
+            onClick={() => setAutoOverwrite(!autoOverwrite)}
+            title={autoOverwrite
+              ? 'Overwrite is ON — Run replaces an existing output without asking. Click to turn it off.'
+              : 'Overwrite is OFF — Run asks before replacing an existing output. Click to turn it on (one-step runs).'}
+            aria-pressed={autoOverwrite}
+            className={autoOverwrite ? 'overwrite-on' : ''}
+          >
+            <span style={{ fontSize: 14, lineHeight: 1, filter: autoOverwrite ? 'none' : 'grayscale(1) opacity(0.6)' }}>🔥</span>
+          </ControlButton>
+        </Controls>
         <MiniMap
           nodeColor={n => {
             if (n.type === 'inputNode')  return '#32b9df'
@@ -676,6 +828,21 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
               📂 Load Preset
             </button>
             <button
+              onClick={handleSnapshot}
+              title="Save a picture of the whole patch (PNG) together with its preset (JSON)"
+              style={{
+                background: 'var(--paper)', color: 'var(--ink)',
+                padding: '9px 14px', borderRadius: 'var(--radius-sm)',
+                fontFamily: 'var(--font-display)', fontSize: 12,
+                border: 'var(--border)', boxShadow: 'var(--shadow-sm)', cursor: 'pointer'
+              }}
+              onMouseDown={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'translate(3px, 3px)' }}
+              onMouseUp={e => { e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; e.currentTarget.style.transform = 'none' }}
+              onMouseLeave={e => { e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; e.currentTarget.style.transform = 'none' }}
+            >
+              📸 Snapshot
+            </button>
+            <button
               onClick={() => setConfirmClear(true)}
               disabled={isRunning}
               title="Clear the workspace (asks first; ⌘Z undoes)"
@@ -726,7 +893,7 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
                 onMouseUp={e => { e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; e.currentTarget.style.transform = 'none' }}
                 onMouseLeave={e => { e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; e.currentTarget.style.transform = 'none' }}
               >
-                ▶ Run Pipeline
+                ▶ Run Pipeline{autoOverwrite ? ' 🔥' : ''}
               </button>
             )}
 
@@ -768,6 +935,18 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
         )}
 
       </ReactFlow>
+      {fileDragOver && (
+        <div style={{ position: 'absolute', inset: 8, zIndex: 20, pointerEvents: 'none', border: '4px dashed var(--select)', borderRadius: 16,
+                      background: 'color-mix(in srgb, var(--select) 10%, transparent)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <span style={{ background: 'var(--select)', color: '#080808', border: '3px solid #080808', borderRadius: 10, padding: '8px 16px',
+                         fontFamily: 'var(--font-display)', fontSize: 14 }}>Drop video files to add them as inputs</span>
+        </div>
+      )}
+      {dropNote && (
+        <div role="status" style={{ position: 'absolute', left: '50%', bottom: 60, transform: 'translateX(-50%)', zIndex: 30, maxWidth: 520,
+                                    background: 'var(--paper)', color: 'var(--ink)', border: 'var(--border)', borderRadius: 10, boxShadow: 'var(--shadow-sm)',
+                                    padding: '8px 12px', fontSize: 12 }}>{dropNote}</div>
+      )}
       {confirmClear && (
         <ConfirmDialog
           title="Clear the workspace?"
@@ -811,7 +990,7 @@ function AppInner() {
   const [progress, setProgress]         = useState(null)
   const [showSetup, setShowSetup]       = useState(false)
   const [showHelp, setShowHelp]         = useState(false)
-  const { sidebarCollapsed, setSidebarCollapsed, consoleCollapsed, setConsoleCollapsed } = useSettings()
+  const { sidebarCollapsed, setSidebarCollapsed, consoleCollapsed, setConsoleCollapsed, consoleHeight, setConsoleHeight } = useSettings()
   const logCollapsed = consoleCollapsed
   const setLogCollapsed = useCallback((v) => setConsoleCollapsed(typeof v === 'function' ? v(consoleCollapsed) : v), [consoleCollapsed, setConsoleCollapsed])
   // Set by FlowCanvas once it's mounted (it owns node state) — lets Sidebar
@@ -900,6 +1079,7 @@ function AppInner() {
         </div>
       </header>
 
+      <BrandedTooltips />
       {showSetup && <SetupScreen onClose={() => setShowSetup(false)} />}
       {showHelp && <HelpWindow onClose={() => setShowHelp(false)} />}
 
@@ -925,6 +1105,8 @@ function AppInner() {
             isRunning={isRunning}
             progress={progress}
             collapsed={logCollapsed}
+            height={consoleHeight}
+            onResize={setConsoleHeight}
             onToggle={() => setConsoleCollapsed(!consoleCollapsed)}
             onClear={() => setLogs([])}
           />

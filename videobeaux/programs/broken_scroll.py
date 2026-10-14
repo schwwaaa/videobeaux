@@ -1,10 +1,13 @@
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
+from videobeaux.utils.preset_filter import add_amount_argument, apply_amount, AMOUNT_METADATA
+
+GUI_METADATA = AMOUNT_METADATA
 
 def register_arguments(parser):
     parser.description = (
             "Amplified frame differences plus a slow vertical scroll — a rolling, broken-tracking look."
     )
-    print("✅ This program mode does not require additional arguments")
+    add_amount_argument(parser)
 
 def run(args):
     command = [
@@ -22,5 +25,6 @@ def run(args):
         "-shortest",
         args.output
     ]
+    command = apply_amount(command, getattr(args, "amount", 1.0))
     # print(" ".join(f'"{arg}"' if ' ' in arg or ':' in arg or '=' in arg else arg for arg in command))
     run_ffmpeg_with_progress((command[:1] + ["-y"] + command[1:]) if args.force else command, args.input, args.output)

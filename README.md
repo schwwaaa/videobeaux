@@ -5,7 +5,7 @@
 <p align="center"><em>The friendly multilateral video toolkit built for artists by artists. It's your best friend.</em></p>
 
 <p align="center">
-  <strong>150 effect/utility programs</strong> · node-based GUI + scriptable CLI · <strong>100% local</strong> — no cloud, no accounts, no API keys
+  <strong>154 effect/utility programs</strong> · node-based GUI + scriptable CLI · <strong>100% local</strong> — no cloud, no accounts, no API keys
 </p>
 
 ---
@@ -15,7 +15,7 @@ Videobeaux is a video-processing toolkit built around one big library of effects
 - **The GUI**: drag effect nodes onto a canvas, wire them together into a pipeline, hit Run.
 - **The CLI**: `python3 -m videobeaux.cli -P <program> -i input.mp4 -o output.mp4 [options]`, script it however you want.
 
-Both sit on the exact same 150 programs — nothing is GUI-exclusive or CLI-exclusive except a couple of legacy modes noted below. Everything runs on your machine. The one genuinely optional exception — AI narration scripting via a local [Ollama](https://ollama.com) model — is opt-in and the app works completely fine without it.
+Both sit on the exact same 155 programs — nothing is GUI-exclusive or CLI-exclusive except a couple of legacy modes noted below. Everything runs on your machine. The one genuinely optional exception — AI narration scripting via a local [Ollama](https://ollama.com) model — is opt-in and the app works completely fine without it.
 
 <p align="center">
   <img width="100%" src="img/gui-canvas.png"/>
@@ -67,16 +67,48 @@ Reopen this screen anytime from the **⚙ Setup** button in the header — it's 
 
 ### What you get
 
-- **A node canvas** — drag any of the 150 programs onto it, wire Input → effects → Output. Multiple effects chain into one pipeline; branch one output into several downstream effects.
+- **A node canvas** — drag any of the 155 programs onto it, wire Input → effects → Output. Multiple effects chain into one pipeline; branch one output into several downstream effects.
 - **Batch mode** — point an Input node at a folder instead of a file and the whole pipeline runs once per video. Programs that natively produce many files from one input (Qwikchop, Qwikchop Deluxe, Extract Frames) fan out automatically.
 - **Save/load presets** — snapshot the whole node graph (including every field you've filled in) to a `.vbpreset.json` file and reload it later.
 - **Live model pickers** — Vosk (speech-to-text), Ollama (local LLM), and kokoro-tts voice dropdowns are all populated by asking the actual installed tool what it has, not a hardcoded list — install a new model and it just shows up.
 - **A real-time colour picker** on every colour field (captions, LUTs, watermarks) — a native OS colour wheel, synced with a plain hex field you can also just paste into.
 
-### Canvas tips
+### Licensing & the bundled ffmpeg
+
+Videobeaux runs **ffmpeg as a separate program**. The ffmpeg that installers bundle is built by this project from
+source ([`tools/ffmpeg-build/`](tools/ffmpeg-build), CI in `.github/workflows/ffmpeg-build.yml`):
+
+- configured `--enable-gpl` (for libx264 / libx265) and **never `--enable-nonfree`** — the build script, the CI jobs, the
+  installer build and the app's own Setup check all refuse a nonfree ffmpeg, because such a build can't be redistributed;
+- every release publishes the exact source archives of ffmpeg and each library next to the binaries, plus the configure
+  line and a licence summary (`FFMPEG-LICENSES.txt`, also in [`LICENSES/`](LICENSES));
+- you can use your own ffmpeg instead: **Setup → Use my own ffmpeg…** (for example an LGPL build).
+
+**Which ffmpeg runs?** The installed app always uses the one in its own `resources/ffmpeg`. `npm run dev` looks, in order, at
+your own choice (Setup), `<repo>/.tools/ffmpeg` (what **Repair** downloads), Homebrew's `ffmpeg-full`, then whatever is on
+`PATH` — Setup → *Technical details* shows the one in use, its version and licence flavor, and a ✓/✗ list of the features
+Videobeaux needs. That list lives in [`videobeaux/assets/ffmpeg_requirements.json`](videobeaux/assets/ffmpeg_requirements.json)
+and the same check is available from a terminal: `python -m videobeaux.utils.ffmpeg_caps [--ffmpeg /path/to/ffmpeg]`.
+Programs that need something the build lacks (for example AV1 encoding) stop with a plain-language message instead of a
+raw ffmpeg error. Our own build includes AV1 (SVT-AV1 encode, dav1d decode).
+
+Build it yourself on macOS: `tools/ffmpeg-build/build-macos.sh` (≈15 min the first time, a few minutes afterwards; produces `dist/ffmpeg`, `dist/ffprobe`, the
+configure line and the source archives). Bundled AI models keep their own licences (see **Setup → Local AI features**).
+This section is an engineering summary, not legal advice — have your distribution model reviewed before selling.
+
+### Looks and canvas appearance
+
+**🎨 Appearance** lets you try different **Looks** (Classic, Patterns, Signatures, Output art — see
+[`ui_design/looks-README.md`](ui_design/looks-README.md); Classic is the original and always one click away), colour the
+connection lines (**Ink / By module / Custom**, with thickness), and put a JPEG/PNG/WebP **behind the canvas** with its own
+opacity. Every module can be folded (▾ or double-click its header; **Controls → ▤ / ▦** fold or unfold all) and the fold
+state is saved in presets.
+
+## Canvas tips
 
 - **Connect with two clicks** — click a dot, a line follows your cursor, click another dot. (Dragging still works; Esc or a click on empty space cancels.)
 - **Select several** — ⌘/Ctrl-click, Shift-drag a box, or ⌘A; selected programs get a bold yellow ring and a banner with a Delete button. Backspace/Delete removes them all (undo with ⌘Z).
+- **Drop files in** — drag videos from Finder / Explorer onto the canvas: each becomes an Input node. **📸 Snapshot** saves a PNG of the whole patch together with its preset JSON. The 🔥 button (bottom-left) toggles one-step runs that overwrite without asking. Drag the console's top edge to resize it; **Copy** copies its text.
 - **Groups** — select two or more programs and press ⌘G (or *Group*): they move together, can be locked, renamed and colored, and a caret folds the whole group into one compact card (⇧⌘G ungroups). Folding is only visual — connections and what runs are unchanged.
 - **Copy / paste** — select programs, ⌘C, then ⌘V pastes them (with the connections between them) at your cursor; ⌘D duplicates in place. The small bar at the bottom-left has the same buttons and can be switched off under 🎨 Appearance.
 - **Number fields** — type a value (the box can be emptied and retyped) or drag the slider; the faint strip under it is a good starting range, the tick is the default, ↺ resets, and many programs have **Presets** chips.
@@ -191,7 +223,7 @@ Speech-recognition models are **not** bundled into the installer (they run ~7GB 
 
 ## Programs
 
-150 programs appear in the GUI sidebar (plus a few CLI-only ones), grouped the same way here. Any program can be run standalone from the CLI regardless of category.
+155 programs appear in the GUI sidebar (plus a few CLI-only ones), grouped the same way here. Any program can be run standalone from the CLI regardless of category.
 
 <details>
 <summary><strong>⚡ Glitch & Corruption</strong> (21)</summary>
@@ -278,7 +310,7 @@ _Speed, reversal, loops, stutters, freezes and scrolling._
 </details>
 
 <details>
-<summary><strong>✦ Color & Look</strong> (48)</summary>
+<summary><strong>✦ Color & Look</strong> (49)</summary>
 
 _Colour grading and stylization — grades, LUTs, film/night-vision looks, halftone, duotone, dithering, cartoon and sketch._
 
@@ -332,6 +364,7 @@ _Colour grading and stylization — grades, LUTs, film/night-vision looks, halft
 | Color Pass | Keep one color range and turn everything else gray (or remove just that color) — a red dress in a gray world |
 | Proc Amp | Video processing amp: brightness, contrast, saturation, hue rotation, gamma, black/white levels, color temperature, broadcast-safe clamp |
 | Beauxtrix | A video blending matrix (homage to the LZX Video Blending Matrix): three R/G/B mixers summing videos A–D with −2…+2 levels, bias, and sum or absolute (solarize) outputs |
+| Topobeaux | Slice the picture into up to 6 tonal bands (luma, color channel, saturation, hue or motion) — false color, tint, contour lines, a different video per band, or a matte cutout. Homage to the LZX Topogram |
 
 </details>
 
@@ -353,7 +386,7 @@ _Computer vision (OpenCV) — face tracking, redaction and reframing, motion iso
 </details>
 
 <details>
-<summary><strong>⊞ Layout & Overlay</strong> (11)</summary>
+<summary><strong>⊞ Layout & Overlay</strong> (13)</summary>
 
 _Put things on top of or next to each other — overlays, stacks, multi-layer composites._
 
@@ -370,11 +403,14 @@ _Put things on top of or next to each other — overlays, stacks, multi-layer co
 | Picture-in-Picture | A small second video inset over the main one — pick the corner, size, border, opacity and whose audio you hear; swap to flip which is full-screen |
 | Quad Split | Split screen: up to four videos in a 2×2 grid, side by side, stacked, or one big plus three small, with adjustable gaps |
 | Video Wall | The picture repeated in a grid of tiles — plain repeats, mirrored tiles, or a delay wall where each tile lags a bit more |
+| Rotate | Turn the picture upside down, on its side, tilted at any angle (45°…) or slowly spinning — the output file really is rotated; choose to grow the canvas, zoom to fill, or keep the frame size |
+| Shape Synth | Two animated shape generators (circle, ring, diamond, square, cross, stripes, checker, vortex) with folding, curves, stretch, spin and drift — painted over, used as a window, a warp, or a cutout. Homage to the LZX DSG3 |
+| Stackadelic | Three stacked rectangle / rhombus layers with layer priority — each cuts out of the ones beneath, showing a color, input A/B/C or A keyed by brightness; tile into mosaics. Homage to the LZX Stacker |
 
 </details>
 
 <details>
-<summary><strong>✂ Cut & Assemble</strong> (7)</summary>
+<summary><strong>✂ Cut & Assemble</strong> (8)</summary>
 
 _Cut videos apart and assemble them — trims, splits, joins, inserts, transitions._
 
@@ -387,6 +423,7 @@ _Cut videos apart and assemble them — trims, splits, joins, inserts, transitio
 | Insert Clip | Inserts a second video into the master at a chosen timestamp, then picks up the master from where it left off — e.g. an intermission slate. Independent transition control at each boundary. |
 | Wipe Transitions | Combine two videos with a transitional wipe using ffmpeg's xfade filter |
 | Fade & Flash | Fade in/out from black, white or any color, plus timed flashes that decay or snap on/off; optionally fades the audio too |
+| Add Audio | Put your own music or audio under a video — replace the sound, mix it in, or duck it under the original voice; picture is copied untouched |
 
 </details>
 
