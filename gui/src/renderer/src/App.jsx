@@ -24,6 +24,7 @@ import Sidebar    from './components/Sidebar'
 import LogPanel   from './components/LogPanel'
 import SetupScreen from './components/SetupScreen'
 import AppearanceMenu from './components/AppearanceMenu'
+import CanvasToolbar, { RunButton } from './components/CanvasToolbar'
 import BrandedTooltips from './components/BrandedTooltips'
 import { refreshArtOverrides } from './looks/output-art/art'
 import HelpWindow from './components/HelpWindow'
@@ -35,6 +36,8 @@ import { buildPipeline } from './pipeline'
 import { useModalLocked, isModalLocked } from './useModalLock'
 import { GroupContext, RealEdgesContext } from './GroupContext'
 import { useGrouping, deriveGroupView } from './useGrouping'
+import { autoLayout } from './autoLayout'
+import { loadStartWorkspace, serializeWorkspace, saveWorkspaceText, maxNodeSuffix } from './workspaceStore'
 import tvIcon from './assets/img/tv-icon.png'
 
 const NODE_TYPES = {
@@ -84,10 +87,18 @@ function renderProgressLine(pct, speed) {
 // ── Inner canvas (needs ReactFlow hooks) ────────────────────────────────────
 
 let _nodeCounter = 2
+let _restoredLogged = false      // React.StrictMode runs effects twice in dev; say it once
 
-function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progress, setProgress, registerCanvasActions }) {
-  const [nodes, setNodes, onNodesChange] = useNodesState(INITIAL_NODES)
-  const [edges, setEdges, onEdgesChange] = useEdgesState([])
+function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progress, setProgress, setLastRun, registerCanvasActions }) {
+  // The canvas is remembered (workspaceStore.js): read once, before the first render, so a reload comes back as it was.
+  const startRef = useRef(undefined)
+  if (startRef.current === undefined) {
+    startRef.current = loadStartWorkspace()
+    if (startRef.current) _nodeCounter = maxNodeSuffix(startRef.current.nodes, _nodeCounter)
+  }
+  const restored = startRef.current
+  const [nodes, setNodes, onNodesChange] = useNodesState(restored ? restored.nodes : INITIAL_NODES)
+  const [edges, setEdges, onEdgesChange] = useEdgesState(restored ? restored.edges : [])
   const { screenToFlowPosition, getViewport, getNodes, deleteElements } = useReactFlow()
   // React Flow is shown *display* edges (collapsed groups re-route their boundary edges); logic uses the real ones.
   const edgesRef = useRef(edges)
@@ -95,11 +106,52 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
   const flowStore = useStoreApi()
   const { programMap } = usePrograms()
   const { theme, showSelectionBar, autoOverwrite, setAutoOverwrite,
-          lineMode, canvasBg, canvasBgOpacity, canvasBgFit } = useSettings()
+          lineMode, canvasBg, canvasBgOpacity, canvasBgFit, rememberWorkspace } = useSettings()
   const { fitView } = useReactFlow()
   const modalLocked = useModalLocked()
   const [runError, setRunError] = useState(null)
   const wrapperRef = useRef(null)
+  // Width of the canvas area (not the window): the toolbar picks its layout from it.
+  const [canvasWidth, setCanvasWidth] = useState(1200)
+  useEffect(() => {
+    const el = wrapperRef.current
+    if (!el || typeof ResizeObserver === 'undefined') return undefined
+    const ro = new ResizeObserver(entries => { const w = Math.round(entries[0].contentRect.width); if (w > 0) setCanvasWidth(w) })
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+
+  // Autosave: debounced after every change, and flushed the moment the page is hidden / unloaded (which is when a laptop
+  // going to sleep, or a reload, would otherwise lose the patch).
+  const saveNow = useCallback(() => {
+    if (rememberWorkspace === false) return
+    saveWorkspaceText(serializeWorkspace({ nodes: getNodes(), edges: edgesRef.current, viewport: getViewport() }))
+  }, [getNodes, getViewport, rememberWorkspace])
+  const saveNowRef = useRef(saveNow)
+  saveNowRef.current = saveNow
+  useEffect(() => {
+    const t = setTimeout(() => saveNowRef.current(), 500)
+    return () => clearTimeout(t)
+  }, [nodes, edges, rememberWorkspace])
+  useEffect(() => {
+    const flush = () => saveNowRef.current()
+    const onVis = () => { if (document.visibilityState === 'hidden') flush() }
+    window.addEventListener('pagehide', flush)
+    window.addEventListener('beforeunload', flush)
+    document.addEventListener('visibilitychange', onVis)
+    return () => {
+      window.removeEventListener('pagehide', flush)
+      window.removeEventListener('beforeunload', flush)
+      document.removeEventListener('visibilitychange', onVis)
+    }
+  }, [])
+  useEffect(() => {
+    if (restored && !_restoredLogged) {
+      _restoredLogged = true
+      const n = restored.nodes.filter(x => x.type === 'effectNode').length
+      setLogs(prev => [...prev, { text: `↩ Restored your last workspace (${n} program${n === 1 ? '' : 's'}).\n`, type: 'log' }])
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Undo / redo (⌘Z / ⇧⌘Z, or the buttons in the top-left panel)
   const getSnapshot = useCallback(() => ({ nodes: getNodes(), edges: edgesRef.current }), [getNodes])
@@ -241,6 +293,19 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
     setEdges(es => es.some(e => e.selected) ? es.map(e => (e.selected ? { ...e, selected: false } : e)) : es)
   }, [setNodes, setEdges])
 
+  // ✨ Tidy: arrange the programs left → right (the selection only, when 2+ are selected). One undo step.
+  const handleTidy = useCallback(() => {
+    const current = getNodes()
+    const sel = current.filter(n => n.selected).map(n => n.id)
+    const { positions } = autoLayout({ nodes: current, edges: edgesRef.current, only: sel.length > 1 ? sel : null })
+    if (!Object.keys(positions).length) return
+    record()
+    setNodes(ns => ns.map(n => (positions[n.id] ? { ...n, position: positions[n.id] } : n)))
+    setTimeout(() => fitView({ padding: 0.15, duration: 300, minZoom: 0.05 }), 60)
+  }, [getNodes, record, setNodes, fitView])
+  const handleTidyRef = useRef(handleTidy)
+  handleTidyRef.current = handleTidy
+
   useEffect(() => {
     const onKey = (e) => {
       if (isModalLocked()) return          // a helper window is open: it owns the keyboard
@@ -255,6 +320,7 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
       const k = e.key.toLowerCase()
       if (k === 'z' && !e.shiftKey) { e.preventDefault(); undo() }
       else if ((k === 'z' && e.shiftKey) || k === 'y') { e.preventDefault(); redo() }
+      else if (k === 'l' && e.shiftKey) { e.preventDefault(); handleTidyRef.current() }
       else if (k === 'a') {
         e.preventDefault()
         setNodes(ns => ns.map(n => (n.selected ? n : { ...n, selected: true })))
@@ -289,6 +355,28 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
   // currently shown in the log console, if any.
   const progressRef = useRef(null)
   useEffect(() => { progressRef.current = progress }, [progress])
+  const runStartRef = useRef(0)
+  const { notifyOnFinish } = useSettings()
+  const notifyRef = useRef(notifyOnFinish)
+  notifyRef.current = notifyOnFinish
+
+  // What happened, kept after the run so a minimised console can still show it (see LogPanel's result chip), plus an
+  // optional system notification when the app isn't in front.
+  const finishRun = useCallback((status, message) => {
+    const p = progressRef.current
+    const seconds = runStartRef.current ? Math.round((Date.now() - runStartRef.current) / 1000) : 0
+    const info = { status, step: p?.step || 0, total: p?.total || 0, name: p?.name || '', seconds, message: message || '' }
+    setLastRun(info)
+    try {
+      if (notifyRef.current !== false && typeof Notification !== 'undefined' && !document.hasFocus() && status !== 'cancelled') {
+        const title = status === 'ok' ? 'Videobeaux — finished' : 'Videobeaux — failed'
+        const body = status === 'ok'
+          ? `${info.total} step${info.total === 1 ? '' : 's'} in ${seconds}s`
+          : `Step ${info.step || '?'}${info.name ? ` (${info.name})` : ''}: ${String(message || '').split('\n')[0].slice(0, 120)}`
+        new Notification(title, { body })
+      }
+    } catch { /* notifications unavailable — the in-app chip still shows the result */ }
+  }, [setLastRun])
   const liveLineIndexRef = useRef(null)
 
   // One output socket may feed many downstream nodes (fan-out, for DAG
@@ -526,18 +614,20 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
     })
 
     const removeComplete = window.electronAPI.onPipelineComplete(() => {
+      finishRun('ok')
       setIsRunning(false)
       setProgress(null)
     })
 
     const removeError = window.electronAPI.onPipelineError(({ message }) => {
+      finishRun('failed', message)
       setIsRunning(false)
       setRunError(message)
       setProgress(null)
     })
 
     return () => { removeLog(); removeComplete(); removeError() }
-  }, [setIsRunning, setLogs, setProgress])
+  }, [setIsRunning, setLogs, setProgress, finishRun])
 
   const handleRun = async () => {
     setRunError(null)
@@ -563,6 +653,8 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
     setLogs([])
     liveLineIndexRef.current = null
     setLogCollapsed(false)
+    setLastRun(null)
+    runStartRef.current = Date.now()
     setIsRunning(true)
     // Seed progress state with total step count; step details fill in as log arrives
     setProgress({
@@ -574,6 +666,7 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
 
   const handleCancel = () => {
     window.electronAPI.cancelPipeline()
+    finishRun('cancelled')
     setIsRunning(false)
     setProgress(null)
     setLogs(prev => [...prev, { text: '\nCancelled by user.\n', type: 'error' }])
@@ -734,7 +827,9 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
         onDragOver={onDragOver}
         nodeTypes={NODE_TYPES}
         deleteKeyCode={modalLocked ? null : ['Backspace', 'Delete']}
-        fitView
+        fitView={!(restored && restored.viewport)}
+        defaultViewport={restored && restored.viewport ? restored.viewport : undefined}
+        onMoveEnd={() => saveNowRef.current()}
         fitViewOptions={{ padding: 0.2, minZoom: 0.05 }}
         minZoom={0.05}
         maxZoom={3}
@@ -772,137 +867,27 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
           maskColor={theme === 'dark' ? 'rgba(243,241,231,0.25)' : 'rgba(8,8,8,0.35)'}
         />
 
-        {/* Save / Load preset panel */}
+        {/* Toolbar (Undo … Clear) and Run — they shrink with the canvas instead of covering it (CanvasToolbar.jsx) */}
         <Panel position="top-left">
-          <div style={{ display: 'flex', gap: 6 }}>
-            {[['↶ Undo', undo, canUndo, 'Undo (⌘Z)'], ['↷ Redo', redo, canRedo, 'Redo (⇧⌘Z)']].map(([label, fn, enabled, tip]) => (
-              <button
-                key={label}
-                onClick={fn}
-                disabled={!enabled || isRunning}
-                title={tip}
-                style={{
-                  background: 'var(--paper)', color: 'var(--ink)',
-                  padding: '9px 12px', borderRadius: 'var(--radius-sm)',
-                  fontFamily: 'var(--font-display)', fontSize: 12,
-                  border: 'var(--border)', boxShadow: 'var(--shadow-sm)',
-                  opacity: (!enabled || isRunning) ? 0.4 : 1, cursor: (!enabled || isRunning) ? 'not-allowed' : 'pointer'
-                }}
-                onMouseDown={e => { if (enabled && !isRunning) { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'translate(3px, 3px)' } }}
-                onMouseUp={e => { e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; e.currentTarget.style.transform = 'none' }}
-                onMouseLeave={e => { e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; e.currentTarget.style.transform = 'none' }}
-              >
-                {label}
-              </button>
-            ))}
-            <button
-              onClick={handleSave}
-              disabled={isRunning}
-              style={{
-                background: 'var(--paper)', color: 'var(--ink)',
-                padding: '9px 16px', borderRadius: 'var(--radius-sm)',
-                fontFamily: 'var(--font-display)', fontSize: 12,
-                border: 'var(--border)', boxShadow: 'var(--shadow-sm)',
-                opacity: isRunning ? 0.5 : 1, cursor: isRunning ? 'not-allowed' : 'pointer'
-              }}
-              onMouseDown={e => { if (!isRunning) { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'translate(3px, 3px)' } }}
-              onMouseUp={e => { e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; e.currentTarget.style.transform = 'none' }}
-              onMouseLeave={e => { e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; e.currentTarget.style.transform = 'none' }}
-            >
-              💾 Save Preset
-            </button>
-            <button
-              onClick={handleLoad}
-              disabled={isRunning}
-              style={{
-                background: 'var(--paper)', color: 'var(--ink)',
-                padding: '9px 16px', borderRadius: 'var(--radius-sm)',
-                fontFamily: 'var(--font-display)', fontSize: 12,
-                border: 'var(--border)', boxShadow: 'var(--shadow-sm)',
-                opacity: isRunning ? 0.5 : 1, cursor: isRunning ? 'not-allowed' : 'pointer'
-              }}
-              onMouseDown={e => { if (!isRunning) { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'translate(3px, 3px)' } }}
-              onMouseUp={e => { e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; e.currentTarget.style.transform = 'none' }}
-              onMouseLeave={e => { e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; e.currentTarget.style.transform = 'none' }}
-            >
-              📂 Load Preset
-            </button>
-            <button
-              onClick={handleSnapshot}
-              title="Save a picture of the whole patch (PNG) together with its preset (JSON)"
-              style={{
-                background: 'var(--paper)', color: 'var(--ink)',
-                padding: '9px 14px', borderRadius: 'var(--radius-sm)',
-                fontFamily: 'var(--font-display)', fontSize: 12,
-                border: 'var(--border)', boxShadow: 'var(--shadow-sm)', cursor: 'pointer'
-              }}
-              onMouseDown={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'translate(3px, 3px)' }}
-              onMouseUp={e => { e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; e.currentTarget.style.transform = 'none' }}
-              onMouseLeave={e => { e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; e.currentTarget.style.transform = 'none' }}
-            >
-              📸 Snapshot
-            </button>
-            <button
-              onClick={() => setConfirmClear(true)}
-              disabled={isRunning}
-              title="Clear the workspace (asks first; ⌘Z undoes)"
-              style={{
-                background: 'var(--paper)', color: 'var(--ink)',
-                padding: '9px 14px', borderRadius: 'var(--radius-sm)',
-                fontFamily: 'var(--font-display)', fontSize: 12,
-                border: 'var(--border)', boxShadow: 'var(--shadow-sm)',
-                opacity: isRunning ? 0.5 : 1, cursor: isRunning ? 'not-allowed' : 'pointer'
-              }}
-              onMouseDown={e => { if (!isRunning) { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'translate(3px, 3px)' } }}
-              onMouseUp={e => { e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; e.currentTarget.style.transform = 'none' }}
-              onMouseLeave={e => { e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; e.currentTarget.style.transform = 'none' }}
-            >
-              🗑 Clear
-            </button>
-          </div>
+          <CanvasToolbar
+            width={canvasWidth}
+            isRunning={isRunning}
+            canUndo={canUndo} canRedo={canRedo} onUndo={undo} onRedo={redo}
+            onSave={handleSave} onLoad={handleLoad} onSnapshot={handleSnapshot}
+            onTidy={handleTidy} tidyLabel={selectionCount > 0 ? 'Tidy selection' : 'Tidy'}
+            onClear={() => setConfirmClear(true)}
+          />
         </Panel>
 
-        {/* Run / Cancel panel */}
         <Panel position="top-right">
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 6 }}>
-            {isRunning ? (
-              <button
-                onClick={handleCancel}
-                style={{
-                  background: 'var(--coral)', color: '#080808',
-                  padding: '9px 20px', borderRadius: 'var(--radius-sm)',
-                  fontFamily: 'var(--font-display)', fontSize: 12,
-                  border: 'var(--border)', boxShadow: 'var(--shadow-sm)'
-                }}
-                onMouseDown={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'translate(3px, 3px)' }}
-                onMouseUp={e => { e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; e.currentTarget.style.transform = 'none' }}
-                onMouseLeave={e => { e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; e.currentTarget.style.transform = 'none' }}
-              >
-                ■ Cancel
-              </button>
-            ) : (
-              <button
-                onClick={handleRun}
-                style={{
-                  background: 'var(--yellow)', color: '#080808',
-                  padding: '9px 20px', borderRadius: 'var(--radius-sm)',
-                  fontFamily: 'var(--font-display)', fontSize: 12,
-                  border: 'var(--border)', boxShadow: 'var(--shadow-sm)'
-                }}
-                onMouseDown={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'translate(3px, 3px)' }}
-                onMouseUp={e => { e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; e.currentTarget.style.transform = 'none' }}
-                onMouseLeave={e => { e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; e.currentTarget.style.transform = 'none' }}
-              >
-                ▶ Run Pipeline{autoOverwrite ? ' 🔥' : ''}
-              </button>
-            )}
-
+            <RunButton width={canvasWidth} isRunning={isRunning} onRun={handleRun} onCancel={handleCancel} overwrite={autoOverwrite} />
             {runError && (
               <div style={{
                 background: 'var(--paper)', border: '2px solid var(--coral)',
                 borderRadius: 'var(--radius-sm)', padding: '7px 12px',
                 fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--coral)',
-                maxWidth: 300, lineHeight: 1.5, boxShadow: 'var(--shadow-sm)'
+                maxWidth: Math.max(160, Math.min(300, canvasWidth - 24)), lineHeight: 1.5, boxShadow: 'var(--shadow-sm)'
               }}>
                 {runError}
               </div>
@@ -988,6 +973,8 @@ function AppInner() {
   // progress: null when idle, object while running
   // { step, total, name, pct (0-100|null), speed, duration (s|null), current (s) }
   const [progress, setProgress]         = useState(null)
+  // result of the last run { status: 'ok'|'failed'|'cancelled', step, total, name, seconds, message } — null while running / before the first run
+  const [lastRun, setLastRun]           = useState(null)
   const [showSetup, setShowSetup]       = useState(false)
   const [showHelp, setShowHelp]         = useState(false)
   const { sidebarCollapsed, setSidebarCollapsed, consoleCollapsed, setConsoleCollapsed, consoleHeight, setConsoleHeight } = useSettings()
@@ -1097,6 +1084,7 @@ function AppInner() {
               setLogCollapsed={setLogCollapsed}
               progress={progress}
               setProgress={setProgress}
+              setLastRun={setLastRun}
             />
           </ReactFlowProvider>
 
@@ -1104,6 +1092,8 @@ function AppInner() {
             logs={logs}
             isRunning={isRunning}
             progress={progress}
+            lastRun={lastRun}
+            onShowRun={() => { setConsoleCollapsed(false); setLastRun(null) }}
             collapsed={logCollapsed}
             height={consoleHeight}
             onResize={setConsoleHeight}

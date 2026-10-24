@@ -77,22 +77,7 @@ export const CATEGORIES = [
     label: 'Time & Motion',
     color: '#ff6847',
     programs: [
-      {
-        id: 'speed',
-        label: 'Speed',
-        description: 'Change playback speed without pitch-shifting audio',
-        args: [
-          {
-            name: 'speed_factor',
-            label: 'Speed Factor',
-            type: 'number',
-            required: true,
-            default: 1.0,
-            min: 0.5,
-            help: '>1 speeds up, <1 slows down. Must be ≥ 0.5'
-          }
-        ]
-      },
+      { id: 'speed', label: 'Speed', description: 'Change playback speed from ultra slow-motion (0.05×) to time-lapse (100×) — audio keeps its pitch, or mute it; optional smooth slow-motion', args: [] },
       { id: 'reverse',              label: 'Reverse',              description: 'Reverse the video', args: [] },
       { id: 'boomerang',            label: 'Boomerang',            description: 'Forward-then-reverse ping-pong loop', args: [] },
       { id: 'time_ramp',            label: 'Time Ramp',            description: 'Variable speed ramp within one clip (e.g. slow-mo into a speed-up), unlike the flat Speed effect', args: [] },
@@ -369,7 +354,25 @@ export const CATEGORIES = [
         ]
       },
       { id: 'kinetic_captions',  label: 'Kinetic Captions',  description: 'Per-frame rendered captions with a true size pop on the active word', args: [] },
-      { id: 'captburn',          label: 'Captburn',          description: 'Burn subtitles / captions into video',      args: [] },
+      {
+        id: 'captburn',
+        label: 'Captburn',
+        description: 'Burns the clip\'s own speech onto the picture as kinetic-typography captions (the spoken word pops larger) — the same look as Auto Narrate, but using what is said in the clip. Uses the clip\'s transcript if there is one; otherwise transcribes it locally (Vosk) first.',
+        args: [
+          { name: 'stt_model', label: 'Vosk Model', type: 'file', subtype: 'model', required: true,
+            help: 'Used to transcribe the clip first, if no transcript for it exists yet' },
+          { name: 'font', label: 'Font', type: 'file', required: false, default: 'Arial',
+            help: 'Caption font name (or a path to a .ttf/.otf file)' },
+          { name: 'font_size', label: 'Font Size', type: 'number', required: false, default: 76,
+            help: 'Requested caption font size in px — auto-shrunk as needed to fit the frame' },
+          { name: 'primary_color', label: 'Text Color', type: 'color', required: false, default: '#FFFFFF',
+            help: 'Color of words that are not currently being spoken' },
+          { name: 'highlight_color', label: 'Highlight Color', type: 'color', required: false, default: '#FFE128',
+            help: 'Color of the word currently being spoken' },
+          { name: 'outline_color', label: 'Outline Color', type: 'color', required: false, default: '#000000',
+            help: 'Caption text outline color' }
+        ]
+      },
       {
         id: 'auto_narrate',
         label: 'Auto Narrate',

@@ -1,3 +1,4 @@
+import os
 import subprocess
 import re
 import sys
@@ -50,6 +51,48 @@ def ffmpeg_has_filter(name):
 
 def time_to_seconds(h, m, s):
     return int(h) * 3600 + int(m) * 60 + float(s)
+
+_VIDEO_OUT_EXTS = {".mp4", ".m4v", ".mov", ".mkv", ".webm", ".avi", ".mpg", ".mpeg"}
+
+
+def _video_packets(path):
+    """(has_video_stream, packet_count) of a media file, or None when it can't be probed."""
+    try:
+        r = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-count_packets",
+                            "-show_entries", "stream=codec_type,nb_read_packets,r_frame_rate", "-of", "json", str(path)],
+                           capture_output=True, text=True, timeout=60)
+        if r.returncode != 0:
+            return None
+        import json
+        streams = json.loads(r.stdout or "{}").get("streams") or []
+        if not streams:
+            return (False, 0)
+        return (True, int(streams[0].get("nb_read_packets") or 0))
+    except Exception:
+        return None
+
+
+def _check_picture_survived(command, input_file, output_file, label=None):
+    """
+    ffmpeg exits 0 even when a time-window filter (tmedian, amplify, ...) swallows a clip that is shorter than its
+    window: you get a file with sound and no picture, and the *next* module in a chain then fails with a confusing
+    message. Catch it here, at the step that caused it.
+    """
+    out = str(output_file)
+    if os.path.splitext(out)[1].lower() not in _VIDEO_OUT_EXTS or "-vn" in command:
+        return
+    inp = _video_packets(input_file)
+    if not inp or not inp[0] or inp[1] == 0:      # input has no picture of its own (or can't be probed): nothing to compare
+        return
+    res = _video_packets(out)
+    if res is None or (res[0] and res[1] > 0):
+        return
+    raise RuntimeError(
+        f"❌ {label or 'This effect'} produced no picture: the output has sound but no video frames. "
+        f"The clip it was given has only about {inp[1]} frames, which is shorter than the time window of this effect "
+        f"(some effects look several dozen frames back and ahead). Use a longer clip, or a different effect."
+    )
+
 
 def run_ffmpeg_with_progress(command, input_file, output_file, show_ffmpeg_output=False, duration_override=None):
     # duration_override lets a caller that's only processing part of input_file
@@ -157,6 +200,8 @@ def run_ffmpeg_with_progress(command, input_file, output_file, show_ffmpeg_outpu
                 f"❌ ffmpeg exited with code {process.returncode}"
                 + (f"\n{reason}" if reason else "")
             )
+
+        _check_picture_survived(command, input_file, output_file)
 
         print(f"\n📺 Process Complete: {output_file} \n")
 

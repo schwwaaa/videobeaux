@@ -96,6 +96,12 @@ Build it yourself on macOS: `tools/ffmpeg-build/build-macos.sh` (≈15 min the f
 configure line and the source archives). Bundled AI models keep their own licences (see **Setup → Local AI features**).
 This section is an engineering summary, not legal advice — have your distribution model reviewed before selling.
 
+### Your workspace is remembered
+
+The canvas (programs, connections, view) is saved automatically and comes back if the app reloads, restarts, or your laptop wakes from
+sleep (the dev server page reloads on wake, which used to leave an empty canvas). Undo history is not kept across a reload. Turn it off
+under **🎨 Appearance → Remember workspace**; **Clear** is remembered too.
+
 ### Looks and canvas appearance
 
 **🎨 Appearance** lets you try different **Looks** (Classic, Patterns, Signatures, Output art — see
@@ -111,7 +117,9 @@ state is saved in presets.
 - **Drop files in** — drag videos from Finder / Explorer onto the canvas: each becomes an Input node. **📸 Snapshot** saves a PNG of the whole patch together with its preset JSON. The 🔥 button (bottom-left) toggles one-step runs that overwrite without asking. Drag the console's top edge to resize it; **Copy** copies its text.
 - **Groups** — select two or more programs and press ⌘G (or *Group*): they move together, can be locked, renamed and colored, and a caret folds the whole group into one compact card (⇧⌘G ungroups). Folding is only visual — connections and what runs are unchanged.
 - **Copy / paste** — select programs, ⌘C, then ⌘V pastes them (with the connections between them) at your cursor; ⌘D duplicates in place. The small bar at the bottom-left has the same buttons and can be switched off under 🎨 Appearance.
-- **Number fields** — type a value (the box can be emptied and retyped) or drag the slider; the faint strip under it is a good starting range, the tick is the default, ↺ resets, and many programs have **Presets** chips.
+- **Number fields** — type a value (the box can be emptied and retyped) or drag the slider; the faint strip under it is a good starting range, the tick is the default, ↺ resets, and many programs have **Presets** chips. Sliders whose effect doesn't grow evenly are *curved* (hover says "logarithmic/curved slider") so the middle of the slider gives about half the visible effect; the box and saved presets always hold the real value. The measured table is `ui_design/slider-audit.md` (re-run with `python tools/audit_sliders.py`); Amount sliders are plain linear blends.
+- **Tidy** — **✨ Tidy** (⌘⇧L) arranges a messy canvas left → right in connection order (or just the selected programs); one ⌘Z undoes it. The toolbar shrinks with the window (labels → icons → a **☰ Tools** menu; ◂ hides it).
+- **Did it work?** — when the console is folded, a chip next to it shows **✓ Done**, **✗ Failed at step n — name** or **■ Cancelled** (click it for the log). A desktop notification appears if the window isn't focused (switch off under 🎨 Appearance → *Notify when done*).
 - **Help, Clear, hide panels** — **?** (or F1) opens a short help; **Clear** empties the canvas after confirming (⌘Z undoes); ⌘B hides the program list and ⌘J the console (progress stays visible).
 - **Layout editor (Lagkage)** — press ✎ next to *Layout JSON* to drag images, GIFs and videos onto a stand-in for your video instead of writing JSON. Positions are saved as percentages, so a layout works at any resolution. The same ✎ button mechanism (`components/helpers/registry.js`) can host editors for other programs.
 - **Transparent keying** — Chroma Key / Luma Key with *Background = transparent* needs the Output node set to **WEBM** or **MOV**.
@@ -228,7 +236,7 @@ npm run ffmpeg:local        # ~15 min the first time; writes gui/.ffmpeg-build/d
 npm run dist
 ```
 
-Any folder containing `ffmpeg` + `ffprobe` also works: `VIDEOBEAUX_FFMPEG_DIR=/path/to/folder npm run dist`. A build configured with
+The build looks for ffmpeg *first* — before it deletes anything in `gui/resources` — in this order: `VIDEOBEAUX_FFMPEG_DIR`, `gui/.ffmpeg-build/dist`, the ffmpeg already staged in `gui/resources/ffmpeg`, then our published release. A failed run therefore no longer wipes what an earlier run built. Any folder containing `ffmpeg` + `ffprobe` also works: `VIDEOBEAUX_FFMPEG_DIR=/path/to/folder npm run dist`. A build configured with
 `--enable-nonfree` is refused. A locally built installer is fine for your own use; before you distribute it, publish the matching source
 archives (see [`LICENSES/README.md`](LICENSES/README.md)).
 
@@ -301,7 +309,7 @@ _Speed, reversal, loops, stutters, freezes and scrolling._
 
 | Program | Description |
 |---|---|
-| Speed | Change playback speed without pitch-shifting audio |
+| Speed | Change playback speed without pitch-shifting audio — 0.05× (ultra slow) to 100×, optional smooth slow-motion and mute |
 | Reverse | Reverse the video |
 | Boomerang | Forward-then-reverse ping-pong loop |
 | Time Ramp | Variable speed ramp within one clip (e.g. slow-mo into a speed-up), unlike the flat Speed effect |
@@ -449,7 +457,7 @@ _Transcript-driven editing, captions and narration (Vosk / kokoro-tts, all local
 |---|---|
 | Transcraibe | AI speech-to-text transcription (Vosk) |
 | Kinetic Captions | Per-frame rendered captions with a true size pop on the active word |
-| Captburn | Burn subtitles / captions into video |
+| Captburn | Burn the clip's own speech as kinetic captions (transcribes with Vosk first if needed) — same look as Auto Narrate |
 | Auto Narrate | Adds AI-narrated captions to a video — type your own script (offline, default) or draft one from a topic via an optional local Ollama model. Synthesizes speech (kokoro-tts), transcribes it locally (Vosk), mixes it over the original audio, and burns kinetic-typography captions (the spoken word pops larger, per-frame rendered — see Kinetic Captions). |
 | Grep Supercut | Searches a transcript for a word, phrase, or regex and cuts together every match — the classic "videogrep": find every time someone says X. |
 | Qwikchop Deluxe | Content-aware highlight extraction: scores candidate excerpts from the transcript (local centrality + audio energy + keyword hooks — no network) and exports the best ones, each as its own file. |

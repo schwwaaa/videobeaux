@@ -11,10 +11,7 @@ FREE = None
 
 RANGES = {
     'auto_narrate': {'duration': (5, 300), 'voice_speed': (0.5, 2), 'original_volume': (0, 1), 'font_size': (12, 200)},
-    'captburn': {'font-size': (8, 200), 'words-per-caption': (1, 12), 'outline-width': (0, 20), 'shadow': (0, 20),
-                 'scale-x': (10, 300), 'scale-y': (10, 300), 'spacing': (-10, 40), 'rotate': (-180, 180),
-                 'margin-l': (0, 500), 'margin-r': (0, 500), 'margin-v': (0, 500), 'align': (1, 9),
-                 'border-style': (1, 3), 'x': (0, 4000), 'y': (0, 4000)},
+    'captburn': {'font_size': (12, 200)},
     'cartoon': {'levels': (2, 16), 'smooth': (1, 15), 'edge_size': (3, 21), 'edge_strength': (1, 15), 'saturation': (0, 3)},
     'chromatic_pulse': {'amount': (0, 30), 'speed': (0, 10)},
     'concat': {'crossfade': (0, 10), 'gap': (0, 10)},

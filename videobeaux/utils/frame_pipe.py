@@ -54,7 +54,10 @@ def probe_video(path) -> VideoInfo:
     v = next((s for s in streams if s.get("codec_type") == "video"
               and s.get("disposition", {}).get("attached_pic") != 1), None)
     if v is None:
-        raise RuntimeError(f"❌ No video stream in {path}")
+        raise RuntimeError(
+            f"❌ No video stream in {path}\n"
+            "   If this file came from a previous step in your chain, that step produced sound but no picture — "
+            "usually because the clip is shorter than its time window. Use a longer clip.")
     w, h = int(v["width"]), int(v["height"])
     rotation = 0
     for sd in v.get("side_data_list") or []:

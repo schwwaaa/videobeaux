@@ -13,7 +13,7 @@
 // for the *running* interpreter's platform) — cross-building for another
 // OS needs to run this script on a machine/runner of that OS.
 
-import { mkdirSync, rmSync, readdirSync, statSync, copyFileSync, createWriteStream, readFileSync, writeFileSync, existsSync, mkdtempSync } from 'fs'
+import { mkdirSync, rmSync, readdirSync, statSync, copyFileSync, createWriteStream, readFileSync, writeFileSync, mkdtempSync, chmodSync, statfsSync } from 'fs'
 import { tmpdir } from 'os'
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
@@ -125,57 +125,62 @@ async function stagePython() {
 // the installed app. (No libvidstab: nothing here uses it.)  What the app requires of a build is
 // listed in videobeaux/assets/ffmpeg_requirements.json.
 
-// Where a locally built ffmpeg may come from (first match wins), so `npm run dist` works before our release is published:
+// Where ffmpeg comes from (first match wins) — decided BEFORE anything in gui/resources is touched, so a missing ffmpeg
+// stops the build in seconds instead of after 10 minutes of Python/pip work, and never costs you what a previous run staged:
 //   --ffmpeg-dir=PATH  or  VIDEOBEAUX_FFMPEG_DIR=PATH   any folder containing ffmpeg + ffprobe
 //   gui/.ffmpeg-build/dist                               what `npm run ffmpeg:local` produces
-// Either is refused if it is an --enable-nonfree build. Otherwise our published release is downloaded.
+//   gui/resources/ffmpeg                                 the one a previous successful run staged
+//   our published release (gui/ffmpeg-runtime.json)
+// A local build is refused if it won't start or is --enable-nonfree. The installer never uses a third-party build.
 const ffmpegDirArg = process.argv.find(a => a.startsWith('--ffmpeg-dir='))
 const LOCAL_FFMPEG_CANDIDATES = [
   ffmpegDirArg && ffmpegDirArg.split('=')[1],
   process.env.VIDEOBEAUX_FFMPEG_DIR,
-  join(GUI_ROOT, '.ffmpeg-build', 'dist')
+  join(GUI_ROOT, '.ffmpeg-build', 'dist'),
+  join(RESOURCES, 'ffmpeg')
 ]
 
-async function stageFfmpeg(localDir) {
-  const target = join(RESOURCES, 'ffmpeg')
+/** Returns { dir, how } — a scratch folder holding a verified ffmpeg + ffprobe, ready to be copied into resources. */
+async function resolveFfmpeg() {
+  const keep = mkdtempSync(join(tmpdir(), 'vb-ffmpeg-stage-'))
+  const localDir = targetPlatform === process.platform ? findLocalFfmpegDir(LOCAL_FFMPEG_CANDIDATES, targetPlatform) : null
+  if (ffmpegDirArg && !localDir) throw new Error(`--ffmpeg-dir: no ffmpeg + ffprobe found in ${ffmpegDirArg.split('=')[1]}`)
   if (localDir) {
-    if (targetPlatform !== process.platform) {
-      throw new Error(`A local ffmpeg can only be bundled for this machine's platform (${process.platform}); `
-        + `use the published release for ${targetPlatform}.`)
-    }
-    const r = await adoptLocalFfmpeg({ sourceDir: localDir, targetDir: target, platform: targetPlatform })
-    console.log(`Using your locally built ffmpeg from ${localDir}\n  ${r.version}\n  licence flavor: ${r.license?.flavor || 'unknown'}`)
-    return
+    const r = await adoptLocalFfmpeg({ sourceDir: localDir, targetDir: keep, platform: targetPlatform })
+    return { dir: keep, how: `local build in ${localDir}`, version: r.version, flavor: r.license?.flavor }
   }
   const runtime = JSON.parse(readFileSync(join(GUI_ROOT, 'ffmpeg-runtime.json'), 'utf8'))
   try {
     await installFfmpeg({
-      targetDir: target,
+      targetDir: keep,
       runtime,
       platform: targetPlatform,
       arch: process.arch,
-      onProgress: p => { if (p.message && p.received === 0) console.log(p.message) }
+      onProgress: p => { if (p.message && p.received === 0) console.log('  ' + p.message) }
     })
   } catch (e) {
     if (/HTTP 404/.test(e.message)) {
       throw new Error(
         `Our ffmpeg release "${runtime.tag}" has not been published yet (HTTP 404), and the installer never falls back to a ` +
-        `third-party build.\n\nBuild it yourself and re-run:\n` +
+        `third-party build. Nothing in gui/resources was touched.\n\nBuild it yourself and re-run:\n` +
         `    npm run ffmpeg:local && npm run dist\n` +
         `(or point at any non-nonfree build:  VIDEOBEAUX_FFMPEG_DIR=/path/to/folder npm run dist)\n\n` +
         `Or publish the release: GitHub → Actions → "Build redistributable ffmpeg", then push tag ${runtime.tag}.`)
     }
     throw e
   }
-  // Release guard: installFfmpeg already refuses a --enable-nonfree binary (it can't be redistributed).
-  // Report the flavor so it is visible in the build log, and enforce it for binaries staged some other way.
-  const bin = ffmpegBinaryPath(target, 'ffmpeg', targetPlatform)
-  if (targetPlatform === process.platform) {
-    const lic = await ffmpegLicense(bin)
-    if (lic) {
-      console.log(`ffmpeg licence flavor: ${lic.flavor}${lic.version3 ? ' (v3)' : ''}`)
-      if (lic.nonfree) throw new Error('Refusing to package an --enable-nonfree ffmpeg: it is not redistributable.')
-    }
+  const lic = targetPlatform === process.platform ? await ffmpegLicense(ffmpegBinaryPath(keep, 'ffmpeg', targetPlatform)) : null
+  if (lic?.nonfree) throw new Error('Refusing to package an --enable-nonfree ffmpeg: it is not redistributable.')
+  return { dir: keep, how: `published release ${runtime.tag}`, version: '', flavor: lic?.flavor }
+}
+
+function placeFfmpeg(from) {
+  const target = join(RESOURCES, 'ffmpeg')
+  mkdirSync(target, { recursive: true })
+  for (const t of ['ffmpeg', 'ffprobe']) {
+    const dest = ffmpegBinaryPath(target, t, targetPlatform)
+    copyFileSync(ffmpegBinaryPath(from, t, targetPlatform), dest)
+    if (targetPlatform !== 'win32') chmodSync(dest, 0o755)
   }
 }
 
@@ -208,28 +213,43 @@ function stageVideobeaux() {
 
 // ── Main ──────────────────────────────────────────────────────────────────
 
+function checkDisk() {
+  try {
+    const st = statfsSync(GUI_ROOT)
+    const free = Number(st.bavail) * Number(st.bsize) / 1e9
+    console.log(`Free disk space: ${free.toFixed(1)} GB`)
+    if (free < 4) throw new Error(`Only ${free.toFixed(1)} GB free — the installer build needs roughly 6–8 GB. Free some space and re-run.`)
+    if (free < 10) console.log('  ⚠️  Under 10 GB free: the build may run out of space.')
+  } catch (e) {
+    if (/free —/.test(e.message)) throw e                      // our own message; statfs being unavailable is not an error
+  }
+}
+
 async function main() {
   console.log(`Staging gui/resources/ for platform: ${targetPlatform}`)
-  // A local ffmpeg may live inside gui/resources itself (e.g. the one a previous run staged) — keep a copy across the wipe.
-  let localDir = findLocalFfmpegDir(LOCAL_FFMPEG_CANDIDATES, targetPlatform)
-  if (localDir && (localDir === RESOURCES || localDir.startsWith(RESOURCES + '/') || localDir.startsWith(RESOURCES + '\\'))) {
-    const keep = mkdtempSync(join(tmpdir(), 'vb-ffmpeg-keep-'))
-    for (const t of ['ffmpeg', 'ffprobe']) copyFileSync(ffmpegBinaryPath(localDir, t, targetPlatform), ffmpegBinaryPath(keep, t, targetPlatform))
-    localDir = keep
-  }
-  if (ffmpegDirArg && !localDir) throw new Error(`--ffmpeg-dir: no ffmpeg + ffprobe found in ${ffmpegDirArg.split('=')[1]}`)
+  checkDisk()
+
+  console.log('\n[1/4] ffmpeg — deciding where it comes from (nothing is deleted yet)')
+  const ff = await resolveFfmpeg()
+  console.log(`  using the ${ff.how}${ff.version ? `\n  ${ff.version}` : ''}${ff.flavor ? `\n  licence flavor: ${ff.flavor}` : ''}`)
+
+  console.log('\n[2/4] Python interpreter + packages (the slow part)')
   rmrf(RESOURCES)
   mkdirSync(RESOURCES, { recursive: true })
-
   await stagePython()
-  await stageFfmpeg(localDir)
+
+  console.log('\n[3/4] copying ffmpeg into gui/resources/ffmpeg')
+  placeFfmpeg(ff.dir)
+  rmrf(ff.dir)
+
+  console.log('\n[4/4] videobeaux package + tools')
   stageVideobeaux()
 
   console.log('\n✓ gui/resources/ staged:')
   console.log(`  ${join(RESOURCES, 'python')}`)
   console.log(`  ${join(RESOURCES, 'ffmpeg')}`)
   console.log(`  ${join(RESOURCES, 'videobeaux')}`)
-  console.log(`  ${join(RESOURCES, 'discover_programs.py')}`)
+  console.log(`  ${join(RESOURCES, 'gui', 'discover_programs.py')}`)
 }
 
 main().catch(err => {

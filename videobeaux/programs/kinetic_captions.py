@@ -41,7 +41,7 @@ import tempfile
 
 from PIL import Image, ImageDraw, ImageFont
 
-from videobeaux.programs.captburn import _coerce_segments, _extract_words, _find_font_file, _is_capton
+from videobeaux.utils.caption_words import coerce_segments as _coerce_segments, extract_words as _extract_words, find_font_file as _find_font_file, is_capton as _is_capton
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
 
 
@@ -260,7 +260,7 @@ def register_arguments(parser: argparse.ArgumentParser):
     parser.description = (
         "Kinetic-typography captions burned in via per-frame PIL rendering (not ASS/libass), so the "
         "currently-spoken word can grow larger while the rest of the line stays perfectly still — the "
-        "same technique short-form caption tools use. Slower than captburn (real frames written and "
+        "same technique short-form caption tools use. Slower than libass-based burning (real frames written and "
         "re-encoded) but supports a true per-word size pop that ASS's text-flow engine can't do cleanly."
     )
     parser.add_argument("-t", "--trans-json", type=str, help="Transcript JSON (default: <input>.json)")

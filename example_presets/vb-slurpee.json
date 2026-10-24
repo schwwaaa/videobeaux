@@ -1,0 +1,107 @@
+{
+  "presetFormatVersion": 1,
+  "savedAt": "2026-10-16T05:05:49.661Z",
+  "nodes": [
+    {
+      "id": "input-1",
+      "type": "inputNode",
+      "position": {
+        "x": -925.1979503645834,
+        "y": 25.14704195799225
+      },
+      "data": {
+        "filePath": "/Users/tgm/Desktop/sample.mp4"
+      },
+      "deletable": false
+    },
+    {
+      "id": "output-1",
+      "type": "outputNode",
+      "position": {
+        "x": 279.310200712577,
+        "y": 6.469750253136148
+      },
+      "data": {
+        "filePath": "/Users/tgm/Desktop/output.mp4",
+        "format": "mp4"
+      },
+      "deletable": false
+    },
+    {
+      "id": "effect-28-1792127002711",
+      "type": "effectNode",
+      "position": {
+        "x": -629.0444800965527,
+        "y": 128.12885674710273
+      },
+      "data": {
+        "program": "lsd_feedback_pro",
+        "args": {
+          "frames": 8
+        }
+      }
+    },
+    {
+      "id": "effect-29-1792127010019",
+      "type": "effectNode",
+      "position": {
+        "x": -358.46997124883967,
+        "y": 66.12219846950181
+      },
+      "data": {
+        "program": "double_cup",
+        "args": {
+          "amount": 1
+        }
+      }
+    },
+    {
+      "id": "effect-30-1792127015574",
+      "type": "effectNode",
+      "position": {
+        "x": -61.119859963071576,
+        "y": 29.481900396373987
+      },
+      "data": {
+        "program": "fever",
+        "args": {
+          "amount": 1
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "xy-edge__input-1-effect-28-1792127002711",
+      "source": "input-1",
+      "target": "effect-28-1792127002711",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-28-1792127002711-effect-29-1792127010019",
+      "source": "effect-28-1792127002711",
+      "target": "effect-29-1792127010019",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-29-1792127010019-effect-30-1792127015574",
+      "source": "effect-29-1792127010019",
+      "target": "effect-30-1792127015574",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-30-1792127015574-output-1",
+      "source": "effect-30-1792127015574",
+      "target": "output-1",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    }
+  ]
+}

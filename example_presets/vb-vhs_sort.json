@@ -1,0 +1,132 @@
+{
+  "presetFormatVersion": 1,
+  "savedAt": "2026-10-16T03:46:21.958Z",
+  "nodes": [
+    {
+      "id": "input-1",
+      "type": "inputNode",
+      "position": {
+        "x": -925.1979503645834,
+        "y": 25.14704195799225
+      },
+      "data": {
+        "filePath": "/Users/tgm/Desktop/sample.mp4"
+      },
+      "deletable": false
+    },
+    {
+      "id": "output-1",
+      "type": "outputNode",
+      "position": {
+        "x": 349.6926165626649,
+        "y": 179.10076055597764
+      },
+      "data": {
+        "filePath": "/Users/tgm/Desktop/output.mp4",
+        "format": "mp4"
+      },
+      "deletable": false
+    },
+    {
+      "id": "effect-10-1792122218755",
+      "type": "effectNode",
+      "position": {
+        "x": -548.036582044848,
+        "y": 238.69855639513136
+      },
+      "data": {
+        "program": "vhs_tracking",
+        "args": {
+          "intensity": 0.4,
+          "speed": 6
+        }
+      }
+    },
+    {
+      "id": "effect-11-1792122220047",
+      "type": "effectNode",
+      "position": {
+        "x": -247.08753405092622,
+        "y": 58.965097176539174
+      },
+      "data": {
+        "program": "pixel_sort",
+        "args": {
+          "max_width": 2222,
+          "threshold": 115
+        }
+      }
+    },
+    {
+      "id": "effect-12-1792122221272",
+      "type": "effectNode",
+      "position": {
+        "x": -524.3507773416227,
+        "y": 476.94988605698614
+      },
+      "data": {
+        "program": "chromatic_pulse",
+        "args": {
+          "amount": 23,
+          "speed": 2
+        }
+      }
+    },
+    {
+      "id": "effect-13-1792122223918",
+      "type": "effectNode",
+      "position": {
+        "x": -77.10705323954444,
+        "y": 312.5425357640103
+      },
+      "data": {
+        "program": "deep_fry",
+        "args": {
+          "intensity": 0.57
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "xy-edge__input-1-effect-10-1792122218755",
+      "source": "input-1",
+      "target": "effect-10-1792122218755",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-10-1792122218755-effect-12-1792122221272",
+      "source": "effect-10-1792122218755",
+      "target": "effect-12-1792122221272",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-12-1792122221272-effect-11-1792122220047",
+      "source": "effect-12-1792122221272",
+      "target": "effect-11-1792122220047",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-11-1792122220047-effect-13-1792122223918",
+      "source": "effect-11-1792122220047",
+      "target": "effect-13-1792122223918",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-13-1792122223918-output-1",
+      "source": "effect-13-1792122223918",
+      "target": "output-1",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    }
+  ]
+}

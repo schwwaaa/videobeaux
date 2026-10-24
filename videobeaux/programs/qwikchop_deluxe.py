@@ -36,7 +36,7 @@ from typing import Any, Dict, List, Optional, Tuple
 import numpy as np
 import requests
 
-from videobeaux.programs.captburn import _coerce_segments, _extract_words, _is_capton
+from videobeaux.utils.caption_words import coerce_segments as _coerce_segments, extract_words as _extract_words, is_capton as _is_capton
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
 
 OLLAMA_URL = "http://localhost:11434/api/chat"

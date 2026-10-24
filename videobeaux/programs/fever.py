@@ -14,7 +14,7 @@ def run(args):
     command = [
         "ffmpeg",
         "-i", args.input,
-        "-filter_complex", "[0:v]shuffleplanes=map1=0:map3=2,smartblur=luma_radius=.6:lr=2.88:luma_strength=0.11:lt=-17:cr=0.93,amplify=radius=1.4:factor=4[out_v]",
+        "-filter_complex", "[0:v]tpad=start=1:start_mode=clone:stop=2:stop_mode=clone,shuffleplanes=map1=0:map3=2,smartblur=luma_radius=.6:lr=2.88:luma_strength=0.11:lt=-17:cr=0.93,amplify=radius=1:factor=4[out_v]",
         "-map", "[out_v]",
         "-map", "0:a?",
         "-c:v", "libx264",

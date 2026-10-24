@@ -114,6 +114,24 @@ function createWindow() {
     }
   })
 
+  // A renderer that dies (OS reset after sleep, GPU crash…) or a page that fails to load gets reloaded — the canvas is
+  // remembered by the renderer (workspaceStore.js), so it comes straight back. Retries are capped to avoid a reload loop.
+  const reloads = []
+  const tryReload = (why) => {
+    const now = Date.now()
+    while (reloads.length && now - reloads[0] > 30000) reloads.shift()
+    if (reloads.length >= 4 || mainWindow.isDestroyed()) return
+    reloads.push(now)
+    console.error(`Reloading the window (${why})`)
+    setTimeout(() => { if (!mainWindow.isDestroyed()) mainWindow.reload() }, 800)
+  }
+  mainWindow.webContents.on('render-process-gone', (_e, details) => {
+    if (details.reason !== 'clean-exit') tryReload(`renderer gone: ${details.reason}`)
+  })
+  mainWindow.webContents.on('did-fail-load', (_e, code, desc, _url, isMainFrame) => {
+    if (isMainFrame && code !== -3) tryReload(`load failed: ${desc}`)     // -3 = aborted (a normal navigation)
+  })
+
   if (process.env['ELECTRON_RENDERER_URL']) {
     mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
   } else {

@@ -1,0 +1,13362 @@
+{
+ "ascii_art.edges": {
+  "program": "ascii_art",
+  "arg": "edges",
+  "label": "Edge boost",
+  "default": 0.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   3.3711740970611572,
+   5.918692111968994,
+   8.465535163879395,
+   10.035943984985352
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.336,
+   0.59,
+   0.844,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "auto_narrate.original_volume": {
+  "program": "auto_narrate",
+  "arg": "original_volume",
+  "label": "Original Volume",
+  "default": 0.2,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "bad_animation.amount": {
+  "program": "bad_animation",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.7698045372962952,
+   1.483796238899231,
+   2.2101659774780273,
+   4.719521522521973
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": "pow:0.56",
+  "s": [
+   0.0,
+   0.163,
+   0.314,
+   0.468,
+   1.0
+  ],
+  "class": "slow",
+  "curve": "pow:0.7",
+  "d0": 0.0,
+  "confident": true
+ },
+ "auto_narrate.duration": {
+  "program": "auto_narrate",
+  "arg": "duration",
+  "label": "Duration",
+  "default": 30.0,
+  "values": [
+   5.0,
+   78.75,
+   152.5,
+   226.2,
+   300.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   5,
+   300
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "bad_contrast.amount": {
+  "program": "bad_contrast",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   10.227622985839844,
+   20.14982032775879,
+   27.453222274780273,
+   33.75257110595703
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.303,
+   0.597,
+   0.813,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "auto_narrate.voice_speed": {
+  "program": "auto_narrate",
+  "arg": "voice_speed",
+  "label": "Voice Speed",
+  "default": 1.0,
+  "values": [
+   0.5,
+   0.875,
+   1.25,
+   1.625,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   19.383872985839844,
+   20.780054092407227,
+   23.536041259765625,
+   23.87130355834961
+  ],
+  "done": true,
+  "range": [
+   0.5,
+   2
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.812,
+   0.871,
+   0.986,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "ball_point_pen.amount": {
+  "program": "ball_point_pen",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   1.7305490970611572,
+   3.030606985092163,
+   4.348379611968994,
+   5.648148059844971
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.306,
+   0.537,
+   0.77,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "beauxtrix.r_a": {
+  "program": "beauxtrix",
+  "arg": "r_a",
+  "label": "Red \u2190 A",
+  "default": 1.0,
+  "values": [
+   -2.0,
+   -1.0,
+   0.0,
+   1.0,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   0.5416988134384155,
+   3.9103009700775146,
+   26.165735244750977,
+   2.7131237983703613
+  ],
+  "done": true,
+  "range": [
+   -2,
+   2
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.021,
+   0.149,
+   1.0,
+   0.104
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "auto_narrate.font_size": {
+  "program": "auto_narrate",
+  "arg": "font_size",
+  "label": "Font Size",
+  "default": 76,
+  "values": [
+   12,
+   59,
+   106,
+   153,
+   200
+  ],
+  "diff": [
+   0.0,
+   10.231366157531738,
+   25.715354919433594,
+   28.46712875366211,
+   28.696720123291016
+  ],
+  "done": true,
+  "range": [
+   12,
+   200
+  ],
+  "scale": "pow:1.82",
+  "s": [
+   0.0,
+   0.357,
+   0.896,
+   0.992,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:1.65",
+  "d0": 0.0,
+  "confident": true
+ },
+ "beauxtrix.r_c": {
+  "program": "beauxtrix",
+  "arg": "r_c",
+  "label": "Red \u2190 C",
+  "default": 0.0,
+  "values": [
+   -2.0,
+   -1.0,
+   0.0,
+   1.0,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   3.44055438041687,
+   25.715084075927734,
+   2.5586419105529785,
+   0.5594457387924194
+  ],
+  "done": true,
+  "range": [
+   -2,
+   2
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.134,
+   1.0,
+   0.099,
+   0.022
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "beauxtrix.r_d": {
+  "program": "beauxtrix",
+  "arg": "r_d",
+  "label": "Red \u2190 D",
+  "default": 0.0,
+  "values": [
+   -2.0,
+   -1.0,
+   0.0,
+   1.0,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   3.44055438041687,
+   25.715084075927734,
+   2.5586419105529785,
+   0.5594457387924194
+  ],
+  "done": true,
+  "range": [
+   -2,
+   2
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.134,
+   1.0,
+   0.099,
+   0.022
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "beauxtrix.r_bias": {
+  "program": "beauxtrix",
+  "arg": "r_bias",
+  "label": "Red bias",
+  "default": 0.0,
+  "values": [
+   -1.0,
+   -0.5,
+   0.0,
+   0.5,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   23.519996643066406,
+   48.946468353271484,
+   24.909143447875977,
+   2.797935962677002
+  ],
+  "done": true,
+  "range": [
+   -1,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.481,
+   1.0,
+   0.509,
+   0.057
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "beauxtrix.g_a": {
+  "program": "beauxtrix",
+  "arg": "g_a",
+  "label": "Green \u2190 A",
+  "default": 1.0,
+  "values": [
+   -2.0,
+   -1.0,
+   0.0,
+   1.0,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   88.56867218017578,
+   96.57828521728516
+  ],
+  "done": true,
+  "range": [
+   -2,
+   2
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.0,
+   0.0,
+   0.917,
+   1.0
+  ],
+  "class": "late",
+  "curve": "pow:0.35",
+  "d0": 0.0,
+  "confident": false
+ },
+ "beauxtrix.g_b": {
+  "program": "beauxtrix",
+  "arg": "g_b",
+  "label": "Green \u2190 B",
+  "default": 0.0,
+  "values": [
+   -2.0,
+   -1.0,
+   0.0,
+   1.0,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   1.5535300970077515,
+   86.16981506347656,
+   96.42373657226562,
+   97.49845886230469
+  ],
+  "done": true,
+  "range": [
+   -2,
+   2
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.016,
+   0.884,
+   0.989,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:0.43",
+  "d0": 0.0,
+  "confident": false
+ },
+ "beauxtrix.g_c": {
+  "program": "beauxtrix",
+  "arg": "g_c",
+  "label": "Green \u2190 C",
+  "default": 0.0,
+  "values": [
+   -2.0,
+   -1.0,
+   0.0,
+   1.0,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   88.56867218017578,
+   96.57828521728516,
+   97.59172821044922
+  ],
+  "done": true,
+  "range": [
+   -2,
+   2
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.0,
+   0.908,
+   0.99,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:0.35",
+  "d0": 0.0,
+  "confident": false
+ },
+ "beauxtrix.g_d": {
+  "program": "beauxtrix",
+  "arg": "g_d",
+  "label": "Green \u2190 D",
+  "default": 0.0,
+  "values": [
+   -2.0,
+   -1.0,
+   0.0,
+   1.0,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   88.56867218017578,
+   96.57828521728516,
+   97.59172821044922
+  ],
+  "done": true,
+  "range": [
+   -2,
+   2
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.0,
+   0.908,
+   0.99,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:0.35",
+  "d0": 0.0,
+  "confident": false
+ },
+ "beauxtrix.g_bias": {
+  "program": "beauxtrix",
+  "arg": "g_bias",
+  "label": "Green bias",
+  "default": 0.0,
+  "values": [
+   -1.0,
+   -0.5,
+   0.0,
+   0.5,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   44.61863327026367,
+   88.56867218017578,
+   139.59259033203125,
+   178.53648376464844
+  ],
+  "done": true,
+  "range": [
+   -1,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.25,
+   0.496,
+   0.782,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "beauxtrix.b_a": {
+  "program": "beauxtrix",
+  "arg": "b_a",
+  "label": "Blue \u2190 A",
+  "default": 1.0,
+  "values": [
+   -2.0,
+   -1.0,
+   0.0,
+   1.0,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   8.588798522949219,
+   9.373392105102539
+  ],
+  "done": true,
+  "range": [
+   -2,
+   2
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.0,
+   0.0,
+   0.916,
+   1.0
+  ],
+  "class": "late",
+  "curve": "pow:0.35",
+  "d0": 0.0,
+  "confident": false
+ },
+ "beauxtrix.b_b": {
+  "program": "beauxtrix",
+  "arg": "b_b",
+  "label": "Blue \u2190 B",
+  "default": 0.0,
+  "values": [
+   -2.0,
+   -1.0,
+   0.0,
+   1.0,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   0.16862782835960388,
+   8.25360107421875,
+   9.373135566711426,
+   9.481095314025879
+  ],
+  "done": true,
+  "range": [
+   -2,
+   2
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.018,
+   0.871,
+   0.989,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:0.44",
+  "d0": 0.0,
+  "confident": false
+ },
+ "beauxtrix.b_c": {
+  "program": "beauxtrix",
+  "arg": "b_c",
+  "label": "Blue \u2190 C",
+  "default": 0.0,
+  "values": [
+   -2.0,
+   -1.0,
+   0.0,
+   1.0,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   8.588798522949219,
+   9.373392105102539,
+   9.417567253112793
+  ],
+  "done": true,
+  "range": [
+   -2,
+   2
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.0,
+   0.912,
+   0.995,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:0.35",
+  "d0": 0.0,
+  "confident": false
+ },
+ "beauxtrix.b_d": {
+  "program": "beauxtrix",
+  "arg": "b_d",
+  "label": "Blue \u2190 D",
+  "default": 0.0,
+  "values": [
+   -2.0,
+   -1.0,
+   0.0,
+   1.0,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   8.588798522949219,
+   9.373392105102539,
+   9.417567253112793
+  ],
+  "done": true,
+  "range": [
+   -2,
+   2
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.0,
+   0.912,
+   0.995,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:0.35",
+  "d0": 0.0,
+  "confident": false
+ },
+ "beauxtrix.b_bias": {
+  "program": "beauxtrix",
+  "arg": "b_bias",
+  "label": "Blue bias",
+  "default": 0.0,
+  "values": [
+   -1.0,
+   -0.5,
+   0.0,
+   0.5,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   4.402456283569336,
+   8.588798522949219,
+   13.913290977478027,
+   17.88988494873047
+  ],
+  "done": true,
+  "range": [
+   -1,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.246,
+   0.48,
+   0.778,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "black_white.contrast": {
+  "program": "black_white",
+  "arg": "contrast",
+  "label": "Contrast",
+  "default": 2.5,
+  "values": [
+   0.5,
+   2.375,
+   4.25,
+   6.125,
+   8.0
+  ],
+  "diff": [
+   0.0,
+   3.205021858215332,
+   4.547228813171387,
+   5.523952007293701,
+   6.317129611968994
+  ],
+  "done": true,
+  "range": [
+   0.5,
+   8
+  ],
+  "scale": "pow:1.83",
+  "s": [
+   0.0,
+   0.507,
+   0.72,
+   0.874,
+   1.0
+  ],
+  "class": "fast",
+  "curve": "pow:2.06",
+  "d0": 0.0,
+  "confident": true
+ },
+ "black_white.amount": {
+  "program": "black_white",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   4.949620723724365,
+   9.910107612609863,
+   14.832465171813965,
+   19.70077896118164
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.251,
+   0.503,
+   0.753,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "black_white.grain": {
+  "program": "black_white",
+  "arg": "grain",
+  "label": "Grain",
+  "default": 0.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   1.133294701576233,
+   2.0561020374298096,
+   3.2009708881378174,
+   4.61805534362793
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.245,
+   0.445,
+   0.693,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "blueprint.sensitivity": {
+  "program": "blueprint",
+  "arg": "sensitivity",
+  "label": "Line detail",
+  "default": 0.5,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.9224858283996582,
+   2.1743505001068115,
+   4.430748462677002,
+   6.068833827972412
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.152,
+   0.358,
+   0.73,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "blueprint.amount": {
+  "program": "blueprint",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   20.637313842773438,
+   40.74453353881836,
+   60.988521575927734,
+   81.65470886230469
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.253,
+   0.499,
+   0.747,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "blur_pix.amount": {
+  "program": "blur_pix",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   1.6287294626235962,
+   3.1949589252471924,
+   4.776363372802734,
+   6.351080417633057
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.256,
+   0.503,
+   0.752,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "broken_scroll.amount": {
+  "program": "broken_scroll",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   10.174479484558105,
+   20.301376342773438,
+   30.30902862548828,
+   39.606353759765625
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.257,
+   0.513,
+   0.765,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "boomerang.loops": {
+  "program": "boomerang",
+  "arg": "loops",
+  "label": "Back-and-forths",
+  "default": 1,
+  "values": [
+   1,
+   2,
+   4,
+   5,
+   6
+  ],
+  "diff": [
+   0.0,
+   0.021347736939787865,
+   0.021347736939787865,
+   0.021347736939787865,
+   0.021347736939787865
+  ],
+  "done": true,
+  "range": [
+   1,
+   6
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "cartoon.levels": {
+  "program": "cartoon",
+  "arg": "levels",
+  "label": "Levels",
+  "default": 6,
+  "values": [
+   2,
+   6,
+   9,
+   12,
+   16
+  ],
+  "diff": [
+   0.0,
+   21.73016357421875,
+   24.002796173095703,
+   25.08902359008789,
+   26.207561492919922
+  ],
+  "done": true,
+  "range": [
+   2,
+   16
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.829,
+   0.916,
+   0.957,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "cartoon.smooth": {
+  "program": "cartoon",
+  "arg": "smooth",
+  "label": "Smooth",
+  "default": 3,
+  "values": [
+   1,
+   4,
+   8,
+   12,
+   15
+  ],
+  "diff": [
+   0.0,
+   0.2391975373029709,
+   0.34780094027519226,
+   0.3742605447769165,
+   0.40100952982902527
+  ],
+  "done": true,
+  "range": [
+   1,
+   15
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "cartoon.edge_size": {
+  "program": "cartoon",
+  "arg": "edge_size",
+  "label": "Edge Size",
+  "default": 9,
+  "values": [
+   3,
+   8,
+   12,
+   16,
+   21
+  ],
+  "diff": [
+   0.0,
+   3.8493120670318604,
+   5.805330276489258,
+   7.7449846267700195,
+   9.305780410766602
+  ],
+  "done": true,
+  "range": [
+   3,
+   21
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.414,
+   0.624,
+   0.832,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "cartoon.edge_strength": {
+  "program": "cartoon",
+  "arg": "edge_strength",
+  "label": "Edge Strength",
+  "default": 4,
+  "values": [
+   1,
+   4,
+   8,
+   12,
+   15
+  ],
+  "diff": [
+   0.0,
+   3.2480387687683105,
+   4.420910358428955,
+   5.638760089874268,
+   5.947498798370361
+  ],
+  "done": true,
+  "range": [
+   1,
+   15
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.546,
+   0.743,
+   0.948,
+   1.0
+  ],
+  "class": "fast",
+  "curve": "pow:2.35",
+  "d0": 0.0,
+  "confident": true
+ },
+ "cartoon.saturation": {
+  "program": "cartoon",
+  "arg": "saturation",
+  "label": "Saturation",
+  "default": 1.25,
+  "values": [
+   0.0,
+   0.75,
+   1.5,
+   2.25,
+   3.0
+  ],
+  "diff": [
+   0.0,
+   69.75691223144531,
+   102.50948333740234,
+   103.24089813232422,
+   103.30645751953125
+  ],
+  "done": true,
+  "range": [
+   0,
+   3
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.675,
+   0.992,
+   0.999,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "chroma_key.similarity": {
+  "program": "chroma_key",
+  "arg": "similarity",
+  "label": "Similarity",
+  "default": 0.15,
+  "values": [
+   0.01,
+   0.2575,
+   0.505,
+   0.7525,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   4.850340843200684,
+   6.970678806304932,
+   6.970678806304932,
+   6.970678806304932
+  ],
+  "done": true,
+  "range": [
+   0.01,
+   1
+  ],
+  "scale": "log",
+  "s": [
+   0.0,
+   0.696,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "class": "early",
+  "curve": "log",
+  "d0": 0.0,
+  "confident": true
+ },
+ "chroma_key.blend": {
+  "program": "chroma_key",
+  "arg": "blend",
+  "label": "Edge softness",
+  "default": 0.05,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   3.5826261043548584,
+   5.120016574859619,
+   5.668210029602051,
+   5.946534156799316
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.602,
+   0.861,
+   0.953,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "chroma_key.spill": {
+  "program": "chroma_key",
+  "arg": "spill",
+  "label": "Spill removal",
+  "default": 0.3,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "chroma_key.shrink": {
+  "program": "chroma_key",
+  "arg": "shrink",
+  "label": "Edge shrink",
+  "default": 1,
+  "values": [
+   0,
+   2,
+   5,
+   8,
+   10
+  ],
+  "diff": [
+   0.0,
+   0.3638438880443573,
+   0.6868569850921631,
+   0.9917052388191223,
+   1.1883037090301514
+  ],
+  "done": true,
+  "range": [
+   0,
+   10
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.306,
+   0.578,
+   0.835,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "chromatic_pulse.amount": {
+  "program": "chromatic_pulse",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 6.0,
+  "values": [
+   0.0,
+   7.5,
+   15.0,
+   22.5,
+   30.0
+  ],
+  "diff": [
+   0.0,
+   4.364808559417725,
+   8.368023872375488,
+   11.790959358215332,
+   15.010673522949219
+  ],
+  "done": true,
+  "range": [
+   0,
+   30
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.291,
+   0.557,
+   0.786,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "chroma_key.feather": {
+  "program": "chroma_key",
+  "arg": "feather",
+  "label": "Edge feather",
+  "default": 1.0,
+  "values": [
+   0.0,
+   2.5,
+   5.0,
+   7.5,
+   10.0
+  ],
+  "diff": [
+   0.0,
+   0.19193673133850098,
+   0.3116641044616699,
+   0.3889853358268738,
+   0.43508872389793396
+  ],
+  "done": true,
+  "range": [
+   0,
+   10
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "chromatic_pulse.speed": {
+  "program": "chromatic_pulse",
+  "arg": "speed",
+  "label": "Speed",
+  "default": 2.0,
+  "values": [
+   0.0,
+   2.5,
+   5.0,
+   7.5,
+   10.0
+  ],
+  "diff": [
+   0.0,
+   3.3828768730163574,
+   3.445633888244629,
+   3.4909658432006836,
+   3.5751028060913086
+  ],
+  "done": true,
+  "range": [
+   0,
+   10
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.946,
+   0.964,
+   0.976,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "color_pass.range": {
+  "program": "color_pass",
+  "arg": "range",
+  "label": "Range (\u00b0)",
+  "default": 30.0,
+  "values": [
+   1.0,
+   45.75,
+   90.5,
+   135.2,
+   180.0
+  ],
+  "diff": [
+   0.0,
+   2.0391268730163574,
+   6.555298328399658,
+   13.32143783569336,
+   16.812917709350586
+  ],
+  "done": true,
+  "range": [
+   1,
+   180
+  ],
+  "scale": "log",
+  "s": [
+   0.0,
+   0.121,
+   0.39,
+   0.792,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "color_pass.softness": {
+  "program": "color_pass",
+  "arg": "softness",
+  "label": "Softness (\u00b0)",
+  "default": 20.0,
+  "values": [
+   0.0,
+   22.5,
+   45.0,
+   67.5,
+   90.0
+  ],
+  "diff": [
+   0.0,
+   0.08603394776582718,
+   2.1216886043548584,
+   3.625643014907837,
+   4.447144985198975
+  ],
+  "done": true,
+  "range": [
+   0,
+   90
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.019,
+   0.477,
+   0.815,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "color_pass.min_saturation": {
+  "program": "color_pass",
+  "arg": "min_saturation",
+  "label": "Ignore grays below",
+  "default": 0.15,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.0866769552230835,
+   0.08574459701776505,
+   0.08802726119756699,
+   0.18447788059711456
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "color_pass.desaturate": {
+  "program": "color_pass",
+  "arg": "desaturate",
+  "label": "Drain the rest",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   4.517553806304932,
+   8.331436157226562,
+   12.402295112609863,
+   16.73537254333496
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.27,
+   0.498,
+   0.741,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "color_pass.boost": {
+  "program": "color_pass",
+  "arg": "boost",
+  "label": "Boost the color",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.75,
+   1.5,
+   2.25,
+   3.0
+  ],
+  "diff": [
+   0.0,
+   2.6800410747528076,
+   3.2246012687683105,
+   3.299221992492676,
+   3.3812050819396973
+  ],
+  "done": true,
+  "range": [
+   0,
+   3
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.793,
+   0.954,
+   0.976,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "concat.gap": {
+  "program": "concat",
+  "arg": "gap",
+  "label": "Gap",
+  "default": 0.0,
+  "values": [
+   0.0,
+   2.5,
+   5.0,
+   7.5,
+   10.0
+  ],
+  "diff": [
+   0.0,
+   0.07809285074472427,
+   0.07809285074472427,
+   0.07809285074472427,
+   0.07809285074472427
+  ],
+  "done": true,
+  "range": [
+   0,
+   10
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "crossmosh.frames": {
+  "program": "crossmosh",
+  "arg": "frames",
+  "label": "Frames",
+  "default": 9,
+  "values": [
+   2,
+   16,
+   31,
+   46,
+   60
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   2,
+   60
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "crt_monitor.curvature": {
+  "program": "crt_monitor",
+  "arg": "curvature",
+  "label": "Curvature",
+  "default": 0.1,
+  "values": [
+   0.0,
+   0.1,
+   0.2,
+   0.3,
+   0.4
+  ],
+  "diff": [
+   0.0,
+   27.355709075927734,
+   41.13927459716797,
+   50.38290786743164,
+   57.086002349853516
+  ],
+  "done": true,
+  "range": [
+   0,
+   0.4
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.479,
+   0.721,
+   0.883,
+   1.0
+  ],
+  "class": "fast",
+  "curve": "pow:1.94",
+  "d0": 0.0,
+  "confident": true
+ },
+ "concat.crossfade": {
+  "program": "concat",
+  "arg": "crossfade",
+  "label": "Crossfade",
+  "default": 0.0,
+  "values": [
+   0.0,
+   2.5,
+   5.0,
+   7.5,
+   10.0
+  ],
+  "diff": [
+   0.0,
+   null,
+   null,
+   null,
+   null
+  ],
+  "done": true,
+  "range": [
+   0,
+   10
+  ],
+  "scale": null,
+  "class": "error"
+ },
+ "crossmosh.decay": {
+  "program": "crossmosh",
+  "arg": "decay",
+  "label": "Decay",
+  "default": 0.9,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "crt_monitor.scanlines": {
+  "program": "crt_monitor",
+  "arg": "scanlines",
+  "label": "Scanlines",
+  "default": 0.45,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   1.9480130672454834,
+   8.206082344055176,
+   16.288515090942383,
+   24.393260955810547
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.08,
+   0.336,
+   0.668,
+   1.0
+  ],
+  "class": "slow",
+  "curve": "pow:0.57",
+  "d0": 0.0,
+  "confident": true
+ },
+ "crt_monitor.mask": {
+  "program": "crt_monitor",
+  "arg": "mask",
+  "label": "Shadow mask",
+  "default": 0.28,
+  "values": [
+   0.0,
+   0.2,
+   0.4,
+   0.6,
+   0.8
+  ],
+  "diff": [
+   0.0,
+   3.488072156906128,
+   8.288098335266113,
+   20.699556350708008,
+   34.22318649291992
+  ],
+  "done": true,
+  "range": [
+   0,
+   0.8
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.102,
+   0.242,
+   0.605,
+   1.0
+  ],
+  "class": "slow",
+  "curve": "pow:0.58",
+  "d0": 0.0,
+  "confident": true
+ },
+ "crt_monitor.glow": {
+  "program": "crt_monitor",
+  "arg": "glow",
+  "label": "Glow",
+  "default": 0.3,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   15.96267318725586,
+   24.776491165161133,
+   27.848669052124023,
+   29.77491569519043
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.536,
+   0.832,
+   0.935,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:2.46",
+  "d0": 0.0,
+  "confident": true
+ },
+ "crt_monitor.amount": {
+  "program": "crt_monitor",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   10.43942928314209,
+   20.828189849853516,
+   30.993505477905273,
+   41.25051498413086
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.253,
+   0.505,
+   0.751,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "deep_fry.intensity": {
+  "program": "deep_fry",
+  "arg": "intensity",
+  "label": "Intensity",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   11.043595314025879,
+   19.2421875,
+   24.380144119262695,
+   29.496206283569336
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": "pow:1.44",
+  "s": [
+   0.0,
+   0.374,
+   0.652,
+   0.827,
+   1.0
+  ],
+  "class": "fast",
+  "curve": "pow:1.45",
+  "d0": 0.0,
+  "confident": true
+ },
+ "digital_boss.amount": {
+  "program": "digital_boss",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   19.832015991210938,
+   39.76601028442383,
+   59.46341323852539,
+   79.2729263305664
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.25,
+   0.502,
+   0.75,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "double_cup.amount": {
+  "program": "double_cup",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   21.70087432861328,
+   43.77735900878906,
+   65.7589340209961,
+   86.35092163085938
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.251,
+   0.507,
+   0.762,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "dither.bayer_scale": {
+  "program": "dither",
+  "arg": "bayer_scale",
+  "label": "Bayer Scale",
+  "default": 3,
+  "values": [
+   0,
+   1,
+   2,
+   4,
+   5
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   5
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "emboss.strength": {
+  "program": "emboss",
+  "arg": "strength",
+  "label": "Strength",
+  "default": 1.0,
+  "values": [
+   0.0,
+   1.0,
+   2.0,
+   3.0,
+   4.0
+  ],
+  "diff": [
+   0.0,
+   5.033082485198975,
+   5.9391398429870605,
+   6.404932022094727,
+   6.7389726638793945
+  ],
+  "done": true,
+  "range": [
+   0,
+   4
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.747,
+   0.881,
+   0.95,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "emboss.angle": {
+  "program": "emboss",
+  "arg": "angle",
+  "label": "Light angle (\u00b0)",
+  "default": 135.0,
+  "values": [
+   0.0,
+   90.0,
+   180.0,
+   270.0,
+   360.0
+  ],
+  "diff": [
+   0.0,
+   5.55021858215332,
+   7.960616111755371,
+   5.3963799476623535,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   360
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.697,
+   1.0,
+   0.678,
+   0.0
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "emboss.amount": {
+  "program": "emboss",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   5.6562819480896,
+   11.061599731445312,
+   16.585905075073242,
+   22.172677993774414
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.255,
+   0.499,
+   0.748,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "face_swap.softness": {
+  "program": "face_swap",
+  "arg": "softness",
+  "label": "Edge softness",
+  "default": 0.06,
+  "values": [
+   0.0,
+   0.075,
+   0.15,
+   0.225,
+   0.3
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   0.3
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "face_swap.match": {
+  "program": "face_swap",
+  "arg": "match",
+  "label": "Skin-tone match",
+  "default": 0.85,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "face_warp.strength": {
+  "program": "face_warp",
+  "arg": "strength",
+  "label": "Strength",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.5,
+   1.0,
+   1.5,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   2
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "face_swap.amount": {
+  "program": "face_swap",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "face_warp.size": {
+  "program": "face_warp",
+  "arg": "size",
+  "label": "Size",
+  "default": 1.0,
+  "values": [
+   0.5,
+   0.875,
+   1.25,
+   1.625,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0.5,
+   2
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "face_warp.amount": {
+  "program": "face_warp",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "fade_flash.fade_in": {
+  "program": "fade_flash",
+  "arg": "fade_in",
+  "label": "Fade in (s)",
+  "default": 1.0,
+  "values": [
+   0.0,
+   15.0,
+   30.0,
+   45.0,
+   60.0
+  ],
+  "diff": [
+   0.0,
+   68.00028991699219,
+   68.51041412353516,
+   68.69962310791016,
+   68.86847686767578
+  ],
+  "done": true,
+  "range": [
+   0,
+   60
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.987,
+   0.995,
+   0.998,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "fade_flash.fade_out": {
+  "program": "fade_flash",
+  "arg": "fade_out",
+  "label": "Fade out (s)",
+  "default": 1.0,
+  "values": [
+   0.0,
+   15.0,
+   30.0,
+   45.0,
+   60.0
+  ],
+  "diff": [
+   0.0,
+   2.4199459552764893,
+   1.2033178806304932,
+   0.7732767462730408,
+   0.5573881268501282
+  ],
+  "done": true,
+  "range": [
+   0,
+   60
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   1.0,
+   0.497,
+   0.32,
+   0.23
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "fade_flash.flash_length": {
+  "program": "fade_flash",
+  "arg": "flash_length",
+  "label": "Flash length (s)",
+  "default": 0.25,
+  "values": [
+   0.04,
+   1.28,
+   2.52,
+   3.76,
+   5.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0.04,
+   5
+  ],
+  "scale": "log",
+  "class": "flat"
+ },
+ "feature_trails.points": {
+  "program": "feature_trails",
+  "arg": "points",
+  "label": "Points",
+  "default": 140,
+  "values": [
+   10,
+   132,
+   255,
+   378,
+   500
+  ],
+  "diff": [
+   0.0,
+   3.9385931491851807,
+   5.788547992706299,
+   5.7949137687683105,
+   5.7949137687683105
+  ],
+  "done": true,
+  "range": [
+   10,
+   500
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.68,
+   0.999,
+   1.0,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "feature_trails.trail_length": {
+  "program": "feature_trails",
+  "arg": "trail_length",
+  "label": "Trail Length",
+  "default": 10,
+  "values": [
+   2,
+   16,
+   31,
+   46,
+   60
+  ],
+  "diff": [
+   0.0,
+   2.1836097240448,
+   2.4609696865081787,
+   2.4609696865081787,
+   2.4609696865081787
+  ],
+  "done": true,
+  "range": [
+   2,
+   60
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.887,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "feature_trails.link_distance": {
+  "program": "feature_trails",
+  "arg": "link_distance",
+  "label": "Link Distance",
+  "default": 0.12,
+  "values": [
+   0.0,
+   0.125,
+   0.25,
+   0.375,
+   0.5
+  ],
+  "diff": [
+   0.0,
+   1.530832052230835,
+   1.880690574645996,
+   2.0279386043548584,
+   2.1049704551696777
+  ],
+  "done": true,
+  "range": [
+   0,
+   0.5
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.727,
+   0.893,
+   0.963,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "feature_trails.dim": {
+  "program": "feature_trails",
+  "arg": "dim",
+  "label": "Dim",
+  "default": 0.45,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   30.45386505126953,
+   61.498680114746094,
+   92.12371063232422,
+   123.30413818359375
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.247,
+   0.499,
+   0.747,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "feedback_loop.decay": {
+  "program": "feedback_loop",
+  "arg": "decay",
+  "label": "Feedback amount",
+  "default": 0.7,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   2.648952007293701,
+   7.363104343414307,
+   17.175121307373047,
+   51.23762130737305
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.052,
+   0.144,
+   0.335,
+   1.0
+  ],
+  "class": "late",
+  "curve": "pow:0.43",
+  "d0": 0.0,
+  "confident": true
+ },
+ "feedback_loop.zoom": {
+  "program": "feedback_loop",
+  "arg": "zoom",
+  "label": "Zoom (% per frame)",
+  "default": 2.0,
+  "values": [
+   -20.0,
+   -10.0,
+   0.0,
+   10.0,
+   20.0
+  ],
+  "diff": [
+   0.0,
+   11.059864044189453,
+   23.116994857788086,
+   31.184831619262695,
+   35.736045837402344
+  ],
+  "done": true,
+  "range": [
+   -20,
+   20
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.309,
+   0.647,
+   0.873,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "feedback_loop.rotate": {
+  "program": "feedback_loop",
+  "arg": "rotate",
+  "label": "Rotate (\u00b0 per frame)",
+  "default": 1.0,
+  "values": [
+   -30.0,
+   -15.0,
+   0.0,
+   15.0,
+   30.0
+  ],
+  "diff": [
+   0.0,
+   17.43553924560547,
+   42.23450469970703,
+   32.981868743896484,
+   30.23736572265625
+  ],
+  "done": true,
+  "range": [
+   -30,
+   30
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.413,
+   1.0,
+   0.781,
+   0.716
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "feedback_loop.shift_x": {
+  "program": "feedback_loop",
+  "arg": "shift_x",
+  "label": "Shift X (px)",
+  "default": 0.0,
+  "values": [
+   -100.0,
+   -50.0,
+   0.0,
+   50.0,
+   100.0
+  ],
+  "diff": [
+   0.0,
+   15.227559089660645,
+   56.05201721191406,
+   42.879756927490234,
+   38.50855255126953
+  ],
+  "done": true,
+  "range": [
+   -100,
+   100
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.272,
+   1.0,
+   0.765,
+   0.687
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "feedback_loop.shift_y": {
+  "program": "feedback_loop",
+  "arg": "shift_y",
+  "label": "Shift Y (px)",
+  "default": 0.0,
+  "values": [
+   -100.0,
+   -50.0,
+   0.0,
+   50.0,
+   100.0
+  ],
+  "diff": [
+   0.0,
+   10.78430461883545,
+   13.987911224365234,
+   15.14371109008789,
+   15.004179954528809
+  ],
+  "done": true,
+  "range": [
+   -100,
+   100
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.712,
+   0.924,
+   1.0,
+   0.991
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "feedback_loop.hue_shift": {
+  "program": "feedback_loop",
+  "arg": "hue_shift",
+  "label": "Hue shift (\u00b0 per frame)",
+  "default": 4.0,
+  "values": [
+   -45.0,
+   -22.5,
+   0.0,
+   22.5,
+   45.0
+  ],
+  "diff": [
+   0.0,
+   3.6018197536468506,
+   29.941293716430664,
+   36.17383575439453,
+   36.83134078979492
+  ],
+  "done": true,
+  "range": [
+   -45,
+   45
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.098,
+   0.813,
+   0.982,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:0.74",
+  "d0": 0.0,
+  "confident": false
+ },
+ "feedback_loop.threshold": {
+  "program": "feedback_loop",
+  "arg": "threshold",
+  "label": "Key threshold",
+  "default": 90,
+  "values": [
+   0,
+   64,
+   128,
+   191,
+   255
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   255
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "fever.amount": {
+  "program": "fever",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.24980710446834564,
+   0.4279513955116272,
+   0.5720807909965515,
+   0.7293274402618408
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "flow_warp.strength": {
+  "program": "flow_warp",
+  "arg": "strength",
+  "label": "Strength",
+  "default": 3.0,
+  "values": [
+   0.0,
+   3.75,
+   7.5,
+   11.25,
+   15.0
+  ],
+  "diff": [
+   0.0,
+   5.433577537536621,
+   6.235789775848389,
+   7.170428276062012,
+   8.286811828613281
+  ],
+  "done": true,
+  "range": [
+   0,
+   15
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.656,
+   0.752,
+   0.865,
+   1.0
+  ],
+  "class": "fast",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "flow_warp.persistence": {
+  "program": "flow_warp",
+  "arg": "persistence",
+  "label": "Persistence",
+  "default": 0.9,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   1.2026748657226562,
+   2.2458205223083496,
+   3.4054784774780273,
+   7.291088104248047
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.165,
+   0.308,
+   0.467,
+   1.0
+  ],
+  "class": "slow",
+  "curve": "pow:0.7",
+  "d0": 0.0,
+  "confident": true
+ },
+ "freeze_punch.count": {
+  "program": "freeze_punch",
+  "arg": "count",
+  "label": "Count",
+  "default": 4,
+  "values": [
+   1,
+   6,
+   10,
+   15,
+   20
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   1,
+   20
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "freeze_punch.freeze_duration": {
+  "program": "freeze_punch",
+  "arg": "freeze_duration",
+  "label": "Freeze Duration",
+  "default": 0.4,
+  "values": [
+   0.05,
+   1.288,
+   2.525,
+   3.763,
+   5.0
+  ],
+  "diff": [
+   0.0,
+   3.032825469970703,
+   3.0435314178466797,
+   3.0422775745391846,
+   3.0340793132781982
+  ],
+  "done": true,
+  "range": [
+   0.05,
+   5
+  ],
+  "scale": "log",
+  "s": [
+   0.0,
+   0.996,
+   1.0,
+   1.0,
+   0.997
+  ],
+  "class": "early",
+  "curve": "log",
+  "d0": 0.0,
+  "confident": true
+ },
+ "flow_warp.flow_width": {
+  "program": "flow_warp",
+  "arg": "flow_width",
+  "label": "Flow Width",
+  "default": 320,
+  "values": [
+   96,
+   392,
+   688,
+   984,
+   1280
+  ],
+  "diff": [
+   0.0,
+   4.6379241943359375,
+   4.7051825523376465,
+   4.7051825523376465,
+   4.7051825523376465
+  ],
+  "done": true,
+  "range": [
+   96,
+   1280
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.986,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "freeze_punch.scan_window": {
+  "program": "freeze_punch",
+  "arg": "scan_window",
+  "label": "Scan Window",
+  "default": 0.5,
+  "values": [
+   0.1,
+   1.325,
+   2.55,
+   3.775,
+   5.0
+  ],
+  "diff": [
+   0.0,
+   4.744663238525391,
+   4.815457820892334,
+   4.815457820892334,
+   4.815457820892334
+  ],
+  "done": true,
+  "range": [
+   0.1,
+   5
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.985,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "freeze_punch.min_gap": {
+  "program": "freeze_punch",
+  "arg": "min_gap",
+  "label": "Min Gap",
+  "default": 3.0,
+  "values": [
+   0.0,
+   7.5,
+   15.0,
+   22.5,
+   30.0
+  ],
+  "diff": [
+   0.0,
+   0.08474794030189514,
+   0.08474794030189514,
+   0.08474794030189514,
+   0.08474794030189514
+  ],
+  "done": true,
+  "range": [
+   0,
+   30
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "gamma_fix.target-yavg": {
+  "program": "gamma_fix",
+  "arg": "target-yavg",
+  "label": "Target Yavg",
+  "default": 64.0,
+  "values": [
+   16.0,
+   70.75,
+   125.5,
+   180.2,
+   235.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   16,
+   235
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "gamma_fix.min-contrast": {
+  "program": "gamma_fix",
+  "arg": "min-contrast",
+  "label": "Min Contrast",
+  "default": 0.8,
+  "values": [
+   0.5,
+   0.75,
+   1.0,
+   1.25,
+   1.5
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0.5,
+   1.5
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "gamma_fix.max-contrast": {
+  "program": "gamma_fix",
+  "arg": "max-contrast",
+  "label": "Max Contrast",
+  "default": 1.35,
+  "values": [
+   1.0,
+   1.5,
+   2.0,
+   2.5,
+   3.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   1,
+   3
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "gamma_fix.gamma": {
+  "program": "gamma_fix",
+  "arg": "gamma",
+  "label": "Gamma",
+  "default": 1.0,
+  "values": [
+   0.3,
+   0.975,
+   1.65,
+   2.325,
+   3.0
+  ],
+  "diff": [
+   0.0,
+   88.78182983398438,
+   132.91786193847656,
+   157.7003631591797,
+   172.8135986328125
+  ],
+  "done": true,
+  "range": [
+   0.3,
+   3
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.514,
+   0.769,
+   0.913,
+   1.0
+  ],
+  "class": "fast",
+  "curve": "pow:2.2",
+  "d0": 0.0,
+  "confident": true
+ },
+ "ghostee.amount": {
+  "program": "ghostee",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.7233153581619263,
+   0.9592013955116272,
+   1.2229938507080078,
+   1.5173289775848389
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.477,
+   0.632,
+   0.806,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "gamma_fix.sat": {
+  "program": "gamma_fix",
+  "arg": "sat",
+  "label": "Sat",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.75,
+   1.5,
+   2.25,
+   3.0
+  ],
+  "diff": [
+   0.0,
+   0.07172711193561554,
+   0.08288323134183884,
+   0.08130787312984467,
+   0.09056712687015533
+  ],
+  "done": true,
+  "range": [
+   0,
+   3
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "glitch_tear.intensity": {
+  "program": "glitch_tear",
+  "arg": "intensity",
+  "label": "Intensity",
+  "default": 0.5,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   4.353394985198975,
+   10.221514701843262,
+   11.558802604675293,
+   14.393197059631348
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.302,
+   0.71,
+   0.803,
+   1.0
+  ],
+  "class": "fast",
+  "curve": "pow:1.27",
+  "d0": 0.0,
+  "confident": true
+ },
+ "glitch_tear.tears": {
+  "program": "glitch_tear",
+  "arg": "tears",
+  "label": "Tears per frame",
+  "default": 4,
+  "values": [
+   0,
+   4,
+   8,
+   12,
+   16
+  ],
+  "diff": [
+   0.0,
+   6.103169918060303,
+   11.936310768127441,
+   15.966531753540039,
+   19.334714889526367
+  ],
+  "done": true,
+  "range": [
+   0,
+   16
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.316,
+   0.617,
+   0.826,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "glitch_tear.rgb_shift": {
+  "program": "glitch_tear",
+  "arg": "rgb_shift",
+  "label": "RGB shift (px)",
+  "default": 9,
+  "values": [
+   0,
+   10,
+   20,
+   30,
+   40
+  ],
+  "diff": [
+   0.0,
+   11.622395515441895,
+   14.88088321685791,
+   17.34449005126953,
+   22.845260620117188
+  ],
+  "done": true,
+  "range": [
+   0,
+   40
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.509,
+   0.651,
+   0.759,
+   1.0
+  ],
+  "class": "fast",
+  "curve": "pow:1.89",
+  "d0": 0.0,
+  "confident": true
+ },
+ "glitch_tear.amount": {
+  "program": "glitch_tear",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   4.694347858428955,
+   9.251800537109375,
+   13.984857559204102,
+   18.24925994873047
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.257,
+   0.507,
+   0.766,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "hash_fingerprint.phash-fps": {
+  "program": "hash_fingerprint",
+  "arg": "phash-fps",
+  "label": "Phash Fps",
+  "default": 0.5,
+  "values": [
+   0.1,
+   2.575,
+   5.05,
+   7.525,
+   10.0
+  ],
+  "diff": [
+   null,
+   null,
+   null,
+   null,
+   null
+  ],
+  "done": true,
+  "range": [
+   0.1,
+   10
+  ],
+  "scale": "log",
+  "class": "error"
+ },
+ "hash_fingerprint.phash-size": {
+  "program": "hash_fingerprint",
+  "arg": "phash-size",
+  "label": "Phash Size",
+  "default": 8,
+  "values": [
+   4,
+   11,
+   18,
+   25,
+   32
+  ],
+  "diff": [
+   null,
+   null,
+   null,
+   null,
+   null
+  ],
+  "done": true,
+  "range": [
+   4,
+   32
+  ],
+  "scale": null,
+  "class": "error"
+ },
+ "halftone.cell_size": {
+  "program": "halftone",
+  "arg": "cell_size",
+  "label": "Cell Size",
+  "default": 8,
+  "values": [
+   2,
+   12,
+   21,
+   30,
+   40
+  ],
+  "diff": [
+   0.0,
+   49.72916793823242,
+   69.68428802490234,
+   75.64216613769531,
+   80.20768737792969
+  ],
+  "done": true,
+  "range": [
+   2,
+   40
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.62,
+   0.869,
+   0.943,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "hue_cycle.speed": {
+  "program": "hue_cycle",
+  "arg": "speed",
+  "label": "Speed (\u00b0/sec)",
+  "default": 60.0,
+  "values": [
+   -360.0,
+   -180.0,
+   0.0,
+   180.0,
+   360.0
+  ],
+  "diff": [
+   0.0,
+   61.855838775634766,
+   78.19316101074219,
+   64.84664154052734,
+   69.38101196289062
+  ],
+  "done": true,
+  "range": [
+   -360,
+   360
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.791,
+   1.0,
+   0.829,
+   0.887
+  ],
+  "class": "early",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "hue_cycle.amount": {
+  "program": "hue_cycle",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   8.72128963470459,
+   17.674928665161133,
+   26.816936492919922,
+   35.84455490112305
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.243,
+   0.493,
+   0.748,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "insert_clip.entry_duration": {
+  "program": "insert_clip",
+  "arg": "entry_duration",
+  "label": "Entry Duration",
+  "default": 0.5,
+  "values": [
+   0.0,
+   2.5,
+   5.0,
+   7.5,
+   10.0
+  ],
+  "diff": [
+   null,
+   null,
+   null,
+   null,
+   null
+  ],
+  "done": true,
+  "range": [
+   0,
+   10
+  ],
+  "scale": null,
+  "class": "error"
+ },
+ "infrared.saturation": {
+  "program": "infrared",
+  "arg": "saturation",
+  "label": "Saturation",
+  "default": 1.5,
+  "values": [
+   0.0,
+   0.75,
+   1.5,
+   2.25,
+   3.0
+  ],
+  "diff": [
+   0.0,
+   93.70553588867188,
+   132.22885131835938,
+   133.14820861816406,
+   133.32147216796875
+  ],
+  "done": true,
+  "range": [
+   0,
+   3
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.703,
+   0.992,
+   0.999,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "insert_clip.exit_duration": {
+  "program": "insert_clip",
+  "arg": "exit_duration",
+  "label": "Exit Duration",
+  "default": 0.5,
+  "values": [
+   0.0,
+   2.5,
+   5.0,
+   7.5,
+   10.0
+  ],
+  "diff": [
+   null,
+   null,
+   null,
+   null,
+   null
+  ],
+  "done": true,
+  "range": [
+   0,
+   10
+  ],
+  "scale": null,
+  "class": "error"
+ },
+ "infrared.amount": {
+  "program": "infrared",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   18.97035789489746,
+   37.417633056640625,
+   56.086387634277344,
+   75.15033721923828
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.252,
+   0.498,
+   0.746,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "key_feedback.insert_low": {
+  "program": "key_feedback",
+  "arg": "insert_low",
+  "label": "Insert: luma from",
+  "default": 0.5,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   30.511058807373047,
+   35.23980712890625
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.0,
+   0.0,
+   0.866,
+   1.0
+  ],
+  "class": "late",
+  "curve": "pow:0.35",
+  "d0": 0.0,
+  "confident": false
+ },
+ "key_feedback.insert_high": {
+  "program": "key_feedback",
+  "arg": "insert_high",
+  "label": "Insert: luma to",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   34.36480712890625,
+   35.23980712890625
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.0,
+   0.0,
+   0.975,
+   1.0
+  ],
+  "class": "late",
+  "curve": "pow:0.35",
+  "d0": 0.0,
+  "confident": false
+ },
+ "key_feedback.insert_soft": {
+  "program": "key_feedback",
+  "arg": "insert_soft",
+  "label": "Insert: edge softness",
+  "default": 0.1,
+  "values": [
+   0.0,
+   0.125,
+   0.25,
+   0.375,
+   0.5
+  ],
+  "diff": [
+   0.0,
+   0.12403549253940582,
+   0.3015689253807068,
+   0.544335126876831,
+   1.478941559791565
+  ],
+  "done": true,
+  "range": [
+   0,
+   0.5
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.084,
+   0.204,
+   0.368,
+   1.0
+  ],
+  "class": "slow",
+  "curve": "pow:0.51",
+  "d0": 0.0,
+  "confident": true
+ },
+ "key_feedback.insert_similarity": {
+  "program": "key_feedback",
+  "arg": "insert_similarity",
+  "label": "Insert: color range",
+  "default": 0.3,
+  "values": [
+   0.02,
+   0.265,
+   0.51,
+   0.755,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.4790702164173126,
+   1.0721129179000854,
+   4.249485492706299,
+   70.67235565185547
+  ],
+  "done": true,
+  "range": [
+   0.02,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.007,
+   0.015,
+   0.06,
+   1.0
+  ],
+  "class": "late",
+  "curve": "pow:0.35",
+  "d0": 0.0,
+  "confident": false
+ },
+ "key_feedback.fb_low": {
+  "program": "key_feedback",
+  "arg": "fb_low",
+  "label": "Feedback: luma from",
+  "default": 0.15,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   1.1723251342773438,
+   3.7837576866149902,
+   7.008262634277344,
+   7.182355880737305
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.163,
+   0.527,
+   0.976,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "key_feedback.fb_high": {
+  "program": "key_feedback",
+  "arg": "fb_high",
+  "label": "Feedback: luma to",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.03710133582353592,
+   0.16689172387123108,
+   5.6542887687683105,
+   6.805202007293701
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.005,
+   0.025,
+   0.831,
+   1.0
+  ],
+  "class": "late",
+  "curve": "pow:0.35",
+  "d0": 0.0,
+  "confident": false
+ },
+ "key_feedback.fb_soft": {
+  "program": "key_feedback",
+  "arg": "fb_soft",
+  "label": "Feedback: edge softness",
+  "default": 0.1,
+  "values": [
+   0.0,
+   0.125,
+   0.25,
+   0.375,
+   0.5
+  ],
+  "diff": [
+   0.0,
+   0.20129244029521942,
+   0.47116127610206604,
+   0.8119212985038757,
+   1.1970164775848389
+  ],
+  "done": true,
+  "range": [
+   0,
+   0.5
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.168,
+   0.394,
+   0.678,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "key_feedback.fb_similarity": {
+  "program": "key_feedback",
+  "arg": "fb_similarity",
+  "label": "Feedback: color range",
+  "default": 0.3,
+  "values": [
+   0.02,
+   0.265,
+   0.51,
+   0.755,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0.02,
+   1
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "key_feedback.decay": {
+  "program": "key_feedback",
+  "arg": "decay",
+  "label": "Feedback amount",
+  "default": 0.9,
+  "values": [
+   0.0,
+   0.2475,
+   0.495,
+   0.7425,
+   0.99
+  ],
+  "diff": [
+   0.0,
+   0.40284207463264465,
+   1.0859696865081787,
+   2.74832820892334,
+   13.306134223937988
+  ],
+  "done": true,
+  "range": [
+   0,
+   0.99
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.03,
+   0.082,
+   0.207,
+   1.0
+  ],
+  "class": "late",
+  "curve": "pow:0.35",
+  "d0": 0.0,
+  "confident": false
+ },
+ "key_feedback.zoom": {
+  "program": "key_feedback",
+  "arg": "zoom",
+  "label": "Zoom (% per frame)",
+  "default": 1.5,
+  "values": [
+   -20.0,
+   -10.0,
+   0.0,
+   10.0,
+   20.0
+  ],
+  "diff": [
+   0.0,
+   5.588348865509033,
+   17.158790588378906,
+   36.66547775268555,
+   39.802791595458984
+  ],
+  "done": true,
+  "range": [
+   -20,
+   20
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.14,
+   0.431,
+   0.921,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "key_feedback.rotate": {
+  "program": "key_feedback",
+  "arg": "rotate",
+  "label": "Rotate (\u00b0 per frame)",
+  "default": 1.0,
+  "values": [
+   -30.0,
+   -15.0,
+   0.0,
+   15.0,
+   30.0
+  ],
+  "diff": [
+   0.0,
+   25.76932144165039,
+   58.61255645751953,
+   38.423160552978516,
+   32.05828857421875
+  ],
+  "done": true,
+  "range": [
+   -30,
+   30
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.44,
+   1.0,
+   0.656,
+   0.547
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "key_feedback.shift_x": {
+  "program": "key_feedback",
+  "arg": "shift_x",
+  "label": "Shift X (px)",
+  "default": 0.0,
+  "values": [
+   -100.0,
+   -50.0,
+   0.0,
+   50.0,
+   100.0
+  ],
+  "diff": [
+   0.0,
+   5.444894313812256,
+   21.775463104248047,
+   88.62789154052734,
+   102.71772003173828
+  ],
+  "done": true,
+  "range": [
+   -100,
+   100
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.053,
+   0.212,
+   0.863,
+   1.0
+  ],
+  "class": "slow",
+  "curve": "pow:0.48",
+  "d0": 0.0,
+  "confident": false
+ },
+ "key_feedback.shift_y": {
+  "program": "key_feedback",
+  "arg": "shift_y",
+  "label": "Shift Y (px)",
+  "default": 0.0,
+  "values": [
+   -100.0,
+   -50.0,
+   0.0,
+   50.0,
+   100.0
+  ],
+  "diff": [
+   0.0,
+   2.4545395374298096,
+   7.534689903259277,
+   10.931262969970703,
+   12.209040641784668
+  ],
+  "done": true,
+  "range": [
+   -100,
+   100
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.201,
+   0.617,
+   0.895,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "key_feedback.hue_shift": {
+  "program": "key_feedback",
+  "arg": "hue_shift",
+  "label": "Hue shift (\u00b0 per frame)",
+  "default": 4.0,
+  "values": [
+   -45.0,
+   -22.5,
+   0.0,
+   22.5,
+   45.0
+  ],
+  "diff": [
+   0.0,
+   1.808963418006897,
+   4.327095985412598,
+   1.2119662761688232,
+   0.7145061492919922
+  ],
+  "done": true,
+  "range": [
+   -45,
+   45
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.418,
+   1.0,
+   0.28,
+   0.165
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "kmeans_palette.refresh": {
+  "program": "kmeans_palette",
+  "arg": "refresh",
+  "label": "Refresh",
+  "default": 24,
+  "values": [
+   1,
+   31,
+   60,
+   90,
+   120
+  ],
+  "diff": [
+   0.0,
+   2.9238362312316895,
+   2.9238362312316895,
+   2.9238362312316895,
+   2.9238362312316895
+  ],
+  "done": true,
+  "range": [
+   1,
+   120
+  ],
+  "scale": "log",
+  "s": [
+   0.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "class": "early",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "kmeans_palette.pixel_size": {
+  "program": "kmeans_palette",
+  "arg": "pixel_size",
+  "label": "Pixel Size",
+  "default": 1,
+  "values": [
+   1,
+   5,
+   8,
+   12,
+   16
+  ],
+  "diff": [
+   0.0,
+   3.103909492492676,
+   5.188464641571045,
+   7.032632350921631,
+   7.395672798156738
+  ],
+  "done": true,
+  "range": [
+   1,
+   16
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.42,
+   0.702,
+   0.951,
+   1.0
+  ],
+  "class": "fast",
+  "curve": "pow:1.7",
+  "d0": 0.0,
+  "confident": true
+ },
+ "layer_blend.opacity_a": {
+  "program": "layer_blend",
+  "arg": "opacity_a",
+  "label": "Opacity A (%)",
+  "default": 75.0,
+  "values": [
+   0.0,
+   25.0,
+   50.0,
+   75.0,
+   100.0
+  ],
+  "diff": [
+   0.0,
+   31.67769432067871,
+   63.678401947021484,
+   95.58243560791016,
+   126.52202606201172
+  ],
+  "done": true,
+  "range": [
+   0,
+   100
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.25,
+   0.503,
+   0.755,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "layer_blend.opacity_b": {
+  "program": "layer_blend",
+  "arg": "opacity_b",
+  "label": "Opacity B (%)",
+  "default": 25.0,
+  "values": [
+   0.0,
+   25.0,
+   50.0,
+   75.0,
+   100.0
+  ],
+  "diff": [
+   0.0,
+   2.9312949180603027,
+   5.102623462677002,
+   6.922421455383301,
+   8.603363037109375
+  ],
+  "done": true,
+  "range": [
+   0,
+   100
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.341,
+   0.593,
+   0.805,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "led_wall.cell": {
+  "program": "led_wall",
+  "arg": "cell",
+  "label": "LED size (px)",
+  "default": 10,
+  "values": [
+   3,
+   17,
+   32,
+   46,
+   60
+  ],
+  "diff": [
+   0.0,
+   37.72563171386719,
+   50.083106994628906,
+   65.58902740478516,
+   69.70604705810547
+  ],
+  "done": true,
+  "range": [
+   3,
+   60
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.541,
+   0.718,
+   0.941,
+   1.0
+  ],
+  "class": "fast",
+  "curve": "pow:2.26",
+  "d0": 0.0,
+  "confident": true
+ },
+ "led_wall.brightness": {
+  "program": "led_wall",
+  "arg": "brightness",
+  "label": "Brightness",
+  "default": 1.15,
+  "values": [
+   0.5,
+   0.875,
+   1.25,
+   1.625,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   28.94097137451172,
+   43.97643280029297,
+   49.44145584106445,
+   53.427276611328125
+  ],
+  "done": true,
+  "range": [
+   0.5,
+   2
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.542,
+   0.823,
+   0.925,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:2.47",
+  "d0": 0.0,
+  "confident": true
+ },
+ "led_wall.dot": {
+  "program": "led_wall",
+  "arg": "dot",
+  "label": "Dot size",
+  "default": 1.0,
+  "values": [
+   0.3,
+   0.55,
+   0.8,
+   1.05,
+   1.3
+  ],
+  "diff": [
+   0.0,
+   15.52456283569336,
+   39.95765686035156,
+   72.5575180053711,
+   110.81796264648438
+  ],
+  "done": true,
+  "range": [
+   0.3,
+   1.3
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.14,
+   0.361,
+   0.655,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "led_wall.amount": {
+  "program": "led_wall",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   11.768872261047363,
+   23.463703155517578,
+   34.98466491699219,
+   46.6646728515625
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.252,
+   0.503,
+   0.75,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "little_planet.curve": {
+  "program": "little_planet",
+  "arg": "curve",
+  "label": "Curve",
+  "default": 0.8,
+  "values": [
+   0.3,
+   0.725,
+   1.15,
+   1.575,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   4.375771522521973,
+   6.5995049476623535,
+   7.925379276275635,
+   8.658885955810547
+  ],
+  "done": true,
+  "range": [
+   0.3,
+   2
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.505,
+   0.762,
+   0.915,
+   1.0
+  ],
+  "class": "fast",
+  "curve": "pow:2.14",
+  "d0": 0.0,
+  "confident": true
+ },
+ "little_planet.spin": {
+  "program": "little_planet",
+  "arg": "spin",
+  "label": "Spin (\u00b0/sec)",
+  "default": 0.0,
+  "values": [
+   -180.0,
+   -90.0,
+   0.0,
+   90.0,
+   180.0
+  ],
+  "diff": [
+   0.0,
+   92.91512298583984,
+   86.72997283935547,
+   85.25591278076172,
+   85.08988952636719
+  ],
+  "done": true,
+  "range": [
+   -180,
+   180
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   1.0,
+   0.933,
+   0.918,
+   0.916
+  ],
+  "class": "early",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "little_planet.amount": {
+  "program": "little_planet",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   24.614809036254883,
+   49.12934112548828,
+   73.68428802490234,
+   98.19222259521484
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.251,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "lomo.vignette": {
+  "program": "lomo",
+  "arg": "vignette",
+  "label": "Vignette",
+  "default": 0.65,
+  "values": [
+   0.0,
+   0.3,
+   0.6,
+   0.9,
+   1.2
+  ],
+  "diff": [
+   0.0,
+   10.104005813598633,
+   33.22456741333008,
+   51.84548568725586,
+   62.903968811035156
+  ],
+  "done": true,
+  "range": [
+   0,
+   1.2
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.161,
+   0.528,
+   0.824,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "light_snow.amount": {
+  "program": "light_snow",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.8904642462730408,
+   1.7896090745925903,
+   2.728266477584839,
+   3.6415252685546875
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.245,
+   0.491,
+   0.749,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "lomo.saturation": {
+  "program": "lomo",
+  "arg": "saturation",
+  "label": "Saturation",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.625,
+   1.25,
+   1.875,
+   2.5
+  ],
+  "diff": [
+   0.0,
+   54.22151565551758,
+   87.23771667480469,
+   87.69534301757812,
+   87.82323455810547
+  ],
+  "done": true,
+  "range": [
+   0,
+   2.5
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.617,
+   0.993,
+   0.999,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "lomo.contrast": {
+  "program": "lomo",
+  "arg": "contrast",
+  "label": "Curve strength",
+  "default": 1.0,
+  "values": [
+   0.4,
+   0.8,
+   1.2,
+   1.6,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   0.30214762687683105,
+   0.4625771641731262,
+   0.609825074672699,
+   0.7194251418113708
+  ],
+  "done": true,
+  "range": [
+   0.4,
+   2
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "lomo.amount": {
+  "program": "lomo",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   9.314943313598633,
+   18.460777282714844,
+   27.62065887451172,
+   36.96318817138672
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.252,
+   0.499,
+   0.747,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "long_exposure.persistence": {
+  "program": "long_exposure",
+  "arg": "persistence",
+  "label": "Persistence",
+  "default": 0.85,
+  "values": [
+   0.0,
+   0.2475,
+   0.495,
+   0.7425,
+   0.99
+  ],
+  "diff": [
+   0.0,
+   0.9355067014694214,
+   1.9741190671920776,
+   3.4271154403686523,
+   5.902006149291992
+  ],
+  "done": true,
+  "range": [
+   0,
+   0.99
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.159,
+   0.334,
+   0.581,
+   1.0
+  ],
+  "class": "slow",
+  "curve": "pow:0.72",
+  "d0": 0.0,
+  "confident": true
+ },
+ "long_exposure.amount": {
+  "program": "long_exposure",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   1.055587649345398,
+   2.1142618656158447,
+   3.1838347911834717,
+   4.220550537109375
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.25,
+   0.501,
+   0.754,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "lsd_feedback.amount": {
+  "program": "lsd_feedback",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   2.335069417953491,
+   4.5856804847717285,
+   6.805619716644287,
+   8.43923568725586
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.277,
+   0.543,
+   0.806,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "luma_key.threshold": {
+  "program": "luma_key",
+  "arg": "threshold",
+  "label": "Threshold (custom)",
+  "default": 0.5,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "luma_key.softness": {
+  "program": "luma_key",
+  "arg": "softness",
+  "label": "Edge softness",
+  "default": 0.08,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   3.9735724925994873,
+   18.23411750793457,
+   34.5118293762207,
+   43.29700469970703
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.092,
+   0.421,
+   0.797,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "luma_key.shrink": {
+  "program": "luma_key",
+  "arg": "shrink",
+  "label": "Edge shrink",
+  "default": 1,
+  "values": [
+   0,
+   2,
+   5,
+   8,
+   10
+  ],
+  "diff": [
+   0.0,
+   1.3972158432006836,
+   3.387474298477173,
+   5.393711566925049,
+   6.560024261474609
+  ],
+  "done": true,
+  "range": [
+   0,
+   10
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.213,
+   0.516,
+   0.822,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "lut_apply.brightness": {
+  "program": "lut_apply",
+  "arg": "brightness",
+  "label": "Brightness",
+  "default": 0.0,
+  "values": [
+   -1.0,
+   -0.5,
+   0.0,
+   0.5,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   16.586322784423828,
+   126.6556396484375,
+   236.32374572753906,
+   255.0
+  ],
+  "done": true,
+  "range": [
+   -1,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.065,
+   0.497,
+   0.927,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "luma_key.feather": {
+  "program": "luma_key",
+  "arg": "feather",
+  "label": "Edge feather",
+  "default": 1.0,
+  "values": [
+   0.0,
+   2.5,
+   5.0,
+   7.5,
+   10.0
+  ],
+  "diff": [
+   0.0,
+   0.49421295523643494,
+   1.1158692836761475,
+   1.777295470237732,
+   2.3462255001068115
+  ],
+  "done": true,
+  "range": [
+   0,
+   10
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.211,
+   0.476,
+   0.758,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "lut_apply.contrast": {
+  "program": "lut_apply",
+  "arg": "contrast",
+  "label": "Contrast",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.75,
+   1.5,
+   2.25,
+   3.0
+  ],
+  "diff": [
+   0.0,
+   41.733314514160156,
+   77.08545684814453,
+   94.21717834472656,
+   103.37496948242188
+  ],
+  "done": true,
+  "range": [
+   0,
+   3
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.404,
+   0.746,
+   0.911,
+   1.0
+  ],
+  "class": "fast",
+  "curve": "pow:1.67",
+  "d0": 0.0,
+  "confident": true
+ },
+ "meta_extraction.sample-stride": {
+  "program": "meta_extraction",
+  "arg": "sample-stride",
+  "label": "Sample Stride",
+  "default": 0.5,
+  "values": [
+   0.1,
+   2.575,
+   5.05,
+   7.525,
+   10.0
+  ],
+  "diff": [
+   null,
+   null,
+   null,
+   null,
+   null
+  ],
+  "done": true,
+  "range": [
+   0.1,
+   10
+  ],
+  "scale": "log",
+  "class": "error"
+ },
+ "lut_apply.saturation": {
+  "program": "lut_apply",
+  "arg": "saturation",
+  "label": "Saturation",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.75,
+   1.5,
+   2.25,
+   3.0
+  ],
+  "diff": [
+   0.0,
+   0.07056970149278641,
+   0.09394290298223495,
+   0.09719007462263107,
+   0.09394290298223495
+  ],
+  "done": true,
+  "range": [
+   0,
+   3
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "lut_apply.gamma": {
+  "program": "lut_apply",
+  "arg": "gamma",
+  "label": "Gamma",
+  "default": 1.0,
+  "values": [
+   0.1,
+   0.825,
+   1.55,
+   2.275,
+   3.0
+  ],
+  "diff": [
+   0.0,
+   106.12223815917969,
+   160.4771728515625,
+   188.72691345214844,
+   205.33265686035156
+  ],
+  "done": true,
+  "range": [
+   0.1,
+   3
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.517,
+   0.782,
+   0.919,
+   1.0
+  ],
+  "class": "fast",
+  "curve": "pow:2.24",
+  "d0": 0.0,
+  "confident": true
+ },
+ "meta_extraction.sample-limit": {
+  "program": "meta_extraction",
+  "arg": "sample-limit",
+  "label": "Sample Limit",
+  "default": 200,
+  "values": [
+   10,
+   508,
+   1005,
+   1502,
+   2000
+  ],
+  "diff": [
+   null,
+   null,
+   null,
+   null,
+   null
+  ],
+  "done": true,
+  "range": [
+   10,
+   2000
+  ],
+  "scale": "log",
+  "class": "error"
+ },
+ "meta_extraction.black-pic-th": {
+  "program": "meta_extraction",
+  "arg": "black-pic-th",
+  "label": "Black Pic Th",
+  "default": 0.1,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   null,
+   null,
+   null,
+   null,
+   null
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "class": "error"
+ },
+ "meta_extraction.black-dur-min": {
+  "program": "meta_extraction",
+  "arg": "black-dur-min",
+  "label": "Black Dur Min",
+  "default": 0.1,
+  "values": [
+   0.0,
+   1.25,
+   2.5,
+   3.75,
+   5.0
+  ],
+  "diff": [
+   null,
+   null,
+   null,
+   null,
+   null
+  ],
+  "done": true,
+  "range": [
+   0,
+   5
+  ],
+  "scale": null,
+  "class": "error"
+ },
+ "mince.ac": {
+  "program": "mince",
+  "arg": "ac",
+  "label": "Ac",
+  "default": 2,
+  "values": [
+   1,
+   3,
+   4,
+   6,
+   8
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   1,
+   8
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "mirror_delay.amount": {
+  "program": "mirror_delay",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   9.238651275634766,
+   18.631847381591797,
+   27.70052146911621,
+   37.186729431152344
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.248,
+   0.501,
+   0.745,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "mince.ar": {
+  "program": "mince",
+  "arg": "ar",
+  "label": "Ar",
+  "default": 48000,
+  "values": [
+   8000,
+   30000,
+   52000,
+   74000,
+   96000
+  ],
+  "diff": [
+   0.0,
+   null,
+   null,
+   null,
+   5.449813365936279
+  ],
+  "done": true,
+  "range": [
+   8000,
+   96000
+  ],
+  "scale": null,
+  "class": "error"
+ },
+ "motion_ghost.decay": {
+  "program": "motion_ghost",
+  "arg": "decay",
+  "label": "Decay",
+  "default": 0.92,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   6.045685291290283,
+   13.203800201416016,
+   26.341981887817383,
+   95.9824447631836
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.063,
+   0.138,
+   0.274,
+   1.0
+  ],
+  "class": "late",
+  "curve": "pow:0.45",
+  "d0": 0.0,
+  "confident": true
+ },
+ "motion_ghost.sensitivity": {
+  "program": "motion_ghost",
+  "arg": "sensitivity",
+  "label": "Sensitivity",
+  "default": 0.5,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.29890045523643494,
+   0.5239840745925903,
+   0.7980324029922485,
+   1.249003291130066
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.239,
+   0.42,
+   0.639,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "motion_ghost.dim": {
+  "program": "motion_ghost",
+  "arg": "dim",
+  "label": "Dim",
+  "default": 0.35,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   29.112010955810547,
+   56.55767822265625,
+   81.80314636230469,
+   93.2353744506836
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.312,
+   0.607,
+   0.877,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "negative.amount": {
+  "program": "negative",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   37.61975860595703,
+   75.4040298461914,
+   113.20132446289062,
+   150.82199096679688
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.249,
+   0.5,
+   0.751,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "neon_edges.sensitivity": {
+  "program": "neon_edges",
+  "arg": "sensitivity",
+  "label": "Sensitivity",
+  "default": 0.7,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   3.5677082538604736,
+   6.286811828613281,
+   9.418402671813965,
+   14.318929672241211
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.249,
+   0.439,
+   0.658,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "neon_edges.thickness": {
+  "program": "neon_edges",
+  "arg": "thickness",
+  "label": "Thickness",
+  "default": 2,
+  "values": [
+   1,
+   3,
+   6,
+   8,
+   10
+  ],
+  "diff": [
+   0.0,
+   10.041152000427246,
+   20.221193313598633,
+   25.043113708496094,
+   29.009613037109375
+  ],
+  "done": true,
+  "range": [
+   1,
+   10
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.346,
+   0.697,
+   0.863,
+   1.0
+  ],
+  "class": "fast",
+  "curve": "pow:1.41",
+  "d0": 0.0,
+  "confident": true
+ },
+ "neon_edges.dim": {
+  "program": "neon_edges",
+  "arg": "dim",
+  "label": "Dim",
+  "default": 0.25,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   30.889822006225586,
+   62.11808776855469,
+   92.87886047363281,
+   121.67823791503906
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.254,
+   0.511,
+   0.763,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "neon_edges.glow": {
+  "program": "neon_edges",
+  "arg": "glow",
+  "label": "Glow",
+  "default": 12,
+  "values": [
+   0,
+   12,
+   25,
+   38,
+   50
+  ],
+  "diff": [
+   0.0,
+   7.456211566925049,
+   8.169914245605469,
+   8.418370246887207,
+   8.630369186401367
+  ],
+  "done": true,
+  "range": [
+   0,
+   50
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.864,
+   0.947,
+   0.975,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "night_vision.grain": {
+  "program": "night_vision",
+  "arg": "grain",
+  "label": "Grain",
+  "default": 18,
+  "values": [
+   0,
+   15,
+   30,
+   45,
+   60
+  ],
+  "diff": [
+   0.0,
+   0.4591049253940582,
+   0.6802018880844116,
+   1.1501736640930176,
+   1.452481985092163
+  ],
+  "done": true,
+  "range": [
+   0,
+   60
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.316,
+   0.468,
+   0.792,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "nostalgic_stutter.amount": {
+  "program": "nostalgic_stutter",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.4527392089366913,
+   0.8134966492652893,
+   1.206082820892334,
+   1.6152263879776
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.28,
+   0.504,
+   0.747,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "night_vision.brightness": {
+  "program": "night_vision",
+  "arg": "brightness",
+  "label": "Brightness",
+  "default": 0.05,
+  "values": [
+   -0.5,
+   -0.25,
+   0.0,
+   0.25,
+   0.5
+  ],
+  "diff": [
+   0.0,
+   9.660268783569336,
+   23.7733097076416,
+   38.249420166015625,
+   50.44550704956055
+  ],
+  "done": true,
+  "range": [
+   -0.5,
+   0.5
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.191,
+   0.471,
+   0.758,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "oil_paint.brush": {
+  "program": "oil_paint",
+  "arg": "brush",
+  "label": "Brush size",
+  "default": 40.0,
+  "values": [
+   5.0,
+   28.75,
+   52.5,
+   76.25,
+   100.0
+  ],
+  "diff": [
+   0.0,
+   0.24376286566257477,
+   0.3049125373363495,
+   0.32558512687683105,
+   0.3202803432941437
+  ],
+  "done": true,
+  "range": [
+   5,
+   100
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "oil_paint.levels": {
+  "program": "oil_paint",
+  "arg": "levels",
+  "label": "Tone step",
+  "default": 24,
+  "values": [
+   2,
+   18,
+   33,
+   48,
+   64
+  ],
+  "diff": [
+   0.0,
+   99.11670684814453,
+   6.274723529815674,
+   107.9021987915039,
+   17.715791702270508
+  ],
+  "done": true,
+  "range": [
+   2,
+   64
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.919,
+   0.058,
+   1.0,
+   0.164
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "oil_paint.relief": {
+  "program": "oil_paint",
+  "arg": "relief",
+  "label": "Relief",
+  "default": 0.35,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   2.39760160446167,
+   4.450778007507324,
+   6.019064903259277,
+   7.384902477264404
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.325,
+   0.603,
+   0.815,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "frame_interpolate.slow_motion": {
+  "program": "frame_interpolate",
+  "arg": "slow_motion",
+  "label": "Slow motion",
+  "default": 1.0,
+  "values": [
+   1.0,
+   4.75,
+   8.5,
+   12.25,
+   16.0
+  ],
+  "diff": [
+   0.0,
+   5.968460559844971,
+   6.036008358001709,
+   6.122170925140381,
+   6.142843246459961
+  ],
+  "done": true,
+  "range": [
+   1,
+   16
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.972,
+   0.983,
+   0.997,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "old_film_damage.intensity": {
+  "program": "old_film_damage",
+  "arg": "intensity",
+  "label": "Intensity",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.5242090821266174,
+   1.9687178134918213,
+   2.2263052463531494,
+   3.072209358215332
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.171,
+   0.641,
+   0.725,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "oil_paint.amount": {
+  "program": "oil_paint",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   1.9078575372695923,
+   3.485307455062866,
+   5.654867649078369,
+   7.486271858215332
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.255,
+   0.466,
+   0.755,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "ordered_dither.levels": {
+  "program": "ordered_dither",
+  "arg": "levels",
+  "label": "Levels",
+  "default": 2,
+  "values": [
+   2,
+   6,
+   9,
+   12,
+   16
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   2,
+   16
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "ordered_dither.strength": {
+  "program": "ordered_dither",
+  "arg": "strength",
+  "label": "Strength",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   1.6699459552764893,
+   5.218203544616699,
+   6.422485828399658,
+   7.372010231018066
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.227,
+   0.708,
+   0.871,
+   1.0
+  ],
+  "class": "fast",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "ordered_dither.pixel_size": {
+  "program": "ordered_dither",
+  "arg": "pixel_size",
+  "label": "Pixel Size",
+  "default": 2,
+  "values": [
+   1,
+   5,
+   8,
+   12,
+   16
+  ],
+  "diff": [
+   0.0,
+   3.747910261154175,
+   6.433899402618408,
+   9.144740104675293,
+   11.061310768127441
+  ],
+  "done": true,
+  "range": [
+   1,
+   16
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.339,
+   0.582,
+   0.827,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "overexposed_stutter.amount": {
+  "program": "overexposed_stutter",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   14.579732894897461,
+   28.594327926635742,
+   40.28022003173828,
+   45.46042251586914
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.321,
+   0.629,
+   0.886,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "pickle_juice.amount": {
+  "program": "pickle_juice",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.7290059328079224,
+   1.3077739477157593,
+   1.8836805820465088,
+   2.5796360969543457
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.283,
+   0.507,
+   0.73,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "photobooth.amount": {
+  "program": "photobooth",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   1.4403613805770874,
+   3.0573558807373047,
+   4.523051738739014,
+   6.095936298370361
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.236,
+   0.502,
+   0.742,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "picture_in_picture.size": {
+  "program": "picture_in_picture",
+  "arg": "size",
+  "label": "Size (% of width)",
+  "default": 30.0,
+  "values": [
+   5.0,
+   28.75,
+   52.5,
+   76.25,
+   100.0
+  ],
+  "diff": [
+   0.0,
+   8.725019454956055,
+   29.2415771484375,
+   37.28616714477539,
+   29.018646240234375
+  ],
+  "done": true,
+  "range": [
+   5,
+   100
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.234,
+   0.784,
+   1.0,
+   0.778
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "picture_in_picture.margin": {
+  "program": "picture_in_picture",
+  "arg": "margin",
+  "label": "Margin (%)",
+  "default": 3.0,
+  "values": [
+   0.0,
+   7.5,
+   15.0,
+   22.5,
+   30.0
+  ],
+  "diff": [
+   0.0,
+   14.462030410766602,
+   18.439910888671875,
+   20.77938461303711,
+   19.949073791503906
+  ],
+  "done": true,
+  "range": [
+   0,
+   30
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.696,
+   0.887,
+   1.0,
+   0.96
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "picture_in_picture.x": {
+  "program": "picture_in_picture",
+  "arg": "x",
+  "label": "X (custom, %)",
+  "default": 50.0,
+  "values": [
+   0.0,
+   25.0,
+   50.0,
+   75.0,
+   100.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   100
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "picture_in_picture.y": {
+  "program": "picture_in_picture",
+  "arg": "y",
+  "label": "Y (custom, %)",
+  "default": 50.0,
+  "values": [
+   0.0,
+   25.0,
+   50.0,
+   75.0,
+   100.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   100
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "picture_in_picture.border": {
+  "program": "picture_in_picture",
+  "arg": "border",
+  "label": "Border (px)",
+  "default": 4,
+  "values": [
+   0,
+   10,
+   20,
+   30,
+   40
+  ],
+  "diff": [
+   0.0,
+   7.809638500213623,
+   14.801215171813965,
+   21.88429069519043,
+   29.129566192626953
+  ],
+  "done": true,
+  "range": [
+   0,
+   40
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.268,
+   0.508,
+   0.751,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "picture_in_picture.opacity": {
+  "program": "picture_in_picture",
+  "arg": "opacity",
+  "label": "Opacity (%)",
+  "default": 100.0,
+  "values": [
+   0.0,
+   25.0,
+   50.0,
+   75.0,
+   100.0
+  ],
+  "diff": [
+   0.0,
+   2.3827803134918213,
+   4.706725597381592,
+   7.000675201416016,
+   9.333301544189453
+  ],
+  "done": true,
+  "range": [
+   0,
+   100
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.255,
+   0.504,
+   0.75,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "pixelate.block": {
+  "program": "pixelate",
+  "arg": "block",
+  "label": "Block size (px)",
+  "default": 16,
+  "values": [
+   2,
+   52,
+   101,
+   150,
+   200
+  ],
+  "diff": [
+   0.0,
+   7.288644313812256,
+   8.806841850280762,
+   40.95167922973633,
+   75.50546264648438
+  ],
+  "done": true,
+  "range": [
+   2,
+   200
+  ],
+  "scale": "log",
+  "s": [
+   0.0,
+   0.097,
+   0.117,
+   0.542,
+   1.0
+  ],
+  "class": "late",
+  "curve": "pow:0.51",
+  "d0": 0.0,
+  "confident": true
+ },
+ "pixel_sort.threshold": {
+  "program": "pixel_sort",
+  "arg": "threshold",
+  "label": "Threshold",
+  "default": null,
+  "values": [
+   0,
+   64,
+   128,
+   191,
+   255
+  ],
+  "diff": [
+   0.0,
+   3.2907021045684814,
+   72.25086975097656,
+   72.69917297363281,
+   72.69656372070312
+  ],
+  "done": true,
+  "range": [
+   0,
+   255
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.045,
+   0.994,
+   1.0,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:0.58",
+  "d0": 0.0,
+  "confident": true
+ },
+ "pixelate.amount": {
+  "program": "pixelate",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   1.5924961566925049,
+   3.170588970184326,
+   4.7624101638793945,
+   6.317129611968994
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.252,
+   0.502,
+   0.754,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "pixel_sort.max_width": {
+  "program": "pixel_sort",
+  "arg": "max_width",
+  "label": "Downscale for speed (px, 0 = off)",
+  "default": 0,
+  "values": [
+   0,
+   1024,
+   2048,
+   3072,
+   4096
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   4096
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "pop_art.palette": {
+  "program": "pop_art",
+  "arg": "palette",
+  "label": "Palette (single)",
+  "default": 0,
+  "values": [
+   0,
+   1,
+   2,
+   2,
+   3
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   3
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "pop_art.low": {
+  "program": "pop_art",
+  "arg": "low",
+  "label": "Shadow cut",
+  "default": 90,
+  "values": [
+   0,
+   64,
+   127,
+   190,
+   254
+  ],
+  "diff": [
+   0.0,
+   20.050893783569336,
+   55.6247444152832,
+   111.37390899658203,
+   93.77079772949219
+  ],
+  "done": true,
+  "range": [
+   0,
+   254
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.18,
+   0.499,
+   1.0,
+   0.842
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "pop_art.high": {
+  "program": "pop_art",
+  "arg": "high",
+  "label": "Highlight cut",
+  "default": 170,
+  "values": [
+   1,
+   64,
+   128,
+   192,
+   255
+  ],
+  "diff": [
+   0.0,
+   14.290380477905273,
+   146.97975158691406,
+   131.22189331054688,
+   117.99826049804688
+  ],
+  "done": true,
+  "range": [
+   1,
+   255
+  ],
+  "scale": "log",
+  "s": [
+   0.0,
+   0.097,
+   1.0,
+   0.893,
+   0.803
+  ],
+  "class": "early",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "pop_art.amount": {
+  "program": "pop_art",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   17.830890655517578,
+   35.68946075439453,
+   53.47707748413086,
+   71.39776611328125
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.25,
+   0.5,
+   0.749,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "proc_amp.brightness": {
+  "program": "proc_amp",
+  "arg": "brightness",
+  "label": "Brightness",
+  "default": 0.0,
+  "values": [
+   -1.0,
+   -0.5,
+   0.0,
+   0.5,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   22.672807693481445,
+   95.9849853515625,
+   168.155517578125,
+   193.9254150390625
+  ],
+  "done": true,
+  "range": [
+   -1,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.117,
+   0.495,
+   0.867,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "posterize.levels": {
+  "program": "posterize",
+  "arg": "levels",
+  "label": "Levels",
+  "default": 4,
+  "values": [
+   2,
+   6,
+   9,
+   12,
+   16
+  ],
+  "diff": [
+   0.0,
+   2.293917179107666,
+   2.5195152759552,
+   2.4934091567993164,
+   2.529963970184326
+  ],
+  "done": true,
+  "range": [
+   2,
+   16
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.907,
+   0.996,
+   0.986,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "posterize.amount": {
+  "program": "posterize",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.24909979104995728,
+   0.40670010447502136,
+   0.8535236716270447,
+   1.1555747985839844
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.216,
+   0.352,
+   0.739,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "proc_amp.contrast": {
+  "program": "proc_amp",
+  "arg": "contrast",
+  "label": "Contrast",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.75,
+   1.5,
+   2.25,
+   3.0
+  ],
+  "diff": [
+   0.0,
+   36.590919494628906,
+   52.72145080566406,
+   57.39175033569336,
+   60.693641662597656
+  ],
+  "done": true,
+  "range": [
+   0,
+   3
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.603,
+   0.869,
+   0.946,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "proc_amp.saturation": {
+  "program": "proc_amp",
+  "arg": "saturation",
+  "label": "Saturation",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.75,
+   1.5,
+   2.25,
+   3.0
+  ],
+  "diff": [
+   0.0,
+   14.860885620117188,
+   19.597640991210938,
+   16.704315185546875,
+   15.403002738952637
+  ],
+  "done": true,
+  "range": [
+   0,
+   3
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.758,
+   1.0,
+   0.852,
+   0.786
+  ],
+  "class": "early",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "proc_amp.hue": {
+  "program": "proc_amp",
+  "arg": "hue",
+  "label": "Hue rotate (\u00b0)",
+  "default": 0.0,
+  "values": [
+   -180.0,
+   -90.0,
+   0.0,
+   90.0,
+   180.0
+  ],
+  "diff": [
+   0.0,
+   45.65213394165039,
+   55.00459671020508,
+   18.448688507080078,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   -180,
+   180
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.83,
+   1.0,
+   0.335,
+   0.0
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "proc_amp.gamma": {
+  "program": "proc_amp",
+  "arg": "gamma",
+  "label": "Gamma",
+  "default": 1.0,
+  "values": [
+   0.1,
+   0.825,
+   1.55,
+   2.275,
+   3.0
+  ],
+  "diff": [
+   0.0,
+   80.3805923461914,
+   111.2362060546875,
+   128.88124084472656,
+   140.32638549804688
+  ],
+  "done": true,
+  "range": [
+   0.1,
+   3
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.573,
+   0.793,
+   0.918,
+   1.0
+  ],
+  "class": "fast",
+  "curve": "pow:2.59",
+  "d0": 0.0,
+  "confident": true
+ },
+ "proc_amp.black_level": {
+  "program": "proc_amp",
+  "arg": "black_level",
+  "label": "Black level",
+  "default": 0.0,
+  "values": [
+   0.0,
+   0.125,
+   0.25,
+   0.375,
+   0.5
+  ],
+  "diff": [
+   0.0,
+   1.8669624328613281,
+   3.1192128658294678,
+   4.3063273429870605,
+   6.180233955383301
+  ],
+  "done": true,
+  "range": [
+   0,
+   0.5
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.302,
+   0.505,
+   0.697,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "proc_amp.white_level": {
+  "program": "proc_amp",
+  "arg": "white_level",
+  "label": "White level",
+  "default": 1.0,
+  "values": [
+   0.5,
+   0.625,
+   0.75,
+   0.875,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   1.4480130672454834,
+   2.770897626876831,
+   3.9885544776916504,
+   6.042052268981934
+  ],
+  "done": true,
+  "range": [
+   0.5,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.24,
+   0.459,
+   0.66,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "proc_amp.temperature": {
+  "program": "proc_amp",
+  "arg": "temperature",
+  "label": "Color temperature (K)",
+  "default": 6500.0,
+  "values": [
+   2000.0,
+   4500.0,
+   7000.0,
+   9500.0,
+   12000.0
+  ],
+  "diff": [
+   0.0,
+   35.202030181884766,
+   46.23456954956055,
+   36.85464859008789,
+   33.01762008666992
+  ],
+  "done": true,
+  "range": [
+   2000,
+   12000
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.761,
+   1.0,
+   0.797,
+   0.714
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "quad_split.gap": {
+  "program": "quad_split",
+  "arg": "gap",
+  "label": "Gap (px)",
+  "default": 4,
+  "values": [
+   0,
+   15,
+   30,
+   45,
+   60
+  ],
+  "diff": [
+   0.0,
+   19.73029136657715,
+   35.499549865722656,
+   46.041343688964844,
+   58.517845153808594
+  ],
+  "done": true,
+  "range": [
+   0,
+   60
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.337,
+   0.607,
+   0.787,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "qwikchop.black-scan": {
+  "program": "qwikchop",
+  "arg": "black-scan",
+  "label": "Black Scan",
+  "default": 0.25,
+  "values": [
+   0.05,
+   0.5375,
+   1.025,
+   1.512,
+   2.0
+  ],
+  "diff": [
+   null,
+   null,
+   null,
+   null,
+   null
+  ],
+  "done": true,
+  "range": [
+   0.05,
+   2
+  ],
+  "scale": null,
+  "class": "error"
+ },
+ "qwikchop.black-thresh": {
+  "program": "qwikchop",
+  "arg": "black-thresh",
+  "label": "Black Thresh",
+  "default": 0.1,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   null,
+   null,
+   null,
+   null,
+   null
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "class": "error"
+ },
+ "qwikchop.black-pict": {
+  "program": "qwikchop",
+  "arg": "black-pict",
+  "label": "Black Pict",
+  "default": 0.1,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   null,
+   null,
+   null,
+   null,
+   null
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "class": "error"
+ },
+ "qwikchop.edge-pad-pre": {
+  "program": "qwikchop",
+  "arg": "edge-pad-pre",
+  "label": "Edge Pad Pre",
+  "default": 0.03,
+  "values": [
+   0.0,
+   0.125,
+   0.25,
+   0.375,
+   0.5
+  ],
+  "diff": [
+   null,
+   null,
+   null,
+   null,
+   null
+  ],
+  "done": true,
+  "range": [
+   0,
+   0.5
+  ],
+  "scale": null,
+  "class": "error"
+ },
+ "qwikchop.edge-pad-post": {
+  "program": "qwikchop",
+  "arg": "edge-pad-post",
+  "label": "Edge Pad Post",
+  "default": 0.02,
+  "values": [
+   0.0,
+   0.125,
+   0.25,
+   0.375,
+   0.5
+  ],
+  "diff": [
+   null,
+   null,
+   null,
+   null,
+   null
+  ],
+  "done": true,
+  "range": [
+   0,
+   0.5
+  ],
+  "scale": null,
+  "class": "error"
+ },
+ "rb_blur.amount": {
+  "program": "rb_blur",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.4042567014694214,
+   0.7993826866149902,
+   1.170878291130066,
+   1.5484503507614136
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.261,
+   0.516,
+   0.756,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "qwikchop.min-edit": {
+  "program": "qwikchop",
+  "arg": "min-edit",
+  "label": "Min Edit",
+  "default": 0.2,
+  "values": [
+   0.05,
+   1.288,
+   2.525,
+   3.763,
+   5.0
+  ],
+  "diff": [
+   null,
+   null,
+   null,
+   null,
+   null
+  ],
+  "done": true,
+  "range": [
+   0.05,
+   5
+  ],
+  "scale": "log",
+  "class": "error"
+ },
+ "recalled_sensor.amount": {
+  "program": "recalled_sensor",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   4.612622261047363,
+   9.172453880310059,
+   13.50340747833252,
+   16.718814849853516
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.276,
+   0.549,
+   0.808,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "remove_background.sensitivity": {
+  "program": "remove_background",
+  "arg": "sensitivity",
+  "label": "Sensitivity (static)",
+  "default": 28.0,
+  "values": [
+   2.0,
+   31.5,
+   61.0,
+   90.5,
+   120.0
+  ],
+  "diff": [
+   0.0,
+   1.3548740148544312,
+   1.791795253753662,
+   2.07728910446167,
+   2.3102173805236816
+  ],
+  "done": true,
+  "range": [
+   2,
+   120
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.586,
+   0.776,
+   0.899,
+   1.0
+  ],
+  "class": "fast",
+  "curve": "pow:2.63",
+  "d0": 0.0,
+  "confident": true
+ },
+ "remove_background.threshold": {
+  "program": "remove_background",
+  "arg": "threshold",
+  "label": "Threshold (AI)",
+  "default": 0.5,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "remove_background.softness": {
+  "program": "remove_background",
+  "arg": "softness",
+  "label": "Edge softness",
+  "default": 0.25,
+  "values": [
+   0.02,
+   0.265,
+   0.51,
+   0.755,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.24270190298557281,
+   0.38718491792678833,
+   0.5075874328613281,
+   0.6080568432807922
+  ],
+  "done": true,
+  "range": [
+   0.02,
+   1
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "remove_background.shrink": {
+  "program": "remove_background",
+  "arg": "shrink",
+  "label": "Edge shrink",
+  "default": 1,
+  "values": [
+   0,
+   2,
+   5,
+   8,
+   10
+  ],
+  "diff": [
+   0.0,
+   0.9230324029922485,
+   1.8619791269302368,
+   2.4803884029388428,
+   2.641878843307495
+  ],
+  "done": true,
+  "range": [
+   0,
+   10
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.349,
+   0.705,
+   0.939,
+   1.0
+  ],
+  "class": "fast",
+  "curve": "pow:1.45",
+  "d0": 0.0,
+  "confident": true
+ },
+ "repainting.amount": {
+  "program": "repainting",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   4.497974395751953,
+   9.16853141784668,
+   13.670589447021484,
+   18.342464447021484
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.245,
+   0.5,
+   0.745,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "retro_dither.bayer_scale": {
+  "program": "retro_dither",
+  "arg": "bayer_scale",
+  "label": "Bayer Scale",
+  "default": 3,
+  "values": [
+   0,
+   1,
+   2,
+   4,
+   5
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   5
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "retro_dither.pixel_size": {
+  "program": "retro_dither",
+  "arg": "pixel_size",
+  "label": "Pixel Size",
+  "default": 2,
+  "values": [
+   1,
+   5,
+   8,
+   12,
+   16
+  ],
+  "diff": [
+   0.0,
+   2.1907472610473633,
+   3.3020832538604736,
+   4.666923999786377,
+   5.3281569480896
+  ],
+  "done": true,
+  "range": [
+   1,
+   16
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.411,
+   0.62,
+   0.876,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "remove_background.feather": {
+  "program": "remove_background",
+  "arg": "feather",
+  "label": "Edge feather",
+  "default": 1.0,
+  "values": [
+   0.0,
+   2.5,
+   5.0,
+   7.5,
+   10.0
+  ],
+  "diff": [
+   0.0,
+   0.3377057611942291,
+   0.8065200448036194,
+   1.249517798423767,
+   1.6271861791610718
+  ],
+  "done": true,
+  "range": [
+   0,
+   10
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.208,
+   0.496,
+   0.768,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "retro_dither.contrast": {
+  "program": "retro_dither",
+  "arg": "contrast",
+  "label": "Contrast",
+  "default": 1.2,
+  "values": [
+   0.5,
+   0.875,
+   1.25,
+   1.625,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   0.8659657835960388,
+   1.489711880683899,
+   1.792599081993103,
+   1.9015239477157593
+  ],
+  "done": true,
+  "range": [
+   0.5,
+   2
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.455,
+   0.783,
+   0.943,
+   1.0
+  ],
+  "class": "fast",
+  "curve": "pow:1.95",
+  "d0": 0.0,
+  "confident": true
+ },
+ "retro_dither.brightness": {
+  "program": "retro_dither",
+  "arg": "brightness",
+  "label": "Brightness",
+  "default": 0.0,
+  "values": [
+   -0.5,
+   -0.25,
+   0.0,
+   0.25,
+   0.5
+  ],
+  "diff": [
+   0.0,
+   29.688947677612305,
+   34.059059143066406,
+   36.70302963256836,
+   45.41319274902344
+  ],
+  "done": true,
+  "range": [
+   -0.5,
+   0.5
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.654,
+   0.75,
+   0.808,
+   1.0
+  ],
+  "class": "fast",
+  "curve": "pow:2.92",
+  "d0": 0.0,
+  "confident": false
+ },
+ "rgb_time_split.delay_green": {
+  "program": "rgb_time_split",
+  "arg": "delay_green",
+  "label": "Green delay (frames)",
+  "default": 9,
+  "values": [
+   0,
+   15,
+   30,
+   45,
+   60
+  ],
+  "diff": [
+   0.0,
+   6.34458589553833,
+   6.40454626083374,
+   6.40454626083374,
+   6.40454626083374
+  ],
+  "done": true,
+  "range": [
+   0,
+   60
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.991,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "rgb_time_split.delay_blue": {
+  "program": "rgb_time_split",
+  "arg": "delay_blue",
+  "label": "Blue delay (frames)",
+  "default": 18,
+  "values": [
+   0,
+   15,
+   30,
+   45,
+   60
+  ],
+  "diff": [
+   0.0,
+   0.7180748581886292,
+   0.7218364477157593,
+   0.7218364477157593,
+   0.7218364477157593
+  ],
+  "done": true,
+  "range": [
+   0,
+   60
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "rgb_time_split.amount": {
+  "program": "rgb_time_split",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   1.6274112462997437,
+   3.2423481941223145,
+   4.8415961265563965,
+   6.439525604248047
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.253,
+   0.504,
+   0.752,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "rotate.angle": {
+  "program": "rotate",
+  "arg": "angle",
+  "label": "Angle (\u00b0 clockwise)",
+  "default": 180.0,
+  "values": [
+   -180.0,
+   -90.0,
+   0.0,
+   90.0,
+   180.0
+  ],
+  "diff": [
+   0.0,
+   89.48617553710938,
+   148.2977752685547,
+   89.40644073486328,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   -180,
+   180
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.603,
+   1.0,
+   0.603,
+   0.0
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "rotate.spin": {
+  "program": "rotate",
+  "arg": "spin",
+  "label": "Spin (\u00b0 per second)",
+  "default": 0.0,
+  "values": [
+   -360.0,
+   -180.0,
+   0.0,
+   180.0,
+   360.0
+  ],
+  "diff": [
+   0.0,
+   54.26166915893555,
+   110.68692016601562,
+   55.42869186401367,
+   58.08298110961914
+  ],
+  "done": true,
+  "range": [
+   -360,
+   360
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.49,
+   1.0,
+   0.501,
+   0.525
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "septic.amount": {
+  "program": "septic",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   1.0141139030456543,
+   1.8062950372695923,
+   2.6246142387390137,
+   3.414608955383301
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.297,
+   0.529,
+   0.769,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "sepia.amount": {
+  "program": "sepia",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   8.680587768554688,
+   17.488811492919922,
+   26.359567642211914,
+   34.94158172607422
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.248,
+   0.501,
+   0.754,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "shape_synth.opacity": {
+  "program": "shape_synth",
+  "arg": "opacity",
+  "label": "Opacity",
+  "default": 0.9,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   5.721386432647705,
+   11.381494522094727,
+   17.111433029174805,
+   22.860597610473633
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.25,
+   0.498,
+   0.749,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "shape_synth.warp": {
+  "program": "shape_synth",
+  "arg": "warp",
+  "label": "Warp amount",
+  "default": 0.3,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "shape_synth.a_size": {
+  "program": "shape_synth",
+  "arg": "a_size",
+  "label": "A size",
+  "default": 0.6,
+  "values": [
+   0.05,
+   0.5375,
+   1.025,
+   1.512,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   13.96595287322998,
+   26.955665588378906,
+   30.411876678466797,
+   18.875675201416016
+  ],
+  "done": true,
+  "range": [
+   0.05,
+   2.0
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.459,
+   0.886,
+   1.0,
+   0.621
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "shape_synth.a_curve": {
+  "program": "shape_synth",
+  "arg": "a_curve",
+  "label": "A curve",
+  "default": 0.0,
+  "values": [
+   -4.0,
+   -2.0,
+   0.0,
+   2.0,
+   4.0
+  ],
+  "diff": [
+   0.0,
+   0.13110853731632233,
+   0.20862267911434174,
+   0.2454025149345398,
+   0.26035237312316895
+  ],
+  "done": true,
+  "range": [
+   -4,
+   4
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "shape_synth.a_softness": {
+  "program": "shape_synth",
+  "arg": "a_softness",
+  "label": "A edge softness",
+  "default": 0.08,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.5157536268234253,
+   1.401813268661499,
+   2.3248136043548584,
+   3.2422518730163574
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.159,
+   0.432,
+   0.717,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "shape_synth.a_stretch_x": {
+  "program": "shape_synth",
+  "arg": "a_stretch_x",
+  "label": "A stretch X",
+  "default": 1.0,
+  "values": [
+   0.2,
+   1.4,
+   2.6,
+   3.8,
+   5.0
+  ],
+  "diff": [
+   0.0,
+   19.009002685546875,
+   30.038419723510742,
+   28.921842575073242,
+   26.1724853515625
+  ],
+  "done": true,
+  "range": [
+   0.2,
+   5
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.633,
+   1.0,
+   0.963,
+   0.871
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "shape_synth.a_stretch_y": {
+  "program": "shape_synth",
+  "arg": "a_stretch_y",
+  "label": "A stretch Y",
+  "default": 1.0,
+  "values": [
+   0.2,
+   1.4,
+   2.6,
+   3.8,
+   5.0
+  ],
+  "diff": [
+   0.0,
+   21.8756103515625,
+   17.3907527923584,
+   15.688239097595215,
+   15.174285888671875
+  ],
+  "done": true,
+  "range": [
+   0.2,
+   5
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   1.0,
+   0.795,
+   0.717,
+   0.694
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "shape_synth.a_rotate": {
+  "program": "shape_synth",
+  "arg": "a_rotate",
+  "label": "A rotate (\u00b0)",
+  "default": 0.0,
+  "values": [
+   -180.0,
+   -90.0,
+   0.0,
+   90.0,
+   180.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   -180,
+   180
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "shape_synth.a_spin": {
+  "program": "shape_synth",
+  "arg": "a_spin",
+  "label": "A spin (\u00b0/sec)",
+  "default": 0.0,
+  "values": [
+   -360.0,
+   -180.0,
+   0.0,
+   180.0,
+   360.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   -360,
+   360
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "shape_synth.a_x": {
+  "program": "shape_synth",
+  "arg": "a_x",
+  "label": "A offset X",
+  "default": 0.0,
+  "values": [
+   -2.0,
+   -1.0,
+   0.0,
+   1.0,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   12.834779739379883,
+   19.796327590942383,
+   15.090792655944824,
+   9.583976745605469
+  ],
+  "done": true,
+  "range": [
+   -2,
+   2
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.648,
+   1.0,
+   0.762,
+   0.484
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "shape_synth.a_y": {
+  "program": "shape_synth",
+  "arg": "a_y",
+  "label": "A offset Y",
+  "default": 0.0,
+  "values": [
+   -1.5,
+   -0.75,
+   0.0,
+   0.75,
+   1.5
+  ],
+  "diff": [
+   0.0,
+   12.249613761901855,
+   18.96624183654785,
+   12.90817928314209,
+   6.244630813598633
+  ],
+  "done": true,
+  "range": [
+   -1.5,
+   1.5
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.646,
+   1.0,
+   0.681,
+   0.329
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "shape_synth.a_drift_x": {
+  "program": "shape_synth",
+  "arg": "a_drift_x",
+  "label": "A drift X (/sec)",
+  "default": 0.0,
+  "values": [
+   -2.0,
+   -1.0,
+   0.0,
+   1.0,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   14.66907787322998,
+   18.668691635131836,
+   17.880369186401367,
+   17.578414916992188
+  ],
+  "done": true,
+  "range": [
+   -2,
+   2
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.786,
+   1.0,
+   0.958,
+   0.942
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "shape_synth.a_drift_y": {
+  "program": "shape_synth",
+  "arg": "a_drift_y",
+  "label": "A drift Y (/sec)",
+  "default": 0.0,
+  "values": [
+   -2.0,
+   -1.0,
+   0.0,
+   1.0,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   10.685281753540039,
+   16.152488708496094,
+   15.109889030456543,
+   12.586901664733887
+  ],
+  "done": true,
+  "range": [
+   -2,
+   2
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.662,
+   1.0,
+   0.935,
+   0.779
+  ],
+  "class": "early",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "shape_synth.b_size": {
+  "program": "shape_synth",
+  "arg": "b_size",
+  "label": "B size",
+  "default": 0.4,
+  "values": [
+   0.05,
+   0.5375,
+   1.025,
+   1.512,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   7.581179141998291,
+   24.48749351501465,
+   41.23176956176758,
+   55.787776947021484
+  ],
+  "done": true,
+  "range": [
+   0.05,
+   2.0
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.136,
+   0.439,
+   0.739,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "shape_synth.b_fold": {
+  "program": "shape_synth",
+  "arg": "b_fold",
+  "label": "B fold",
+  "default": 1,
+  "values": [
+   1,
+   4,
+   6,
+   9,
+   12
+  ],
+  "diff": [
+   0.0,
+   35.121463775634766,
+   34.2171745300293,
+   33.695152282714844,
+   33.50382614135742
+  ],
+  "done": true,
+  "range": [
+   1,
+   12
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   1.0,
+   0.974,
+   0.959,
+   0.954
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "shape_synth.b_curve": {
+  "program": "shape_synth",
+  "arg": "b_curve",
+  "label": "B curve",
+  "default": 0.0,
+  "values": [
+   -4.0,
+   -2.0,
+   0.0,
+   2.0,
+   4.0
+  ],
+  "diff": [
+   0.0,
+   0.1135866791009903,
+   0.19081147015094757,
+   0.23386059701442719,
+   0.23575745522975922
+  ],
+  "done": true,
+  "range": [
+   -4,
+   4
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "shape_synth.b_softness": {
+  "program": "shape_synth",
+  "arg": "b_softness",
+  "label": "B edge softness",
+  "default": 0.08,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.42849794030189514,
+   0.9265367984771729,
+   1.4398469924926758,
+   1.942772626876831
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.221,
+   0.477,
+   0.741,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "shape_synth.b_stretch_x": {
+  "program": "shape_synth",
+  "arg": "b_stretch_x",
+  "label": "B stretch X",
+  "default": 1.0,
+  "values": [
+   0.2,
+   1.4,
+   2.6,
+   3.8,
+   5.0
+  ],
+  "diff": [
+   0.0,
+   5.294045925140381,
+   9.318029403686523,
+   12.599601745605469,
+   15.72849178314209
+  ],
+  "done": true,
+  "range": [
+   0.2,
+   5
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.337,
+   0.592,
+   0.801,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "shape_synth.b_stretch_y": {
+  "program": "shape_synth",
+  "arg": "b_stretch_y",
+  "label": "B stretch Y",
+  "default": 1.0,
+  "values": [
+   0.2,
+   1.4,
+   2.6,
+   3.8,
+   5.0
+  ],
+  "diff": [
+   0.0,
+   5.160686492919922,
+   9.93669605255127,
+   13.03404712677002,
+   14.656057357788086
+  ],
+  "done": true,
+  "range": [
+   0.2,
+   5
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.352,
+   0.678,
+   0.889,
+   1.0
+  ],
+  "class": "fast",
+  "curve": "pow:1.42",
+  "d0": 0.0,
+  "confident": true
+ },
+ "shape_synth.b_rotate": {
+  "program": "shape_synth",
+  "arg": "b_rotate",
+  "label": "B rotate (\u00b0)",
+  "default": 0.0,
+  "values": [
+   -180.0,
+   -90.0,
+   0.0,
+   90.0,
+   180.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   -180,
+   180
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "shape_synth.b_spin": {
+  "program": "shape_synth",
+  "arg": "b_spin",
+  "label": "B spin (\u00b0/sec)",
+  "default": 0.0,
+  "values": [
+   -360.0,
+   -180.0,
+   0.0,
+   180.0,
+   360.0
+  ],
+  "diff": [
+   0.0,
+   1.2007780075073242,
+   1.2361111640930176,
+   1.3248778581619263,
+   1.0527584552764893
+  ],
+  "done": true,
+  "range": [
+   -360,
+   360
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.906,
+   0.933,
+   1.0,
+   0.795
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "shape_synth.b_x": {
+  "program": "shape_synth",
+  "arg": "b_x",
+  "label": "B offset X",
+  "default": 0.0,
+  "values": [
+   -2.0,
+   -1.0,
+   0.0,
+   1.0,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   2.049607753753662,
+   4.831597328186035,
+   3.507909059524536,
+   0.6600115895271301
+  ],
+  "done": true,
+  "range": [
+   -2,
+   2
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.424,
+   1.0,
+   0.726,
+   0.137
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "shape_synth.b_y": {
+  "program": "shape_synth",
+  "arg": "b_y",
+  "label": "B offset Y",
+  "default": 0.0,
+  "values": [
+   -1.5,
+   -0.75,
+   0.0,
+   0.75,
+   1.5
+  ],
+  "diff": [
+   0.0,
+   3.925443649291992,
+   4.392232418060303,
+   3.646219253540039,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   -1.5,
+   1.5
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.894,
+   1.0,
+   0.83,
+   0.0
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "shape_synth.b_drift_x": {
+  "program": "shape_synth",
+  "arg": "b_drift_x",
+  "label": "B drift X (/sec)",
+  "default": 0.0,
+  "values": [
+   -2.0,
+   -1.0,
+   0.0,
+   1.0,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   4.073816776275635,
+   6.157471656799316,
+   5.8826518058776855,
+   5.070730686187744
+  ],
+  "done": true,
+  "range": [
+   -2,
+   2
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.662,
+   1.0,
+   0.955,
+   0.824
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "shape_synth.b_drift_y": {
+  "program": "shape_synth",
+  "arg": "b_drift_y",
+  "label": "B drift Y (/sec)",
+  "default": 0.0,
+  "values": [
+   -2.0,
+   -1.0,
+   0.0,
+   1.0,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   3.814493417739868,
+   5.213123798370361,
+   5.198431015014648,
+   3.6512668132781982
+  ],
+  "done": true,
+  "range": [
+   -2,
+   2
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.732,
+   1.0,
+   0.997,
+   0.7
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "shape_synth.shrink": {
+  "program": "shape_synth",
+  "arg": "shrink",
+  "label": "Edge shrink",
+  "default": 1,
+  "values": [
+   0,
+   2,
+   5,
+   8,
+   10
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   10
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "shape_synth.feather": {
+  "program": "shape_synth",
+  "arg": "feather",
+  "label": "Edge feather",
+  "default": 1.0,
+  "values": [
+   0.0,
+   2.5,
+   5.0,
+   7.5,
+   10.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   10
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "shortify.blur-sigma": {
+  "program": "shortify",
+  "arg": "blur-sigma",
+  "label": "Blur Sigma",
+  "default": 20.0,
+  "values": [
+   0.0,
+   15.0,
+   30.0,
+   45.0,
+   60.0
+  ],
+  "diff": [
+   0.0,
+   1.637184977531433,
+   3.6185057163238525,
+   5.459555149078369,
+   7.113104343414307
+  ],
+  "done": true,
+  "range": [
+   0,
+   60
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.23,
+   0.509,
+   0.768,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "sketch.spatial": {
+  "program": "sketch",
+  "arg": "spatial",
+  "label": "Spatial",
+  "default": 60.0,
+  "values": [
+   10.0,
+   57.5,
+   105.0,
+   152.5,
+   200.0
+  ],
+  "diff": [
+   0.0,
+   1.6007908582687378,
+   1.7083333730697632,
+   1.742766261100769,
+   1.7624742984771729
+  ],
+  "done": true,
+  "range": [
+   10,
+   200
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.908,
+   0.969,
+   0.989,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "sketch.shade": {
+  "program": "sketch",
+  "arg": "shade",
+  "label": "Shade",
+  "default": 0.05,
+  "values": [
+   0.0,
+   0.05,
+   0.1,
+   0.15,
+   0.2
+  ],
+  "diff": [
+   0.0,
+   245.93521118164062,
+   249.97238159179688,
+   251.9463348388672,
+   253.2280731201172
+  ],
+  "done": true,
+  "range": [
+   0,
+   0.2
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.971,
+   0.987,
+   0.995,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "slight_smear.amount": {
+  "program": "slight_smear",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   1.276395320892334,
+   2.383037567138672,
+   3.489229679107666,
+   4.6326518058776855
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.276,
+   0.514,
+   0.753,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "sketch.work_scale": {
+  "program": "sketch",
+  "arg": "work_scale",
+  "label": "Work Scale",
+  "default": 0.5,
+  "values": [
+   0.1,
+   0.325,
+   0.55,
+   0.775,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   21.215471267700195,
+   24.704378128051758,
+   26.269451141357422,
+   27.347543716430664
+  ],
+  "done": true,
+  "range": [
+   0.1,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.776,
+   0.903,
+   0.961,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "sketch.range": {
+  "program": "sketch",
+  "arg": "range",
+  "label": "Range",
+  "default": 0.3,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   245.93521118164062,
+   245.93521118164062,
+   245.93521118164062,
+   245.93521118164062
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "class": "early",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "slit_scan.bands": {
+  "program": "slit_scan",
+  "arg": "bands",
+  "label": "Bands",
+  "default": 48,
+  "values": [
+   8,
+   56,
+   104,
+   152,
+   200
+  ],
+  "diff": [
+   0.0,
+   0.17364326119422913,
+   0.1841563731431961,
+   0.19582690298557281,
+   0.19486239552497864
+  ],
+  "done": true,
+  "range": [
+   8,
+   200
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "slit_scan.depth": {
+  "program": "slit_scan",
+  "arg": "depth",
+  "label": "Depth (frames)",
+  "default": 48,
+  "values": [
+   4,
+   33,
+   62,
+   91,
+   120
+  ],
+  "diff": [
+   0.0,
+   5.277038097381592,
+   5.436567783355713,
+   5.456243515014648,
+   5.491447925567627
+  ],
+  "done": true,
+  "range": [
+   4,
+   120
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.961,
+   0.99,
+   0.994,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "smudge.amount": {
+  "program": "smudge",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.6791731119155884,
+   1.289641261100769,
+   1.8959940671920776,
+   2.4818029403686523
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.274,
+   0.52,
+   0.764,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "slit_scan.amount": {
+  "program": "slit_scan",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   1.505433440208435,
+   3.005176067352295,
+   4.503793716430664,
+   5.974987030029297
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.252,
+   0.503,
+   0.754,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "solarize.threshold": {
+  "program": "solarize",
+  "arg": "threshold",
+  "label": "Threshold",
+  "default": 128,
+  "values": [
+   1,
+   64,
+   128,
+   191,
+   254
+  ],
+  "diff": [
+   0.0,
+   6.441325664520264,
+   8.188142776489258,
+   8.617412567138672,
+   114.67251586914062
+  ],
+  "done": true,
+  "range": [
+   1,
+   254
+  ],
+  "scale": "log",
+  "s": [
+   0.0,
+   0.056,
+   0.071,
+   0.075,
+   1.0
+  ],
+  "class": "late",
+  "curve": "pow:0.38",
+  "d0": 0.0,
+  "confident": false
+ },
+ "soundtrack.music_volume": {
+  "program": "soundtrack",
+  "arg": "music_volume",
+  "label": "Music volume (%)",
+  "default": 100.0,
+  "values": [
+   0.0,
+   50.0,
+   100.0,
+   150.0,
+   200.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   200
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "solarize.amount": {
+  "program": "solarize",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   30.264982223510742,
+   60.311920166015625,
+   90.4643783569336,
+   120.7200698852539
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.251,
+   0.5,
+   0.749,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "soundtrack.original_volume": {
+  "program": "soundtrack",
+  "arg": "original_volume",
+  "label": "Original volume (%)",
+  "default": 100.0,
+  "values": [
+   0.0,
+   50.0,
+   100.0,
+   150.0,
+   200.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   200
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "soundtrack.start": {
+  "program": "soundtrack",
+  "arg": "start",
+  "label": "Start music at (s)",
+  "default": 0.0,
+  "values": [
+   0.0,
+   900.0,
+   1800.0,
+   2700.0,
+   3600.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   3600
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "soundtrack.trim_start": {
+  "program": "soundtrack",
+  "arg": "trim_start",
+  "label": "Skip into the music (s)",
+  "default": 0.0,
+  "values": [
+   0.0,
+   900.0,
+   1800.0,
+   2700.0,
+   3600.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   3600
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "soundtrack.fade_in": {
+  "program": "soundtrack",
+  "arg": "fade_in",
+  "label": "Fade in (s)",
+  "default": 0.0,
+  "values": [
+   0.0,
+   7.5,
+   15.0,
+   22.5,
+   30.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   30
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "soundtrack.duck_amount": {
+  "program": "soundtrack",
+  "arg": "duck_amount",
+  "label": "Duck strength",
+  "default": 8.0,
+  "values": [
+   1.0,
+   5.75,
+   10.5,
+   15.25,
+   20.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   1,
+   20
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "splitting.amount": {
+  "program": "splitting",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   1.0889275074005127,
+   1.9879436492919922,
+   3.2140238285064697,
+   4.262217044830322
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.255,
+   0.466,
+   0.754,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "stabilize.smoothness": {
+  "program": "stabilize",
+  "arg": "smoothness",
+  "label": "Smoothness",
+  "default": 30,
+  "values": [
+   1,
+   31,
+   60,
+   90,
+   120
+  ],
+  "diff": [
+   0.0,
+   19.132877349853516,
+   21.960229873657227,
+   22.988265991210938,
+   23.501028060913086
+  ],
+  "done": true,
+  "range": [
+   1,
+   120
+  ],
+  "scale": "log",
+  "s": [
+   0.0,
+   0.814,
+   0.934,
+   0.978,
+   1.0
+  ],
+  "class": "early",
+  "curve": "log",
+  "d0": 0.0,
+  "confident": true
+ },
+ "stabilize.zoom": {
+  "program": "stabilize",
+  "arg": "zoom",
+  "label": "Zoom",
+  "default": 1.06,
+  "values": [
+   1.0,
+   1.125,
+   1.25,
+   1.375,
+   1.5
+  ],
+  "diff": [
+   0.0,
+   19.84040641784668,
+   31.293209075927734,
+   40.93923568725586,
+   48.9611930847168
+  ],
+  "done": true,
+  "range": [
+   1,
+   1.5
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.405,
+   0.639,
+   0.836,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "stabilize.analysis_width": {
+  "program": "stabilize",
+  "arg": "analysis_width",
+  "label": "Analysis Width",
+  "default": 480,
+  "values": [
+   160,
+   440,
+   720,
+   1000,
+   1280
+  ],
+  "diff": [
+   0.0,
+   11.326678276062012,
+   15.13728141784668,
+   15.13728141784668,
+   15.13728141784668
+  ],
+  "done": true,
+  "range": [
+   160,
+   1280
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.748,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "stack_2x.gap": {
+  "program": "stack_2x",
+  "arg": "gap",
+  "label": "Gap (px)",
+  "default": 0,
+  "values": [
+   0,
+   20,
+   40,
+   60,
+   80
+  ],
+  "diff": [
+   0.0,
+   6.719360828399658,
+   11.812049865722656,
+   16.0563907623291,
+   19.14535140991211
+  ],
+  "done": true,
+  "range": [
+   0,
+   80
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.351,
+   0.617,
+   0.839,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "stackadelic.complex_amount": {
+  "program": "stackadelic",
+  "arg": "complex_amount",
+  "label": "Complex amount",
+  "default": 0.2,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "stackadelic.l1_left": {
+  "program": "stackadelic",
+  "arg": "l1_left",
+  "label": "Layer 1 left (%)",
+  "default": 35,
+  "values": [
+   0,
+   25,
+   50,
+   75,
+   100
+  ],
+  "diff": [
+   0.0,
+   4.575135231018066,
+   12.352816581726074,
+   17.190040588378906,
+   22.514114379882812
+  ],
+  "done": true,
+  "range": [
+   0,
+   100
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.203,
+   0.549,
+   0.764,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "stackadelic.l1_right": {
+  "program": "stackadelic",
+  "arg": "l1_right",
+  "label": "Layer 1 right (%)",
+  "default": 65,
+  "values": [
+   0,
+   25,
+   50,
+   75,
+   100
+  ],
+  "diff": [
+   0.0,
+   4.606802940368652,
+   12.129693984985352,
+   17.122364044189453,
+   22.427146911621094
+  ],
+  "done": true,
+  "range": [
+   0,
+   100
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.205,
+   0.541,
+   0.763,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "stackadelic.l1_top": {
+  "program": "stackadelic",
+  "arg": "l1_top",
+  "label": "Layer 1 top (%)",
+  "default": 35,
+  "values": [
+   0,
+   25,
+   50,
+   75,
+   100
+  ],
+  "diff": [
+   0.0,
+   8.168081283569336,
+   15.805395126342773,
+   23.177146911621094,
+   30.429044723510742
+  ],
+  "done": true,
+  "range": [
+   0,
+   100
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.268,
+   0.519,
+   0.762,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "stackadelic.l1_bottom": {
+  "program": "stackadelic",
+  "arg": "l1_bottom",
+  "label": "Layer 1 bottom (%)",
+  "default": 65,
+  "values": [
+   0,
+   25,
+   50,
+   75,
+   100
+  ],
+  "diff": [
+   0.0,
+   8.177469253540039,
+   15.645255088806152,
+   23.176633834838867,
+   30.436952590942383
+  ],
+  "done": true,
+  "range": [
+   0,
+   100
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.269,
+   0.514,
+   0.761,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "stackadelic.l1_size": {
+  "program": "stackadelic",
+  "arg": "l1_size",
+  "label": "Layer 1 size",
+  "default": 1.0,
+  "values": [
+   0.1,
+   0.825,
+   1.55,
+   2.275,
+   3.0
+  ],
+  "diff": [
+   0.0,
+   6.266075134277344,
+   18.919239044189453,
+   34.79169845581055,
+   60.534690856933594
+  ],
+  "done": true,
+  "range": [
+   0.1,
+   3
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.104,
+   0.313,
+   0.575,
+   1.0
+  ],
+  "class": "slow",
+  "curve": "pow:0.6",
+  "d0": 0.0,
+  "confident": true
+ },
+ "stackadelic.l1_ratio": {
+  "program": "stackadelic",
+  "arg": "l1_ratio",
+  "label": "Layer 1 ratio",
+  "default": 1.0,
+  "values": [
+   0.25,
+   1.188,
+   2.125,
+   3.062,
+   4.0
+  ],
+  "diff": [
+   0.0,
+   10.11246109008789,
+   11.264049530029297,
+   11.786876678466797,
+   12.010931015014648
+  ],
+  "done": true,
+  "range": [
+   0.25,
+   4
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.842,
+   0.938,
+   0.981,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "stackadelic.l1_rotate": {
+  "program": "stackadelic",
+  "arg": "l1_rotate",
+  "label": "Layer 1 rotate (\u00b0)",
+  "default": 0.0,
+  "values": [
+   -180.0,
+   -90.0,
+   0.0,
+   90.0,
+   180.0
+  ],
+  "diff": [
+   0.0,
+   8.19611644744873,
+   0.0,
+   8.19611644744873,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   -180,
+   180
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   1.0,
+   0.0,
+   1.0,
+   0.0
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "stackadelic.l1_tiles": {
+  "program": "stackadelic",
+  "arg": "l1_tiles",
+  "label": "Layer 1 tiles",
+  "default": 1,
+  "values": [
+   1,
+   4,
+   6,
+   9,
+   12
+  ],
+  "diff": [
+   0.0,
+   14.218396186828613,
+   14.317130088806152,
+   14.392329216003418,
+   14.866127014160156
+  ],
+  "done": true,
+  "range": [
+   1,
+   12
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.956,
+   0.963,
+   0.968,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "stackadelic.l1_softness": {
+  "program": "stackadelic",
+  "arg": "l1_softness",
+  "label": "Layer 1 edge softness",
+  "default": 0.03,
+  "values": [
+   0.0,
+   0.125,
+   0.25,
+   0.375,
+   0.5
+  ],
+  "diff": [
+   0.0,
+   0.3409207761287689,
+   0.8358731865882874,
+   1.3850308656692505,
+   1.8844200372695923
+  ],
+  "done": true,
+  "range": [
+   0,
+   0.5
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.181,
+   0.444,
+   0.735,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "stackadelic.l1_opacity": {
+  "program": "stackadelic",
+  "arg": "l1_opacity",
+  "label": "Layer 1 opacity",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   2.4620306491851807,
+   4.873392581939697,
+   7.320183753967285,
+   9.765399932861328
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.252,
+   0.499,
+   0.75,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "stackadelic.l2_left": {
+  "program": "stackadelic",
+  "arg": "l2_left",
+  "label": "Layer 2 left (%)",
+  "default": 22,
+  "values": [
+   0,
+   25,
+   50,
+   75,
+   100
+  ],
+  "diff": [
+   0.0,
+   1.5380337238311768,
+   2.286522626876831,
+   2.595132350921631,
+   3.2941744327545166
+  ],
+  "done": true,
+  "range": [
+   0,
+   100
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.467,
+   0.694,
+   0.788,
+   1.0
+  ],
+  "class": "fast",
+  "curve": "pow:1.8",
+  "d0": 0.0,
+  "confident": true
+ },
+ "stackadelic.l2_right": {
+  "program": "stackadelic",
+  "arg": "l2_right",
+  "label": "Layer 2 right (%)",
+  "default": 78,
+  "values": [
+   0,
+   25,
+   50,
+   75,
+   100
+  ],
+  "diff": [
+   0.0,
+   1.5062371492385864,
+   2.264981985092163,
+   2.576742649078369,
+   3.3164222240448
+  ],
+  "done": true,
+  "range": [
+   0,
+   100
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.454,
+   0.683,
+   0.777,
+   1.0
+  ],
+  "class": "fast",
+  "curve": "pow:1.74",
+  "d0": 0.0,
+  "confident": true
+ },
+ "stackadelic.l2_top": {
+  "program": "stackadelic",
+  "arg": "l2_top",
+  "label": "Layer 2 top (%)",
+  "default": 22,
+  "values": [
+   0,
+   25,
+   50,
+   75,
+   100
+  ],
+  "diff": [
+   0.0,
+   0.42753344774246216,
+   0.8155221343040466,
+   1.3693416118621826,
+   2.323688268661499
+  ],
+  "done": true,
+  "range": [
+   0,
+   100
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.184,
+   0.351,
+   0.589,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "stackadelic.l2_bottom": {
+  "program": "stackadelic",
+  "arg": "l2_bottom",
+  "label": "Layer 2 bottom (%)",
+  "default": 78,
+  "values": [
+   0,
+   25,
+   50,
+   75,
+   100
+  ],
+  "diff": [
+   0.0,
+   0.37516075372695923,
+   0.7925025820732117,
+   1.3445537090301514,
+   2.3238489627838135
+  ],
+  "done": true,
+  "range": [
+   0,
+   100
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.161,
+   0.341,
+   0.579,
+   1.0
+  ],
+  "class": "slow",
+  "curve": "pow:0.72",
+  "d0": 0.0,
+  "confident": true
+ },
+ "stackadelic.l2_size": {
+  "program": "stackadelic",
+  "arg": "l2_size",
+  "label": "Layer 2 size",
+  "default": 1.0,
+  "values": [
+   0.1,
+   0.825,
+   1.55,
+   2.275,
+   3.0
+  ],
+  "diff": [
+   0.0,
+   0.7512860298156738,
+   4.270994186401367,
+   6.006044387817383,
+   6.006044387817383
+  ],
+  "done": true,
+  "range": [
+   0.1,
+   3
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.125,
+   0.711,
+   1.0,
+   1.0
+  ],
+  "class": "fast",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "stackadelic.l2_ratio": {
+  "program": "stackadelic",
+  "arg": "l2_ratio",
+  "label": "Layer 2 ratio",
+  "default": 1.0,
+  "values": [
+   0.25,
+   1.188,
+   2.125,
+   3.062,
+   4.0
+  ],
+  "diff": [
+   0.0,
+   1.4230324029922485,
+   2.119405746459961,
+   2.5561020374298096,
+   2.5034401416778564
+  ],
+  "done": true,
+  "range": [
+   0.25,
+   4
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.557,
+   0.829,
+   1.0,
+   0.979
+  ],
+  "class": "early",
+  "curve": "pow:2.64",
+  "d0": 0.0,
+  "confident": true
+ },
+ "soapblind.amount": {
+  "program": "soapblind",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   3.009805917739868,
+   6.004951000213623,
+   9.010320663452148,
+   12.043949127197266
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.25,
+   0.499,
+   0.748,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "stackadelic.l2_rotate": {
+  "program": "stackadelic",
+  "arg": "l2_rotate",
+  "label": "Layer 2 rotate (\u00b0)",
+  "default": 0.0,
+  "values": [
+   -180.0,
+   -90.0,
+   0.0,
+   90.0,
+   180.0
+  ],
+  "diff": [
+   0.0,
+   1.3276748657226562,
+   0.0,
+   1.3276748657226562,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   -180,
+   180
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   1.0,
+   0.0,
+   1.0,
+   0.0
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "stackadelic.l2_tiles": {
+  "program": "stackadelic",
+  "arg": "l2_tiles",
+  "label": "Layer 2 tiles",
+  "default": 1,
+  "values": [
+   1,
+   4,
+   6,
+   9,
+   12
+  ],
+  "diff": [
+   0.0,
+   2.9397504329681396,
+   2.322755813598633,
+   2.637345790863037,
+   2.6669559478759766
+  ],
+  "done": true,
+  "range": [
+   1,
+   12
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   1.0,
+   0.79,
+   0.897,
+   0.907
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "stackadelic.l2_softness": {
+  "program": "stackadelic",
+  "arg": "l2_softness",
+  "label": "Layer 2 edge softness",
+  "default": 0.03,
+  "values": [
+   0.0,
+   0.125,
+   0.25,
+   0.375,
+   0.5
+  ],
+  "diff": [
+   0.0,
+   0.16030092537403107,
+   0.25128600001335144,
+   0.347125768661499,
+   0.43682485818862915
+  ],
+  "done": true,
+  "range": [
+   0,
+   0.5
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "stackadelic.l3_left": {
+  "program": "stackadelic",
+  "arg": "l3_left",
+  "label": "Layer 3 left (%)",
+  "default": 8,
+  "values": [
+   0,
+   25,
+   50,
+   75,
+   100
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   100
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "stackadelic.l3_right": {
+  "program": "stackadelic",
+  "arg": "l3_right",
+  "label": "Layer 3 right (%)",
+  "default": 92,
+  "values": [
+   0,
+   25,
+   50,
+   75,
+   100
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   100
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "stackadelic.l3_top": {
+  "program": "stackadelic",
+  "arg": "l3_top",
+  "label": "Layer 3 top (%)",
+  "default": 8,
+  "values": [
+   0,
+   25,
+   50,
+   75,
+   100
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   100
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "stackadelic.l3_bottom": {
+  "program": "stackadelic",
+  "arg": "l3_bottom",
+  "label": "Layer 3 bottom (%)",
+  "default": 92,
+  "values": [
+   0,
+   25,
+   50,
+   75,
+   100
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   100
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "stackadelic.l3_size": {
+  "program": "stackadelic",
+  "arg": "l3_size",
+  "label": "Layer 3 size",
+  "default": 1.0,
+  "values": [
+   0.1,
+   0.825,
+   1.55,
+   2.275,
+   3.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0.1,
+   3
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "stackadelic.l3_ratio": {
+  "program": "stackadelic",
+  "arg": "l3_ratio",
+  "label": "Layer 3 ratio",
+  "default": 1.0,
+  "values": [
+   0.25,
+   1.188,
+   2.125,
+   3.062,
+   4.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0.25,
+   4
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "stackadelic.l3_rotate": {
+  "program": "stackadelic",
+  "arg": "l3_rotate",
+  "label": "Layer 3 rotate (\u00b0)",
+  "default": 0.0,
+  "values": [
+   -180.0,
+   -90.0,
+   0.0,
+   90.0,
+   180.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   -180,
+   180
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "stackadelic.l3_tiles": {
+  "program": "stackadelic",
+  "arg": "l3_tiles",
+  "label": "Layer 3 tiles",
+  "default": 1,
+  "values": [
+   1,
+   4,
+   6,
+   9,
+   12
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   1,
+   12
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "stackadelic.l3_softness": {
+  "program": "stackadelic",
+  "arg": "l3_softness",
+  "label": "Layer 3 edge softness",
+  "default": 0.03,
+  "values": [
+   0.0,
+   0.125,
+   0.25,
+   0.375,
+   0.5
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   0.5
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "stackadelic.l3_opacity": {
+  "program": "stackadelic",
+  "arg": "l3_opacity",
+  "label": "Layer 3 opacity",
+  "default": 0.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   6.993602275848389,
+   13.968717575073242,
+   20.91132926940918,
+   27.885866165161133
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.251,
+   0.501,
+   0.75,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "steel_wash.amount": {
+  "program": "steel_wash",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   2.062403440475464,
+   3.4823496341705322,
+   5.076870918273926,
+   6.606706619262695
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.312,
+   0.527,
+   0.768,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "stackadelic.shrink": {
+  "program": "stackadelic",
+  "arg": "shrink",
+  "label": "Edge shrink",
+  "default": 1,
+  "values": [
+   0,
+   2,
+   5,
+   8,
+   10
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   10
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "stackadelic.feather": {
+  "program": "stackadelic",
+  "arg": "feather",
+  "label": "Edge feather",
+  "default": 1.0,
+  "values": [
+   0.0,
+   2.5,
+   5.0,
+   7.5,
+   10.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   10
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "strobe_cut.period": {
+  "program": "strobe_cut",
+  "arg": "period",
+  "label": "Period",
+  "default": 0.5,
+  "values": [
+   0.05,
+   2.537,
+   5.025,
+   7.512,
+   10.0
+  ],
+  "diff": [
+   0.0,
+   102.09449005126953,
+   102.09449005126953,
+   102.09449005126953,
+   102.09449005126953
+  ],
+  "done": true,
+  "range": [
+   0.05,
+   10
+  ],
+  "scale": "log",
+  "s": [
+   0.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "class": "early",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "strobe_hold.hold": {
+  "program": "strobe_hold",
+  "arg": "hold",
+  "label": "Hold (frames)",
+  "default": 4,
+  "values": [
+   1,
+   16,
+   30,
+   45,
+   60
+  ],
+  "diff": [
+   0.0,
+   5.470004081726074,
+   6.107446193695068,
+   6.107446193695068,
+   6.107446193695068
+  ],
+  "done": true,
+  "range": [
+   1,
+   60
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.896,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "strobe_cut.flash_duration": {
+  "program": "strobe_cut",
+  "arg": "flash_duration",
+  "label": "Flash Duration",
+  "default": 0.05,
+  "values": [
+   0.01,
+   0.5075,
+   1.005,
+   1.502,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   122.4761734008789,
+   122.4761734008789,
+   122.4761734008789,
+   122.4761734008789
+  ],
+  "done": true,
+  "range": [
+   0.01,
+   2
+  ],
+  "scale": "log",
+  "s": [
+   0.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "class": "early",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "subs_convert.time-shift": {
+  "program": "subs_convert",
+  "arg": "time-shift",
+  "label": "Time Shift",
+  "default": 0.0,
+  "values": [
+   -60.0,
+   -30.0,
+   0.0,
+   30.0,
+   60.0
+  ],
+  "diff": [
+   null,
+   null,
+   null,
+   null,
+   null
+  ],
+  "done": true,
+  "range": [
+   -60,
+   60
+  ],
+  "scale": null,
+  "class": "error"
+ },
+ "strobe_hold.blink": {
+  "program": "strobe_hold",
+  "arg": "blink",
+  "label": "Blink (%)",
+  "default": 0.0,
+  "values": [
+   0.0,
+   25.0,
+   50.0,
+   75.0,
+   100.0
+  ],
+  "diff": [
+   0.0,
+   0.0746527761220932,
+   0.08397633582353592,
+   127.35892486572266,
+   127.35892486572266
+  ],
+  "done": true,
+  "range": [
+   0,
+   100
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.001,
+   0.001,
+   1.0,
+   1.0
+  ],
+  "class": "late",
+  "curve": "pow:0.35",
+  "d0": 0.0,
+  "confident": false
+ },
+ "thumbs.scene-threshold": {
+  "program": "thumbs",
+  "arg": "scene-threshold",
+  "label": "Scene Threshold",
+  "default": 0.4,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "thumbs.margin": {
+  "program": "thumbs",
+  "arg": "margin",
+  "label": "Margin",
+  "default": 12,
+  "values": [
+   0,
+   25,
+   50,
+   75,
+   100
+  ],
+  "diff": [
+   0.0,
+   8.054398536682129,
+   13.14756965637207,
+   16.67052459716797,
+   18.820602416992188
+  ],
+  "done": true,
+  "range": [
+   0,
+   100
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.428,
+   0.699,
+   0.886,
+   1.0
+  ],
+  "class": "fast",
+  "curve": "pow:1.7",
+  "d0": 0.0,
+  "confident": true
+ },
+ "thermal.amount": {
+  "program": "thermal",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   4.8254241943359375,
+   9.494309425354004,
+   14.415059089660645,
+   18.971996307373047
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.254,
+   0.5,
+   0.76,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "thumbs.jpeg-quality": {
+  "program": "thumbs",
+  "arg": "jpeg-quality",
+  "label": "Jpeg Quality",
+  "default": 3,
+  "values": [
+   1,
+   8,
+   16,
+   24,
+   31
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   1,
+   31
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "t1000.amount": {
+  "program": "t1000",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   1.8693736791610718,
+   3.588155746459961,
+   5.3421101570129395,
+   7.0381622314453125
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.266,
+   0.51,
+   0.759,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "time_ramp.start_factor": {
+  "program": "time_ramp",
+  "arg": "start_factor",
+  "label": "Start Factor",
+  "default": 0.5,
+  "values": [
+   0.1,
+   2.075,
+   4.05,
+   6.025,
+   8.0
+  ],
+  "diff": [
+   0.0,
+   5.397376537322998,
+   5.398983955383301,
+   5.392489910125732,
+   5.389274597167969
+  ],
+  "done": true,
+  "range": [
+   0.1,
+   8
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   1.0,
+   1.0,
+   0.999,
+   0.998
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "thumbs.padding": {
+  "program": "thumbs",
+  "arg": "padding",
+  "label": "Padding",
+  "default": 6,
+  "values": [
+   0,
+   25,
+   50,
+   75,
+   100
+  ],
+  "diff": [
+   0.0,
+   null,
+   8.664158821105957,
+   null,
+   13.68248462677002
+  ],
+  "done": true,
+  "range": [
+   0,
+   100
+  ],
+  "scale": null,
+  "class": "error"
+ },
+ "time_ramp.end_factor": {
+  "program": "time_ramp",
+  "arg": "end_factor",
+  "label": "End Factor",
+  "default": 2.0,
+  "values": [
+   0.1,
+   2.075,
+   4.05,
+   6.025,
+   8.0
+  ],
+  "diff": [
+   0.0,
+   3.0646862983703613,
+   3.094174385070801,
+   2.7076098918914795,
+   2.6563947200775146
+  ],
+  "done": true,
+  "range": [
+   0.1,
+   8
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.99,
+   1.0,
+   0.875,
+   0.859
+  ],
+  "class": "early",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "time_ramp.steps": {
+  "program": "time_ramp",
+  "arg": "steps",
+  "label": "Steps",
+  "default": 6,
+  "values": [
+   2,
+   9,
+   16,
+   23,
+   30
+  ],
+  "diff": [
+   0.0,
+   2.594360828399658,
+   2.588284492492676,
+   3.7714121341705322,
+   4.687422752380371
+  ],
+  "done": true,
+  "range": [
+   2,
+   30
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.553,
+   0.552,
+   0.805,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "tonemap_hdr_sdr.desat": {
+  "program": "tonemap_hdr_sdr",
+  "arg": "desat",
+  "label": "Desat",
+  "default": 0.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   79.3598861694336,
+   68.88297271728516,
+   55.50385665893555,
+   41.56770706176758
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   1.0,
+   0.868,
+   0.699,
+   0.524
+  ],
+  "class": "early",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "tonemap_hdr_sdr.peak": {
+  "program": "tonemap_hdr_sdr",
+  "arg": "peak",
+  "label": "Peak",
+  "default": 1000.0,
+  "values": [
+   100.0,
+   2575.0,
+   5050.0,
+   7525.0,
+   10000.0
+  ],
+  "diff": [
+   0.0,
+   55.76301956176758,
+   57.53520584106445,
+   58.25803756713867,
+   58.5106086730957
+  ],
+  "done": true,
+  "range": [
+   100,
+   10000
+  ],
+  "scale": "log",
+  "s": [
+   0.0,
+   0.953,
+   0.983,
+   0.996,
+   1.0
+  ],
+  "class": "early",
+  "curve": "log",
+  "d0": 0.0,
+  "confident": true
+ },
+ "topobeaux.bands": {
+  "program": "topobeaux",
+  "arg": "bands",
+  "label": "Bands",
+  "default": 5,
+  "values": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "diff": [
+   0.0,
+   3.9009130001068115,
+   4.893389701843262,
+   4.252443313598633,
+   4.3532023429870605
+  ],
+  "done": true,
+  "range": [
+   2,
+   6
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.797,
+   1.0,
+   0.869,
+   0.89
+  ],
+  "class": "early",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "topobeaux.softness": {
+  "program": "topobeaux",
+  "arg": "softness",
+  "label": "Edge softness",
+  "default": 0.0,
+  "values": [
+   0.0,
+   0.125,
+   0.25,
+   0.375,
+   0.5
+  ],
+  "diff": [
+   0.0,
+   0.883873462677002,
+   1.3630722761154175,
+   2.0029256343841553,
+   2.547421455383301
+  ],
+  "done": true,
+  "range": [
+   0,
+   0.5
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.347,
+   0.535,
+   0.786,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "topobeaux.amount": {
+  "program": "topobeaux",
+  "arg": "amount",
+  "label": "Tint amount",
+  "default": 0.8,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "topobeaux.line_width": {
+  "program": "topobeaux",
+  "arg": "line_width",
+  "label": "Line width (px)",
+  "default": 2,
+  "values": [
+   1,
+   4,
+   6,
+   9,
+   12
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   1,
+   12
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "topobeaux.dim": {
+  "program": "topobeaux",
+  "arg": "dim",
+  "label": "Dim picture under lines",
+  "default": 0.4,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "topobeaux.scan_speed": {
+  "program": "topobeaux",
+  "arg": "scan_speed",
+  "label": "Scan speed (Hz)",
+  "default": 0.0,
+  "values": [
+   0.0,
+   1.0,
+   2.0,
+   3.0,
+   4.0
+  ],
+  "diff": [
+   0.0,
+   2.4143519401550293,
+   2.5564236640930176,
+   2.373424530029297,
+   2.348090171813965
+  ],
+  "done": true,
+  "range": [
+   0,
+   4
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.944,
+   1.0,
+   0.928,
+   0.919
+  ],
+  "class": "early",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "topobeaux.scan_depth": {
+  "program": "topobeaux",
+  "arg": "scan_depth",
+  "label": "Scan depth",
+  "default": 0.15,
+  "values": [
+   0.0,
+   0.125,
+   0.25,
+   0.375,
+   0.5
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   0.5
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "topobeaux.shrink": {
+  "program": "topobeaux",
+  "arg": "shrink",
+  "label": "Edge shrink",
+  "default": 1,
+  "values": [
+   0,
+   2,
+   5,
+   8,
+   10
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   10
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "topobeaux.feather": {
+  "program": "topobeaux",
+  "arg": "feather",
+  "label": "Edge feather",
+  "default": 1.0,
+  "values": [
+   0.0,
+   2.5,
+   5.0,
+   7.5,
+   10.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   10
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "triptych.zoom1": {
+  "program": "triptych",
+  "arg": "zoom1",
+  "label": "Zoom 1",
+  "default": 1.0,
+  "values": [
+   1.0,
+   1.75,
+   2.5,
+   3.25,
+   4.0
+  ],
+  "diff": [
+   0.0,
+   14.859663963317871,
+   21.292470932006836,
+   25.649980545043945,
+   25.691165924072266
+  ],
+  "done": true,
+  "range": [
+   1,
+   4
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.578,
+   0.829,
+   0.998,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:2.79",
+  "d0": 0.0,
+  "confident": true
+ },
+ "triptych.zoom2": {
+  "program": "triptych",
+  "arg": "zoom2",
+  "label": "Zoom 2",
+  "default": 1.0,
+  "values": [
+   1.0,
+   1.75,
+   2.5,
+   3.25,
+   4.0
+  ],
+  "diff": [
+   0.0,
+   15.446405410766602,
+   21.858667373657227,
+   25.86583709716797,
+   25.989871978759766
+  ],
+  "done": true,
+  "range": [
+   1,
+   4
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.594,
+   0.841,
+   0.995,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:2.95",
+  "d0": 0.0,
+  "confident": false
+ },
+ "triptych.zoom3": {
+  "program": "triptych",
+  "arg": "zoom3",
+  "label": "Zoom 3",
+  "default": 1.0,
+  "values": [
+   1.0,
+   1.75,
+   2.5,
+   3.25,
+   4.0
+  ],
+  "diff": [
+   0.0,
+   15.94618034362793,
+   22.353073120117188,
+   26.288354873657227,
+   26.25977325439453
+  ],
+  "done": true,
+  "range": [
+   1,
+   4
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.607,
+   0.85,
+   1.0,
+   0.999
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "triptych.panel_size": {
+  "program": "triptych",
+  "arg": "panel_size",
+  "label": "Panel size (px, 0 = match first video)",
+  "default": 0,
+  "values": [
+   0,
+   1080,
+   2160,
+   3240,
+   4320
+  ],
+  "diff": [
+   0.0,
+   0.07777135074138641,
+   8.949042320251465,
+   8.949042320251465,
+   8.949042320251465
+  ],
+  "done": true,
+  "range": [
+   0,
+   4320
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.009,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:0.38",
+  "d0": 0.0,
+  "confident": false
+ },
+ "triptych.vol1": {
+  "program": "triptych",
+  "arg": "vol1",
+  "label": "Vol1",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.5,
+   1.0,
+   1.5,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   2
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "triptych.vol2": {
+  "program": "triptych",
+  "arg": "vol2",
+  "label": "Vol2",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.5,
+   1.0,
+   1.5,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   2
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "triptych.vol3": {
+  "program": "triptych",
+  "arg": "vol3",
+  "label": "Vol3",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.5,
+   1.0,
+   1.5,
+   2.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   2
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "tunnel.speed": {
+  "program": "tunnel",
+  "arg": "speed",
+  "label": "Speed",
+  "default": 90.0,
+  "values": [
+   -400.0,
+   -200.0,
+   0.0,
+   200.0,
+   400.0
+  ],
+  "diff": [
+   0.0,
+   8.886638641357422,
+   8.246785163879395,
+   9.384195327758789,
+   9.102334022521973
+  ],
+  "done": true,
+  "range": [
+   -400,
+   400
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.947,
+   0.879,
+   1.0,
+   0.97
+  ],
+  "class": "early",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "tunnel.around": {
+  "program": "tunnel",
+  "arg": "around",
+  "label": "Tiles around",
+  "default": 3,
+  "values": [
+   1,
+   3,
+   4,
+   6,
+   8
+  ],
+  "diff": [
+   0.0,
+   68.89094543457031,
+   90.18843078613281,
+   86.59626007080078,
+   80.75543212890625
+  ],
+  "done": true,
+  "range": [
+   1,
+   8
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.764,
+   1.0,
+   0.96,
+   0.895
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "tunnel.deep": {
+  "program": "tunnel",
+  "arg": "deep",
+  "label": "Tiles deep",
+  "default": 4,
+  "values": [
+   1,
+   3,
+   6,
+   8,
+   10
+  ],
+  "diff": [
+   0.0,
+   5.814428806304932,
+   6.062725067138672,
+   6.385255813598633,
+   6.409914970397949
+  ],
+  "done": true,
+  "range": [
+   1,
+   10
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.907,
+   0.946,
+   0.996,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "twociz.amount": {
+  "program": "twociz",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   5.519740104675293,
+   10.887699127197266,
+   15.953542709350586,
+   18.835905075073242
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.293,
+   0.578,
+   0.847,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "tunnel.amount": {
+  "program": "tunnel",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   21.793466567993164,
+   43.495243072509766,
+   65.19483184814453,
+   87.0455551147461
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.25,
+   0.5,
+   0.749,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "vhs_tracking.intensity": {
+  "program": "vhs_tracking",
+  "arg": "intensity",
+  "label": "Intensity",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   1.6679526567459106,
+   2.4998714923858643,
+   3.4530606269836426,
+   5.976208686828613
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.279,
+   0.418,
+   0.578,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "vhs_camcorder.noise": {
+  "program": "vhs_camcorder",
+  "arg": "noise",
+  "label": "Tape noise",
+  "default": 7.0,
+  "values": [
+   0.0,
+   7.5,
+   15.0,
+   22.5,
+   30.0
+  ],
+  "diff": [
+   0.0,
+   1.6385352611541748,
+   3.219714403152466,
+   4.8242669105529785,
+   6.457272529602051
+  ],
+  "done": true,
+  "range": [
+   0,
+   30
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.254,
+   0.499,
+   0.747,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "vhs_tracking.speed": {
+  "program": "vhs_tracking",
+  "arg": "speed",
+  "label": "Speed",
+  "default": 6.0,
+  "values": [
+   0.0,
+   7.5,
+   15.0,
+   22.5,
+   30.0
+  ],
+  "diff": [
+   0.0,
+   4.690264701843262,
+   4.36548376083374,
+   4.460294723510742,
+   4.7429914474487305
+  ],
+  "done": true,
+  "range": [
+   0,
+   30
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.989,
+   0.92,
+   0.94,
+   1.0
+  ],
+  "class": "early",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "vhs_camcorder.amount": {
+  "program": "vhs_camcorder",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   1.4424511194229126,
+   3.0558128356933594,
+   4.560313701629639,
+   6.094457149505615
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.237,
+   0.501,
+   0.748,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "video_wall.cols": {
+  "program": "video_wall",
+  "arg": "cols",
+  "label": "Columns",
+  "default": 3,
+  "values": [
+   1,
+   4,
+   6,
+   9,
+   12
+  ],
+  "diff": [
+   0.0,
+   81.96125793457031,
+   86.54096221923828,
+   86.09844207763672,
+   83.3412094116211
+  ],
+  "done": true,
+  "range": [
+   1,
+   12
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.947,
+   1.0,
+   0.995,
+   0.963
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "video_wall.rows": {
+  "program": "video_wall",
+  "arg": "rows",
+  "label": "Rows",
+  "default": 3,
+  "values": [
+   1,
+   4,
+   6,
+   9,
+   12
+  ],
+  "diff": [
+   0.0,
+   9.699974060058594,
+   9.659239768981934,
+   9.542952537536621,
+   9.32645320892334
+  ],
+  "done": true,
+  "range": [
+   1,
+   12
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   1.0,
+   0.996,
+   0.984,
+   0.961
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "video_wall.delay": {
+  "program": "video_wall",
+  "arg": "delay",
+  "label": "Delay per tile (frames)",
+  "default": 4,
+  "values": [
+   1,
+   8,
+   16,
+   23,
+   30
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   1,
+   30
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "video_wall.gap": {
+  "program": "video_wall",
+  "arg": "gap",
+  "label": "Gap (px)",
+  "default": 0,
+  "values": [
+   0,
+   10,
+   20,
+   30,
+   40
+  ],
+  "diff": [
+   0.0,
+   21.36458396911621,
+   38.24427795410156,
+   52.046104431152344,
+   65.3505630493164
+  ],
+  "done": true,
+  "range": [
+   0,
+   40
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.327,
+   0.585,
+   0.796,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "warp.amount": {
+  "program": "warp",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   10.400527000427246,
+   18.66997718811035,
+   26.60329818725586,
+   33.9474983215332
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.306,
+   0.55,
+   0.784,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "warp.center_x": {
+  "program": "warp",
+  "arg": "center_x",
+  "label": "Center X",
+  "default": 0.5,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   21.25138282775879,
+   42.01530456542969,
+   31.130046844482422,
+   17.9063777923584
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.506,
+   1.0,
+   0.741,
+   0.426
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "warp.radius": {
+  "program": "warp",
+  "arg": "radius",
+  "label": "Radius",
+  "default": 0.7,
+  "values": [
+   0.05,
+   0.4125,
+   0.775,
+   1.137,
+   1.5
+  ],
+  "diff": [
+   0.0,
+   10.575810432434082,
+   40.45170974731445,
+   67.04411315917969,
+   85.43917083740234
+  ],
+  "done": true,
+  "range": [
+   0.05,
+   1.5
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.124,
+   0.473,
+   0.785,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "warp.center_y": {
+  "program": "warp",
+  "arg": "center_y",
+  "label": "Center Y",
+  "default": 0.5,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   23.970260620117188,
+   39.65091323852539,
+   42.761993408203125,
+   35.9821891784668
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.561,
+   0.927,
+   1.0,
+   0.841
+  ],
+  "class": "early",
+  "curve": "pow:2.91",
+  "d0": 0.0,
+  "confident": false
+ },
+ "watermark.scale": {
+  "program": "watermark",
+  "arg": "scale",
+  "label": "Scale",
+  "default": 0.25,
+  "values": [
+   0.02,
+   0.265,
+   0.51,
+   0.755,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   1.2868119478225708,
+   5.905831813812256,
+   14.867670059204102,
+   31.438465118408203
+  ],
+  "done": true,
+  "range": [
+   0.02,
+   1
+  ],
+  "scale": "pow:0.42",
+  "s": [
+   0.0,
+   0.041,
+   0.188,
+   0.473,
+   1.0
+  ],
+  "class": "late",
+  "curve": "pow:0.43",
+  "d0": 0.0,
+  "confident": true
+ },
+ "watermark.margin": {
+  "program": "watermark",
+  "arg": "margin",
+  "label": "Margin",
+  "default": 24,
+  "values": [
+   0,
+   125,
+   250,
+   375,
+   500
+  ],
+  "diff": [
+   0.0,
+   3.1943159103393555,
+   4.34207820892334,
+   1.1764724254608154,
+   1.1764724254608154
+  ],
+  "done": true,
+  "range": [
+   0,
+   500
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.736,
+   1.0,
+   0.271,
+   0.271
+  ],
+  "class": "varies",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "warp.segments": {
+  "program": "warp",
+  "arg": "segments",
+  "label": "Segments",
+  "default": 6,
+  "values": [
+   2,
+   10,
+   17,
+   24,
+   32
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   2,
+   32
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "watermark.opacity": {
+  "program": "watermark",
+  "arg": "opacity",
+  "label": "Opacity",
+  "default": 0.8,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   0.4019097089767456,
+   0.7402263283729553,
+   1.0704089403152466,
+   1.3700810670852661
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.293,
+   0.54,
+   0.781,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "watermark.spin": {
+  "program": "watermark",
+  "arg": "spin",
+  "label": "Spin",
+  "default": 0.0,
+  "values": [
+   -360.0,
+   -180.0,
+   0.0,
+   180.0,
+   360.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   -360,
+   360
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "watermark.start": {
+  "program": "watermark",
+  "arg": "start",
+  "label": "Start",
+  "default": 0.0,
+  "values": [
+   0.0,
+   900.0,
+   1800.0,
+   2700.0,
+   3600.0
+  ],
+  "diff": [
+   0.0,
+   1.1377636194229126,
+   1.1377636194229126,
+   1.1377636194229126,
+   1.1377636194229126
+  ],
+  "done": true,
+  "range": [
+   0,
+   3600
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "class": "early",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "watermark.end": {
+  "program": "watermark",
+  "arg": "end",
+  "label": "End",
+  "default": 0.0,
+  "values": [
+   0.0,
+   900.0,
+   1800.0,
+   2700.0,
+   3600.0
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   3600
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "watermark.wm-loop": {
+  "program": "watermark",
+  "arg": "wm-loop",
+  "label": "Wm Loop",
+  "default": 0,
+  "values": [
+   0,
+   12,
+   25,
+   38,
+   50
+  ],
+  "diff": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "done": true,
+  "range": [
+   0,
+   50
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "watermark.video-crf": {
+  "program": "watermark",
+  "arg": "video-crf",
+  "label": "Video Crf",
+  "default": 18,
+  "values": [
+   0,
+   13,
+   26,
+   38,
+   51
+  ],
+  "diff": [
+   0.0,
+   0.05285493656992912,
+   0.1970486044883728,
+   0.7454989552497864,
+   3.7002315521240234
+  ],
+  "done": true,
+  "range": [
+   0,
+   51
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.014,
+   0.053,
+   0.201,
+   1.0
+  ],
+  "class": "late",
+  "curve": "pow:0.35",
+  "d0": 0.0,
+  "confident": false
+ },
+ "wbflare.amount": {
+  "program": "wbflare",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   1.4957561492919922,
+   2.817354679107666,
+   4.366222858428955,
+   5.770544052124023
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.259,
+   0.488,
+   0.757,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "weak_signal.streaks": {
+  "program": "weak_signal",
+  "arg": "streaks",
+  "label": "Streaks",
+  "default": 5,
+  "values": [
+   0,
+   8,
+   15,
+   22,
+   30
+  ],
+  "diff": [
+   0.0,
+   4.315811634063721,
+   5.970871925354004,
+   6.364776134490967,
+   7.359278678894043
+  ],
+  "done": true,
+  "range": [
+   0,
+   30
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.586,
+   0.811,
+   0.865,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:2.68",
+  "d0": 0.0,
+  "confident": true
+ },
+ "weak_signal.noise": {
+  "program": "weak_signal",
+  "arg": "noise",
+  "label": "Noise",
+  "default": 14.0,
+  "values": [
+   0.0,
+   15.0,
+   30.0,
+   45.0,
+   60.0
+  ],
+  "diff": [
+   0.0,
+   7.281346321105957,
+   10.619598388671875,
+   12.380754470825195,
+   15.097382545471191
+  ],
+  "done": true,
+  "range": [
+   0,
+   60
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.482,
+   0.703,
+   0.82,
+   1.0
+  ],
+  "class": "fast",
+  "curve": "pow:1.89",
+  "d0": 0.0,
+  "confident": true
+ },
+ "weak_signal.skew": {
+  "program": "weak_signal",
+  "arg": "skew",
+  "label": "Skew",
+  "default": 0.035,
+  "values": [
+   0.0,
+   0.05,
+   0.1,
+   0.15,
+   0.2
+  ],
+  "diff": [
+   0.0,
+   11.076870918273926,
+   16.374614715576172,
+   21.793306350708008,
+   26.93229103088379
+  ],
+  "done": true,
+  "range": [
+   0,
+   0.2
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.411,
+   0.608,
+   0.809,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "weak_signal.bursts": {
+  "program": "weak_signal",
+  "arg": "bursts",
+  "label": "Static bursts",
+  "default": 0.35,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   4.584169387817383,
+   5.073495388031006,
+   5.459715843200684,
+   5.512667179107666
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.832,
+   0.92,
+   0.99,
+   1.0
+  ],
+  "class": "early",
+  "curve": "pow:3",
+  "d0": 0.0,
+  "confident": false
+ },
+ "wipe_transitions.offset": {
+  "program": "wipe_transitions",
+  "arg": "offset",
+  "label": "Offset",
+  "default": 3.0,
+  "values": [
+   0.0,
+   900.0,
+   1800.0,
+   2700.0,
+   3600.0
+  ],
+  "diff": [
+   0.0,
+   3.307002305984497,
+   3.307002305984497,
+   3.307002305984497,
+   3.307002305984497
+  ],
+  "done": true,
+  "range": [
+   0,
+   3600
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "class": "early",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "weak_signal.amount": {
+  "program": "weak_signal",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   2.3711097240448,
+   5.338798999786377,
+   7.202482223510742,
+   10.43142318725586
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.227,
+   0.512,
+   0.69,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "weak_signal.speckle": {
+  "program": "weak_signal",
+  "arg": "speckle",
+  "label": "Speckle",
+  "default": 0.02,
+  "values": [
+   0.0,
+   0.05,
+   0.1,
+   0.15,
+   0.2
+  ],
+  "diff": [
+   0.0,
+   7.120434761047363,
+   9.415926933288574,
+   13.0864839553833,
+   16.586484909057617
+  ],
+  "done": true,
+  "range": [
+   0,
+   0.2
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.429,
+   0.568,
+   0.789,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "xpiritualism.bloom-radius": {
+  "program": "xpiritualism",
+  "arg": "bloom-radius",
+  "label": "Bloom Radius",
+  "default": 8.0,
+  "values": [
+   0.0,
+   10.0,
+   20.0,
+   30.0,
+   40.0
+  ],
+  "diff": [
+   0.0,
+   1.6965985298156738,
+   2.9761123657226562,
+   4.055105686187744,
+   5.055459022521973
+  ],
+  "done": true,
+  "range": [
+   0,
+   40
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.336,
+   0.589,
+   0.802,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "wipe_transitions.duration": {
+  "program": "wipe_transitions",
+  "arg": "duration",
+  "label": "Duration",
+  "default": 1.0,
+  "values": [
+   0.1,
+   2.575,
+   5.05,
+   7.525,
+   10.0
+  ],
+  "diff": [
+   0.0,
+   null,
+   null,
+   null,
+   null
+  ],
+  "done": true,
+  "range": [
+   0.1,
+   10
+  ],
+  "scale": "log",
+  "class": "error"
+ },
+ "xpiritualism.bloom-strength": {
+  "program": "xpiritualism",
+  "arg": "bloom-strength",
+  "label": "Bloom Strength",
+  "default": 0.7,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   10.76475715637207,
+   21.982284545898438,
+   32.7950439453125,
+   44.03645706176758
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.244,
+   0.499,
+   0.745,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "xpiritualism.saturation": {
+  "program": "xpiritualism",
+  "arg": "saturation",
+  "label": "Saturation",
+  "default": 1.15,
+  "values": [
+   0.0,
+   0.75,
+   1.5,
+   2.25,
+   3.0
+  ],
+  "diff": [
+   0.0,
+   0.24993570148944855,
+   0.25909850001335144,
+   0.26321372389793396,
+   0.26321372389793396
+  ],
+  "done": true,
+  "range": [
+   0,
+   3
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "xpiritualism.hue-shift": {
+  "program": "xpiritualism",
+  "arg": "hue-shift",
+  "label": "Hue Shift",
+  "default": 0.0,
+  "values": [
+   -180.0,
+   -90.0,
+   0.0,
+   90.0,
+   180.0
+  ],
+  "diff": [
+   0.0,
+   0.23244598507881165,
+   0.21916794776916504,
+   0.2394547313451767,
+   0.23791152238845825
+  ],
+  "done": true,
+  "range": [
+   -180,
+   180
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "xrgb.amount": {
+  "program": "xrgb",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   18.428014755249023,
+   36.689815521240234,
+   55.05134201049805,
+   73.6339340209961
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.25,
+   0.498,
+   0.748,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "xpiritualism.vignette": {
+  "program": "xpiritualism",
+  "arg": "vignette",
+  "label": "Vignette",
+  "default": 0.35,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   23.78372573852539,
+   47.807098388671875,
+   72.91197204589844,
+   96.44245147705078
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.247,
+   0.496,
+   0.756,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ },
+ "xpiritualism.grain": {
+  "program": "xpiritualism",
+  "arg": "grain",
+  "label": "Grain",
+  "default": 8.0,
+  "values": [
+   0.0,
+   10.0,
+   20.0,
+   30.0,
+   40.0
+  ],
+  "diff": [
+   0.0,
+   0.3237847089767456,
+   0.3897569477558136,
+   0.4073752462863922,
+   0.4391075074672699
+  ],
+  "done": true,
+  "range": [
+   0,
+   40
+  ],
+  "scale": null,
+  "class": "flat"
+ },
+ "zapruder.amount": {
+  "program": "zapruder",
+  "arg": "amount",
+  "label": "Amount",
+  "default": 1.0,
+  "values": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "diff": [
+   0.0,
+   13.761284828186035,
+   27.353845596313477,
+   41.0316047668457,
+   54.828125
+  ],
+  "done": true,
+  "range": [
+   0,
+   1
+  ],
+  "scale": null,
+  "s": [
+   0.0,
+   0.251,
+   0.499,
+   0.748,
+   1.0
+  ],
+  "class": "even",
+  "curve": null,
+  "d0": 0.0,
+  "confident": false
+ }
+}

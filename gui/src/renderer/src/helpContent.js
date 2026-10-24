@@ -14,7 +14,9 @@ export const HELP_SECTIONS = [
     title: 'Handy to know',
     bullets: [
       '**Branching & extra videos** — one output can feed several programs. Programs that need a second video (Layer Blend, Stack 2×…) show an extra dot, or drag **+ Input video** onto the canvas for another source.',
-      '**Numbers** — drag the slider or type a value (the box can be emptied and retyped). The faint strip under a slider is a good starting range; the black tick is the default; **↺** resets. Some programs have **Presets** chips that fill several values at once.',
+      '**Numbers** — drag the slider or type a value (the box can be emptied and retyped). The faint strip under a slider is a good starting range; the black tick is the default; **↺** resets. Some programs have **Presets** chips that fill several values at once. A slider marked *curved* (hover) is bent so its middle gives about half the visible effect; the box always shows the real value.',
+      '**✨ Tidy** (⌘⇧L) arranges a messy canvas left → right in connection order, or only the selected programs; ⌘Z undoes it. The toolbar shrinks with the window — ◂ hides it, **☰ Tools** holds everything when it is narrow.',
+      '**Did it work?** — with the console folded, a chip shows **✓ Done**, **✗ Failed at step n** or **■ Cancelled**; click it for the log. A notification appears if the window is in the background (🎨 Appearance → Notify when done).',
       '**Select several** — ⌘/Ctrl-click or Shift-drag a box around them. **⌘G** groups them so they move together; the caret on a group folds it into one card.',
       '**Copy & paste** — ⌘C / ⌘V copy programs and the connections between them; ⌘D duplicates. **⌘Z** undoes (also after Clear).',
       '**Clear** empties the canvas after asking you to confirm. **Save/Load Preset** keeps a whole setup.',
@@ -31,6 +33,7 @@ export const HELP_SECTIONS = [
       ['⌘C  ⌘V  ⌘D', 'Copy, paste, duplicate'],
       ['⌘G  /  ⇧⌘G', 'Group / ungroup'],
       ['⌘Z  /  ⇧⌘Z', 'Undo / redo'],
+      ['⇧⌘L', 'Tidy: auto-arrange the canvas'],
       ['Esc', 'Cancel a connection in progress, or clear the selection'],
       ['⌘B', 'Show / hide the program list'],
       ['⌘J', 'Show / hide the console'],

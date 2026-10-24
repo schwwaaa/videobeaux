@@ -1,0 +1,87 @@
+{
+ "auto_narrate": {
+  "font_size": "pow:1.65"
+ },
+ "bad_animation": {
+  "amount": "pow:0.7"
+ },
+ "black_white": {
+  "contrast": "pow:2.06"
+ },
+ "cartoon": {
+  "edge_strength": "pow:2.35"
+ },
+ "chroma_key": {
+  "similarity": "log"
+ },
+ "crt_monitor": {
+  "curvature": "pow:1.94",
+  "glow": "pow:2.46",
+  "mask": "pow:0.58",
+  "scanlines": "pow:0.57"
+ },
+ "deep_fry": {
+  "intensity": "pow:1.45"
+ },
+ "feedback_loop": {
+  "decay": "pow:0.43"
+ },
+ "flow_warp": {
+  "persistence": "pow:0.7"
+ },
+ "gamma_fix": {
+  "gamma": "pow:2.2"
+ },
+ "glitch_tear": {
+  "intensity": "pow:1.27",
+  "rgb_shift": "pow:1.89"
+ },
+ "key_feedback": {
+  "insert_soft": "pow:0.51"
+ },
+ "kmeans_palette": {
+  "pixel_size": "pow:1.7"
+ },
+ "led_wall": {
+  "brightness": "pow:2.47",
+  "cell": "pow:2.26"
+ },
+ "little_planet": {
+  "curve": "pow:2.14"
+ },
+ "long_exposure": {
+  "persistence": "pow:0.72"
+ },
+ "lut_apply": {
+  "contrast": "pow:1.67",
+  "gamma": "pow:2.24"
+ },
+ "motion_ghost": {
+  "decay": "pow:0.45"
+ },
+ "neon_edges": {
+  "thickness": "pow:1.41"
+ },
+ "proc_amp": {
+  "gamma": "pow:2.59"
+ },
+ "remove_background": {
+  "sensitivity": "pow:2.63"
+ },
+ "retro_dither": {
+  "contrast": "pow:1.95"
+ },
+ "stabilize": {
+  "smoothness": "log"
+ },
+ "tonemap_hdr_sdr": {
+  "peak": "log"
+ },
+ "watermark": {
+  "scale": "pow:0.43"
+ },
+ "weak_signal": {
+  "noise": "pow:1.89",
+  "streaks": "pow:2.68"
+ }
+}

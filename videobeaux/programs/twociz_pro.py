@@ -61,7 +61,7 @@ def run(args):
     command = [
         "ffmpeg",
         "-i", args.input,
-        "-filter_complex", f"[0:v]amplify=radius={args.radius}:factor={args.factor},chromakey=color=blue:similarity={args.similarity}:blend={args.blend}[out_v]",
+        "-filter_complex", f"[0:v]tpad=start={args.radius}:start_mode=clone:stop={args.radius + 1}:stop_mode=clone,amplify=radius={args.radius}:factor={args.factor},chromakey=color=blue:similarity={args.similarity}:blend={args.blend}[out_v]",
         "-map", "[out_v]",
         "-map", "0:a?",
         "-c:v", "libx264",

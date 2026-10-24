@@ -50,6 +50,14 @@
       {
         "from": "resources/gui",
         "to": "gui"
+      },
+      {
+        "from": "resources/tools",
+        "to": "tools"
+      },
+      {
+        "from": "resources/tests",
+        "to": "tests"
       }
     ],
     "win": {

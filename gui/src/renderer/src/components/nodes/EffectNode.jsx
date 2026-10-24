@@ -5,6 +5,7 @@ import {
 } from '@xyflow/react'
 import { usePrograms } from '../../ProgramsContext'
 import { familyOf, motifOf } from '../../looks/registry'
+import { makeScale, valueFromPosition, describeScale } from '../../sliderScale'
 import { NodeGlyph, NodeArt } from '../../looks/NodeArt'
 import { videoArgsOf, upstreamIsBatch } from '../../pipeline'
 import { useUpdateNodeData } from '../../useCanvasHistory'
@@ -190,8 +191,11 @@ function KokoroVoicePickerField({ value, onChange }) {
 /** Slider range: the declared min/max, else a soft range derived from the default (typed values may exceed it). */
 function sliderRange(arg) {
   const d = Number.isFinite(Number(arg.default)) && arg.default !== '' ? Number(arg.default) : 0
-  let lo = arg.min != null ? arg.min : (d < 0 ? d * 4 : 0)
-  let hi = arg.max != null ? arg.max : Math.max(arg.integer ? 10 : 1, Math.abs(d) * 4)
+  // slider_min / slider_max: the part of the range the slider covers (typed values may go beyond, up to min / max)
+  const mn = arg.slider_min != null ? arg.slider_min : arg.min
+  const mx = arg.slider_max != null ? arg.slider_max : arg.max
+  let lo = mn != null ? mn : (d < 0 ? d * 4 : 0)
+  let hi = mx != null ? mx : Math.max(arg.integer ? 10 : 1, Math.abs(d) * 4)
   if (hi <= lo) hi = lo + 1
   return [lo, hi]
 }
@@ -233,7 +237,8 @@ function NumberField({ arg, value, onChange, inputStyle }) {
   }
   const decimals = (String(step).split('.')[1] || '').length
   const numeric = Number.isFinite(Number(current)) && current !== '' ? Number(current) : lo
-  const pct = (v) => `${Math.max(0, Math.min(100, ((v - lo) / (hi - lo)) * 100))}%`
+  const sc = makeScale(arg.scale, lo, hi)
+  const pct = (v) => `${Math.max(0, Math.min(100, sc.toT(Number(v)) * 100))}%`
   const hasGood = arg.good_min != null && arg.good_max != null
   const hasDefault = Number.isFinite(Number(arg.default)) && arg.default !== ''
   const differs = hasDefault && Number(current) !== Number(arg.default)
@@ -258,13 +263,17 @@ function NumberField({ arg, value, onChange, inputStyle }) {
           <input
             className="nodrag"
             type="range"
-            min={lo}
-            max={hi}
-            step={step}
-            value={Math.min(hi, Math.max(lo, numeric))}
-            onChange={e => { setDraft(null); onChange(arg.integer ? Number(e.target.value) : Number(Number(e.target.value).toFixed(decimals + 1))) }}
+            min={sc.curved ? 0 : lo}
+            max={sc.curved ? 1000 : hi}
+            step={sc.curved ? 1 : step}
+            value={sc.curved ? Math.round(sc.toT(Math.min(hi, Math.max(lo, numeric))) * 1000) : Math.min(hi, Math.max(lo, numeric))}
+            onChange={e => {
+              setDraft(null)
+              if (sc.curved) onChange(clamp(valueFromPosition(sc, Number(e.target.value) / 1000, { lo, hi, integer: arg.integer })))
+              else onChange(arg.integer ? Number(e.target.value) : Number(Number(e.target.value).toFixed(decimals + 1)))
+            }}
             onDoubleClick={() => { if (hasDefault) { setDraft(null); onChange(arg.default) } }}
-            title="Double-click to reset"
+            title={`Double-click to reset${sc.curved ? ` · ${describeScale(sc)}` : ''}`}
             style={{ width: '100%', display: 'block', accentColor: 'var(--slider)', cursor: 'pointer' }}
           />
           {hasGood && (

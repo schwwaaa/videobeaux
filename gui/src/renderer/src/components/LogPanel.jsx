@@ -45,6 +45,31 @@ function MiniProgress({ progress }) {
   )
 }
 
+/** Pass / fail of the last run, shown in the collapsed header so you don't have to open the console to know. */
+function RunResult({ run, onClick }) {
+  const ok = run.status === 'ok'
+  const cancelled = run.status === 'cancelled'
+  const color = ok ? 'var(--lime-bright)' : cancelled ? 'var(--yellow)' : 'var(--coral)'
+  const text = ok
+    ? `✓ Done · ${run.total} step${run.total === 1 ? '' : 's'}${run.seconds ? ` · ${run.seconds}s` : ''}`
+    : cancelled ? '■ Cancelled'
+    : `✗ Failed${run.step ? ` at step ${run.step}${run.total ? `/${run.total}` : ''}` : ''}${run.name ? ` — ${run.name}` : ''}`
+  const tip = ok ? 'The last run finished. Click to open the console.'
+    : cancelled ? 'The last run was cancelled.'
+    : `${String(run.message || 'The last run failed.').split('\n')[0]}\n\nClick to open the console.`
+  return (
+    <button onClick={onClick} title={tip} aria-label={text}
+            style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 8, background: 'transparent', border: 'none',
+                     cursor: 'pointer', textAlign: 'left', padding: 0 }}>
+      <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: 11, color: '#080808', background: color,
+                     border: '2px solid #000', borderRadius: 999, padding: '1px 10px', whiteSpace: 'nowrap', overflow: 'hidden',
+                     textOverflow: 'ellipsis', maxWidth: '100%' }}>
+        {text}
+      </span>
+    </button>
+  )
+}
+
 function ProgressBar({ progress }) {
   if (!progress) return null
 
@@ -109,7 +134,7 @@ function ProgressBar({ progress }) {
 
 // ── LogPanel ──────────────────────────────────────────────────────────────────
 
-export default function LogPanel({ logs, isRunning, progress, onClear, onToggle, collapsed, height = 220, onResize, onCopyNotice }) {
+export default function LogPanel({ logs, isRunning, progress, lastRun, onShowRun, onClear, onToggle, collapsed, height = 220, onResize, onCopyNotice }) {
   const bottomRef = useRef(null)
   const textRef = useRef(null)
   const [dragBlocked, setDragBlocked] = useState(false)
@@ -265,7 +290,9 @@ export default function LogPanel({ logs, isRunning, progress, onClear, onToggle,
           </span>
         )}
 
-        {collapsed && isRunning && progress ? <MiniProgress progress={progress} /> : <div style={{ flex: 1 }} />}
+        {collapsed && isRunning && progress ? <MiniProgress progress={progress} />
+          : collapsed && !isRunning && lastRun ? <RunResult run={lastRun} onClick={onShowRun} />
+          : <div style={{ flex: 1 }} />}
 
         {copied && <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--lime-bright)' }}>{copied}</span>}
         {logs.length > 0 && (

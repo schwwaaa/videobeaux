@@ -138,6 +138,11 @@ def infer_bounds(name, default):
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from arg_ranges import RANGES  # noqa: E402
 
+try:                                  # calibrated slider response curves (tools/audit_sliders.py); optional
+    SLIDER_CURVES = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'slider_curves.json'), encoding='utf-8'))
+except Exception:
+    SLIDER_CURVES = {}
+
 
 class CapturingParser(argparse.ArgumentParser):
     """
@@ -230,7 +235,7 @@ for prog_name in program_names:
 
         for schema in parser._captured:
             if schema['name'] in meta_args:
-                for key in ('type', 'subtype', 'label', 'help', 'default', 'choices', 'min', 'max', 'step', 'free', 'good_min', 'good_max', 'show_if', 'hidden'):
+                for key in ('type', 'subtype', 'label', 'help', 'default', 'choices', 'min', 'max', 'step', 'free', 'good_min', 'good_max', 'show_if', 'hidden', 'scale', 'slider_min', 'slider_max'):
                     if key in meta_args[schema['name']]:
                         schema[key] = meta_args[schema['name']][key]
 
@@ -243,6 +248,19 @@ for prog_name in program_names:
                 schema.setdefault('free', True)
             elif rng != 'unset' and (schema.get('min') is None or schema.get('max') is None):
                 schema['min'], schema['max'] = rng
+
+        # Slider response curves: an explicit 'scale' in GUI_METADATA wins, then the calibrated table (slider_curves.json,
+        # produced by tools/audit_sliders.py), then 'log' for strictly positive ranges spanning two or more decades.
+        for schema in parser._captured:
+            if schema['type'] != 'number' or schema.get('scale') or schema.get('free'):
+                continue
+            curve = (SLIDER_CURVES.get(prog_name) or {}).get(schema['name'])
+            lo = schema.get('slider_min', schema.get('min'))
+            hi = schema.get('slider_max', schema.get('max'))
+            if curve:
+                schema['scale'] = curve
+            elif lo is not None and hi is not None and lo > 0 and hi / lo >= 100:
+                schema['scale'] = 'log'
 
         result[prog_name] = {
             'description': (parser.description or '').strip(),

@@ -11,6 +11,7 @@ import { refreshArtOverrides, artInfo, useArtVersion, ART_COUNT } from '../looks
 export default function AppearanceMenu() {
   const { theme, toggleTheme, shadowOffset, shadowColor, shadowsEnabled,
     setShadowOffset, setShadowColor, setShadowsEnabled, showSelectionBar, setShowSelectionBar, sliderColor, setSliderColor, selectionColor, setSelectionColor,
+    rememberWorkspace, setRememberWorkspace, notifyOnFinish, setNotifyOnFinish,
     look, setLook, lineMode, setLineMode, lineColor, setLineColor, lineWidth, setLineWidth,
     canvasBg, setCanvasBg, canvasBgOpacity, setCanvasBgOpacity, canvasBgFit, setCanvasBgFit } = useSettings()
   const [open, setOpen] = useState(false)
@@ -145,6 +146,34 @@ export default function AppearanceMenu() {
               >
                 {theme === 'dark' ? 'ON' : 'OFF'}
               </button>
+            </div>
+
+            <div style={{ height: 1, background: 'var(--gray)' }} />
+
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: 11 }}>
+                Notify when done
+              </span>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}
+                     title="A system notification when a run finishes or fails while Videobeaux isn't the front window.">
+                <input type="checkbox" checked={notifyOnFinish !== false} onChange={e => setNotifyOnFinish(e.target.checked)}
+                       style={{ accentColor: 'var(--slider)', cursor: 'pointer' }} />
+                <span style={{ fontSize: 10, color: 'var(--muted-dim)' }}>On</span>
+              </label>
+            </div>
+
+            <div style={{ height: 1, background: 'var(--gray)' }} />
+
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: 11 }}>
+                Remember workspace
+              </span>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}
+                     title="Keeps your canvas and view, and brings it back if the app reloads, restarts or the computer wakes from sleep. Undo history is not kept.">
+                <input type="checkbox" checked={rememberWorkspace !== false} onChange={e => setRememberWorkspace(e.target.checked)}
+                       style={{ accentColor: 'var(--slider)', cursor: 'pointer' }} />
+                <span style={{ fontSize: 10, color: 'var(--muted-dim)' }}>On</span>
+              </label>
             </div>
 
             <div style={{ height: 1, background: 'var(--gray)' }} />

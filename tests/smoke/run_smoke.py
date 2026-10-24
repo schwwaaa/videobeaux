@@ -379,7 +379,7 @@ SPECS: dict[str, dict] = {
     "qwikchop_deluxe":  {"kind": "dir", "skip": need_speech, "timeout": 900,
                          "args": lambda fx: ["--stt_model", str(fx.vosk), "--count", "2",
                                              "--min_time", "1", "--max_time", "4"]},
-    "captburn":         {"skip": lambda fx: need_filter(fx, "ass", "libass") or need_transcript(fx),
+    "captburn":         {"skip": need_transcript, "timeout": 600,
                          "args": lambda fx: ["--trans-json", str(fx.transcript)]},
     "kinetic_captions": {"skip": need_transcript,
                          "args": lambda fx: ["--trans-json", str(fx.transcript)], "timeout": 600},

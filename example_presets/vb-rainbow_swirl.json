@@ -1,0 +1,111 @@
+{
+  "presetFormatVersion": 1,
+  "savedAt": "2026-10-07T06:00:42.261Z",
+  "nodes": [
+    {
+      "id": "input-1",
+      "type": "inputNode",
+      "position": {
+        "x": -1286.4329441576256,
+        "y": -388.071814027237
+      },
+      "data": {
+        "filePath": "/Users/tgm/Desktop/Sample Media Clip 3.mp4",
+        "mode": "file"
+      },
+      "deletable": false
+    },
+    {
+      "id": "output-1",
+      "type": "outputNode",
+      "position": {
+        "x": -15.77571358270204,
+        "y": -397.8915135495848
+      },
+      "data": {
+        "filePath": "/Users/tgm/Desktop/output.mp4",
+        "format": "mp4"
+      },
+      "deletable": false
+    },
+    {
+      "id": "effect-47-1791325304717",
+      "type": "effectNode",
+      "position": {
+        "x": -942.2556274654218,
+        "y": -364.04049455275975
+      },
+      "data": {
+        "program": "motion_ghost",
+        "args": {
+          "mode": "highlight",
+          "color": "#2EFF9D",
+          "sensitivity": 0.6,
+          "decay": 0.34,
+          "dim": 0.78,
+          "crf": 18
+        }
+      }
+    },
+    {
+      "id": "effect-49-1791325640596",
+      "type": "effectNode",
+      "position": {
+        "x": -572.7755849664952,
+        "y": -375.4978376841732
+      },
+      "data": {
+        "program": "key_feedback",
+        "args": {
+          "insert_key": "luma",
+          "insert_low": 0.5,
+          "insert_high": 1,
+          "insert_soft": 0.1,
+          "insert_color": "#00FF00",
+          "insert_similarity": 0.3,
+          "fb_key": "none",
+          "fb_low": 0.72,
+          "fb_high": 1,
+          "fb_soft": 0.1,
+          "fb_color": "#FF00FF",
+          "fb_similarity": 0.3,
+          "decay": 0.99,
+          "zoom": 1.5,
+          "rotate": 1.2,
+          "shift_x": 0,
+          "shift_y": 0,
+          "hue_shift": 4,
+          "mix_mode": "over",
+          "view": "output",
+          "crf": 18
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "xy-edge__input-1-effect-47-1791325304717",
+      "source": "input-1",
+      "target": "effect-47-1791325304717",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-47-1791325304717-effect-49-1791325640596",
+      "source": "effect-47-1791325304717",
+      "target": "effect-49-1791325640596",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-49-1791325640596-output-1",
+      "source": "effect-49-1791325640596",
+      "target": "output-1",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    }
+  ]
+}

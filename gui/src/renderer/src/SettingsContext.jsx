@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
+import { setWorkspaceRemembered } from './workspaceStore'
 
 const SettingsContext = createContext(null)
 
@@ -15,6 +16,8 @@ const DEFAULTS = {
   consoleCollapsed: false,
   consoleHeight: 220,
   autoOverwrite: false,
+  notifyOnFinish: true,         // system notification when a run ends while the app isn't in front
+  rememberWorkspace: true,      // keep the canvas across reloads / restarts (see workspaceStore.js)
   // Appearance: connection lines / node outlines, canvas wallpaper, visual "Look"
   lineMode: 'ink',              // 'ink' (default) | 'category' (each line takes its source module's colour) | 'custom'
   lineColor: '#080808',         // used when lineMode === 'custom' (also recolours node frames)
@@ -103,7 +106,9 @@ export function SettingsProvider({ children }) {
     setCanvasBg: (canvasBg) => update({ canvasBg }),
     setCanvasBgOpacity: (canvasBgOpacity) => update({ canvasBgOpacity }),
     setCanvasBgFit: (canvasBgFit) => update({ canvasBgFit }),
-    setLook: (look) => update({ look })
+    setLook: (look) => update({ look }),
+    setNotifyOnFinish: (notifyOnFinish) => update({ notifyOnFinish }),
+    setRememberWorkspace: (rememberWorkspace) => { setWorkspaceRemembered(rememberWorkspace); update({ rememberWorkspace }) }
   }
 
   return (

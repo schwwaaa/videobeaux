@@ -1,0 +1,152 @@
+{
+  "presetFormatVersion": 1,
+  "savedAt": "2026-10-16T03:49:53.832Z",
+  "nodes": [
+    {
+      "id": "input-1",
+      "type": "inputNode",
+      "position": {
+        "x": -925.1979503645834,
+        "y": 25.14704195799225
+      },
+      "data": {
+        "filePath": "/Users/tgm/Desktop/sample.mp4"
+      },
+      "deletable": false
+    },
+    {
+      "id": "output-1",
+      "type": "outputNode",
+      "position": {
+        "x": 349.6926165626649,
+        "y": 179.10076055597764
+      },
+      "data": {
+        "filePath": "/Users/tgm/Desktop/output.mp4",
+        "format": "mp4"
+      },
+      "deletable": false
+    },
+    {
+      "id": "effect-14-1792122432071",
+      "type": "effectNode",
+      "position": {
+        "x": -640.0926358203283,
+        "y": 104.94342395338838
+      },
+      "data": {
+        "program": "twociz",
+        "args": {
+          "amount": 0.65
+        }
+      }
+    },
+    {
+      "id": "effect-15-1792122433487",
+      "type": "effectNode",
+      "position": {
+        "x": -669.3515710419597,
+        "y": 274.92390476477016
+      },
+      "data": {
+        "program": "splitting",
+        "args": {
+          "amount": 0.7
+        }
+      }
+    },
+    {
+      "id": "effect-16-1792122439516",
+      "type": "effectNode",
+      "position": {
+        "x": -566.2486564514494,
+        "y": 447.6909508353549
+      },
+      "data": {
+        "program": "slight_smear",
+        "args": {
+          "amount": 0.5
+        }
+      }
+    },
+    {
+      "id": "effect-17-1792122441817",
+      "type": "effectNode",
+      "position": {
+        "x": -304.3115220863692,
+        "y": 259.5977958391538
+      },
+      "data": {
+        "program": "blur_pix",
+        "args": {
+          "amount": 1
+        }
+      }
+    },
+    {
+      "id": "effect-18-1792122448500",
+      "type": "effectNode",
+      "position": {
+        "x": -18.688583018063817,
+        "y": 153.70831598944054
+      },
+      "data": {
+        "program": "splitting_pro",
+        "args": {
+          "width": "50",
+          "position": "block"
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "xy-edge__effect-18-1792122448500-output-1",
+      "source": "effect-18-1792122448500",
+      "target": "output-1",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-17-1792122441817-effect-18-1792122448500",
+      "source": "effect-17-1792122441817",
+      "target": "effect-18-1792122448500",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-16-1792122439516-effect-17-1792122441817",
+      "source": "effect-16-1792122439516",
+      "target": "effect-17-1792122441817",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-15-1792122433487-effect-16-1792122439516",
+      "source": "effect-15-1792122433487",
+      "target": "effect-16-1792122439516",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__effect-14-1792122432071-effect-15-1792122433487",
+      "source": "effect-14-1792122432071",
+      "target": "effect-15-1792122433487",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    },
+    {
+      "id": "xy-edge__input-1-effect-14-1792122432071",
+      "source": "input-1",
+      "target": "effect-14-1792122432071",
+      "sourceHandle": null,
+      "targetHandle": null,
+      "type": "smoothstep"
+    }
+  ]
+}

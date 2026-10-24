@@ -14,7 +14,7 @@ def run(args):
     command = [
         "ffmpeg",
         "-i", args.input,
-        "-filter_complex", "[0:v]amplify=radius=2:factor=13:threshold=61889.14:tolerance=0.2,colorbalance,colorcorrect=rl=0.61:rh=0.2:bh=0.16:analyze=minmax,dctdnoiz=sigma=498.03[out_v]",
+        "-filter_complex", "[0:v]tpad=start=2:start_mode=clone:stop=3:stop_mode=clone,amplify=radius=2:factor=13:threshold=61889.14:tolerance=0.2,colorbalance,colorcorrect=rl=0.61:rh=0.2:bh=0.16:analyze=minmax,dctdnoiz=sigma=498.03[out_v]",
         "-map", "[out_v]",
         "-map", "0:a?",
         "-c:v", "libx264",

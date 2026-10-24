@@ -40,7 +40,7 @@ def run(args):
     command = [
         "ffmpeg",
         "-i", args.input,
-        "-filter_complex", f"[0:v]setpts=PTS-STARTPTS,tpad=start=7:start_mode=clone:stop=30:stop_mode=clone,setrange=range=limited,amplify=radius={args.radius}:factor={args.factor}[out_v]",
+        "-filter_complex", f"[0:v]tpad=start=7:start_mode=clone:stop=30:stop_mode=clone,setrange=range=limited,amplify=radius={args.radius}:factor={args.factor}[out_v]",
         "-map", "[out_v]",
         "-map", "0:a?",
         "-c:v", "libx264",

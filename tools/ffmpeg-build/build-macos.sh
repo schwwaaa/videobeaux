@@ -13,13 +13,19 @@ set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 WORK="${TMPDIR:-/tmp}/videobeaux-ffmpeg-build"
 UPDATE_LOCK=0
+PRINT_PATHS=0
 while [ $# -gt 0 ]; do
   case "$1" in
     --work) WORK="$2"; shift 2 ;;
     --update-lock) UPDATE_LOCK=1; shift ;;
+    --print-paths) PRINT_PATHS=1; shift ;;       # (used by the tests) print the resolved folders and exit
     *) echo "unknown option $1" >&2; exit 2 ;;
   esac
 done
+# Everything below cd's around and hands paths to ./configure (which insists on an absolute --prefix), so --work must be
+# absolute — `npm run ffmpeg:local` passes a relative one (.ffmpeg-build).
+mkdir -p "$WORK"
+WORK="$(cd "$WORK" && pwd)"
 # shellcheck disable=SC1091
 source "$HERE/versions.env"
 
@@ -27,6 +33,8 @@ ARCH="$(uname -m)"                      # arm64 | x86_64
 JOBS="$(sysctl -n hw.ncpu)"
 SRC="$WORK/src"; BUILD="$WORK/build"; PREFIX="$WORK/prefix"; DIST="$WORK/dist"; TOOLS="$WORK/tools"
 mkdir -p "$SRC" "$BUILD" "$PREFIX" "$DIST/sources" "$TOOLS"
+echo "work dir: $WORK"
+if [ "$PRINT_PATHS" = 1 ]; then echo "WORK=$WORK"; echo "PREFIX=$PREFIX"; echo "DIST=$DIST"; exit 0; fi
 
 if [ "$ARCH" = "arm64" ]; then MINVER=11.0; else MINVER=10.15; fi
 export MACOSX_DEPLOYMENT_TARGET="$MINVER"
