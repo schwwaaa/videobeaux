@@ -273,6 +273,18 @@ input[type="range"], input[type="checkbox"], input[type="radio"] { accent-color:
 .node-caret:hover { background: var(--yellow); }
 .node-caret:active { transform: translate(2px, 2px); box-shadow: none; }
 
+/* Program-node remove button: same chip as the caret, with a heavy drawn X; turns coral on hover. */
+.node-close {
+  width: 24px; height: 24px; padding: 0; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: #fffdf6; color: #080808;
+  border: 2px solid #080808; border-radius: 6px;
+  box-shadow: 2px 2px 0 #080808;
+  line-height: 1;
+}
+.node-close:hover { background: var(--coral); color: #080808; }
+.node-close:active { transform: translate(2px, 2px); box-shadow: none; }
+
 /* ── Utility ───────────────────────────────────────────────────────────────── */
 button {
   cursor: pointer;

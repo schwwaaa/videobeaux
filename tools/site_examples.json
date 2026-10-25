@@ -1,0 +1,726 @@
+{
+ "source": "tools/site_source/example_original.mp4",
+ "seconds": 8,
+ "categories": {
+  "Glitch & Corruption": "#d52c91",
+  "Trails & Echoes": "#ff9f1c",
+  "Time & Motion": "#ff6847",
+  "Color & Look": "#8654aa",
+  "Layout & Overlay": "#32b9df",
+  "Speech & Captions": "#ffe500",
+  "Chains": "#c5d92d"
+ },
+ "examples": [
+  {
+   "id": "chain",
+   "name": "Time tunnel",
+   "category": "Chains",
+   "blurb": "Time smeared, spun into a tunnel, shown on a CRT",
+   "featured": true,
+   "steps": [
+    {
+     "program": "slit_scan",
+     "name": "Slit-Scan",
+     "settings": "",
+     "args": []
+    },
+    {
+     "program": "tunnel",
+     "name": "Tunnel",
+     "settings": "amount 0.6",
+     "args": [
+      "--amount",
+      "0.6"
+     ]
+    },
+    {
+     "program": "crt_monitor",
+     "name": "CRT Monitor",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "clean_slowmo",
+   "name": "Clean slow-mo",
+   "category": "Chains",
+   "blurb": "Steady it, fix the exposure, slow it to a quarter",
+   "featured": true,
+   "steps": [
+    {
+     "program": "stabilize",
+     "name": "Stabilize",
+     "settings": "",
+     "args": []
+    },
+    {
+     "program": "gamma_fix",
+     "name": "Gamma Fix",
+     "settings": "",
+     "args": []
+    },
+    {
+     "program": "speed",
+     "name": "Speed",
+     "settings": "0.25\u00d7",
+     "args": [
+      "--speed_factor",
+      "0.25"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "sticker_cutout",
+   "name": "Sticker cutout",
+   "category": "Chains",
+   "blurb": "Cut the subject out, then redraw it as a cartoon",
+   "featured": true,
+   "steps": [
+    {
+     "program": "remove_background",
+     "name": "Remove Background",
+     "settings": "AI, pink backdrop",
+     "args": [
+      "--engine",
+      "AI \u00b7 fast (u2netp)",
+      "--background",
+      "color",
+      "--bg_color",
+      "#ff3b9a"
+     ]
+    },
+    {
+     "program": "cartoon",
+     "name": "Cartoon",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "narrated_tape",
+   "name": "Narrated tape",
+   "category": "Chains",
+   "blurb": "A spoken script with word-by-word captions, then dubbed to VHS",
+   "featured": true,
+   "poster": 1.0,
+   "requires": [
+    "models/vosk-model-en-us-0.22-lgraph"
+   ],
+   "steps": [
+    {
+     "program": "auto_narrate",
+     "name": "Auto Narrate",
+     "settings": "your own script",
+     "args": [
+      "--script",
+      "Pick a few program modes. Wire them together. Press run.",
+      "--stt_model",
+      "models/vosk-model-en-us-0.22-lgraph"
+     ]
+    },
+    {
+     "program": "vhs_camcorder",
+     "name": "VHS Camcorder",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "old_movie",
+   "name": "Old movie night",
+   "category": "Chains",
+   "blurb": "Washed colour, two-tone grade, scratches and flicker",
+   "featured": false,
+   "steps": [
+    {
+     "program": "proc_amp",
+     "name": "Proc Amp",
+     "settings": "",
+     "args": [
+      "--contrast",
+      "1.2",
+      "--saturation",
+      "0.8"
+     ]
+    },
+    {
+     "program": "duotone",
+     "name": "Duotone",
+     "settings": "",
+     "args": []
+    },
+    {
+     "program": "old_film_damage",
+     "name": "Old Film Damage",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "cold_planet",
+   "name": "Cold planet",
+   "category": "Chains",
+   "blurb": "Crushed colour, folded into a planet, then pixelated",
+   "featured": false,
+   "steps": [
+    {
+     "program": "digital_boss",
+     "name": "Digital Boss",
+     "settings": "",
+     "args": []
+    },
+    {
+     "program": "little_planet",
+     "name": "Little Planet",
+     "settings": "",
+     "args": []
+    },
+    {
+     "program": "pixelate",
+     "name": "Pixelate",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "bad_predator",
+   "name": "Bad Predator",
+   "category": "Color & Look",
+   "blurb": "Heat vision, deliberately broken",
+   "featured": true,
+   "steps": [
+    {
+     "program": "bad_predator",
+     "name": "Bad Predator",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "slowmo",
+   "name": "Speed",
+   "category": "Time & Motion",
+   "blurb": "Quarter-speed slow-mo, pitch kept. Down to 0.05\u00d7 or up to 100\u00d7",
+   "featured": false,
+   "steps": [
+    {
+     "program": "speed",
+     "name": "Speed",
+     "settings": "0.25\u00d7",
+     "args": [
+      "--speed_factor",
+      "0.25"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "remove_bg",
+   "name": "Remove Background",
+   "category": "Layout & Overlay",
+   "blurb": "AI cut-out that runs on your own machine",
+   "featured": false,
+   "steps": [
+    {
+     "program": "remove_background",
+     "name": "Remove Background",
+     "settings": "AI, pink backdrop",
+     "args": [
+      "--engine",
+      "AI \u00b7 fast (u2netp)",
+      "--background",
+      "color",
+      "--bg_color",
+      "#ff3b9a"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "pixel_sort",
+   "name": "Pixel Sort",
+   "category": "Glitch & Corruption",
+   "blurb": "Brightness-sorted streaks",
+   "featured": true,
+   "steps": [
+    {
+     "program": "pixel_sort",
+     "name": "Pixel Sort",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "proc_amp",
+   "name": "Proc Amp",
+   "category": "Color & Look",
+   "blurb": "Contrast, saturation, gamma, white balance, broadcast-safe",
+   "featured": false,
+   "steps": [
+    {
+     "program": "proc_amp",
+     "name": "Proc Amp",
+     "settings": "contrast 1.2, saturation 1.5",
+     "args": [
+      "--contrast",
+      "1.2",
+      "--saturation",
+      "1.5"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "auto_narrate",
+   "name": "Auto Narrate",
+   "category": "Speech & Captions",
+   "blurb": "Type a script. It speaks it and captions every word",
+   "featured": false,
+   "poster": 1.0,
+   "requires": [
+    "models/vosk-model-en-us-0.22-lgraph"
+   ],
+   "steps": [
+    {
+     "program": "auto_narrate",
+     "name": "Auto Narrate",
+     "settings": "your own script",
+     "args": [
+      "--script",
+      "Pick a few program modes. Wire them together. Press run.",
+      "--stt_model",
+      "models/vosk-model-en-us-0.22-lgraph"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "slit_scan",
+   "name": "Slit-Scan",
+   "category": "Time & Motion",
+   "blurb": "Time smeared across the frame",
+   "featured": false,
+   "steps": [
+    {
+     "program": "slit_scan",
+     "name": "Slit-Scan",
+     "settings": "rows (time warp)",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "reverse",
+   "name": "Reverse",
+   "category": "Time & Motion",
+   "blurb": "Plays the whole clip backwards, audio too",
+   "featured": false,
+   "steps": [
+    {
+     "program": "reverse",
+     "name": "Reverse",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "halftone",
+   "name": "Halftone",
+   "category": "Color & Look",
+   "blurb": "Newsprint dots",
+   "featured": false,
+   "steps": [
+    {
+     "program": "halftone",
+     "name": "Halftone",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "night_vision",
+   "name": "Night Vision",
+   "category": "Color & Look",
+   "blurb": "Green glow and grain",
+   "featured": false,
+   "steps": [
+    {
+     "program": "night_vision",
+     "name": "Night Vision",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "quad_split",
+   "name": "Quad Split",
+   "category": "Layout & Overlay",
+   "blurb": "Four panels, one run",
+   "featured": false,
+   "steps": [
+    {
+     "program": "quad_split",
+     "name": "Quad Split",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "thermal",
+   "name": "Thermal",
+   "category": "Color & Look",
+   "blurb": "False-colour heat map",
+   "featured": false,
+   "steps": [
+    {
+     "program": "thermal",
+     "name": "Thermal",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "crt",
+   "name": "CRT Monitor",
+   "category": "Glitch & Corruption",
+   "blurb": "Curved glass, scanlines, shadow mask",
+   "featured": false,
+   "steps": [
+    {
+     "program": "crt_monitor",
+     "name": "CRT Monitor",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "tunnel",
+   "name": "Tunnel",
+   "category": "Time & Motion",
+   "blurb": "A kaleidoscope you fall into",
+   "featured": false,
+   "steps": [
+    {
+     "program": "tunnel",
+     "name": "Tunnel",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "boomerang",
+   "name": "Boomerang",
+   "category": "Time & Motion",
+   "blurb": "Forward, then back, then forward again",
+   "featured": false,
+   "steps": [
+    {
+     "program": "boomerang",
+     "name": "Boomerang",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "time_ramp",
+   "name": "Time Ramp",
+   "category": "Time & Motion",
+   "blurb": "Slow-mo that speeds up inside one clip",
+   "featured": false,
+   "steps": [
+    {
+     "program": "time_ramp",
+     "name": "Time Ramp",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "stutter",
+   "name": "Stutter Pro",
+   "category": "Time & Motion",
+   "blurb": "Chops the clip into a rhythm",
+   "featured": false,
+   "steps": [
+    {
+     "program": "stutter_pro",
+     "name": "Stutter Pro",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "duotone",
+   "name": "Duotone",
+   "category": "Color & Look",
+   "blurb": "Two colours and nothing else",
+   "featured": false,
+   "steps": [
+    {
+     "program": "duotone",
+     "name": "Duotone",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "old_film",
+   "name": "Old Film Damage",
+   "category": "Color & Look",
+   "blurb": "Scratches, dust and flicker",
+   "featured": false,
+   "steps": [
+    {
+     "program": "old_film_damage",
+     "name": "Old Film Damage",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "ascii_art",
+   "name": "ASCII Art",
+   "category": "Color & Look",
+   "blurb": "Made of text",
+   "featured": false,
+   "steps": [
+    {
+     "program": "ascii_art",
+     "name": "ASCII Art",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "pop_art",
+   "name": "Pop Art",
+   "category": "Color & Look",
+   "blurb": "Four colourways, one frame",
+   "featured": false,
+   "steps": [
+    {
+     "program": "pop_art",
+     "name": "Pop Art",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "video_wall",
+   "name": "Video Wall",
+   "category": "Layout & Overlay",
+   "blurb": "A bank of monitors",
+   "featured": false,
+   "steps": [
+    {
+     "program": "video_wall",
+     "name": "Video Wall",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "digital_boss",
+   "name": "Digital Boss",
+   "category": "Glitch & Corruption",
+   "blurb": "Channel-crushed, cold and noisy",
+   "featured": false,
+   "steps": [
+    {
+     "program": "digital_boss",
+     "name": "Digital Boss",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "splitting",
+   "name": "Splitting",
+   "category": "Glitch & Corruption",
+   "blurb": "Tearing the picture into bands",
+   "featured": false,
+   "steps": [
+    {
+     "program": "splitting",
+     "name": "Splitting",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "xrgb",
+   "name": "XRGB",
+   "category": "Glitch & Corruption",
+   "blurb": "Colour channels pulled apart",
+   "featured": false,
+   "steps": [
+    {
+     "program": "xrgb",
+     "name": "XRGB",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "double_cup",
+   "name": "Double Cup",
+   "category": "Trails & Echoes",
+   "blurb": "Slow, syrupy double vision",
+   "featured": false,
+   "steps": [
+    {
+     "program": "double_cup",
+     "name": "Double Cup",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "fever",
+   "name": "Fever",
+   "category": "Trails & Echoes",
+   "blurb": "A green-tinted fever dream",
+   "featured": false,
+   "steps": [
+    {
+     "program": "fever",
+     "name": "Fever",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "mirror_delay",
+   "name": "Mirror Delay",
+   "category": "Trails & Echoes",
+   "blurb": "Your own echo, mirrored",
+   "featured": false,
+   "steps": [
+    {
+     "program": "mirror_delay",
+     "name": "Mirror Delay",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "little_planet",
+   "name": "Little Planet",
+   "category": "Time & Motion",
+   "blurb": "The picture folds into a world",
+   "featured": false,
+   "steps": [
+    {
+     "program": "little_planet",
+     "name": "Little Planet",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "negative",
+   "name": "Negative",
+   "category": "Color & Look",
+   "blurb": "Everything inverted",
+   "featured": false,
+   "steps": [
+    {
+     "program": "negative",
+     "name": "Negative",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "neon_edges",
+   "name": "Neon Edges",
+   "category": "Color & Look",
+   "blurb": "Only the outlines, glowing",
+   "featured": false,
+   "steps": [
+    {
+     "program": "neon_edges",
+     "name": "Neon Edges",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "blueprint",
+   "name": "Blueprint",
+   "category": "Color & Look",
+   "blurb": "White lines on blue paper",
+   "featured": false,
+   "steps": [
+    {
+     "program": "blueprint",
+     "name": "Blueprint",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "motion_ghost",
+   "name": "Motion Ghost",
+   "category": "Time & Motion",
+   "blurb": "Only what moved",
+   "featured": false,
+   "steps": [
+    {
+     "program": "motion_ghost",
+     "name": "Motion Ghost",
+     "settings": "",
+     "args": []
+    }
+   ]
+  },
+  {
+   "id": "broken_scroll",
+   "name": "Broken Scroll",
+   "category": "Time & Motion",
+   "blurb": "A scroll that won't hold still",
+   "featured": false,
+   "steps": [
+    {
+     "program": "broken_scroll",
+     "name": "Broken Scroll",
+     "settings": "",
+     "args": []
+    }
+   ]
+  }
+ ]
+}

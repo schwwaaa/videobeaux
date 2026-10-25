@@ -32,6 +32,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // Returns Promise<string[]>, empty if kokoro-tts isn't installed.
   listKokoroVoices: () => ipcRenderer.invoke('kokoro:listVoices'),
 
+  // Font catalogue for the font picker — [{ family, regular, bold, bundled }]
+  listFonts: (refresh) => ipcRenderer.invoke('fonts:list', !!refresh),
+
   // Layout snapshot: PNG of the canvas + preset JSON, saved together
   saveSnapshot: (opts) => ipcRenderer.invoke('layout:snapshot', opts),
 

@@ -96,7 +96,7 @@ function findFullFfmpegDir() {
 protocol.registerSchemesAsPrivileged([
   { scheme: 'vbmedia', privileges: { standard: true, secure: true, supportFetchAPI: true, stream: true, bypassCSP: false } }
 ])
-const MEDIA_EXTS = new Set(['.mp4', '.mov', '.m4v', '.mkv', '.webm', '.avi', '.mp3', '.wav', '.m4a', '.flac', '.gif', '.png', '.jpg', '.jpeg', '.webp', '.mpg', '.mpeg', '.mts', '.m2ts'])
+const MEDIA_EXTS = new Set(['.mp4', '.mov', '.m4v', '.mkv', '.webm', '.avi', '.mp3', '.wav', '.m4a', '.flac', '.gif', '.png', '.jpg', '.jpeg', '.webp', '.mpg', '.mpeg', '.mts', '.m2ts', '.ttf', '.otf'])
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
@@ -343,6 +343,28 @@ app.whenReady().then(async () => {
     } catch {
       return []
     }
+  })
+
+  // ── Fonts for the caption programs' font picker ──────────────────────────────
+  // The catalogue is built by Python (the same code the renderer uses to find the font file), so a name picked in the GUI
+  // always resolves to the file that was previewed: the bundled open-licensed set + whatever is installed on this computer.
+  let fontCache = null
+  ipcMain.handle('fonts:list', (_, refresh) => {
+    if (fontCache && !refresh) return fontCache
+    return new Promise((resolve) => {
+      const { vbRoot } = getPaths()
+      let out = ''
+      const proc = spawn(findPython(), ['-m', 'videobeaux.utils.fonts', '--json', ...(refresh ? ['--refresh'] : [])], {
+        cwd: vbRoot,
+        env: { ...process.env, PYTHONUTF8: '1', PYTHONIOENCODING: 'utf-8', PYTHONPATH: vbRoot },
+        windowsHide: true
+      })
+      proc.stdout.on('data', d => { out += d.toString('utf8') })
+      proc.on('error', () => resolve([]))
+      proc.on('close', code => {
+        try { fontCache = code === 0 ? JSON.parse(out) : []; resolve(fontCache) } catch { resolve([]) }
+      })
+    })
   })
 
   // ── Batch helpers ─────────────────────────────────────────────────────────────

@@ -44,7 +44,7 @@ A visual, node-based editor for building video pipelines out of videobeaux's eff
   <img width="55%" src="img/kinetic-captions-example.png"/>
 </p>
 
-*Left: the effect library, organized by category — drag anything onto the canvas. Right: a frame from Kinetic Captions, one of the AI & Advanced programs — the actively-spoken word pops larger in real time, rendered locally with no ML model.*
+*Left: the effect library, organized by category — drag anything onto the canvas. Right: a frame from Captburn, one of the AI & Advanced programs — the actively-spoken word pops larger in real time, rendered locally with no ML model.*
 
 ### For users — just want to run it?
 
@@ -164,7 +164,7 @@ python3 -m videobeaux.cli --program PROGRAM --input INPUT_FILE --output OUTPUT_F
 Every program has its own flags on top of the global ones — pass `-P <program> --help` to see them:
 
 ```bash
-python3 -m videobeaux.cli -P kinetic_captions --help
+python3 -m videobeaux.cli -P captburn --help
 ```
 
 ### Examples
@@ -176,10 +176,8 @@ python3 -m videobeaux.cli -P bad_animation -i clip.mp4 -o clip_glitched.mp4
 # Trim a section out of a longer video
 python3 -m videobeaux.cli -P trim -i raw.mp4 -o clip.mp4 --start 1:12 --duration 8
 
-# Burn word-pop kinetic captions from a transcript
-# (transcraibe always writes <input>.json next to the input, regardless of -o)
-python3 -m videobeaux.cli -P transcraibe -i clip.mp4 --stt_model models/vosk-model-en-us-0.22
-python3 -m videobeaux.cli -P kinetic_captions -i clip.mp4 -o clip_captioned.mp4 --trans_json clip.json
+# Burn word-pop kinetic captions: uses clip.json if it exists, otherwise transcribes with Vosk first (and saves clip.json)
+python3 -m videobeaux.cli -P captburn -i clip.mp4 -o clip_captioned.mp4 --stt_model models/vosk-model-en-us-0.22-lgraph --font "Anton"
 
 # AI-narrated captions, fully offline (your own script, no Ollama/network involved)
 python3 -m videobeaux.cli -P auto_narrate -i clip.mp4 -o clip_narrated.mp4 \
@@ -456,9 +454,8 @@ _Transcript-driven editing, captions and narration (Vosk / kokoro-tts, all local
 | Program | Description |
 |---|---|
 | Transcraibe | AI speech-to-text transcription (Vosk) |
-| Kinetic Captions | Per-frame rendered captions with a true size pop on the active word |
-| Captburn | Burn the clip's own speech as kinetic captions (transcribes with Vosk first if needed) — same look as Auto Narrate |
-| Auto Narrate | Adds AI-narrated captions to a video — type your own script (offline, default) or draft one from a topic via an optional local Ollama model. Synthesizes speech (kokoro-tts), transcribes it locally (Vosk), mixes it over the original audio, and burns kinetic-typography captions (the spoken word pops larger, per-frame rendered — see Kinetic Captions). |
+| Captburn | Burns the clip's own speech as kinetic captions (transcribes with Vosk first if needed): any font, word pop, colours, position |
+| Auto Narrate | Adds AI-narrated captions to a video — type your own script (offline, default) or draft one from a topic via an optional local Ollama model. Synthesizes speech (kokoro-tts), transcribes it locally (Vosk), mixes it over the original audio, and burns kinetic-typography captions (the spoken word pops larger, per-frame rendered, same as Captburn). |
 | Grep Supercut | Searches a transcript for a word, phrase, or regex and cuts together every match — the classic "videogrep": find every time someone says X. |
 | Qwikchop Deluxe | Content-aware highlight extraction: scores candidate excerpts from the transcript (local centrality + audio energy + keyword hooks — no network) and exports the best ones, each as its own file. |
 | Silence Xtraction | Remove speech segments, keeping what's left (not exactly silence, but no discernable words) |

@@ -6,7 +6,7 @@ from types import SimpleNamespace
 
 import requests
 
-from videobeaux.programs import kinetic_captions
+from videobeaux.utils.caption_render import burn_captions
 from videobeaux.programs.transcraibe import transcribe_single
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
 from videobeaux.utils.kokoro import SETUP_HINT, kokoro_command, model_paths, models_present
@@ -240,7 +240,7 @@ def run(args):
             trans_json=str(transcript_path),
             caption=None,
             font=args.font,
-            # A requested starting size, not a guaranteed final one — kinetic_captions
+            # A requested starting size, not a guaranteed final one — the caption renderer
             # auto-shrinks this as needed to keep every line within the video's
             # actual width (real pixel measurement, not a guess).
             font_size=args.font_size,
@@ -259,6 +259,6 @@ def run(args):
             crf=18,
             preset="medium",
         )
-        kinetic_captions.run(cap_ns)
+        burn_captions(cap_ns)
 
     print(f"\n✅ Finished: {args.output}")

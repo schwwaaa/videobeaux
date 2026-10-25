@@ -323,10 +323,10 @@ motif("e_note", "edit", "Music notes", "Lays a music track under the picture.",
 
 # SPEECH & CAPTIONS ──────────────────────────────────────────────────────────
 motif("s_words", "speech", "Lines of words", "Turns what is said into lines of text.",
-      ["transcraibe", "captburn"],
+      ["transcraibe"],
       R(4, 5, 40, 3, D, 1.5) + R(4, 12, 54, 3, L, 1.5) + R(4, 19, 30, 3, D, 1.5) + R(38, 19, 18, 3, L, 1.5) + R(4, 26, 46, 3, D, 1.5))
 motif("s_kinetic", "speech", "Bouncing letters", "Letters that move and bounce with the speech.",
-      ["kinetic_captions"],
+      ["captburn"],
       TX(3, 20, "A", 16, D) + TX(18, 14, "B", 16, L) + TX(33, 24, "C", 16, D) + TX(48, 16, "!", 16, L))
 motif("s_voice", "speech", "Voice rings", "Creates a spoken voice.",
       ["auto_narrate"],

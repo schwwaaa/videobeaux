@@ -147,6 +147,7 @@ def best_frame(result: Path, tmp: Path):
         return None
     dur = duration(result) or 2.0
     best, best_s = None, 0.0
+    dim, dim_s = None, 0.0                       # fallback: the most contrasty frame, for modules that come out very dark
     for i, f in enumerate((0.2, 0.4, 0.6, 0.8)):
         p = tmp / f"cand{i}.png"
         if grab(result, max(0.0, dur * f - 0.05), p):
@@ -158,7 +159,17 @@ def best_frame(result: Path, tmp: Path):
             s = score(im)
             if s > best_s:
                 best, best_s = im.copy(), s
-    return best if best_s > 0 else None
+            lum = np.asarray(im.convert("L").resize((96, 54)), dtype=np.float32) / 255.0
+            if lum.std() > dim_s:
+                dim, dim_s = im.copy(), float(lum.std())
+    if best_s > 0:
+        return best
+    # Every frame was "blank" by the usual test — e.g. Bad Contrast's hard-mix on a dark intro comes out nearly black.
+    # A stretched dark thumbnail still tells you what the module does; only a truly flat frame gets no image.
+    if dim is not None and dim_s > 0.012:
+        from PIL import ImageOps
+        return ImageOps.autocontrast(dim.convert("RGB"), cutoff=1)
+    return None
 
 
 def main() -> int:

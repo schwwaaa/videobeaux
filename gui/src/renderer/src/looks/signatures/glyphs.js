@@ -62,7 +62,7 @@ export const PROGRAM_GLYPHS = {
   shape_synth:     svg(circ(10, 10, 6, Y) + poly('26,6 30,16 20,16', C) + rect(8, 18, 12, 10, M)),
   rotate:          svg('<g transform="rotate(-18 14 17)">' + rect(5, 8, 18, 18, Y) + '</g>' + path('M20 5a11 11 0 0 1 9 9', 'none', 2.8) + poly('30,8 30,18 22,14', C)),
   stackadelic:     svg(rect(3, 3, 18, 12, C) + rect(8, 10, 18, 12, Y) + rect(12, 17, 17, 12, M)),
-  kinetic_captions: svg(path('M5 20h14', 'none', 2.4) + `<text x="16" y="17" text-anchor="middle" font-family="sans-serif" font-weight="900" font-size="15" fill="${Y}" stroke="${K}" stroke-width="1.5" paint-order="stroke">ABC</text>` + path('M3 25h10M20 25h9', 'none', 2.4)),
+  captburn: svg(path('M5 20h14', 'none', 2.4) + `<text x="16" y="17" text-anchor="middle" font-family="sans-serif" font-weight="900" font-size="15" fill="${Y}" stroke="${K}" stroke-width="1.5" paint-order="stroke">ABC</text>` + path('M3 25h10M20 25h9', 'none', 2.4)),
   vhs_camcorder:   svg(rect(3, 8, 26, 16, '#a8ad23') + circ(10, 16, 4, W) + circ(22, 16, 4, W) + rect(9, 19, 14, 3, K, 1)),
   chromatic_pulse: svg(circ(12, 16, 9, 'rgba(255,0,60,0.8)') + circ(20, 16, 9, 'rgba(0,160,255,0.8)')),
   pixelate:        svg([0, 1, 2, 3].flatMap(r => [0, 1, 2, 3].map(c => `<rect x="${4 + c * 6}" y="${4 + r * 6}" width="6" height="6" fill="${[Y, C, M, G, O, P, W][(r * 3 + c * 2) % 7]}"/>`)).join('') + `<rect x="4" y="4" width="24" height="24" fill="none" ${st()}/>`)

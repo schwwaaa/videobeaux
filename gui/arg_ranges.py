@@ -11,7 +11,6 @@ FREE = None
 
 RANGES = {
     'auto_narrate': {'duration': (5, 300), 'voice_speed': (0.5, 2), 'original_volume': (0, 1), 'font_size': (12, 200)},
-    'captburn': {'font_size': (12, 200)},
     'cartoon': {'levels': (2, 16), 'smooth': (1, 15), 'edge_size': (3, 21), 'edge_strength': (1, 15), 'saturation': (0, 3)},
     'chromatic_pulse': {'amount': (0, 30), 'speed': (0, 10)},
     'concat': {'crossfade': (0, 10), 'gap': (0, 10)},
@@ -30,9 +29,6 @@ RANGES = {
     'halftone': {'cell_size': (2, 40)},
     'hash_fingerprint': {'phash-fps': (0.1, 10), 'phash-size': (4, 32)},
     'insert_clip': {'entry_duration': (0, 10), 'exit_duration': (0, 10)},
-    'kinetic_captions': {'words-per-caption': (1, 10), 'font-size': (12, 200), 'min-font-size': (8, 120),
-                         'caption-max-width': (0.3, 1), 'caption-max-lines': (1, 5), 'active-scale': (1, 2),
-                         'vertical-anchor': (0, 1), 'stroke-width': (0, 20)},
     'kmeans_palette': {'colors': (2, 32), 'refresh': (1, 120), 'pixel_size': (1, 16)},
     'lut_apply': {'brightness': (-1, 1), 'contrast': (0, 3), 'saturation': (0, 3), 'gamma': (0.1, 3)},
     'meta_extraction': {'sample-stride': (0.1, 10), 'sample-limit': (10, 2000), 'black-pic-th': (0, 1), 'black-dur-min': (0, 5)},

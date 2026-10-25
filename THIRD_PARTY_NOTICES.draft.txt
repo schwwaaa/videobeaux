@@ -64,3 +64,274 @@ Audited executable: /Users/bozer/schwwaaa/videobeaux/gui/resources/ffmpeg/ffmpeg
 IMPORTANT: Insert the canonical FFmpeg license/copyright notices
 appropriate to the exact build distributed with Videobeaux.
 
+
+======================================================
+BUNDLED FONTS (videobeaux/assets/fonts/)
+======================================================
+
+Videobeaux bundles open-licensed fonts so captions look the same on every computer. They are unmodified copies from the
+google/fonts repository (https://github.com/google/fonts) at commit e7db6ca603fd4862010383ff17ffd6cc4ffac1c0, fetched by tools/fetch-fonts.py; the exact
+URL and SHA-256 of every file are in videobeaux/assets/fonts/SOURCES.txt. Each family's full licence text is shipped next to the
+fonts, in videobeaux/assets/fonts/licenses/ — keep that folder with the fonts in every distribution.
+
+SIL Open Font License 1.1 (OFL): fonts may be bundled, used and redistributed (including with commercial software) unmodified;
+they may not be sold on their own, and the copyright notice and licence must travel with them. Reserved Font Names are not an issue
+because the files are not modified or renamed.
+Apache License 2.0: may be bundled and redistributed; the licence text and copyright notices must be kept.
+DejaVu Sans: Bitstream Vera / DejaVu licence (free to use and redistribute with the licence text; see DejaVu-LICENSE.txt).
+Font software is not covered by the application's own licence.
+
+Anton
+-----
+Files: Anton-Regular.ttf
+License: SIL Open Font License 1.1
+Copyright 2020 The Anton Project Authors (https://github.com/googlefonts/AntonFont.git)
+Licence text: videobeaux/assets/fonts/licenses/anton-OFL.txt
+Source: https://github.com/google/fonts/tree/main/ofl/anton
+
+Bebas Neue
+----------
+Files: BebasNeue-Regular.ttf
+License: SIL Open Font License 1.1
+Copyright 2019 The Bebas Neue Project Authors (https://github.com/dharmatype/Bebas-Neue)
+Licence text: videobeaux/assets/fonts/licenses/bebasneue-OFL.txt
+Source: https://github.com/google/fonts/tree/main/ofl/bebasneue
+
+Bangers
+-------
+Files: Bangers-Regular.ttf
+License: SIL Open Font License 1.1
+Copyright 2010 The Bangers Project Authors (https://github.com/googlefonts/bangers)
+Licence text: videobeaux/assets/fonts/licenses/bangers-OFL.txt
+Source: https://github.com/google/fonts/tree/main/ofl/bangers
+
+Lilita One
+----------
+Files: LilitaOne-Regular.ttf
+License: SIL Open Font License 1.1
+Copyright (c) 2011 Juan Montoreano (juan@remolacha.biz), with Reserved Font Names "Lilita One"
+Licence text: videobeaux/assets/fonts/licenses/lilitaone-OFL.txt
+Source: https://github.com/google/fonts/tree/main/ofl/lilitaone
+
+Righteous
+---------
+Files: Righteous-Regular.ttf
+License: SIL Open Font License 1.1
+Copyright (c) 2011 by Brian J. Bonislawsky DBA Astigmatic (AOETI) (astigma@astigmatic.com), with Reserved Font Name "Righteous"
+Licence text: videobeaux/assets/fonts/licenses/righteous-OFL.txt
+Source: https://github.com/google/fonts/tree/main/ofl/righteous
+
+Bungee
+------
+Files: Bungee-Regular.ttf
+License: SIL Open Font License 1.1
+Copyright 2023 The Bungee Project Authors (https://github.com/djrrb/Bungee)
+Licence text: videobeaux/assets/fonts/licenses/bungee-OFL.txt
+Source: https://github.com/google/fonts/tree/main/ofl/bungee
+
+Archivo Black
+-------------
+Files: ArchivoBlack-Regular.ttf
+License: SIL Open Font License 1.1
+Copyright 2017 The Archivo Black Project Authors (https://github.com/Omnibus-Type/ArchivoBlack)
+Licence text: videobeaux/assets/fonts/licenses/archivoblack-OFL.txt
+Source: https://github.com/google/fonts/tree/main/ofl/archivoblack
+
+Titan One
+---------
+Files: TitanOne-Regular.ttf
+License: SIL Open Font License 1.1
+Copyright (c) 2011 Rodrigo Fuenzalida (hello@rfuenzalida.com), with Reserved Font Name "Titan One"
+Licence text: videobeaux/assets/fonts/licenses/titanone-OFL.txt
+Source: https://github.com/google/fonts/tree/main/ofl/titanone
+
+Paytone One
+-----------
+Files: PaytoneOne-Regular.ttf
+License: SIL Open Font License 1.1
+Copyright 2011 The Paytone Project Authors (https://github.com/googlefonts/paytoneFont)
+Licence text: videobeaux/assets/fonts/licenses/paytoneone-OFL.txt
+Source: https://github.com/google/fonts/tree/main/ofl/paytoneone
+
+Bowlby One
+----------
+Files: BowlbyOne-Regular.ttf
+License: SIL Open Font License 1.1
+Copyright (c) 2011 by vernon adams (vern@newtypography.co.uk), with Reserved Font Names "Bowlby" "Bowlby One" and "Bowlby One SC". This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL
+Licence text: videobeaux/assets/fonts/licenses/bowlbyone-OFL.txt
+Source: https://github.com/google/fonts/tree/main/ofl/bowlbyone
+
+Passion One
+-----------
+Files: PassionOne-Black.ttf
+License: SIL Open Font License 1.1
+Copyright (c) 2011 Fontstage (info@fontstage.com), with Reserved Font Name "Passion"
+Licence text: videobeaux/assets/fonts/licenses/passionone-OFL.txt
+Source: https://github.com/google/fonts/tree/main/ofl/passionone
+
+Staatliches
+-----------
+Files: Staatliches-Regular.ttf
+License: SIL Open Font License 1.1
+Copyright 2018 The Staatliches Project Authors (https://github.com/googlefonts/staatliches)
+Licence text: videobeaux/assets/fonts/licenses/staatliches-OFL.txt
+Source: https://github.com/google/fonts/tree/main/ofl/staatliches
+
+Fugaz One
+---------
+Files: FugazOne-Regular.ttf
+License: SIL Open Font License 1.1
+Copyright (c) 2011 by LatinoType Limitada (info@latinotype.com),  with Reserved Font Names "Fugaz" and "Fugaz One"
+Licence text: videobeaux/assets/fonts/licenses/fugazone-OFL.txt
+Source: https://github.com/google/fonts/tree/main/ofl/fugazone
+
+Black Ops One
+-------------
+Files: BlackOpsOne-Regular.ttf
+License: SIL Open Font License 1.1
+Copyright 2022 The PinyonScript Project Authors (https://github.com/SorkinType/Black-Ops)
+Licence text: videobeaux/assets/fonts/licenses/blackopsone-OFL.txt
+Source: https://github.com/google/fonts/tree/main/ofl/blackopsone
+
+Abril Fatface
+-------------
+Files: AbrilFatface-Regular.ttf
+License: SIL Open Font License 1.1
+Copyright (c) 2011, Copyright (c) 2011, TypeTogether (www.type-together.com), with Reserved Font Names "Abril" and "Abril Fatface"
+Licence text: videobeaux/assets/fonts/licenses/abrilfatface-OFL.txt
+Source: https://github.com/google/fonts/tree/main/ofl/abrilfatface
+
+Shrikhand
+---------
+Files: Shrikhand-Regular.ttf
+License: SIL Open Font License 1.1
+Copyright (c) 2015 Jonny Pinhorn (jonpinhorn.typedesign@gmail.com)
+Licence text: videobeaux/assets/fonts/licenses/shrikhand-OFL.txt
+Source: https://github.com/google/fonts/tree/main/ofl/shrikhand
+
+Pacifico
+--------
+Files: Pacifico-Regular.ttf
+License: SIL Open Font License 1.1
+Copyright 2018 The Pacifico Project Authors (https://github.com/googlefonts/Pacifico)
+Licence text: videobeaux/assets/fonts/licenses/pacifico-OFL.txt
+Source: https://github.com/google/fonts/tree/main/ofl/pacifico
+
+Lobster
+-------
+Files: Lobster-Regular.ttf
+License: SIL Open Font License 1.1
+Copyright 2010 The Lobster Project Authors (https://github.com/impallari/The-Lobster-Font), with Reserved Font Name "Lobster".
+Licence text: videobeaux/assets/fonts/licenses/lobster-OFL.txt
+Source: https://github.com/google/fonts/tree/main/ofl/lobster
+
+Caveat Brush
+------------
+Files: CaveatBrush-Regular.ttf
+License: SIL Open Font License 1.1
+Copyright 2015 Google Inc. All Rights Reserved.
+Licence text: videobeaux/assets/fonts/licenses/caveatbrush-OFL.txt
+Source: https://github.com/google/fonts/tree/main/ofl/caveatbrush
+
+Patrick Hand
+------------
+Files: PatrickHand-Regular.ttf
+License: SIL Open Font License 1.1
+Copyright (c) 2012 Patrick Wagesreiter (mail@patrickwagesreiter.at)
+Licence text: videobeaux/assets/fonts/licenses/patrickhand-OFL.txt
+Source: https://github.com/google/fonts/tree/main/ofl/patrickhand
+
+Monoton
+-------
+Files: Monoton-Regular.ttf
+License: SIL Open Font License 1.1
+Copyright (c) 2011 by vernon adams. All rights reserved.
+Licence text: videobeaux/assets/fonts/licenses/monoton-OFL.txt
+Source: https://github.com/google/fonts/tree/main/ofl/monoton
+
+Rubik Mono One
+--------------
+Files: RubikMonoOne-Regular.ttf
+License: SIL Open Font License 1.1
+Copyright 2015 The Rubik Project Authors (mail@hubertfischer.com)
+Licence text: videobeaux/assets/fonts/licenses/rubikmonoone-OFL.txt
+Source: https://github.com/google/fonts/tree/main/ofl/rubikmonoone
+
+Press Start 2P
+--------------
+Files: PressStart2P-Regular.ttf
+License: SIL Open Font License 1.1
+Copyright 2012 The Press Start 2P Project Authors (cody@zone38.net), with Reserved Font Name "Press Start 2P"
+Licence text: videobeaux/assets/fonts/licenses/pressstart2p-OFL.txt
+Source: https://github.com/google/fonts/tree/main/ofl/pressstart2p
+
+VT323
+-----
+Files: VT323-Regular.ttf
+License: SIL Open Font License 1.1
+Copyright 2011, The VT323 Project Authors (peter.hull@oikoi.com)
+Licence text: videobeaux/assets/fonts/licenses/vt323-OFL.txt
+Source: https://github.com/google/fonts/tree/main/ofl/vt323
+
+IBM Plex Mono
+-------------
+Files: IBMPlexMono-Regular.ttf, IBMPlexMono-Bold.ttf
+License: SIL Open Font License 1.1
+Copyright 2017 IBM Corp. All rights reserved.
+Licence text: videobeaux/assets/fonts/licenses/ibmplexmono-OFL.txt
+Source: https://github.com/google/fonts/tree/main/ofl/ibmplexmono
+
+Atkinson Hyperlegible
+---------------------
+Files: AtkinsonHyperlegible-Regular.ttf, AtkinsonHyperlegible-Bold.ttf
+License: SIL Open Font License 1.1
+Copyright 2020 Braille Institute of America, Inc.
+Licence text: videobeaux/assets/fonts/licenses/atkinsonhyperlegible-OFL.txt
+Source: https://github.com/google/fonts/tree/main/ofl/atkinsonhyperlegible
+
+Lato
+----
+Files: Lato-Regular.ttf, Lato-Bold.ttf, Lato-Black.ttf
+License: SIL Open Font License 1.1
+Copyright (c) 2011-2015 by tyPoland Lukasz Dziedzic (http://www.typoland.com/) with Reserved Font Name "Lato". Licensed under the SIL Open Font License, Version 1.1 (http://scripts.sil.org/OFL).
+Licence text: videobeaux/assets/fonts/licenses/lato-OFL.txt
+Source: https://github.com/google/fonts/tree/main/ofl/lato
+
+Permanent Marker
+----------------
+Files: PermanentMarker-Regular.ttf
+License: Apache License 2.0
+Copyright (c) 2010 by Font Diner, Inc. All rights reserved.
+Licence text: videobeaux/assets/fonts/licenses/permanentmarker-Apache-2.0.txt
+Source: https://github.com/google/fonts/tree/main/apache/permanentmarker
+
+Luckiest Guy
+------------
+Files: LuckiestGuy-Regular.ttf
+License: Apache License 2.0
+Copyright (c) 2010 by Brian J. Bonislawsky DBA Astigmatic (AOETI). All rights reserved. Available under the Apache 2.0 licence. http://www.apache.org/licenses/LICENSE-2.0.html
+Licence text: videobeaux/assets/fonts/licenses/luckiestguy-Apache-2.0.txt
+Source: https://github.com/google/fonts/tree/main/apache/luckiestguy
+
+Special Elite
+-------------
+Files: SpecialElite-Regular.ttf
+License: Apache License 2.0
+Copyright (c) 2010 by Brian J. Bonislawsky DBA Astigmatic (AOETI). All rights reserved. Available under the Apache 2.0 licence. http://www.apache.org/licenses/LICENSE-2.0.html
+Licence text: videobeaux/assets/fonts/licenses/specialelite-Apache-2.0.txt
+Source: https://github.com/google/fonts/tree/main/apache/specialelite
+
+Chewy
+-----
+Files: Chewy-Regular.ttf
+License: Apache License 2.0
+Copyright (c) 2010 by Font Diner, Inc DBA Sideshow. All rights reserved.
+Licence text: videobeaux/assets/fonts/licenses/chewy-Apache-2.0.txt
+Source: https://github.com/google/fonts/tree/main/apache/chewy
+
+DejaVu Sans
+-----------
+Files: DejaVuSans.ttf, DejaVuSans-Bold.ttf
+License: Bitstream Vera Fonts Copyright / DejaVu changes (permissive)
+Licence text: videobeaux/assets/fonts/DejaVu-LICENSE.txt
+Source: https://dejavu-fonts.github.io/

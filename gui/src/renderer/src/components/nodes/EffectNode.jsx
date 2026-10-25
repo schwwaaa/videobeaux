@@ -1,3 +1,4 @@
+import FontPicker from '../FontPicker'
 import React, { useState, useEffect } from 'react'
 import {
   Handle, Position, useReactFlow,
@@ -418,6 +419,10 @@ function ArgField({ arg, value, onChange, programId, nodeId }) {
     border: '2px solid var(--ink)',
     borderRadius: 6,
     color: 'var(--ink)'
+  }
+
+  if (arg.type === 'font') {
+    return <FontPicker value={value !== undefined && value !== '' ? value : arg.default} onChange={onChange} inputStyle={inputStyle} />
   }
 
   if (arg.type === 'file' && arg.subtype === 'model') {
@@ -848,29 +853,16 @@ export default function EffectNode({ id, data, selected }) {
           </button>
         )}
 
-        {/* Delete button */}
+        {/* Delete button — a solid chip (like the fold caret) so it stays readable over any header pattern */}
         <button
-          className="nodrag"
+          className="nodrag node-close"
           onClick={handleDelete}
           title="Remove node"
-          style={{
-            background: 'transparent',
-            border: 'none',
-            color: 'var(--on-color)',
-            fontSize: 14,
-            lineHeight: 1,
-            padding: '0 2px',
-            cursor: 'pointer',
-            borderRadius: 3,
-            flexShrink: 0,
-            display: 'flex',
-            alignItems: 'center',
-            transition: 'color 0.1s'
-          }}
-          onMouseEnter={e => e.currentTarget.style.color = 'var(--coral)'}
-          onMouseLeave={e => e.currentTarget.style.color = 'var(--on-color)'}
+          aria-label="Remove program"
         >
-          ✕
+          <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true">
+            <path d="M2 2 L10 10 M10 2 L2 10" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="square" />
+          </svg>
         </button>
       </div>
 

@@ -381,8 +381,6 @@ SPECS: dict[str, dict] = {
                                              "--min_time", "1", "--max_time", "4"]},
     "captburn":         {"skip": need_transcript, "timeout": 600,
                          "args": lambda fx: ["--trans-json", str(fx.transcript)]},
-    "kinetic_captions": {"skip": need_transcript,
-                         "args": lambda fx: ["--trans-json", str(fx.transcript)], "timeout": 600},
     "auto_narrate":     {"skip": lambda fx: (need_vosk(fx) or
                                              (None if kokoro_command() else "kokoro-tts not installed")),
                          "args": lambda fx: ["--script", "This is a short smoke test narration.",

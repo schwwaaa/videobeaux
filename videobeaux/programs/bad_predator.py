@@ -1,11 +1,14 @@
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
+from videobeaux.utils.preset_filter import add_amount_argument, apply_amount, AMOUNT_METADATA
+
+GUI_METADATA = AMOUNT_METADATA
 
 
 def register_arguments(parser):
     parser.description = (
         "Apply bad Predator heat vision effect"
     )
-    print("✅ This program mode does not require additional arguments")
+    add_amount_argument(parser)
 
 
 def run(args):
@@ -18,7 +21,7 @@ def run(args):
             "[0:v]"
             "setpts=PTS-STARTPTS,"
             "shuffleplanes=map0=0:map1=1:map2=2,"
-            "tpad=start=8:start_mode=clone:stop=8:stop_mode=clone,"
+            "tpad=start=8:start_mode=clone:stop=17:stop_mode=clone,"
             "smartblur=luma_radius=1.6:luma_strength=0.11:lt=-17:cr=0.93,"
             "amplify=radius=8:factor=4:threshold=10721.12:tolerance=12:"
             "low=12420.26:high=49802.12,"
@@ -37,6 +40,7 @@ def run(args):
         "-movflags", "+faststart",
         args.output
     ]
+    command = apply_amount(command, getattr(args, "amount", 1.0))
 
     run_ffmpeg_with_progress(
         (command[:1] + ["-y"] + command[1:])

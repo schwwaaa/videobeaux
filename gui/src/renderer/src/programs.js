@@ -353,25 +353,11 @@ export const CATEGORIES = [
           { name: 'overwrite', label: 'Overwrite Existing', type: 'checkbox', required: false }
         ]
       },
-      { id: 'kinetic_captions',  label: 'Kinetic Captions',  description: 'Per-frame rendered captions with a true size pop on the active word', args: [] },
       {
         id: 'captburn',
         label: 'Captburn',
-        description: 'Burns the clip\'s own speech onto the picture as kinetic-typography captions (the spoken word pops larger) — the same look as Auto Narrate, but using what is said in the clip. Uses the clip\'s transcript if there is one; otherwise transcribes it locally (Vosk) first.',
-        args: [
-          { name: 'stt_model', label: 'Vosk Model', type: 'file', subtype: 'model', required: true,
-            help: 'Used to transcribe the clip first, if no transcript for it exists yet' },
-          { name: 'font', label: 'Font', type: 'file', required: false, default: 'Arial',
-            help: 'Caption font name (or a path to a .ttf/.otf file)' },
-          { name: 'font_size', label: 'Font Size', type: 'number', required: false, default: 76,
-            help: 'Requested caption font size in px — auto-shrunk as needed to fit the frame' },
-          { name: 'primary_color', label: 'Text Color', type: 'color', required: false, default: '#FFFFFF',
-            help: 'Color of words that are not currently being spoken' },
-          { name: 'highlight_color', label: 'Highlight Color', type: 'color', required: false, default: '#FFE128',
-            help: 'Color of the word currently being spoken' },
-          { name: 'outline_color', label: 'Outline Color', type: 'color', required: false, default: '#000000',
-            help: 'Caption text outline color' }
-        ]
+        description: 'Burns the clip\'s own speech onto the picture as kinetic-typography captions: the spoken word pops larger and changes colour, in any font you pick. Uses the clip\'s transcript if there is one; otherwise transcribes it locally (Vosk) first.',
+        args: []
       },
       {
         id: 'auto_narrate',
@@ -394,7 +380,7 @@ export const CATEGORIES = [
             help: 'Used to transcribe the synthesized narration' },
           { name: 'original_volume', label: 'Original Audio Volume', type: 'number', required: false, default: 0.2,
             help: 'Background level of the original audio under the narration, 0-1' },
-          { name: 'font', label: 'Font', type: 'file', required: false, default: 'Arial',
+          { name: 'font', label: 'Font', type: 'font', required: false, default: 'Arial',
             help: 'Caption font name (or a path to a .ttf/.otf file)' },
           { name: 'font_size', label: 'Font Size', type: 'number', required: false, default: 76,
             help: 'Requested caption font size in px — auto-shrunk as needed to fit the frame' },

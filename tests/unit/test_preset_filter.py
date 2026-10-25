@@ -15,8 +15,7 @@ sys.path.insert(0, str(ROOT))
 from videobeaux.utils.preset_filter import AMOUNT_METADATA, apply_amount  # noqa: E402
 
 HAVE_FFMPEG = bool(shutil.which("ffmpeg") and shutil.which("ffprobe"))
-# bad_predator is maintained directly in the real repository (a newer edit lives only there), so it is not patched here.
-NO_KNOB_ALLOWED = {"bad_predator"}
+NO_KNOB_ALLOWED = set()
 
 GRAPH = ["ffmpeg", "-i", "in.mp4", "-filter_complex", "[0:v]negate[out_v]", "-map", "[out_v]", "-map", "0:a?", "out.mp4"]
 

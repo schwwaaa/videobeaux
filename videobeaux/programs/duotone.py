@@ -1,5 +1,5 @@
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
-from videobeaux.programs.kinetic_captions import _hex_to_rgba
+from videobeaux.utils.caption_render import hex_to_rgba as _hex_to_rgba
 
 GUI_METADATA = {
     'args': {
