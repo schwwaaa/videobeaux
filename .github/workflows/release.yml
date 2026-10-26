@@ -1,0 +1,61 @@
+name: Release app
+
+# Builds the Videobeaux installers on GitHub's own macOS and Windows machines and attaches them to a DRAFT GitHub Release.
+#
+# Make a release:   edit "version" in gui/package.json, commit, then
+#                     git tag v0.1.1 && git push origin v0.1.1
+#                   When the run finishes, open Releases → the draft → check it → Publish (or leave it as a draft and share the files by hand).
+# Dry run:          Actions → "Release app" → Run workflow. Builds everything, uploads the installers as run artifacts, publishes nothing.
+#
+# Installers are unsigned (build.mac.identity is null in gui/package.json); testers follow gui/build/README-install-*.txt.
+# The installer build bundles the static ffmpeg listed in gui/ffmpeg-runtime.json, so that ffmpeg-* release must already exist.
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write   # needed to create the release
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: macos-14, name: macos-arm64 }
+          - { os: windows-latest, name: windows }
+    runs-on: ${{ matrix.os }}
+    defaults: { run: { working-directory: gui } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm, cache-dependency-path: gui/package-lock.json }
+      - run: npm ci
+      - run: npm test
+      - run: npm run dist
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'   # never go looking for a signing certificate
+      - uses: actions/upload-artifact@v4
+        with:
+          name: videobeaux-${{ matrix.name }}
+          if-no-files-found: error
+          path: |
+            gui/dist/*.dmg
+            gui/dist/*.zip
+            gui/dist/*.exe
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with: { path: installers, merge-multiple: true }
+      - uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          generate_release_notes: true
+          prerelease: ${{ contains(github.ref_name, '-') }}   # v0.1.1-alpha.1 → marked pre-release
+          files: installers/*
