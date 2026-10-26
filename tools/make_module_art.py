@@ -208,7 +208,11 @@ def main() -> int:
         make_source(src)
         source_label = "procedural clip (tools/make_module_art.py)"
 
-    smoke = [sys.executable, str(REPO / "tests/smoke/run_smoke.py"), "--system-ffmpeg", "--source", str(src),
+    # the smoke runner lives in tests/smoke in the repo, and in tools/ inside the packaged app (tests/ isn't shipped)
+    smoke_script = next((p for p in (REPO / "tools" / "run_smoke.py", REPO / "tests" / "smoke" / "run_smoke.py") if p.exists()), None)
+    if smoke_script is None:
+        sys.exit("❌ the smoke runner (run_smoke.py) is missing from this build")
+    smoke = [sys.executable, str(smoke_script), "--system-ffmpeg", "--source", str(src),
              "--start", str(start), "--duration", str(dur), "--keep", "--jobs", str(args.jobs), "--timeout", str(args.timeout),
              "--report-dir", str(tmp / "reports")]
     if args.only:

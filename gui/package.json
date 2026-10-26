@@ -54,20 +54,31 @@
       {
         "from": "resources/tools",
         "to": "tools"
-      },
-      {
-        "from": "resources/tests",
-        "to": "tests"
       }
     ],
+    "afterPack": "scripts/after-pack.cjs",
     "win": {
       "target": "nsis",
       "icon": "build/icon.ico"
     },
-    "mac": {
-      "target": "dmg",
-      "category": "public.app-category.video",
-      "icon": "build/icon.icns"
-    }
+   "mac": {
+    "target": [
+      {
+        "target": "dmg",
+        "arch": [
+          "arm64"
+        ]
+      },
+      {
+        "target": "zip",
+        "arch": [
+          "arm64"
+        ]
+      }
+    ],
+    "category": "public.app-category.video",
+    "icon": "build/icon.icns",
+    "identity": null
+  }
   }
 }

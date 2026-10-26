@@ -203,7 +203,7 @@ a{color:inherit}.skip-link{position:absolute;left:12px;top:-60px;z-index:9999;pa
     </div>
     <div class="nav-group">
       <button class="nav-title nav-toggle" type="button" aria-expanded="true">Utilities</button>
-      <div class="program-list"><a class="side-link" href="#utility-captburn" data-search="captburn">captburn</a><a class="side-link" href="#utility-chain_builder" data-search="chain_builder">chain_builder</a><a class="side-link" href="#utility-convert" data-search="convert">convert</a><a class="side-link" href="#utility-convert_dims" data-search="convert_dims">convert_dims</a><a class="side-link" href="#utility-convert_mux" data-search="convert_mux">convert_mux</a><a class="side-link" href="#utility-download_yt" data-search="download_yt">download_yt</a><a class="side-link" href="#utility-extract_frames" data-search="extract_frames">extract_frames</a><a class="side-link" href="#utility-extract_sound" data-search="extract_sound">extract_sound</a><a class="side-link" href="#utility-frame_interpolate" data-search="frame_interpolate">frame_interpolate</a><a class="side-link" href="#utility-gamma_fix" data-search="gamma_fix">gamma_fix</a><a class="side-link" href="#utility-hash_fingerprint" data-search="hash_fingerprint">hash_fingerprint</a><a class="side-link" href="#utility-lut_apply" data-search="lut_apply">lut_apply</a><a class="side-link" href="#utility-meta_extraction" data-search="meta_extraction">meta_extraction</a><a class="side-link" href="#utility-num_edits" data-search="num_edits">num_edits</a><a class="side-link" href="#utility-qwikchop" data-search="qwikchop">qwikchop</a><a class="side-link" href="#utility-silence_extraction" data-search="silence_extraction">silence_extraction</a><a class="side-link" href="#utility-subs_convert" data-search="subs_convert">subs_convert</a><a class="side-link" href="#utility-thumbs" data-search="thumbs">thumbs</a><a class="side-link" href="#utility-tonemap_hdr_sdr" data-search="tonemap_hdr_sdr">tonemap_hdr_sdr</a><a class="side-link" href="#utility-transraibe" data-search="transraibe">transraibe</a><a class="side-link" href="#utility-watermark" data-search="watermark">watermark</a><a class="side-link" href="#utility-wipe_transitions" data-search="wipe_transitions">wipe_transitions</a></div>
+      <div class="program-list"><a class="side-link" href="#utility-captburn" data-search="captburn">captburn</a><a class="side-link" href="#utility-chain_builder" data-search="chain_builder">chain_builder</a><a class="side-link" href="#utility-convert" data-search="convert">convert</a><a class="side-link" href="#utility-convert_dims" data-search="convert_dims">convert_dims</a><a class="side-link" href="#utility-convert_mux" data-search="convert_mux">convert_mux</a><a class="side-link" href="#utility-extract_frames" data-search="extract_frames">extract_frames</a><a class="side-link" href="#utility-extract_sound" data-search="extract_sound">extract_sound</a><a class="side-link" href="#utility-frame_interpolate" data-search="frame_interpolate">frame_interpolate</a><a class="side-link" href="#utility-gamma_fix" data-search="gamma_fix">gamma_fix</a><a class="side-link" href="#utility-hash_fingerprint" data-search="hash_fingerprint">hash_fingerprint</a><a class="side-link" href="#utility-lut_apply" data-search="lut_apply">lut_apply</a><a class="side-link" href="#utility-meta_extraction" data-search="meta_extraction">meta_extraction</a><a class="side-link" href="#utility-num_edits" data-search="num_edits">num_edits</a><a class="side-link" href="#utility-qwikchop" data-search="qwikchop">qwikchop</a><a class="side-link" href="#utility-silence_extraction" data-search="silence_extraction">silence_extraction</a><a class="side-link" href="#utility-subs_convert" data-search="subs_convert">subs_convert</a><a class="side-link" href="#utility-thumbs" data-search="thumbs">thumbs</a><a class="side-link" href="#utility-tonemap_hdr_sdr" data-search="tonemap_hdr_sdr">tonemap_hdr_sdr</a><a class="side-link" href="#utility-transraibe" data-search="transraibe">transraibe</a><a class="side-link" href="#utility-watermark" data-search="watermark">watermark</a><a class="side-link" href="#utility-wipe_transitions" data-search="wipe_transitions">wipe_transitions</a></div>
     </div>
   </aside>
   <main class="docs-main" id="doc-content">
@@ -277,7 +277,6 @@ a{color:inherit}.skip-link{position:absolute;left:12px;top:-60px;z-index:9999;pa
 <li><a href="#utility-convert">convert</a></li>
 <li><a href="#utility-convert_dims">convert_dims</a></li>
 <li><a href="#utility-convert_mux">convert_mux</a></li>
-<li><a href="#utility-download_yt">download_yt</a></li>
 <li><a href="#utility-extract_frames">extract_frames</a></li>
 <li><a href="#utility-extract_sound">extract_sound</a></li>
 <li><a href="#utility-frame_interpolate">frame_interpolate</a></li>
@@ -332,7 +331,7 @@ options:
 
 Available Program Modes:
 
-bad_animation        download_yt          lsd_feedback_pro     repainting           subs_convert
+bad_animation        lsd_feedback_pro     repainting           subs_convert
 bad_contrast         extract_frames       lut_apply            resize               t1000
 bad_predator         extract_sound        meta_extraction      reverse              thumbs
 ball_point_pen       fever                mince                scrolling_pro        tonemap_hdr_sdr
@@ -405,7 +404,7 @@ options:
 
 Available Program Modes:
 
-bad_animation        download_yt          lsd_feedback_pro     repainting           subs_convert
+bad_animation        lsd_feedback_pro     repainting           subs_convert
 bad_contrast         extract_frames       lut_apply            resize               t1000
 bad_predator         extract_sound        meta_extraction      reverse              thumbs
 ball_point_pen       fever                mince                scrolling_pro        tonemap_hdr_sdr
@@ -787,11 +786,6 @@ Input duration: 10.03 seconds
 <td>convert_mux</td>
 <td>Rewraps or converts media streams while copying or re-encoding video/audio, ideal for fixing containers, codecs, or sync issues.</td>
 <td>format, profile, vcodec, acodec, crf, bitrate, maxrate, bufsize, preset, profile_v, level, pix_fmt, gop, r, vf, tagv, abitrate, ac, ar, copy</td>
-</tr>
-<tr>
-<td>download_yt</td>
-<td>Video ripper</td>
-<td>-</td>
 </tr>
 <tr>
 <td>extract_frames</td>
@@ -4887,72 +4881,7 @@ AVI with MPEG-4 video tuned for speed.<ul>
   </article><div class="section-nav"><a class="back-to-top" href="#top">↑ Back to top</a></div>
 </section>
 
-<section class="doc-section" id="utility-download_yt" data-title="download_yt" data-category="utility">
-  <header class="section-banner">
-    <span class="section-type">Utility</span>
-    <h1>download_yt</h1>
-  </header>
-  <article class="doc-content">
-    
-<p>:contentReference[oaicite:1]{index=1}</p>
-<h2 id="utility-download_yt-description">Description</h2>
-<p>Downloads or rips video and audio content from YouTube (or other compatible platforms) and prepares it for processing inside Videobeaux workflows.</p>
-<h2 id="utility-download_yt-purpose">Purpose</h2>
-<p><code>download_yt</code> is a quick-ingest utility that brings online source media into your local Videobeaux environment.<br/>
-This is useful when you need:</p>
-<ul>
-<li>reference clips for editing or remixing,</li>
-<li>footage for analysis or research,</li>
-<li>material for glitch, collage, or experimental video art,</li>
-<li>assets for transformation inside other Videobeaux programs.</li>
-</ul>
-<h2 id="utility-download_yt-how-it-works">How It Works</h2>
-<ol>
-<li><strong>URL Retrieval</strong><br/>
-Videobeaux (via external download tools) fetches the highest-available quality or a configured preferred resolution/format.</li>
-<li><strong>Muxing &amp; Cleanup</strong><br/>
-Audio and video streams are combined into a standardized container suitable for immediate downstream processing.</li>
-<li><strong>Global Output Handling</strong><br/>
-Because <code>download_yt</code> has no program-specific arguments, all settings (filename, codecs, mapping, etc.) follow Videobeaux global defaults.</li>
-<li><strong>Output</strong><br/>
-The resulting video file is written to the path specified with <code>-o</code>.</li>
-</ol>
-<h2 id="utility-download_yt-program-template">Program Template</h2>
-<pre><code>videobeaux -P download_yt \
-  -i input.mp4 \
-  -o output.mp4</code></pre>
-<h2 id="utility-download_yt-arguments">Arguments</h2>
-<ul>
-<li><em>(No program-specific arguments — this program relies entirely on global Videobeaux input/output configuration and downloader behavior.)</em></li>
-</ul>
-<h2 id="utility-download_yt-real-world-example">Real World Example</h2>
-<pre><code>videobeaux -P download_yt \
-  -i myvideo.mp4 \
-  -o download_yt_styled.mp4</code></pre>
-<h2 id="utility-download_yt-technical-notes">Technical Notes</h2>
-<ul>
-<li>Quality of the downloaded media depends on what the source service provides (YouTube DASH streams, format variants, etc.).</li>
-<li>If separate audio/video streams are delivered by the platform, Videobeaux muxes them into a single file.</li>
-<li>Output format is determined by your global settings — typically MP4 unless changed.</li>
-<li>For archival purposes, consider remuxing into MKV to preserve metadata.</li>
-</ul>
-<h2 id="utility-download_yt-recommended-usage">Recommended Usage</h2>
-<ul>
-<li>Bringing online clips into your Videobeaux workflow for editing, glitching, or processing.</li>
-<li>Preparing material for LUT application, tonemapping, interpolation, or compositing.</li>
-<li>Rapid prototyping of creative projects using found or reference footage.</li>
-<li>Downloading assets for offline study or frame-by-frame analysis.</li>
-</ul>
-<h2 id="utility-download_yt-quality-tips">Quality Tips</h2>
-<ul>
-<li>Always inspect resolution and bitrate of the downloaded file before high-end processing.</li>
-<li>If audio quality matters, check whether the source provides separate high-quality audio tracks.</li>
-<li>Consider transcoding to a mezzanine codec (e.g., ProRes) for grading or VFX workflows.</li>
-<li>Large downloads benefit from using SSD storage to avoid bottlenecks.</li>
-</ul>
 
-  </article><div class="section-nav"><a class="back-to-top" href="#top">↑ Back to top</a></div>
-</section>
 
 <section class="doc-section" id="utility-extract_frames" data-title="extract_frames" data-category="utility">
   <header class="section-banner">

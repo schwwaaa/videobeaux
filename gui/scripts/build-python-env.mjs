@@ -13,7 +13,7 @@
 // for the *running* interpreter's platform) — cross-building for another
 // OS needs to run this script on a machine/runner of that OS.
 
-import { mkdirSync, rmSync, readdirSync, statSync, copyFileSync, createWriteStream, readFileSync, writeFileSync, mkdtempSync, chmodSync, statfsSync } from 'fs'
+import { mkdirSync, rmSync, readdirSync, statSync, copyFileSync, createWriteStream, readFileSync, writeFileSync, mkdtempSync, chmodSync, statfsSync, existsSync } from 'fs'
 import { tmpdir } from 'os'
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
@@ -114,8 +114,24 @@ async function stagePython() {
   writeFileSync(filteredReqsPath, filteredReqs)
   run(pythonBin, ['-m', 'pip', 'install', '-r', filteredReqsPath])
   rmSync(filteredReqsPath)
+  assertNoBrokenLinks(pythonDir)
 
   return pythonBin
+}
+
+// python-build-standalone uses symlinks (bin/python3 → python3.x). A link that doesn't resolve after staging would leave a
+// broken interpreter inside the app, so fail here rather than on a user's first launch.
+function assertNoBrokenLinks(dir) {
+  const broken = []
+  const walk = d => {
+    for (const e of readdirSync(d, { withFileTypes: true })) {
+      const p = join(d, e.name)
+      if (e.isSymbolicLink()) { if (!existsSync(p)) broken.push(p) }
+      else if (e.isDirectory()) walk(p)
+    }
+  }
+  walk(dir)
+  if (broken.length) throw new Error(`Broken symlinks in the bundled Python: ${broken.slice(0, 5).join(', ')}`)
 }
 
 // ── Step 2: static ffmpeg/ffprobe ────────────────────────────────────────────
@@ -202,10 +218,13 @@ function stageVideobeaux() {
   mkdirSync(guiDest, { recursive: true })
   copyFileSync(join(GUI_ROOT, 'discover_programs.py'), join(guiDest, 'discover_programs.py'))
   copyFileSync(join(GUI_ROOT, 'arg_ranges.py'), join(guiDest, 'arg_ranges.py'))
-  // The "Appearance → Module previews → Choose clip…" feature renders thumbnails from the user's own video with these
-  // two scripts (they find videobeaux/ and gui/ relative to their own location, so they sit at the same depth as in the repo).
+  // The "Looks → Output art → Choose clip…" feature renders thumbnails from the user's own video with make_module_art.py, which
+  // runs the smoke runner. Both go to resources/tools/ — the same depth as tools/ in the repo — so each finds videobeaux/ and
+  // gui/ relative to its own location. Nothing else from tests/ or tools/ ships.
+  // The per-slider response curves (gui/slider_curves.json) are read by discover_programs.py from its own folder.
+  copyFileSync(join(GUI_ROOT, 'slider_curves.json'), join(guiDest, 'slider_curves.json'))
   for (const [from, to] of [[join(REPO_ROOT, 'tools', 'make_module_art.py'), join(RESOURCES, 'tools', 'make_module_art.py')],
-                            [join(REPO_ROOT, 'tests', 'smoke', 'run_smoke.py'), join(RESOURCES, 'tests', 'smoke', 'run_smoke.py')]]) {
+                            [join(REPO_ROOT, 'tests', 'smoke', 'run_smoke.py'), join(RESOURCES, 'tools', 'run_smoke.py')]]) {
     mkdirSync(dirname(to), { recursive: true })
     copyFileSync(from, to)
   }

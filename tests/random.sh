@@ -10,7 +10,6 @@ ARRAY=(
     # "convert"
     "digital_boss"
     "double_cup"
-    # "download_yt"
     # "extract_frames"
     # "extract_sound"
     # "frame_delay_pro1"

@@ -66,7 +66,7 @@ chain_builder_pro    lsd_feedback         septic               wbflare
 convert              mirror_delay         silence_xtraction    xrgb
 digital_boss         nostalgic_stutter    slight_smear         zapruder
 double_cup           num_edits            smudge
-download_yt          overexposed_stutter  soapblind
+overexposed_stutter  soapblind
 extract_frames       overlay_img_pro      speed
   ```
 
@@ -354,7 +354,6 @@ An overview of each program can be find in this [YouTube playlist](https://www.y
 | -------- | ------- | ------- | 
 | convert | Simple video file convert | - |
 | convert_dims | Video file dimensions converter based on industry standards  | - |
-| download_yt | Video ripper | - |
 | extract_frames | Extract individuals frames from a video file as PNGs | - |
 | extract_sound | Extract audio from video file | - |
 | silence_extraction | Extracting the silence out of a video file | min_d, max_d, adjuster |

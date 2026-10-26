@@ -17,11 +17,6 @@ export default {
    "label": "Swap arrows",
    "reason": "Changes one format into another."
   },
-  "c_down": {
-   "category": "media",
-   "label": "Arrow into tray",
-   "reason": "Downloads a video from the web."
-  },
   "c_frames": {
    "category": "media",
    "label": "Film-strip squares",
@@ -425,7 +420,6 @@ export default {
   "digital_boss": "g_blocks",
   "dither": "l_checker",
   "double_cup": "t_drip",
-  "download_yt": "c_down",
   "duotone": "l_steps",
   "emboss": "l_edge",
   "extract_frames": "c_frames",

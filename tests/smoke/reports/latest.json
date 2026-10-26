@@ -1,45 +1,34 @@
 {
   "meta": {
-    "source": "/var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_src_pbmr4n_g/synthetic.mp4",
+    "source": "/var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_src_czjlo51s/synthetic.mp4",
     "start": 6.0,
     "dur": 8.0,
     "full_res": false,
     "ffmpeg": "ffmpeg version 9.0.1 Copyright (c) 2000-2026 the FFmpeg developers"
   },
   "counts": {
-    "SKIP": 1,
     "PASS": 2
   },
   "results": [
     {
-      "program": "captburn",
-      "category": "speech",
-      "category_label": "Speech & Captions",
-      "status": "SKIP",
-      "seconds": 0.0,
-      "detail": "needs a transcript (transcraibe must pass first)",
+      "program": "speed",
+      "category": "temporal",
+      "category_label": "Time & Motion",
+      "status": "PASS",
+      "seconds": 0.541762113571167,
+      "detail": "640x360, 5.4s",
       "error": "",
-      "cmd": ""
+      "cmd": "-m videobeaux.cli -P speed -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_jtipa2u8/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_jtipa2u8/out/speed/result.mp4 -F --speed_factor 1.5"
     },
     {
       "program": "bad_predator",
       "category": "look",
       "category_label": "Color & Look",
       "status": "PASS",
-      "seconds": 0.990731954574585,
+      "seconds": 0.7773041725158691,
       "detail": "640x360, 8.4s",
       "error": "",
-      "cmd": "-m videobeaux.cli -P bad_predator -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_1h3gq4d6/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_1h3gq4d6/out/bad_predator/result.mp4 -F"
-    },
-    {
-      "program": "duotone",
-      "category": "look",
-      "category_label": "Color & Look",
-      "status": "PASS",
-      "seconds": 1.4254226684570312,
-      "detail": "640x360, 8.0s",
-      "error": "",
-      "cmd": "-m videobeaux.cli -P duotone -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_1h3gq4d6/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_1h3gq4d6/out/duotone/result.mp4 -F"
+      "cmd": "-m videobeaux.cli -P bad_predator -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_jtipa2u8/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_jtipa2u8/out/bad_predator/result.mp4 -F"
     }
   ]
 }

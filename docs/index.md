@@ -59,7 +59,6 @@ nav_order: 1
 - [convert](programs/utilities/convert.md)
 - [convert_dims](programs/utilities/convert_dims.md)
 - [convert_mux](programs/utilities/convert_mux.md)
-- [download_yt](programs/utilities/download_yt.md)
 - [extract_frames](programs/utilities/extract_frames.md)
 - [extract_sound](programs/utilities/extract_sound.md)
 - [frame_interpolate](programs/utilities/frame_interpolate.md)

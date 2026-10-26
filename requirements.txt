@@ -38,7 +38,6 @@ urllib3==2.5.0
 videogrep==2.3.0
 vosk==0.3.44
 websockets==15.0.1
-yt-dlp==2025.6.30
 opencv-python-headless>=4.10,<5
 # Offline narration voice (Auto Narrate). Requires Python <3.13, so it installs into the
 # packaged app's bundled Python 3.12 but is skipped on newer dev interpreters, where a

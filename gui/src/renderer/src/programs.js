@@ -525,7 +525,6 @@ export const CATEGORIES = [
       { id: 'extract_sound',    label: 'Extract Sound',    description: 'Extract audio track from video',                args: [], outputType: 'audio' },
       { id: 'thumbs',           label: 'Thumbs',           description: 'Generate thumbnail grid from video',           args: [], outputType: 'image' },
       { id: 'subs_convert',     label: 'Subs Convert',     description: 'Convert subtitle format',                      args: [], outputType: 'text'  },
-      { id: 'download_yt',      label: 'Download YT',      description: 'Download video from YouTube / yt-dlp', args: [] },
       { id: 'media_info',       label: 'Media Info',       description: 'Concise report of dimensions, duration, fps, codecs and size — printed to the log and saved as JSON', args: [], outputType: 'json' },
       { id: 'meta_extraction',  label: 'Meta Extraction',  description: 'Extract video metadata / ffprobe info',         args: [], outputType: 'json'  },
       { id: 'hash_fingerprint', label: 'Hash Fingerprint', description: 'Generate a perceptual hash fingerprint',        args: [], outputType: 'json'  },

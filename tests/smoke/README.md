@@ -17,7 +17,7 @@ Exit code is 1 if anything FAILs or TIMEOUTs; SKIPs don't count.
 
 - **PASS** — exit 0 and the output exists and decodes (video/audio/image via ffprobe, JSON parses, directory outputs have files).
   This proves the program runs and produces valid output, not that the effect looks right — use `--keep` to look.
-- **SKIP** — can't run here: needs network (`download_yt`) or an ffmpeg filter this build lacks
+- **SKIP** — can't run here: needs network, or an ffmpeg filter this build lacks
   (`zscale`→`tonemap_hdr_sdr`, `ass`→`captburn`), or needs OpenCV / a Vosk model / kokoro-tts that isn't installed.
 - **Adding a program** — if it has required args, add an entry to `SPECS` in `run_smoke.py`
   (the runner prints a warning listing any program with required args and no entry).

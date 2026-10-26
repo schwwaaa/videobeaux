@@ -34,7 +34,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-REPO = HERE.parents[1]
+# the project root holds videobeaux/: two levels up from tests/smoke/ in the repo, one level up from tools/ inside the packaged app
+REPO = next(p for p in (HERE.parents[1], HERE.parent) if (p / "videobeaux").is_dir())
 sys.path.insert(0, str(REPO))
 from videobeaux.utils.kokoro import kokoro_command  # noqa: E402
 DEFAULT_SOURCE = REPO / "gui" / "Wil_Willis-OnTheJob_edit_0001.mp4"
@@ -359,7 +360,6 @@ SPECS: dict[str, dict] = {
     "tonemap_hdr_sdr":  {"skip": lambda fx: need_filter(fx, "zscale", "libzimg") or
                          (None if fx.hdr_clip else "could not build the synthetic HDR clip"),
                          "input": lambda fx: fx.hdr_clip},
-    "download_yt":      {"skip": lambda fx: "needs network + a real YouTube URL as -i"},
 
     # speech / model-dependent (Vosk). transcraibe also produces the transcript
     # fixture the caption programs and query-based programs reuse.

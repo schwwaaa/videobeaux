@@ -357,9 +357,6 @@ motif("c_frames", "media", "Film-strip squares", "Pulls individual frames out of
 motif("c_sound", "media", "Waveform", "Pulls the sound out of the video.",
       ["extract_sound"],
       "".join(R(3 + 4.2 * i, 16 - h / 2, 2.6, h, D if i % 2 else L, 1.3) for i, h in enumerate([4, 8, 14, 22, 12, 6, 18, 26, 14, 8, 20, 10, 4, 12, 6])))
-motif("c_down", "media", "Arrow into tray", "Downloads a video from the web.",
-      ["download_yt"],
-      P("M32 3V19", D, 3.2) + T([(24, 16), (40, 16), (32, 25)], D) + P("M10 20V28H54V20", L, 3))
 motif("c_info", "media", "Table rows", "Reads facts about a file and reports them.",
       ["media_info", "meta_extraction", "hash_fingerprint"],
       R(4, 4, 56, 24, "none", 2).replace('fill="none"', f'fill="none" stroke="{D}" stroke-width="1.8"') +

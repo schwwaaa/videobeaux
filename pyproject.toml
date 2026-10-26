@@ -31,7 +31,6 @@ dependencies = [
     "videogrep==2.3.0",
     "vosk==0.3.44",
     "websockets==15.0.1",
-    "yt-dlp==2025.6.30"
 ]
 
 [project.scripts]

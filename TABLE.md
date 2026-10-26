@@ -48,7 +48,6 @@ chain_builder
 | convert | Simple video file convert | - |
 | convert_dims | Video file dimensions converter based on industry standards  | - |
 convert_mux
-| download_yt | Video ripper | - |
 | extract_frames | Extract individuals frames from a video file as PNGs | - |
 | extract_sound | Extract audio from video file | - |
 frame_interpolate

@@ -34,7 +34,7 @@ options:
 
 Available Program Modes:
 
-bad_animation        download_yt          lsd_feedback_pro     repainting           subs_convert
+bad_animation        lsd_feedback_pro     repainting           subs_convert
 bad_contrast         extract_frames       lut_apply            resize               t1000
 bad_predator         extract_sound        meta_extraction      reverse              thumbs
 ball_point_pen       fever                mince                scrolling_pro        tonemap_hdr_sdr

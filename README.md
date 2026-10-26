@@ -480,7 +480,6 @@ _Convert, resize, stabilize, extract, inspect and download._
 | Extract Sound | Extract audio track from video |
 | Thumbs | Generate thumbnail grid from video |
 | Subs Convert | Convert subtitle format |
-| Download YT | Download video from YouTube / yt-dlp |
 | Media Info | Concise report of dimensions, duration, fps, codecs and size — printed to the log and saved as JSON |
 | Meta Extraction | Extract video metadata / ffprobe info |
 | Hash Fingerprint | Generate a perceptual hash fingerprint |

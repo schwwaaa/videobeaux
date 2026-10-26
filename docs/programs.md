@@ -58,7 +58,6 @@ nav_order: 3
 | convert | Simple video file convert | - |
 | convert_dims | Video file dimensions converter based on industry standards  | - |
 | convert_mux | Rewraps or converts media streams while copying or re-encoding video/audio, ideal for fixing containers, codecs, or sync issues. | format, profile, vcodec, acodec, crf, bitrate, maxrate, bufsize, preset, profile_v, level, pix_fmt, gop, r, vf, tagv, abitrate, ac, ar, copy |
-| download_yt | Video ripper | - |
 | extract_frames | Extract individuals frames from a video file as PNGs | - |
 | extract_sound | Extract audio from video file | - |
 | frame_interpolate | Generates smooth slow-motion or higher-FPS video by creating intermediate frames using motion-compensated interpolation | outfile, engine, fps, multiplier, mi_mode, me_mode, mc_mode, vsbmc, scd, x264_preset, crf, copy_audio, rife_bin, dain_bin |
