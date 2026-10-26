@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { lockModal } from '../useModalLock'
 import { HELP_SECTIONS } from '../helpContent'
+import BugReportButton from '../bugReport/BugReportButton'   // BUG-REPORT
 
 // **bold** and *italic* only — enough for the help text without a markdown dependency.
 function rich(text) {
@@ -13,7 +14,7 @@ function rich(text) {
 }
 
 /** Simple help: basic usage, handy tips, shortcuts and what to do when stuck. Opened with the ? button, F1 or ?. */
-export default function HelpWindow({ onClose }) {
+export default function HelpWindow({ onClose, logText, canvasJson }) {   // logText, canvasJson: BUG-REPORT
   useEffect(() => lockModal(), [])
   useEffect(() => {
     const onKey = (e) => {
@@ -60,6 +61,9 @@ export default function HelpWindow({ onClose }) {
               )}
             </section>
           ))}
+          <div style={{ marginTop: 18, paddingTop: 12, borderTop: '2px dashed var(--gray)' }}>{/* BUG-REPORT */}
+            <BugReportButton logText={logText} canvasJson={canvasJson} />{/* BUG-REPORT */}
+          </div>{/* BUG-REPORT */}
         </div>
       </div>
     </div>,

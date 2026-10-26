@@ -9,16 +9,21 @@ from pyfiglet import Figlet
 
 from videobeaux.utils.vb_argparser import VB_Program_ArgParser
 
-def main():
+def _banner():
+    """The big title card. Shown only in an interactive terminal; the desktop app (no terminal) and VB_QUIET=1 skip it."""
+    if os.environ.get("VB_QUIET") or not sys.stdout.isatty():
+        return
     a = Figlet(font='ogre')
     print(a.renderText("videobeaux"))
     print("📺 The friendly multilateral video toolkit built for artists by artists. ")
     print("🫂  It's your best friend!")
     print()
     print("🌐 schwwaaa")
-
-    #print('-' * 50)
     print()
+
+
+def main():
+    _banner()
 
     # global parser
     parser = argparse.ArgumentParser(
@@ -72,9 +77,9 @@ def main():
             )
             print(line)
 
-    parser.print_help()
-    print()
     if global_args.help and not global_args.program:
+        parser.print_help()
+        print()
         program_dir = os.path.join(os.path.dirname(__file__), "programs")  
 
         available_programs = sorted([

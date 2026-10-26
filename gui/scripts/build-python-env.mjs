@@ -214,6 +214,8 @@ function placeFfmpeg(from) {
 function stageVideobeaux() {
   const dest = join(RESOURCES, 'videobeaux')
   copyDirFiltered(join(REPO_ROOT, 'videobeaux'), dest, new Set(['__pycache__', 'videobeaux.egg-info']))
+  // the example library: presets + the sample clip, shown by the app's Examples button
+  copyDirFiltered(join(REPO_ROOT, 'examples'), join(RESOURCES, 'examples'), new Set(['README.md']))
   const guiDest = join(RESOURCES, 'gui')
   mkdirSync(guiDest, { recursive: true })
   copyFileSync(join(GUI_ROOT, 'discover_programs.py'), join(guiDest, 'discover_programs.py'))

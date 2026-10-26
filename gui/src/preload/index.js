@@ -8,7 +8,13 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
   // Preset (canvas snapshot) save/load
   savePreset: (data, defaultName) => ipcRenderer.invoke('presets:save', { data, defaultName }),
-  loadPreset: () => ipcRenderer.invoke('presets:load'),
+  loadPreset: (opts) => ipcRenderer.invoke('presets:load', opts || {}),
+  examplesDir: () => ipcRenderer.invoke('presets:examplesDir'),
+  // BUG-REPORT (test phase): see gui/src/main/bugReport.js
+  createBugReport: (payload) => ipcRenderer.invoke('bugReport:create', payload),   // BUG-REPORT
+  showItem: (path) => ipcRenderer.invoke('shell:showItem', path),                 // BUG-REPORT
+  openMailto: (url) => ipcRenderer.invoke('shell:openMailto', url),       // BUG-REPORT
+  resolvePresetTokens: (nodes) => ipcRenderer.invoke('presets:resolveTokens', nodes),
 
   // App settings (theme, shadow style) — small persisted prefs
   getSettings: () => ipcRenderer.invoke('settings:get'),

@@ -1,0 +1,5 @@
+{
+  "_comment": "Switches for features that exist only during testing. bugReport: the 'Send a bug report' button (Help and Setup) and its handler. Set to false and rebuild to remove it; see gui/src/main/bugReport.js for how to delete the feature entirely. bugReportEmail: where 'Email it' sends reports. Empty = the app only saves the zip and reveals it.",
+  "bugReport": true,
+  "bugReportEmail": ""
+}

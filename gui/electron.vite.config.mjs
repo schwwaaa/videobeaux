@@ -10,7 +10,8 @@ export default defineConfig({
   },
   renderer: {
     plugins: [react()],
-    // Look thumbnails are ~3 KB each; keep them as files instead of base64 inside the JS bundle.
-    build: { assetsInlineLimit: 0 }
+    // Small assets (every Look thumbnail is under 8 KB) are embedded as data URIs. Referencing them as separate files made the
+    // hover previews depend on a file path that failed on a fresh Windows install; embedded images need no path at all.
+    build: { assetsInlineLimit: 8192 }
   }
 })

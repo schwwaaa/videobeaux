@@ -3,6 +3,10 @@ import { pathToFileURL } from 'url'
 import { join, dirname, extname, parse, delimiter } from 'path'
 import { fileURLToPath } from 'url'
 import { spawn } from 'child_process'
+import { resolvePresetTokens } from './presetTokens.js'
+import { buildReportFiles, createReportZip } from './bugReport.js'   // BUG-REPORT
+import { homedir, release } from 'os'   // BUG-REPORT
+import flags from '../../feature-flags.json'   // BUG-REPORT
 import { unlinkSync, renameSync, statSync, existsSync, readdirSync, writeFileSync, readFileSync, rmSync, mkdirSync, createWriteStream } from 'fs'
 import { tmpdir } from 'os'
 import { randomUUID } from 'crypto'
@@ -98,6 +102,10 @@ protocol.registerSchemesAsPrivileged([
 ])
 const MEDIA_EXTS = new Set(['.mp4', '.mov', '.m4v', '.mkv', '.webm', '.avi', '.mp3', '.wav', '.m4a', '.flac', '.gif', '.png', '.jpg', '.jpeg', '.webp', '.mpg', '.mpeg', '.mts', '.m2ts', '.ttf', '.otf'])
 
+// The window (and on Windows, the taskbar) icon. The installer's .exe icon comes from build/icon.ico at build time; this is the
+// same artwork as a PNG so the running window matches it. Packaged: shipped as resources/icon.png (see build.extraResources).
+const APP_ICON = app.isPackaged ? join(process.resourcesPath, 'icon.png') : join(__dirname, '../../build/icon.png')
+
 function createWindow() {
   const mainWindow = new BrowserWindow({
     width: 1440,
@@ -105,6 +113,7 @@ function createWindow() {
     minWidth: 900,
     minHeight: 600,
     backgroundColor: '#141414',
+    icon: APP_ICON,
     titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'default',
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
@@ -233,9 +242,10 @@ app.whenReady().then(async () => {
     return result.filePath
   })
 
-  ipcMain.handle('presets:load', async () => {
+  ipcMain.handle('presets:load', async (_, { defaultPath } = {}) => {
     const result = await dialog.showOpenDialog(win, {
       properties: ['openFile'],
+      ...(defaultPath && existsSync(defaultPath) ? { defaultPath } : {}),
       filters: [
         { name: 'Videobeaux Preset', extensions: ['json'] },
         { name: 'All Files', extensions: ['*'] }
@@ -244,6 +254,42 @@ app.whenReady().then(async () => {
     if (!result.filePaths[0]) return null
     const raw = readFileSync(result.filePaths[0], 'utf8')
     return { path: result.filePaths[0], data: JSON.parse(raw) }
+  })
+
+  // Example presets refer to the bundled sample clip and to a folder for their output with two tokens. Replace them with real
+  // paths when a preset is loaded, so an example runs without any setup. The output folder is created if needed.
+  ipcMain.handle('presets:examplesDir', () => {
+    const { vbRoot } = getPaths()
+    return join(vbRoot, 'examples', 'presets')
+  })
+
+  // BUG-REPORT (test phase): creates a local report zip. Switched off in gui/feature-flags.json. Nothing is sent anywhere.
+  if (flags.bugReport) {                                                        // BUG-REPORT
+    ipcMain.handle('bugReport:create', async (_, payload = {}) => {             // BUG-REPORT
+      let screenshotPng = null                                                  // BUG-REPORT
+      if (payload.captureScreenshot) {                                          // BUG-REPORT
+        try { screenshotPng = (await win.webContents.capturePage()).toPNG() } catch { /* report without it */ }   // BUG-REPORT
+      }                                                                         // BUG-REPORT
+      const files = buildReportFiles({                                          // BUG-REPORT
+        description: payload.description, includeLog: !!payload.includeLog, logText: payload.logText,     // BUG-REPORT
+        includeCanvas: !!payload.includeCanvas, canvasJson: payload.canvasJson, screenshotPng,            // BUG-REPORT
+        home: homedir(),                                                        // BUG-REPORT
+        info: { time: new Date().toISOString(), appVersion: app.getVersion(), packaged: app.isPackaged,    // BUG-REPORT
+                platform: process.platform, arch: process.arch, osRelease: release(),                      // BUG-REPORT
+                electron: process.versions.electron, node: process.versions.node }                          // BUG-REPORT
+      })                                                                        // BUG-REPORT
+      const stamp = new Date().toISOString().replace(/[:.]/g, '-')            // BUG-REPORT
+      const rootDir = join(app.getPath('documents'), 'videobeaux', 'reports')  // BUG-REPORT
+      return createReportZip({ files, rootDir, stamp })                         // BUG-REPORT
+    })                                                                          // BUG-REPORT
+    ipcMain.handle('shell:showItem', (_, p) => { if (p && existsSync(p)) shell.showItemInFolder(p) })   // BUG-REPORT
+    ipcMain.handle('shell:openMailto', (_, url) => { if (typeof url === 'string' && url.startsWith('mailto:')) shell.openExternal(url) })   // BUG-REPORT
+  }                                                                             // BUG-REPORT
+  ipcMain.handle('presets:resolveTokens', (_, nodes) => {
+    const { vbRoot } = getPaths()
+    const outputsDir = join(app.getPath('documents'), 'videobeaux', 'outputs')
+    try { mkdirSync(outputsDir, { recursive: true }) } catch { /* the run will report a clearer error */ }
+    return resolvePresetTokens(nodes, { sampleFile: join(vbRoot, 'examples', 'sample.mp4'), outputsDir })
   })
 
   // ── App settings (theme, shadow style) ──────────────────────────────────────

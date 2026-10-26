@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
+import BugReportButton from '../bugReport/BugReportButton'   // BUG-REPORT
 import { useSettings } from '../SettingsContext'
 
 const styles = {
@@ -367,6 +368,10 @@ Video tools: ${env.ffmpeg.ok && env.ffprobe.ok ? (env.ffmpegCapable ? 'ok' : 'pr
         {aiError && (
           <div style={{ fontSize: 11, color: 'var(--coral)', fontFamily: 'var(--font-mono)', marginTop: 8 }}>❌ {aiError}</div>
         )}
+
+        <div style={{ marginTop: 14 }}>{/* BUG-REPORT */}
+          <BugReportButton />{/* BUG-REPORT */}
+        </div>{/* BUG-REPORT */}
 
         <div style={styles.footer}>
           <button style={styles.buttonSmall()} onClick={() => window.electronAPI.openModelsFolder()} {...press(false)}>

@@ -62,3 +62,10 @@ test('the afterPack hook finds Mach-O binaries by their header and ignores every
   const found = machoFiles(d).map(p => p.slice(d.length + 1)).sort()
   assert.deepEqual(found, ['lib/mod.so', 'python3'])
 })
+
+test('the app icon is shipped with the app and used by the window', () => {
+  assert.ok(pkg.build.extraResources.some(r => r.from === 'build/icon.png' && r.to === 'icon.png'), 'build/icon.png must be in extraResources')
+  assert.equal(pkg.build.win.icon, 'build/icon.ico')
+  const main = readFileSync(new URL('../src/main/index.js', import.meta.url), 'utf8')
+  assert.match(main, /icon: APP_ICON/)
+})

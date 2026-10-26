@@ -50,7 +50,7 @@ function Btn({ mode, icon, label, short, title, onClick, disabled, background = 
   )
 }
 
-export default function CanvasToolbar({ width, isRunning, canUndo, canRedo, onUndo, onRedo, onSave, onLoad, onSnapshot, onTidy, onClear, tidyLabel }) {
+export default function CanvasToolbar({ width, isRunning, canUndo, canRedo, onUndo, onRedo, onSave, onLoad, onExamples, onSnapshot, onTidy, onClear, tidyLabel }) {
   const mode = toolbarMode(width)
   const [hidden, setHidden] = useState(readHidden)
   const [menu, setMenu] = useState(false)
@@ -78,6 +78,7 @@ export default function CanvasToolbar({ width, isRunning, canUndo, canRedo, onUn
   const items = [
     { id: 'save', icon: '💾', label: 'Save Preset', short: 'Save', onClick: onSave, disabled: isRunning },
     { id: 'load', icon: '📂', label: 'Load Preset', short: 'Load', onClick: onLoad, disabled: isRunning },
+    { id: 'examples', icon: '🧪', label: 'Examples', short: 'Examples', onClick: onExamples, disabled: isRunning },
     { id: 'snap', icon: '📸', label: 'Snapshot', short: 'Snap', title: 'Save a picture of the whole patch (PNG) together with its preset (JSON)', onClick: onSnapshot },
     { id: 'tidy', icon: '✨', label: tidyLabel || 'Tidy', short: tidyLabel || 'Tidy', title: 'Arrange the programs neatly, left to right (⌘⇧L; ⌘Z undoes)', onClick: onTidy, disabled: isRunning },
     { id: 'clear', icon: '🗑', label: 'Clear', short: 'Clear', title: 'Clear the workspace (asks first; ⌘Z undoes)', onClick: onClear, disabled: isRunning }

@@ -466,7 +466,8 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
   useEffect(() => {
     registerCanvasActions?.({
       addProgram: (programId) => addProgramNode(programId, viewportCenterPosition()),
-      addInput: () => addInputNode(viewportCenterPosition())
+      addInput: () => addInputNode(viewportCenterPosition()),
+      snapshot: () => serializeWorkspace({ nodes: getNodes(), edges: edgesRef.current, viewport: null })   // BUG-REPORT: the canvas as JSON
     })
   }, [registerCanvasActions, addProgramNode, addInputNode, viewportCenterPosition])
 
@@ -740,10 +741,11 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
     }
   }
 
-  const handleLoad = async () => {
+  const handleLoad = async ({ examples = false } = {}) => {
     let result
     try {
-      result = await window.electronAPI.loadPreset()
+      const defaultPath = examples ? await window.electronAPI.examplesDir() : undefined
+      result = await window.electronAPI.loadPreset({ defaultPath })
     } catch (err) {
       setLogs(prev => [...prev, { text: `❌ Could not read preset file: ${err.message}\n`, type: 'error' }])
       return
@@ -774,7 +776,8 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
     }
 
     record()
-    setNodes(data.nodes)
+    const resolved = await window.electronAPI.resolvePresetTokens(data.nodes)
+    setNodes(resolved)
     setEdges(data.edges)
     setRunError(null)
 
@@ -873,7 +876,7 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
             width={canvasWidth}
             isRunning={isRunning}
             canUndo={canUndo} canRedo={canRedo} onUndo={undo} onRedo={redo}
-            onSave={handleSave} onLoad={handleLoad} onSnapshot={handleSnapshot}
+            onSave={handleSave} onLoad={() => handleLoad()} onExamples={() => handleLoad({ examples: true })} onSnapshot={handleSnapshot}
             onTidy={handleTidy} tidyLabel={selectionCount > 0 ? 'Tidy selection' : 'Tidy'}
             onClear={() => setConfirmClear(true)}
           />
@@ -1068,7 +1071,9 @@ function AppInner() {
 
       <BrandedTooltips />
       {showSetup && <SetupScreen onClose={() => setShowSetup(false)} />}
-      {showHelp && <HelpWindow onClose={() => setShowHelp(false)} />}
+      {showHelp && <HelpWindow onClose={() => setShowHelp(false)}                                              // BUG-REPORT
+                              logText={logs.slice(-1000).map(l => l.text).join('')}                           // BUG-REPORT
+                              canvasJson={canvasActions?.snapshot?.() ?? ''} />}{/* BUG-REPORT */}
 
       {/* Main body */}
       <div style={{ flex: 1, display: 'flex', overflow: 'hidden', minHeight: 0 }}>

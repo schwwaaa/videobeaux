@@ -36,6 +36,10 @@
     ],
     "extraResources": [
       {
+        "from": "resources/examples",
+        "to": "examples"
+      },
+      {
         "from": "resources/python",
         "to": "python"
       },
@@ -54,6 +58,10 @@
       {
         "from": "resources/tools",
         "to": "tools"
+      },
+      {
+        "from": "build/icon.png",
+        "to": "icon.png"
       }
     ],
     "afterPack": "scripts/after-pack.cjs",
@@ -61,24 +69,24 @@
       "target": "nsis",
       "icon": "build/icon.ico"
     },
-   "mac": {
-    "target": [
-      {
-        "target": "dmg",
-        "arch": [
-          "arm64"
-        ]
-      },
-      {
-        "target": "zip",
-        "arch": [
-          "arm64"
-        ]
-      }
-    ],
-    "category": "public.app-category.video",
-    "icon": "build/icon.icns",
-    "identity": null
-  }
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "arm64"
+          ]
+        }
+      ],
+      "category": "public.app-category.video",
+      "icon": "build/icon.icns",
+      "identity": null
+    }
   }
 }

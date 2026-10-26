@@ -197,6 +197,8 @@ voices-*.bin
 *.ckpt
 # ...except the small face-detection model the app ships with.
 !videobeaux/assets/face_detection_yunet_2023mar.onnx
+# the example library's sample clip ships with the app (see examples/README.md)
+!examples/sample.mp4
 
 # Installers / build output
 gui/dist/
