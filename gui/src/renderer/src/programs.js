@@ -555,5 +555,8 @@ CATEGORIES.forEach(cat => {
 export const EXCLUDED_FROM_GUI = new Set([
   'chain_builder',   'chain_builder_pro',
   // superseded by convert_mux ("Convert") above — still fully usable from the CLI
-  'convert'
+  'convert',
+  // hidden until release: these are homages to LZX Industries designs (Video Blending Matrix, Topogram, DSG3, Stacker).
+  // Still available from the CLI (python -m videobeaux.cli -P <id>); remove an id here to show it in the app again.
+  'beauxtrix', 'topobeaux', 'shape_synth', 'stackadelic'
 ])
