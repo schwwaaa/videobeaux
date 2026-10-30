@@ -31,6 +31,15 @@ export default defineConfig({
       })
       server.middlewares.use('/__fonts.json', (q, r) => send(r, path.join(here, 'fonts.json'), 'application/json'))
       server.middlewares.use('/__stub.js', (q, r) => send(r, path.join(here, 'stub.js'), 'text/javascript'))
+      // the Examples library (harness only): examples/index.json and examples/presets/*.json, read-only
+      const examplesDir = path.join(here, '../../examples')
+      server.middlewares.use('/__examples', (q, r) => {
+        try {
+          const f = path.join(examplesDir, decodeURIComponent(q.url.split('?')[0]))
+          if (!f.startsWith(examplesDir + path.sep) || !f.endsWith('.json')) throw new Error('no')
+          send(r, f, 'application/json')
+        } catch { r.statusCode = 404; r.end('') }
+      })
       server.middlewares.use('/__ws', (q, r) => {
         try { send(r, path.join(here, 'ws', path.basename(q.url.split('?')[0])), 'application/json') } catch { r.statusCode = 404; r.end('') }
       })

@@ -1,0 +1,93 @@
+{
+ "version": 1,
+ "savedAt": "2026-10-29T00:00:00.000Z",
+ "nodes": [
+  {
+   "id": "input-1",
+   "type": "inputNode",
+   "position": {
+    "x": 0,
+    "y": 80
+   },
+   "data": {
+    "filePath": "/Users/me/Videos/talk.mp4"
+   },
+   "deletable": false
+  },
+  {
+   "id": "effect-1-1",
+   "type": "effectNode",
+   "position": {
+    "x": 300,
+    "y": 0
+   },
+   "data": {
+    "program": "qwikchop_deluxe",
+    "args": {
+     "stt_model": "/Users/bozer/Library/Application Support/videobeaux-gui/models/vosk-model-en-us-0.22-lgraph",
+     "count": 5,
+     "min_time": 3,
+     "max_time": 20,
+     "hook_words": "secret,never"
+    }
+   }
+  },
+  {
+   "id": "effect-2-1",
+   "type": "effectNode",
+   "position": {
+    "x": 300,
+    "y": 420
+   },
+   "data": {
+    "program": "word_xtraction_vad",
+    "args": {
+     "stt_model": "/Users/bozer/Library/Application Support/videobeaux-gui/models/vosk-model-small-en-us-0.15",
+     "min_d": 0.2,
+     "max_d": 0,
+     "adjuster": 0.3,
+     "keep_nonspeech": true,
+     "speech_pad": 0.08,
+     "merge_gap": 0.2,
+     "vad_threshold": 0.45
+    }
+   }
+  },
+  {
+   "id": "output-1",
+   "type": "outputNode",
+   "position": {
+    "x": 820,
+    "y": 200
+   },
+   "data": {
+    "filePath": "/Users/me/Videos/out.mp4",
+    "format": "mp4"
+   },
+   "deletable": false
+  }
+ ],
+ "edges": [
+  {
+   "id": "xy-edge__input-1-effect-1-1",
+   "source": "input-1",
+   "target": "effect-1-1",
+   "sourceHandle": null,
+   "targetHandle": null,
+   "type": "smoothstep"
+  },
+  {
+   "id": "xy-edge__input-1-effect-2-1",
+   "source": "input-1",
+   "target": "effect-2-1",
+   "sourceHandle": null,
+   "targetHandle": null,
+   "type": "smoothstep"
+  }
+ ],
+ "viewport": {
+  "x": 30,
+  "y": 40,
+  "zoom": 0.8
+ }
+}

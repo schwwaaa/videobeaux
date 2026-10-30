@@ -29,6 +29,7 @@ import BrandedTooltips from './components/BrandedTooltips'
 import { refreshArtOverrides } from './looks/output-art/art'
 import HelpWindow from './components/HelpWindow'
 import ConfirmDialog from './components/ConfirmDialog'
+import ExamplesBrowser from './components/ExamplesBrowser'
 import { ProgramsProvider, usePrograms } from './ProgramsContext'
 import { SettingsProvider, useSettings } from './SettingsContext'
 import { CanvasHistoryContext, useHistory } from './useCanvasHistory'
@@ -741,27 +742,18 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
     }
   }
 
-  const handleLoad = async ({ examples = false } = {}) => {
-    let result
-    try {
-      const defaultPath = examples ? await window.electronAPI.examplesDir() : undefined
-      result = await window.electronAPI.loadPreset({ defaultPath })
-    } catch (err) {
-      setLogs(prev => [...prev, { text: `❌ Could not read preset file: ${err.message}\n`, type: 'error' }])
-      return
-    }
-    if (!result) return
-
-    const { data } = result
+  // Replace the canvas with a preset. Shared by Load preset (a file the user picks) and the Examples library. Returns false when
+  // nothing was loaded (the preset isn't usable, or the user kept the current canvas), so the Examples window can stay open.
+  const applyPreset = async (data) => {
     if (!data || !Array.isArray(data.nodes) || !Array.isArray(data.edges)) {
       setLogs(prev => [...prev, { text: '❌ Not a valid preset file.\n', type: 'error' }])
-      return
+      return false
     }
 
     const canvasHasWork = nodes.length > 2 || edges.length > 0 ||
       nodes.some(n => n.type !== 'effectNode' && (n.data?.filePath || ''))
     if (canvasHasWork && !window.confirm('Loading a preset replaces the current canvas. Continue?')) {
-      return
+      return false
     }
 
     const missing = [...new Set(
@@ -787,7 +779,33 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
       return m ? Math.max(max, parseInt(m[1], 10)) : max
     }, _nodeCounter)
     _nodeCounter = maxSuffix
+    return true
   }
+
+  const handleLoad = async () => {
+    let result
+    try {
+      result = await window.electronAPI.loadPreset()
+    } catch (err) {
+      setLogs(prev => [...prev, { text: `❌ Could not read preset file: ${err.message}\n`, type: 'error' }])
+      return
+    }
+    if (!result) return
+    await applyPreset(result.data)
+  }
+
+  const openExample = async (example) => {
+    let data
+    try {
+      data = await window.electronAPI.openExample(example.file)
+    } catch (err) {
+      setLogs(prev => [...prev, { text: `❌ Could not open example: ${err.message}\n`, type: 'error' }])
+      return false
+    }
+    return applyPreset(data)
+  }
+
+  const [examplesOpen, setExamplesOpen] = useState(false)
 
   return (
     <CanvasHistoryContext.Provider value={{ record }}>
@@ -800,6 +818,7 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
       onMouseMove={e => { mouseFlowRef.current = screenToFlowPosition({ x: e.clientX, y: e.clientY }) }}
       onMouseLeave={() => { mouseFlowRef.current = null }}
     >
+      {examplesOpen && <ExamplesBrowser onClose={() => setExamplesOpen(false)} onOpen={openExample} />}
       {canvasBg && (
         <div
           className="canvas-bg-layer"
@@ -876,7 +895,7 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
             width={canvasWidth}
             isRunning={isRunning}
             canUndo={canUndo} canRedo={canRedo} onUndo={undo} onRedo={redo}
-            onSave={handleSave} onLoad={() => handleLoad()} onExamples={() => handleLoad({ examples: true })} onSnapshot={handleSnapshot}
+            onSave={handleSave} onLoad={() => handleLoad()} onExamples={() => setExamplesOpen(true)} onSnapshot={handleSnapshot}
             onTidy={handleTidy} tidyLabel={selectionCount > 0 ? 'Tidy selection' : 'Tidy'}
             onClear={() => setConfirmClear(true)}
           />

@@ -1,34 +1,55 @@
 {
   "meta": {
-    "source": "/var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_src_czjlo51s/synthetic.mp4",
+    "source": "/var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_src_ewi1uh80/synthetic.mp4",
     "start": 6.0,
     "dur": 8.0,
     "full_res": false,
     "ffmpeg": "ffmpeg version 9.0.1 Copyright (c) 2000-2026 the FFmpeg developers"
   },
   "counts": {
-    "PASS": 2
+    "PASS": 2,
+    "SKIP": 2
   },
   "results": [
     {
-      "program": "speed",
-      "category": "temporal",
-      "category_label": "Time & Motion",
+      "program": "transcraibe",
+      "category": "speech",
+      "category_label": "Speech & Captions",
       "status": "PASS",
-      "seconds": 0.541762113571167,
-      "detail": "640x360, 5.4s",
+      "seconds": 2.801461935043335,
+      "detail": "133 bytes JSON",
       "error": "",
-      "cmd": "-m videobeaux.cli -P speed -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_jtipa2u8/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_jtipa2u8/out/speed/result.mp4 -F --speed_factor 1.5"
+      "cmd": "-m videobeaux.cli -P transcraibe -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_g5yl9cq2/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_g5yl9cq2/out/transcraibe/result.json -F --stt_model /Users/bozer/schwwaaa/videobeaux/models/vosk-model-en-us-0.22-lgraph"
     },
     {
-      "program": "bad_predator",
-      "category": "look",
-      "category_label": "Color & Look",
-      "status": "PASS",
-      "seconds": 0.7773041725158691,
-      "detail": "640x360, 8.4s",
+      "program": "ngrams",
+      "category": "speech",
+      "category_label": "Speech & Captions",
+      "status": "SKIP",
+      "seconds": 0.0,
+      "detail": "the built-in synthetic clip has no speech \u2014 pass --source with a clip of someone talking",
       "error": "",
-      "cmd": "-m videobeaux.cli -P bad_predator -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_jtipa2u8/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_jtipa2u8/out/bad_predator/result.mp4 -F"
+      "cmd": ""
+    },
+    {
+      "program": "silence_xtraction",
+      "category": "speech",
+      "category_label": "Speech & Captions",
+      "status": "SKIP",
+      "seconds": 0.0,
+      "detail": "the built-in synthetic clip has no speech \u2014 pass --source with a clip of someone talking",
+      "error": "",
+      "cmd": ""
+    },
+    {
+      "program": "captburn",
+      "category": "speech",
+      "category_label": "Speech & Captions",
+      "status": "PASS",
+      "seconds": 0.2949790954589844,
+      "detail": "640x360, 8.0s",
+      "error": "",
+      "cmd": "-m videobeaux.cli -P captburn -i /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_g5yl9cq2/fixtures/clip.mp4 -o /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_g5yl9cq2/out/captburn/result.mp4 -F --trans-json /var/folders/5g/9vzjk3hd7h74wwbghn_ts0fm0000gn/T/vb_smoke_g5yl9cq2/out/transcraibe/result.json"
     }
   ]
 }

@@ -91,7 +91,8 @@ function ModelPickerField({ value, onChange }) {
       {value && (
         <span
           title={value}
-          style={{ fontSize: 9, color: 'var(--muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+          style={{ fontSize: 9, lineHeight: 1.35, color: 'var(--muted)', overflow: 'hidden', overflowWrap: 'anywhere',
+                   display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', minWidth: 0 }}
         >
           {value}
         </span>
@@ -340,12 +341,15 @@ function InfoBadge({ text, open, onToggle }) {
 }
 
 /** Field label row + inline help. */
+// Arguments that need room (a file or model picker, a text box) take a whole row of a two-column node.
+const isWideArg = arg => arg.type === 'file' || arg.type === 'text'
+
 function ArgLabel({ arg, children }) {
   const [helpOpen, setHelpOpen] = useState(false)
   return (
     <>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 3 }}>
-        <span style={{ fontSize: 11, color: 'var(--muted-dim)' }}>{arg.label}</span>
+      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '2px 5px', marginBottom: 3, minWidth: 0 }}>
+        <span style={{ fontSize: 11, color: 'var(--muted-dim)', minWidth: 0, overflowWrap: 'anywhere' }}>{arg.label}</span>
         {arg.required && <span style={{ fontSize: 10, color: 'var(--coral)' }}>*</span>}
         {arg.help && <InfoBadge text={arg.help} open={helpOpen} onToggle={() => setHelpOpen(o => !o)} />}
         {children}
@@ -907,7 +911,7 @@ export default function EffectNode({ id, data, selected }) {
       {/* Arg fields (collapsible, video args excluded — they're above) */}
       {hasCollapsible && expanded && (
         <div style={useGrid
-          ? { padding: '8px 10px', display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: 14, rowGap: 7 }
+          ? { padding: '8px 10px', display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', columnGap: 14, rowGap: 7 }
           : { padding: '8px 10px', display: 'flex', flexDirection: 'column', gap: 7 }
         }>
           {((prog.presets && Object.keys(prog.presets).length > 0) || anyChanged) && (
@@ -934,7 +938,7 @@ export default function EffectNode({ id, data, selected }) {
             </div>
           )}
           {visibleArgs.map(arg => (
-            <div key={arg.name}>
+            <div key={arg.name} style={{ minWidth: 0, gridColumn: isWideArg(arg) ? '1 / -1' : undefined }}>
               <ArgLabel arg={arg}>
                 <ArgHelperButton
                   programId={data.program}

@@ -14,6 +14,10 @@
     showItem: done(null),
     openMailto: done(null),
     listFonts: () => fetch('/__fonts.json').then(r => r.json()),
+    // the Examples library reads the real examples/ folder; tokens stay as written (no real paths in the harness)
+    listExamples: () => fetch('/__examples/index.json').then(r => r.json()),
+    openExample: (file) => fetch('/__examples/' + file).then(r => r.json()),
+    resolvePresetTokens: (nodes) => Promise.resolve(nodes),
     listModels: done([]), listVideoFiles: done([]), listOllamaModels: done([]), listKokoroVoices: done([]),
     saveSnapshot: done(null), artStatus: done({ generated: false }), artGenerate: done({}), artCancel: done({}), artReset: done({}),
     onArtProgress: () => () => {}, grabFrame: done(null), mediaUrl: (p) => '/__file?p=' + encodeURIComponent(p), pathForFile: () => '', readImageDataUrl: done(null),

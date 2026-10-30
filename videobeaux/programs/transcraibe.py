@@ -195,6 +195,27 @@ def build_paths_for_output(input_video: Path, json_out_dir: Path | None) -> tupl
     return json_path, txt_path
 
 
+def _media_duration(path: Path) -> float:
+    """Length of the clip in seconds (0 if it can't be read, in which case the bar shows speed only)."""
+    if not shutil.which("ffprobe"):
+        return 0.0
+    r = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(path)],
+                       capture_output=True, text=True)
+    try:
+        return float(r.stdout.strip())
+    except ValueError:
+        return 0.0
+
+
+def _report_progress(position_s: float, elapsed_s: float) -> None:
+    """One ffmpeg-style progress line: where in the clip we are, and how much faster than real time."""
+    speed = position_s / elapsed_s if elapsed_s > 0 else 0.0
+    h, rem = divmod(position_s, 3600)
+    m, sec = divmod(rem, 60)
+    # stderr on purpose: the app turns stderr stat lines into the progress bar (stdout is shown as plain log text)
+    print(f"time={int(h):02d}:{int(m):02d}:{sec:06.3f} speed={speed:.1f}x", file=sys.stderr, flush=True)
+
+
 def transcribe_single(input_video: Path, model_path: Path, json_path: Path, emit_txt: bool, overwrite: bool) -> None:
     """
     Transcribes one file to JSON (and optionally TXT).
@@ -216,13 +237,19 @@ def transcribe_single(input_video: Path, model_path: Path, json_path: Path, emit
                     print(f"⚠️  Failed TXT from existing JSON for {json_path}: {e}")
         return
 
-    print(f"🎬 Transcribing: {input_video}")
+    print(f"🎬 Transcribing: {input_video}", flush=True)
     SetLogLevel(-1)
 
     sample_rate = 16000
+    duration = _media_duration(input_video)
+    # The desktop app's progress bar reads these two line shapes (same as ffmpeg's): a total, then a running position
+    # (see _report_progress). The total goes to stdout, the running position to stderr.
+    print(f"Input duration: {duration:.2f} seconds", flush=True)
+    print("🧠 Loading the speech model (the first time can take a moment)…", flush=True)
     model = Model(str(model_path))
     rec = KaldiRecognizer(model, sample_rate)
     rec.SetWords(True)
+    print("🎙️  Listening: the progress bar shows how far through the clip it has got.", flush=True)
 
     # ffmpeg pipes PCM to stdout
     process = subprocess.Popen(
@@ -241,13 +268,22 @@ def transcribe_single(input_video: Path, model_path: Path, json_path: Path, emit
 
     MAX_CHARS = 36
     result = []
+    started = time.monotonic()
+    last_report = 0.0
+    heard = 0                                        # bytes of 16-bit mono audio fed to the recogniser so far
     while True:
         data = process.stdout.read(4000)
         if not data:
             break
+        heard += len(data)
         if rec.AcceptWaveform(data):
             result.append(json.loads(rec.Result()))
+        now = time.monotonic()
+        if now - last_report >= 1.0:
+            last_report = now
+            _report_progress(heard / (sample_rate * 2), now - started)
     result.append(json.loads(rec.FinalResult()))
+    _report_progress(heard / (sample_rate * 2), time.monotonic() - started)
 
     # Build chunked transcript like your original structure
     out = []

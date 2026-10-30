@@ -242,10 +242,9 @@ app.whenReady().then(async () => {
     return result.filePath
   })
 
-  ipcMain.handle('presets:load', async (_, { defaultPath } = {}) => {
+  ipcMain.handle('presets:load', async () => {
     const result = await dialog.showOpenDialog(win, {
       properties: ['openFile'],
-      ...(defaultPath && existsSync(defaultPath) ? { defaultPath } : {}),
       filters: [
         { name: 'Videobeaux Preset', extensions: ['json'] },
         { name: 'All Files', extensions: ['*'] }
@@ -256,11 +255,19 @@ app.whenReady().then(async () => {
     return { path: result.filePaths[0], data: JSON.parse(raw) }
   })
 
-  // Example presets refer to the bundled sample clip and to a folder for their output with two tokens. Replace them with real
-  // paths when a preset is loaded, so an example runs without any setup. The output folder is created if needed.
-  ipcMain.handle('presets:examplesDir', () => {
+  // The Examples library: the list from examples/index.json, and one example's preset. An example can only be opened if the
+  // index lists it, so the renderer can't ask for any other file.
+  ipcMain.handle('examples:index', () => {
     const { vbRoot } = getPaths()
-    return join(vbRoot, 'examples', 'presets')
+    return JSON.parse(readFileSync(join(vbRoot, 'examples', 'index.json'), 'utf8'))
+  })
+  ipcMain.handle('examples:open', (_, file) => {
+    const { vbRoot } = getPaths()
+    const dir = join(vbRoot, 'examples')
+    const index = JSON.parse(readFileSync(join(dir, 'index.json'), 'utf8'))
+    const entry = index.examples.find(e => e.file === file)
+    if (!entry) throw new Error('That example is not in the library.')
+    return JSON.parse(readFileSync(join(dir, entry.file), 'utf8'))
   })
 
   // BUG-REPORT (test phase): creates a local report zip. Switched off in gui/feature-flags.json. Nothing is sent anywhere.
@@ -289,7 +296,9 @@ app.whenReady().then(async () => {
     const { vbRoot } = getPaths()
     const outputsDir = join(app.getPath('documents'), 'videobeaux', 'outputs')
     try { mkdirSync(outputsDir, { recursive: true }) } catch { /* the run will report a clearer error */ }
-    return resolvePresetTokens(nodes, { sampleFile: join(vbRoot, 'examples', 'sample.mp4'), outputsDir })
+    const clip = name => join(vbRoot, 'examples', name)
+    const tokens = { sample: clip('sample.mp4'), sample2: clip('sample2.mp4'), sample3: clip('sample3.mp4'), outputs: outputsDir }
+    return resolvePresetTokens(nodes, { tokens })
   })
 
   // ── App settings (theme, shadow style) ──────────────────────────────────────
