@@ -12,10 +12,20 @@ export default {
   "vision": "v_reticle"
  },
  "motifs": {
+  "c_comb": {
+   "category": "media",
+   "label": "Combed lines woven",
+   "reason": "Two interlaced fields (the comb teeth) are woven into one clean frame."
+  },
   "c_convert": {
    "category": "media",
    "label": "Swap arrows",
    "reason": "Changes one format into another."
+  },
+  "c_crisp": {
+   "category": "media",
+   "label": "Crisp edge",
+   "reason": "Soft edges are sharpened so the outline snaps into focus."
   },
   "c_frames": {
    "category": "media",
@@ -32,10 +42,20 @@ export default {
    "label": "Table rows",
    "reason": "Reads facts about a file and reports them."
   },
+  "c_lens": {
+   "category": "media",
+   "label": "Bowed grid, straightened",
+   "reason": "A grid that bows out at the edges, the way a wide lens draws it, put back straight."
+  },
   "c_resize": {
    "category": "media",
    "label": "Size marks",
    "reason": "Changes the picture's dimensions."
+  },
+  "c_smooth": {
+   "category": "media",
+   "label": "Smoothed grain",
+   "reason": "Specks and grain are softened away while the edges stay put."
   },
   "c_sound": {
    "category": "media",
@@ -177,6 +197,16 @@ export default {
    "label": "Heat blobs",
    "reason": "A heat-map: colour mapped to temperature or light level."
   },
+  "l_local": {
+   "category": "look",
+   "label": "Patch-by-patch contrast",
+   "reason": "Each patch of the picture gets its own contrast, so dark and bright areas both show detail."
+  },
+  "l_match": {
+   "category": "look",
+   "label": "Swatch carried over",
+   "reason": "One picture's colours are carried across to the other."
+  },
   "l_matrix": {
    "category": "look",
    "label": "Cell grid",
@@ -272,15 +302,35 @@ export default {
    "label": "Waveform with gaps",
    "reason": "Cuts silences and picks out the spoken parts of the sound."
   },
+  "s_duck": {
+   "category": "speech",
+   "label": "Music ducking",
+   "reason": "The music line dips wherever the voice speaks."
+  },
+  "s_hush": {
+   "category": "speech",
+   "label": "Hushed wave",
+   "reason": "Speech with the hiss struck through: the noise goes, the voice stays."
+  },
   "s_kinetic": {
    "category": "speech",
    "label": "Bouncing letters",
    "reason": "Letters that move and bounce with the speech."
   },
+  "s_level": {
+   "category": "speech",
+   "label": "Level meter",
+   "reason": "Evens out the loudness: quiet and loud parts meet the same level line."
+  },
   "s_search": {
    "category": "speech",
    "label": "Magnifier ticks",
    "reason": "Finds words and phrases and pulls them out."
+  },
+  "s_srt": {
+   "category": "speech",
+   "label": "Captions at the foot",
+   "reason": "Lines of subtitles run along the bottom of the picture."
   },
   "s_voice": {
    "category": "speech",
@@ -327,6 +377,11 @@ export default {
    "label": "Heat wobble",
    "reason": "A feverish shimmer: the picture wobbles like rising heat."
   },
+  "v_motion": {
+   "category": "vision",
+   "label": "Moving blobs",
+   "reason": "Only what moves stays lit: the rest of the picture goes dark."
+  },
   "v_redact": {
    "category": "vision",
    "label": "Blocked-out bars",
@@ -352,6 +407,16 @@ export default {
    "label": "Pinched oval",
    "reason": "A face that is stretched, pinched and bulged."
   },
+  "y_bars": {
+   "category": "layout",
+   "label": "Equaliser bars",
+   "reason": "Draws the sound as a strip of bars or a wave line over the picture."
+  },
+  "y_crop_black": {
+   "category": "layout",
+   "label": "Trimmed letterbox",
+   "reason": "Cuts the black bars off the top and bottom of the picture."
+  },
   "y_cutout": {
    "category": "layout",
    "label": "Cut-out silhouette",
@@ -367,10 +432,25 @@ export default {
    "label": "Overlapping layers",
    "reason": "Layers of picture blended through each other."
   },
+  "y_matte": {
+   "category": "layout",
+   "label": "Cut-out on a new layer",
+   "reason": "A subject cut out of its background and laid over a fresh backdrop."
+  },
   "y_pip": {
    "category": "layout",
    "label": "Frame in frame",
    "reason": "A small picture inside the big one."
+  },
+  "y_plate": {
+   "category": "layout",
+   "label": "Dashed ghost",
+   "reason": "Something that moved through the scene is replaced by the empty background."
+  },
+  "y_push": {
+   "category": "layout",
+   "label": "Slow push-in",
+   "reason": "The picture slowly zooms in, like a camera moving in on a still."
   },
   "y_rotate": {
    "category": "layout",
@@ -391,10 +471,23 @@ export default {
    "category": "layout",
    "label": "Corner badge",
    "reason": "Stamps a logo / badge onto the corner of the picture."
+  },
+  "y_text_overlay": {
+   "category": "layout",
+   "label": "Title card",
+   "reason": "A block of text laid over the picture."
+  },
+  "y_zoom": {
+   "category": "layout",
+   "label": "Magnifier",
+   "reason": "Zooms in on one point of the picture: a lens with a plus sign."
   }
  },
  "programs": {
   "ascii_art": "l_ascii",
+  "audio_denoise": "s_hush",
+  "audio_duck": "s_duck",
+  "audio_visualizer": "y_bars",
   "auto_narrate": "s_voice",
   "bad_animation": "g_frames",
   "bad_contrast": "g_blocks",
@@ -410,13 +503,18 @@ export default {
   "cartoon": "l_paint",
   "chroma_key": "y_key",
   "chromatic_pulse": "g_rgb",
+  "clean_plate": "y_plate",
+  "color_match": "l_match",
   "color_pass": "l_sliders",
   "concat": "e_join",
   "convert_dims": "c_resize",
   "convert_mux": "c_convert",
+  "crop_black": "y_crop_black",
   "crossmosh": "g_mosh",
   "crt_monitor": "g_scan",
   "deep_fry": "g_fry",
+  "deinterlace": "c_comb",
+  "denoise_video": "c_smooth",
   "digital_boss": "g_blocks",
   "dither": "l_checker",
   "double_cup": "t_drip",
@@ -448,16 +546,21 @@ export default {
   "hue_cycle": "l_sliders",
   "infrared": "l_heat",
   "insert_clip": "e_join",
+  "ken_burns": "y_push",
+  "key_composite": "y_matte",
   "key_feedback": "t_nest",
   "kmeans_palette": "l_steps",
   "lagkage": "y_layers",
   "layer_blend": "y_layers",
   "led_wall": "l_dots",
+  "lens_correct": "c_lens",
   "light_snow": "l_film",
   "little_planet": "m_tunnel",
+  "local_contrast": "l_local",
   "lomo": "l_rays",
   "long_exposure": "t_streak",
   "looper_pro": "m_boom",
+  "loudness_normalize": "s_level",
   "lsd_feedback": "t_swirl",
   "lsd_feedback_pro": "t_swirl",
   "luma_key": "y_key",
@@ -467,6 +570,7 @@ export default {
   "mince": "e_chop",
   "mirror_delay": "t_ghost",
   "motion_ghost": "v_trail",
+  "motion_mask": "v_motion",
   "negative": "l_bw",
   "neon_edges": "l_edge",
   "ngrams": "s_search",
@@ -502,6 +606,7 @@ export default {
   "sepia": "l_bw",
   "septic": "l_wash",
   "shape_synth": "y_shapes",
+  "sharpen": "c_crisp",
   "shortify": "c_resize",
   "silence_xtraction": "s_cut",
   "sketch": "l_hatch",
@@ -522,7 +627,9 @@ export default {
   "strobe_hold": "m_strobe",
   "stutter_pro": "m_stutter",
   "subs_convert": "c_convert",
+  "subtitle_burn": "s_srt",
   "t1000": "t_drip",
+  "text_overlay": "y_text_overlay",
   "thermal": "l_heat",
   "thumbs": "c_frames",
   "time_ramp": "m_speed",
@@ -546,6 +653,7 @@ export default {
   "word_xtraction_vad": "s_cut",
   "xpiritualism": "l_rays",
   "xrgb": "g_rgb",
-  "zapruder": "l_film"
+  "zapruder": "l_film",
+  "zoom": "y_zoom"
  }
 }

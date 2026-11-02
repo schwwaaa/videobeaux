@@ -94,12 +94,15 @@ def _check_picture_survived(command, input_file, output_file, label=None):
     )
 
 
-def run_ffmpeg_with_progress(command, input_file, output_file, show_ffmpeg_output=False, duration_override=None):
+def run_ffmpeg_with_progress(command, input_file, output_file, show_ffmpeg_output=False, duration_override=None, progress_span=None):
     # duration_override lets a caller that's only processing part of input_file
     # (e.g. trimming a sub-clip) report progress against the clip's own length
     # instead of the full source — otherwise out_time never reaches the
     # source's total duration and the bar appears to stall short of 100%.
-    duration = duration_override if duration_override is not None else get_video_duration(input_file)
+    # progress_span=(start, total) is for one step of a longer job (one ffmpeg run per slice, say):
+    # this run's time is added to `start` and the bar fills against `total`, so it doesn't restart at 0.
+    step = duration_override if duration_override is not None else get_video_duration(input_file)
+    start, duration = progress_span if progress_span is not None else (0.0, step)
     print(f"Input duration: {duration:.2f} seconds")
     command = harden_command(list(command))   # QuickLook/QuickTime-safe MP4/MOV output (see utils/encode.py)
     missing = check_command(command)          # e.g. AV1 on a build without SVT-AV1 → a sentence, not a stack trace
@@ -144,7 +147,7 @@ def run_ffmpeg_with_progress(command, input_file, output_file, show_ffmpeg_outpu
     # skew the number — a slow start drags it toward ~0x forever, while a
     # fast pass can read as an absurd multiple once amortized. Neither
     # reflects the current rate, which is what this is meant to show.
-    prev_elapsed = 0.0
+    prev_elapsed = start
     prev_wall = start_wall
 
     def report(elapsed):
@@ -175,7 +178,7 @@ def run_ffmpeg_with_progress(command, input_file, output_file, show_ffmpeg_outpu
             line = line.strip()
             match = out_time_re.match(line)
             if match:
-                elapsed = min(time_to_seconds(*match.groups()), duration)
+                elapsed = start + min(time_to_seconds(*match.groups()), step)
                 if elapsed > current:
                     current = elapsed
                     report(current)
@@ -184,8 +187,8 @@ def run_ffmpeg_with_progress(command, input_file, output_file, show_ffmpeg_outpu
                 break
 
         process.wait()
-        if current < duration:
-            current = duration
+        if current < start + step:
+            current = start + step
             report(current)
         if pbar is not None:
             pbar.close()

@@ -134,6 +134,8 @@ def _segment_into_n_edits(
         start = base_chunk * i
         end = dur if i == pieces - 1 else base_chunk * (i + 1)
         seg_dur = max(0.0, end - start)
+        # where this slice sits in the whole video, so the progress bar runs across all the slices
+        slice_at, slice_len = start, seg_dur
 
         # shave tiny edges to dodge boundary fades
         start += edge_pad_pre
@@ -175,8 +177,8 @@ def _segment_into_n_edits(
             "-movflags", "+faststart",
             str(out_path),
         ]
-        # Use the source file for progress probing (real media path)
-        run_ffmpeg_with_progress(cmd, str(inp), str(out_path))
+        run_ffmpeg_with_progress(cmd, str(inp), str(out_path),
+                                 duration_override=slice_len, progress_span=(slice_at, dur))
         segs.append(out_path)
 
     return segs

@@ -1,5 +1,5 @@
 import FontPicker from '../FontPicker'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   Handle, Position, useReactFlow,
   useNodeConnections, useNodesData, useUpdateNodeInternals
@@ -60,14 +60,14 @@ function ModelPickerField({ value, onChange }) {
     : models
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-      <div style={{ display: 'flex', gap: 5, alignItems: 'center' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 4, minWidth: 0, width: '100%' }}>
+      <div style={{ display: 'flex', gap: 5, alignItems: 'center', minWidth: 0 }}>
         <select
           className="nodrag"
           style={{
             width: '100%', padding: '4px 7px', fontSize: 12,
             background: 'var(--paper)', border: '2px solid var(--ink)', borderRadius: 6,
-            color: 'var(--ink)', flex: 1, minWidth: 0, cursor: 'pointer'
+            color: 'var(--ink)', flex: 1, minWidth: 0, maxWidth: '100%', cursor: 'pointer'
           }}
           value={value || ''}
           onChange={e => onChange(e.target.value)}
@@ -412,6 +412,55 @@ function ArgHelperButton({ programId, arg, nodeId, values, setArgs, onChange, in
   )
 }
 
+/**
+ * A text box that keeps the text being typed in its own state. The saved value makes a round trip through the canvas
+ * store, and React puts the old text back in between keystrokes, which sends the caret to the end. Holding the draft
+ * here means the box never waits on that round trip. The saved value is taken in whenever the box is not being typed
+ * in (a preset, Reset, a loaded file). multiline → a resizable box, plus a "Load .txt" button that fills it from a file.
+ */
+function TextArgField({ arg, value, onChange, inputStyle }) {
+  const saved = value ?? ''
+  const [draft, setDraft] = useState(saved)
+  const focused = useRef(false)
+  const fileRef = useRef(null)
+  useEffect(() => { if (!focused.current) setDraft(saved) }, [saved])
+
+  const change = (text) => { setDraft(text); onChange(text) }
+  const common = {
+    className: 'nodrag nowheel',
+    value: draft,
+    placeholder: arg.default !== undefined ? String(arg.default) : '',
+    onFocus: () => { focused.current = true },
+    onBlur: () => { focused.current = false },
+    onChange: e => change(e.target.value)
+  }
+
+  if (!arg.multiline) return <input type="text" style={inputStyle} {...common} />
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <textarea
+        {...common}
+        rows={4}
+        style={{ ...inputStyle, minHeight: 64, resize: 'vertical', lineHeight: 1.4, fontFamily: 'inherit' }}
+      />
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <button className="nodrag" type="button" onClick={() => fileRef.current?.click()}
+                style={{ padding: '2px 8px', fontSize: 11, borderRadius: 6, border: '2px solid var(--ink)',
+                         background: 'var(--paper)', color: 'var(--ink)', cursor: 'pointer' }}>
+          Load .txt…
+        </button>
+        <span style={{ fontSize: 10, color: 'var(--muted-dim)' }}>resize from the corner for a long script</span>
+        <input ref={fileRef} type="file" accept=".txt,text/plain" style={{ display: 'none' }}
+               onChange={async e => {
+                 const file = e.target.files?.[0]
+                 e.target.value = ''
+                 if (file) change(await file.text())
+               }} />
+      </div>
+    </div>
+  )
+}
+
 function ArgField({ arg, value, onChange, programId, nodeId }) {
   const [helperOpen, setHelperOpen] = useState(false)
   const helper = ARG_HELPERS[programId]?.[arg.name]
@@ -577,16 +626,7 @@ function ArgField({ arg, value, onChange, programId, nodeId }) {
   }
 
   // default: text
-  return (
-    <input
-      className="nodrag"
-      type="text"
-      style={inputStyle}
-      value={value || ''}
-      placeholder={arg.default !== undefined ? String(arg.default) : ''}
-      onChange={e => onChange(e.target.value)}
-    />
-  )
+  return <TextArgField arg={arg} value={value} onChange={onChange} inputStyle={inputStyle} />
 }
 
 // ── MediaInputRow ────────────────────────────────────────────────────────────
@@ -798,6 +838,8 @@ export default function EffectNode({ id, data, selected }) {
       background: 'var(--paper)',
       border: '3px solid var(--line, var(--ink))',
       borderRadius: 12,
+      // The grid needs a set width: sized by its content, its two columns could split unevenly and run past the edge.
+      width: useGrid ? 460 : undefined,
       minWidth: useGrid ? 420 : 230,
       maxWidth: useGrid ? 480 : 280,
       boxShadow,

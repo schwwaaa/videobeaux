@@ -10,7 +10,9 @@ should declare ranges in their own GUI_METADATA instead.
 FREE = None
 
 RANGES = {
-    'auto_narrate': {'duration': (5, 300), 'voice_speed': (0.5, 2), 'original_volume': (0, 1), 'font_size': (12, 200)},
+    'auto_narrate': {'duration': (5, 300), 'voice_speed': (0.5, 2), 'original_volume': (0, 1), 'font_size': (12, 200),
+                     'start_delay': (0, 600)},
+    'text_overlay': {'font_size': (12, 300), 'margin': (0, 500)},
     'cartoon': {'levels': (2, 16), 'smooth': (1, 15), 'edge_size': (3, 21), 'edge_strength': (1, 15), 'saturation': (0, 3)},
     'chromatic_pulse': {'amount': (0, 30), 'speed': (0, 10)},
     'concat': {'crossfade': (0, 10), 'gap': (0, 10)},
@@ -60,7 +62,7 @@ RANGES = {
     'warp': {'radius': (0.05, 1.5), 'center_x': (0, 1), 'center_y': (0, 1), 'segments': (2, 32), 'speed': (-5, 5)},
     'watermark': {'margin': (0, 500), 'scale': (0.02, 1), 'spin': (-360, 360), 'start': (0, 3600), 'end': (0, 3600),
                   'wm-loop': (0, 50), 'video-crf': (0, 51)},
-    'wipe_transitions': {'duration': (0.1, 10), 'offset': (0, 3600)},
+    'wipe_transitions': {'duration': (0.1, 10)},
     'word_xtraction_vad': {'min_d': (0.05, 10), 'max_d': (0.1, 60), 'adjuster': FREE, 'max_word_d': (0.2, 10),
                            'speech_pad': (0, 1), 'merge_gap': (0, 2), 'vad_threshold': (0, 1), 'vad_min_speech': (50, 2000),
                            'vad_min_silence': (20, 2000), 'vad_pad': (0, 1000), 'vad_keep_short': (0, 2)},

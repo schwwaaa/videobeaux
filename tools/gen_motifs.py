@@ -256,6 +256,9 @@ motif("l_matrix", "look", "Cell grid", "A matrix of cells, each showing a differ
       ["beauxtrix"],
       "".join(RO(4 + 15 * i, 3 + 15 * j, 12, 12, D if (i + j) % 2 == 0 else L, 2, 2) for i in range(4) for j in range(2)) +
       R(21, 5, 8, 8, D, 1))
+motif("l_local", "look", "Patch-by-patch contrast", "Each patch of the picture gets its own contrast, so dark and bright areas both show detail.",
+      ["local_contrast"],
+      "".join(R(2 + 15 * c, 2 + 8 * r, 14, 7, D if (r + c) % 2 else L, 1) for r in range(3) for c in range(4)))
 
 # VISION & TRACKING ──────────────────────────────────────────────────────────
 motif("v_reticle", "vision", "Reticle", "They find a face and lock a target on it.",
@@ -276,6 +279,9 @@ motif("v_warp", "vision", "Pinched oval", "A face that is stretched, pinched and
       ["face_warp"],
       P("M32 2C14 2 14 30 32 30C50 30 50 2 32 2", D, 2.4) + P("M18 12C26 8 38 8 46 12", L, 2) + P("M20 22C28 26 36 26 44 22", L, 2) +
       C(26, 16, 1.6, D) + C(38, 16, 1.6, D))
+motif("v_motion", "vision", "Moving blobs", "Only what moves stays lit: the rest of the picture goes dark.",
+      ["motion_mask"],
+      R(3, 3, 58, 26, M, 1.2) + C(22, 14, 8, L) + C(40, 9, 4, L) + C(46, 22, 3, L))
 
 # LAYOUT & OVERLAY ───────────────────────────────────────────────────────────
 motif("y_stamp", "layout", "Corner badge", "Stamps a logo / badge onto the corner of the picture.",
@@ -303,6 +309,25 @@ motif("y_rotate", "layout", "Tilted frame", "Turns the whole picture: a frame ti
 motif("y_shapes", "layout", "Circle · triangle · square", "Generates basic shapes to build the picture from.",
       ["shape_synth"],
       CO(12, 16, 8, D, 2.4) + T([(26, 26), (40, 26), (33, 6)], L) + RO(46, 8, 14, 16, D, 2.4, 1))
+motif("y_zoom", "layout", "Magnifier", "Zooms in on one point of the picture: a lens with a plus sign.",
+      ["zoom"],
+      CO(24, 14, 9, D, 2.6) + P("M31 21L41 29", D, 3.4) + P("M19 14h10M24 9v10", L, 2) + RO(2, 2, 60, 28, M, 1.2, 2))
+motif("y_crop_black", "layout", "Trimmed letterbox", "Cuts the black bars off the top and bottom of the picture.",
+      ["crop_black"],
+      R(2, 2, 60, 6, D) + R(2, 24, 60, 6, D) + RO(14, 10, 36, 12, L, 2, 1) + P("M12 9l-4-4M52 23l4 4", L, 1.6))
+motif("y_text_overlay", "layout", "Title card", "A block of text laid over the picture.",
+      ["text_overlay"],
+      RO(2, 2, 60, 28, M, 1.2, 2) + P("M12 13h40", D, 3.2) + P("M18 21h28", L, 2.4))
+motif("y_bars", "layout", "Equaliser bars", "Draws the sound as a strip of bars or a wave line over the picture.",
+      ["audio_visualizer"],
+      "".join(R(6 + 8 * i, 28 - h, 5, h, D if i % 2 else L, 1.5) for i, h in enumerate([8, 16, 24, 12, 20, 6])))
+motif("y_push", "layout", "Slow push-in", "The picture slowly zooms in, like a camera moving in on a still.",
+      ["ken_burns"],
+      RO(3, 3, 58, 26, M, 1.4, 2) + RO(12, 8, 40, 18, D, 1.8, 2) + RO(22, 12, 20, 10, L, 1.8, 1) +
+      P("M4 4L14 9M60 4L50 9M4 28L14 23M60 28L50 23", L, 1.6))
+motif("y_matte", "layout", "Cut-out on a new layer", "A subject cut out of its background and laid over a fresh backdrop.",
+      ["key_composite"],
+      R(3, 3, 58, 26, M, 2) + C(22, 13, 6, L) + P("M14 28q8-14 16 0", L, 2.4) + RO(38, 8, 20, 16, D, 2, 2))
 
 # CUT & ASSEMBLE ─────────────────────────────────────────────────────────────
 motif("e_trim", "edit", "Trim brackets", "Keeps a section of the clip between two handles.",
@@ -339,6 +364,16 @@ motif("s_cut", "speech", "Waveform with gaps", "Cuts silences and picks out the 
       ["silence_xtraction", "word_xtraction_vad", "qwikchop_deluxe"],
       "".join(R(3 + 5 * i, 16 - h / 2, 3, h, D if i % 3 else L, 1.5) for i, h in enumerate([6, 14, 22, 10, 4, 2, 2, 18, 24, 12, 4, 2]) ) +
       P("M34 3V29", L, 1.6, "2 3"))
+motif("s_level", "speech", "Level meter", "Evens out the loudness: quiet and loud parts meet the same level line.",
+      ["loudness_normalize"],
+      P("M2 16H62", L, 1.4, "3 3") + R(6, 22, 6, 6, D, 1.5) + R(16, 14, 6, 14, D, 1.5) + R(26, 18, 6, 10, D, 1.5) +
+      R(36, 12, 6, 16, D, 1.5) + R(46, 16, 6, 12, D, 1.5))
+motif("s_hush", "speech", "Hushed wave", "Speech with the hiss struck through: the noise goes, the voice stays.",
+      ["audio_denoise"],
+      P("M2 16q4-9 8 0q4 9 8 0q4-9 8 0q4 9 8 0q4-9 8 0q4 9 8 0", D, 2.2) + P("M8 4L56 28", L, 2.4))
+motif("s_srt", "speech", "Captions at the foot", "Lines of subtitles run along the bottom of the picture.",
+      ["subtitle_burn"],
+      RO(2, 2, 60, 28, M, 1.2, 2) + R(12, 20, 40, 4, L, 1.5) + R(18, 26, 28, 3, D, 1.5))
 
 # MEDIA TOOLS ────────────────────────────────────────────────────────────────
 motif("c_convert", "media", "Swap arrows", "Changes one format into another.",
@@ -364,6 +399,30 @@ motif("c_info", "media", "Table rows", "Reads facts about a file and reports the
 motif("c_stab", "media", "Steadied line", "Smooths shaky motion into a steady path.",
       ["stabilize"],
       P("M2 20l4-10 4 12 4-12 4 10 4-8 4 6", D, 1.8) + P("M34 16H62", L, 3) + T([(58, 11), (63, 16), (58, 21)], L) + P("M4 28H30", M, 1.6, "2 3"))
+motif("c_comb", "media", "Combed lines woven", "Two interlaced fields (the comb teeth) are woven into one clean frame.",
+      ["deinterlace"],
+      "".join(R(2 + (5 if k % 2 else 0), 5 + 4 * k, 54, 2, D if k % 2 else L, 1) for k in range(6)))
+motif("c_smooth", "media", "Smoothed grain", "Specks and grain are softened away while the edges stay put.",
+      ["denoise_video"],
+      "".join(C(6 + 7 * i + (i % 3) * 2, 8 + 6 * (i % 4), 1.2 + (i % 2) * 0.6, D if i % 2 else L) for i in range(8)) +
+      P("M30 2V30", L, 1.6))
+motif("c_lens", "media", "Bowed grid, straightened", "A grid that bows out at the edges, the way a wide lens draws it, put back straight.",
+      ["lens_correct"],
+      P("M2 8q30-10 60 0", D, 2.2) + P("M2 24q30 10 60 0", D, 2.2) + P("M10 2q-8 14 0 28", L, 2.2) +
+      P("M54 2q8 14 0 28", L, 2.2) + P("M32 2V30", M, 1.4, "3 3"))
+motif("c_crisp", "media", "Crisp edge", "Soft edges are sharpened so the outline snaps into focus.",
+      ["sharpen"],
+      P("M2 24H22L26 10L30 24H62", D, 2.4) + P("M2 27H22L26 19L30 27H62", L, 1.2, "2 2"))
+motif("s_duck", "speech", "Music ducking", "The music line dips wherever the voice speaks.",
+      ["audio_duck"],
+      P("M2 8H20Q24 8 24 14T28 14H36Q40 14 40 8H62", L, 1.8, "3 2") + R(8, 18, 4, 8, D, 1.2) +
+      R(44, 16, 4, 12, D, 1.2) + R(52, 20, 4, 6, D, 1.2))
+motif("y_plate", "layout", "Dashed ghost", "Something that moved through the scene is replaced by the empty background.",
+      ["clean_plate"],
+      RO(3, 3, 58, 26, M, 1.2, 2) + CO(22, 12, 5, D, 1.6) + P("M14 28v-6q8-9 16 0v6", D, 1.6, "2 2") + P("M40 14H56", L, 2))
+motif("l_match", "look", "Swatch carried over", "One picture's colours are carried across to the other.",
+      ["color_match"],
+      R(3, 5, 24, 22, D, 1.5) + R(37, 5, 24, 22, L, 1.5) + P("M29 16H35", D, 2.4) + T([(33, 12), (39, 16), (33, 20)], D))
 
 CATEGORY_MOTIF = {   # the pattern on a category's chip in the sidebar
     "glitch": "g_blocks", "trails": "t_nest", "temporal": "m_speed", "look": "l_dots", "vision": "v_reticle",

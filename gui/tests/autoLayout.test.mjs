@@ -90,3 +90,46 @@ test('a cycle does not hang the layout', () => {
   const { positions } = autoLayout({ nodes, edges: [E('a', 'b'), E('b', 'a')] })
   assert.equal(Object.keys(positions).length, 2)
 })
+
+// a straight chain: input → six programs → output
+function chain() {
+  const ids = ['a', 'b', 'c', 'd', 'e', 'f']
+  const nodes = [N('input-1', 'inputNode', 0, 0, { deletable: false }), ...ids.map((id, i) => N(id, 'effectNode', i * 300, 0)),
+    N('output-1', 'outputNode', 2000, 0, { deletable: false })]
+  const path = ['input-1', ...ids, 'output-1']
+  const edges = path.slice(1).map((id, i) => E(path[i], id))
+  return { nodes, edges }
+}
+
+test('vertical runs top → bottom, with no overlaps', () => {
+  const { nodes, edges } = world()
+  const laid = place(nodes, autoLayout({ nodes, edges, direction: 'vertical' }).positions)
+  const byId = new Map(laid.map(n => [n.id, n]))
+  for (const e of edges) {
+    const a = byId.get(e.source), b = byId.get(e.target)
+    assert.ok(a.position.y + nodeSize(a).h <= b.position.y, `${e.source} → ${e.target} does not run top to bottom`)
+  }
+  for (let i = 0; i < laid.length; i++) for (let j = i + 1; j < laid.length; j++) {
+    assert.equal(overlap(box(laid[i]), box(laid[j])), false, `${laid[i].id} overlaps ${laid[j].id}`)
+  }
+})
+
+test('auto follows the canvas shape: a tall window gets top → bottom, a wide one left → right', () => {
+  const { nodes, edges } = chain()
+  const tall = place(nodes, autoLayout({ nodes, edges, direction: 'auto', aspect: 0.5 }).positions)
+  const wide = place(nodes, autoLayout({ nodes, edges, direction: 'auto', aspect: 3 }).positions)
+  const flows = (laid, axis) => {
+    const byId = new Map(laid.map(n => [n.id, n]))
+    return edges.every(e => {
+      const a = byId.get(e.source), b = byId.get(e.target)
+      return axis === 'x' ? a.position.x + nodeSize(a).w <= b.position.x : a.position.y + nodeSize(a).h <= b.position.y
+    })
+  }
+  assert.ok(flows(tall, 'y'), 'tall canvas should flow top → bottom')
+  assert.ok(flows(wide, 'x'), 'wide canvas should flow left → right')
+})
+
+test('horizontal stays the default, so existing callers get the same layout', () => {
+  const { nodes, edges } = chain()
+  assert.deepEqual(autoLayout({ nodes, edges }).positions, autoLayout({ nodes, edges, direction: 'horizontal' }).positions)
+})

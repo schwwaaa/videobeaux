@@ -35,7 +35,8 @@ GUI_COMMON = {
     'bg_video': {'type': 'file', 'subtype': 'video', 'label': 'Background video',
                  'help': 'Connect a video here (or browse) to put the subject on top of it. Loops if shorter.'},
     'view': {'type': 'select', 'label': 'View', 'default': 'composite', 'choices': VIEWS,
-             'help': 'Use matte / checkerboard while tuning: white = kept, black = removed.'},
+             'help': 'Use matte / checkerboard while tuning: white = kept, black = removed. matte gives a grayscale video '
+                     'you can connect to Key Composite.'},
     'audio': {'type': 'select', 'label': 'Audio', 'default': KEY_AUDIO[0], 'choices': KEY_AUDIO,
               'help': 'Which sound the result keeps. Background video / Mix need a Background video connected.'},
     'shrink': {'label': 'Edge shrink', 'min': 0, 'max': 10, 'help': 'Eat into the edge of the subject to lose fringing (pixels).'},
@@ -49,7 +50,8 @@ def add_common_arguments(p):
     p.add_argument("--bg_image", type=str, default=None, help="Background image.")
     p.add_argument("--bg_video", type=str, default=None, help="Background video (loops if shorter than the subject clip).")
     p.add_argument("--view", choices=VIEWS, default="composite",
-                   help="composite = the result; matte = the cut-out mask; checkerboard = subject on a checkerboard.")
+                   help="composite = the result; matte = the cut-out mask (a grayscale video you can connect to Key "
+                        "Composite); checkerboard = subject on a checkerboard.")
     p.add_argument("--audio", choices=KEY_AUDIO, default=KEY_AUDIO[0],
                    help="Audio to keep: the foreground video (default), the background video, both mixed, or silence.")
     p.add_argument("--shrink", type=int, default=1, help="Edge shrink in pixels (0-10). Default: 1.")

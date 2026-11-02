@@ -49,6 +49,10 @@ FFMPEG = ROOT / "gui" / "resources" / "ffmpeg" / "ffmpeg"
 CLIP_FILES = {"sample": "sample.mp4", "sample2": "sample2.mp4", "sample3": "sample3.mp4"}
 EXTRA_CLIPS = ["sample2", "sample3"]
 STEP_WIDTH = 520                                # canvas spacing between program nodes (wide modes like Triptych need room)
+# Modes the sample clips cannot show. They are left out, with the reason printed, rather than shipped as a no-op.
+NOT_ON_SAMPLES = {
+    "crop_black": "the sample clips have no black bars to crop (use it on your own letterboxed footage)",
+}
 
 # Chains: several program modes in a row. Each step is (program id, {video argument: clip token}).
 CHAINS = [
@@ -259,6 +263,8 @@ def main() -> int:
             clips, fixed = {}, {}
             if pid in hidden:
                 reason = "hidden from the app"
+            elif pid in NOT_ON_SAMPLES:
+                reason = NOT_ON_SAMPLES[pid]
             elif p["batch"]:
                 reason = "batch mode (needs a folder)"
             elif p["outputType"] not in ("video", None):

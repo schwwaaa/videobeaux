@@ -80,7 +80,7 @@ export default function CanvasToolbar({ width, isRunning, canUndo, canRedo, onUn
     { id: 'load', icon: '📂', label: 'Load Preset', short: 'Load', onClick: onLoad, disabled: isRunning },
     { id: 'examples', icon: '🧪', label: 'Examples', short: 'Examples', onClick: onExamples, disabled: isRunning },
     { id: 'snap', icon: '📸', label: 'Snapshot', short: 'Snap', title: 'Save a picture of the whole patch (PNG) together with its preset (JSON)', onClick: onSnapshot },
-    { id: 'tidy', icon: '✨', label: tidyLabel || 'Tidy', short: tidyLabel || 'Tidy', title: 'Arrange the programs neatly, left to right (⌘⇧L; ⌘Z undoes)', onClick: onTidy, disabled: isRunning },
+    { id: 'tidy', icon: '✨', label: tidyLabel || 'Tidy', short: tidyLabel || 'Tidy', title: 'Arrange the programs neatly, following the shape of the canvas (⇧⌘L; ⌥⇧⌘L always top to bottom; ⌘Z undoes)', onClick: onTidy, disabled: isRunning },
     { id: 'clear', icon: '🗑', label: 'Clear', short: 'Clear', title: 'Clear the workspace (asks first; ⌘Z undoes)', onClick: onClear, disabled: isRunning }
   ]
 

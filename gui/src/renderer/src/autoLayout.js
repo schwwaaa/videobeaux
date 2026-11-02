@@ -1,15 +1,25 @@
-// "Tidy": arrange the programs left → right as a layered graph, using their real sizes so nothing overlaps.
+// "Tidy": arrange the programs as a layered graph, using their real sizes so nothing overlaps.
 //
 //   columns  = longest path out of the Inputs (Outputs always last)
 //   rows     = ordered by the average row of their inputs (two sweeps → fewer crossing lines)
 //   groups   = laid out as one block; their members keep their positions relative to the group
 //   loose    = nodes with no connections are parked in a tidy grid underneath
 //
+//   direction  'horizontal' = the flow runs left → right (the default)
+//              'vertical'   = the flow runs top → bottom: the same layout, turned on its side
+//              'auto'       = whichever of the two comes out closest to the shape of the canvas
+//
 // Pure and deterministic (same input → same output), so a second Tidy changes nothing.
 
 const GAP_X = 90
 const GAP_Y = 36
 const LOOSE_GAP = 110
+// Each direction's gaps: "rank" is the space between columns (left → right) or rows (top → bottom), "within" the space
+// between the programs stacked in one column or spread along one row.
+const GAPS = {
+  horizontal: { rank: GAP_X, within: GAP_Y },
+  vertical: { rank: GAP_Y * 2, within: GAP_X },
+}
 
 export function nodeSize(n) {
   const w = n.measured?.width ?? n.width ?? (n.type === 'outputNode' ? 230 : n.type === 'inputNode' ? 240 : 250)
@@ -18,10 +28,12 @@ export function nodeSize(n) {
 }
 
 /**
- * @param {{nodes: object[], edges: object[], only?: string[]|null}} p  `only` = lay out just these (plus their groups).
+ * @param {{nodes: object[], edges: object[], only?: string[]|null, direction?: 'horizontal'|'vertical'|'auto',
+ *          aspect?: number}} p
+ *   `only` = lay out just these (plus their groups). `aspect` = the canvas width ÷ height, used by 'auto'.
  * @returns {{positions: Record<string,{x:number,y:number}>}} new positions for top-level nodes that were laid out.
  */
-export function autoLayout({ nodes, edges, only = null }) {
+export function autoLayout({ nodes, edges, only = null, direction = 'horizontal', aspect = 16 / 9 }) {
   const byId = new Map(nodes.map(n => [n.id, n]))
   const rep = (id) => { const n = byId.get(id); return n && n.parentId && byId.has(n.parentId) ? n.parentId : id }
   let items = nodes.filter(n => !n.parentId && !n.hidden)
@@ -30,8 +42,40 @@ export function autoLayout({ nodes, edges, only = null }) {
     items = items.filter(n => want.has(n.id))
   }
   if (items.length === 0) return { positions: {} }
-  const ids = new Set(items.map(n => n.id))
   const size = new Map(items.map(n => [n.id, nodeSize(n)]))
+  const pos = new Map(items.map(n => [n.id, n.position]))
+
+  const horizontal = layoutColumns({ items, edges, rep, size, pos, gaps: GAPS.horizontal })
+  if (direction === 'horizontal') return { positions: horizontal }
+
+  // Vertical: the same layout with x and y swapped. Sizes and positions go in turned, and the result comes back turned.
+  const turnedSize = new Map([...size].map(([id, { w, h }]) => [id, { w: h, h: w }]))
+  const turnedPos = new Map([...pos].map(([id, p]) => [id, { x: p.y, y: p.x }]))
+  const turned = layoutColumns({ items, edges, rep, size: turnedSize, pos: turnedPos, gaps: GAPS.vertical })
+  const vertical = Object.fromEntries(Object.entries(turned).map(([id, p]) => [id, { x: p.y, y: p.x }]))
+  if (direction === 'vertical') return { positions: vertical }
+
+  // auto: keep whichever arrangement's overall shape is closer to the canvas (ties go to horizontal)
+  const offHorizontal = shapeOff(horizontal, size, aspect)
+  const offVertical = shapeOff(vertical, size, aspect)
+  return { positions: offVertical < offHorizontal ? vertical : horizontal }
+}
+
+// How far an arrangement's overall shape is from the target aspect ratio, on a log scale (0 = exactly that shape).
+function shapeOff(positions, size, aspect) {
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity
+  for (const [id, p] of Object.entries(positions)) {
+    const { w, h } = size.get(id)
+    x0 = Math.min(x0, p.x); y0 = Math.min(y0, p.y)
+    x1 = Math.max(x1, p.x + w); y1 = Math.max(y1, p.y + h)
+  }
+  const target = aspect > 0 && Number.isFinite(aspect) ? aspect : 16 / 9
+  return Math.abs(Math.log(Math.max(1, x1 - x0) / Math.max(1, y1 - y0)) - Math.log(target))
+}
+
+// Lays out the graph with the flow running along x. The vertical arrangement calls this on the turned graph.
+function layoutColumns({ items, edges, rep, size, pos, gaps }) {
+  const ids = new Set(items.map(n => n.id))
 
   // edges between laid-out items (members count as their group)
   const out = new Map(items.map(n => [n.id, new Set()]))
@@ -48,6 +92,8 @@ export function autoLayout({ nodes, edges, only = null }) {
   for (const n of items) if (isEnd(n) && n.deletable === false) connected.add(n.id)
   const main = items.filter(n => connected.has(n.id))
   const loose = items.filter(n => !connected.has(n.id))
+  // the order the user already has on the canvas (top to bottom, then left to right) keeps the result close to it
+  const byPosition = (a, b) => pos.get(a.id).y - pos.get(b.id).y || pos.get(a.id).x - pos.get(b.id).x || (a.id < b.id ? -1 : 1)
 
   // ── columns: longest path from the sources (cycles are cut at the back edge) ──
   const layer = new Map()
@@ -74,17 +120,16 @@ export function autoLayout({ nodes, edges, only = null }) {
     maxLayer = Math.max(maxLayer, lastNonOutput + 1)
   }
   const cols = Array.from({ length: maxLayer + 1 }, () => [])
-  // start from the current vertical order so the result stays close to what the user had
-  for (const n of [...main].sort((a, b) => a.position.y - b.position.y || a.position.x - b.position.x || (a.id < b.id ? -1 : 1))) cols[layer.get(n.id)].push(n.id)
+  for (const n of [...main].sort(byPosition)) cols[layer.get(n.id)].push(n.id)
 
   // ── rows: barycentre sweeps ──
   const order = () => { const m = new Map(); cols.forEach(c => c.forEach((id, i) => m.set(id, i))); return m }
   const sweep = (from, to, step, nbrs) => {
     for (let c = from; c !== to; c += step) {
-      const pos = order()
+      const p = order()
       const bary = new Map(cols[c].map((id, i) => {
         const ns = [...nbrs(id)].filter(x => layer.get(x) === c - step)
-        return [id, ns.length ? ns.reduce((s, x) => s + pos.get(x), 0) / ns.length : i]
+        return [id, ns.length ? ns.reduce((s, x) => s + p.get(x), 0) / ns.length : i]
       }))
       cols[c] = [...cols[c]].sort((a, b) => bary.get(a) - bary.get(b) || (a < b ? -1 : 1))
     }
@@ -93,10 +138,10 @@ export function autoLayout({ nodes, edges, only = null }) {
 
   // ── coordinates ──
   const colW = cols.map(c => Math.max(0, ...c.map(id => size.get(id).w)))
-  const colH = cols.map(c => c.reduce((s, id) => s + size.get(id).h, 0) + Math.max(0, c.length - 1) * GAP_Y)
+  const colH = cols.map(c => c.reduce((s, id) => s + size.get(id).h, 0) + Math.max(0, c.length - 1) * gaps.within)
   const tallest = Math.max(0, ...colH)
-  const x0 = Math.min(...items.map(n => n.position.x))
-  const y0 = Math.min(...items.map(n => n.position.y))
+  const x0 = Math.min(...items.map(n => pos.get(n.id).x))
+  const y0 = Math.min(...items.map(n => pos.get(n.id).y))
   const positions = {}
   let x = x0
   cols.forEach((c, ci) => {
@@ -104,25 +149,25 @@ export function autoLayout({ nodes, edges, only = null }) {
     for (const id of c) {
       const { w, h } = size.get(id)
       positions[id] = { x: Math.round(x + (colW[ci] - w) / 2), y: Math.round(y) }
-      y += h + GAP_Y
+      y += h + gaps.within
     }
-    x += colW[ci] + GAP_X
+    x += colW[ci] + gaps.rank
   })
-  const mainRight = Math.max(x0 + 1, x - GAP_X)
+  const mainRight = Math.max(x0 + 1, x - gaps.rank)
   const mainBottom = y0 + tallest
 
   // ── loose nodes: a tidy grid below ──
   if (loose.length) {
     const avgW = loose.reduce((s, n) => s + size.get(n.id).w, 0) / loose.length
-    const perRow = Math.max(1, Math.floor((mainRight - x0 + GAP_X) / (avgW + GAP_X)))
-    const sorted = [...loose].sort((a, b) => a.position.y - b.position.y || a.position.x - b.position.x || (a.id < b.id ? -1 : 1))
+    const perRow = Math.max(1, Math.floor((mainRight - x0 + gaps.rank) / (avgW + gaps.rank)))
+    const sorted = [...loose].sort(byPosition)
     let y = mainBottom + (main.length ? LOOSE_GAP : 0)
     for (let r = 0; r * perRow < sorted.length; r++) {
       const row = sorted.slice(r * perRow, (r + 1) * perRow)
       let xx = x0
-      for (const n of row) { positions[n.id] = { x: Math.round(xx), y: Math.round(y) }; xx += size.get(n.id).w + GAP_X }
-      y += Math.max(...row.map(n => size.get(n.id).h)) + GAP_Y
+      for (const n of row) { positions[n.id] = { x: Math.round(xx), y: Math.round(y) }; xx += size.get(n.id).w + gaps.rank }
+      y += Math.max(...row.map(n => size.get(n.id).h)) + gaps.within
     }
   }
-  return { positions }
+  return positions
 }

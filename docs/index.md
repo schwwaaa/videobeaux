@@ -12,6 +12,12 @@ nav_order: 1
 
 # Program List
 ## Effects
+- [audio_visualizer](programs/effects/audio_visualizer.md)
+- [ken_burns](programs/effects/ken_burns.md)
+- [local_contrast](programs/effects/local_contrast.md)
+- [motion_mask](programs/effects/motion_mask.md)
+- [color_match](programs/effects/color_match.md)
+- [pixel_sort](programs/effects/pixel_sort.md)
 - [bad_animation](programs/effects/bad_animation.md)
 - [bad_contrast](programs/effects/bad_contrast.md)
 - [ball_point_pen](programs/effects/ball_point_pen.md)
@@ -74,4 +80,15 @@ nav_order: 1
 - [tonemap_hdr_sdr](programs/utilities/tonemap_hdr_sdr.md)
 - [transraibe](programs/utilities/transraibe.md)
 - [watermark](programs/utilities/watermark.md)
+- [text_overlay](programs/utilities/text_overlay.md)
+- [key_composite](programs/utilities/key_composite.md)
+- [loudness_normalize](programs/utilities/loudness_normalize.md)
+- [audio_denoise](programs/utilities/audio_denoise.md)
+- [deinterlace](programs/utilities/deinterlace.md)
+- [denoise_video](programs/utilities/denoise_video.md)
+- [lens_correct](programs/utilities/lens_correct.md)
+- [subtitle_burn](programs/utilities/subtitle_burn.md)
+- [sharpen](programs/utilities/sharpen.md)
+- [audio_duck](programs/utilities/audio_duck.md)
+- [clean_plate](programs/utilities/clean_plate.md)
 - [wipe_transitions](programs/utilities/wipe_transitions.md)

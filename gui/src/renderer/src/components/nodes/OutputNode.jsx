@@ -157,7 +157,8 @@ export default function OutputNode({ id, data }) {
         { name: 'All Files', extensions: ['*'] }
       ]
     })
-    if (path) updateNodeData(id, { filePath: path })
+    // The container format decides the extension, so whatever was picked, the stored name ends in the format's extension.
+    if (path) updateNodeData(id, { filePath: replaceExt(path, ext) })
   }
 
   const handleFormatChange = (newFmt) => {
@@ -168,8 +169,9 @@ export default function OutputNode({ id, data }) {
     updateNodeData(id, update)
   }
 
+  // Show the name only: the extension comes from the container format, so it isn't shown here.
   const filename = data.filePath
-    ? data.filePath.split(/[\\/]/).pop()
+    ? data.filePath.split(/[\\/]/).pop().replace(/\.[^.]+$/, '')
     : null
 
   return (

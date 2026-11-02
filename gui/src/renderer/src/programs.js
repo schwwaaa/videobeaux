@@ -102,6 +102,8 @@ export const CATEGORIES = [
     label: 'Color & Look',
     color: '#8654aa',
     programs: [
+      { id: 'color_match', label: 'Color Match', description: 'Moves the clip\'s colour toward a reference clip or still (Reinhard LAB transfer), measured once so the whole clip gets the same correction', args: [] },
+      { id: 'local_contrast', label: 'Local Contrast (CLAHE)', description: 'Equalises contrast in small patches, so dark corners and bright skies both show detail. Lightness only: the colours stay put', args: [] },
       {
         id: 'gamma_fix',
         label: 'Gamma Fix',
@@ -176,6 +178,7 @@ export const CATEGORIES = [
     label: 'Vision & Tracking',
     color: '#2ec4b6',
     programs: [
+      { id: 'motion_mask', label: 'Motion Mask', description: 'Shows what moves: a black-and-white mask, the picture with the moving parts tinted, or only the moving parts (background subtraction)', args: [] },
       { id: 'face_track', label: 'Face Track', description: 'Detect and track faces with boxes, brackets, IDs, trails, a spotlight, or an image pasted on each face', args: [] },
       { id: 'face_redact', label: 'Face Redact', description: 'Blur, pixelate, fill or dither over tracked faces — or hide everything except the faces', args: [] },
       { id: 'face_follow', label: 'Face Follow', description: 'Smart reframe: a smoothed virtual camera that pans and zooms to keep a face in shot', args: [] },
@@ -190,11 +193,48 @@ export const CATEGORIES = [
     label: 'Layout & Overlay',
     color: '#32b9df',
     programs: [
+      { id: 'clean_plate', label: 'Clean Plate', description: 'Removes people and cars that move through a locked-off shot: the empty scene is built from the median of sampled frames, then the moving parts are replaced with it', args: [] },
+      { id: 'key_composite', label: 'Key Composite', description: 'The second half of Remove Background: puts the subject over a new background from a matte video (connect a Remove Background set to View = matte). Change the background without matting again', args: [] },
+      { id: 'audio_visualizer', label: 'Audio Visualizer', description: 'Draws the sound over the picture: a waveform line or a spectrum of bars, in a strip at the top or bottom, or across the whole picture', args: [] },
+      { id: 'ken_burns', label: 'Ken Burns', description: 'A slow push-in or pull-out across the whole clip, closing in on a focus point you choose. Works on stills and footage', args: [] },
       {
         id: 'watermark',
         label: 'Watermark / Image Overlay',
         description: 'Overlay a watermark or image onto the video — 9-point placement or custom X/Y, scale or exact pixel sizing, opacity, spin, and a timed enable window',
         args: []
+      },
+      {
+        id: 'text_overlay',
+        label: 'Text Overlay',
+        description: 'A simple titler: a block of text over the video, with the font and colours of Auto Narrate, placed and timed like Watermark (9-point placement or custom X/Y, Appear/Disappear times)',
+        args: [
+          { name: 'text', label: 'Text', type: 'text', required: true, multiline: true,
+            help: 'The words to show. Press Enter for a second line.' },
+          { name: 'font', label: 'Font', type: 'font', required: false, default: 'Arial',
+            help: 'Font name (or a path to a .ttf/.otf file)' },
+          { name: 'font_size', label: 'Font Size', type: 'number', required: false, default: 76,
+            help: 'Font size in px. Every title uses this size; long text wraps onto more lines instead of shrinking' },
+          { name: 'primary_color', label: 'Text Color', type: 'color', required: false, default: '#FFFFFF',
+            help: 'Colour of the text' },
+          { name: 'outline_color', label: 'Outline Color', type: 'color', required: false, default: '#000000',
+            help: 'Text outline colour' },
+          { name: 'placement', label: 'Placement', type: 'select', required: false, default: 'bottom-center',
+            choices: ['top-left', 'top-center', 'top-right', 'center-left', 'center', 'center-right',
+                      'bottom-left', 'bottom-center', 'bottom-right', 'custom'],
+            help: "Where the text sits. Choose 'custom' to use X/Y Position below" },
+          { name: 'margin', label: 'Margin (px)', type: 'number', required: false, default: 24, min: 0, max: 500,
+            help: 'Distance from the edges for the placement grid' },
+          { name: 'x_pos', label: 'X Position', type: 'text', required: false,
+            help: "Horizontal position in pixels or an ffmpeg expression. Only used when Placement is 'custom'" },
+          { name: 'y_pos', label: 'Y Position', type: 'text', required: false,
+            help: "Vertical position in pixels or an ffmpeg expression. Only used when Placement is 'custom'" },
+          { name: 'opacity', label: 'Opacity', type: 'number', required: false, default: 1.0, min: 0, max: 1,
+            help: 'Text opacity, 0 to 1' },
+          { name: 'start', label: 'Appear at', type: 'text', required: false, default: '0',
+            help: 'When the text appears: seconds (83.5) or a timestamp (1:23). 0 = from the start' },
+          { name: 'end', label: 'Disappear at', type: 'text', required: false, default: '0',
+            help: 'When the text goes away: seconds or a timestamp. 0 = it stays to the end' }
+        ]
       },
       { id: 'remove_background', label: 'Remove Background', description: 'Cut the subject out and put anything behind it — or export transparent WebM/MOV. Static-camera mode needs no download; optional local AI models for harder shots', args: [] },
       { id: 'chroma_key', label: 'Chroma Key', description: 'Remove a green/blue screen (or any solid color) and put a color, image or another video behind — or export transparent WebM/MOV. Auto-detects the screen color', args: [] },
@@ -232,6 +272,8 @@ export const CATEGORIES = [
       { id: 'picture_in_picture', label: 'Picture-in-Picture', description: 'A small second video inset over the main one — pick the corner, size, border, opacity and whose audio you hear; swap to flip which is full-screen', args: [] },
       { id: 'quad_split', label: 'Quad Split', description: 'Split screen: up to four videos in a 2×2 grid, side by side, stacked, or one big plus three small, with adjustable gaps', args: [] },
       { id: 'video_wall', label: 'Video Wall', description: 'The picture repeated in a grid of tiles — plain repeats, mirrored tiles, or a delay wall where each tile lags a bit more', args: [] },
+      { id: 'zoom', label: 'Zoom', description: 'Zoom in by a percentage toward a point you choose — the frame keeps its size', args: [] },
+      { id: 'crop_black', label: 'Crop Black Bars', description: 'Find black bars at the top, bottom or sides, crop them away, and scale the picture to the nearest standard frame size', args: [] },
       { id: 'rotate', label: 'Rotate', description: 'Turn the picture upside down, on its side, tilted at any angle (45°…) or slowly spinning — the output file really is rotated, with a choice of what happens to the corners', args: [] },
       { id: 'shape_synth', label: 'Shape Synth', description: 'Two animated shape generators (circle, ring, diamond, square, cross, stripes, checker, vortex) with folding, curves, stretch, spin and drift — painted over, used as a window, a warp, or a cutout. Homage to the LZX DSG3', args: [] },
       { id: 'stackadelic', label: 'Stackadelic', description: 'Three stacked rectangle / rhombus layers with layer priority — each cuts out of the ones beneath, showing a color, input A/B/C or A keyed by brightness; tile into mosaics. Homage to the LZX Stacker', args: [] }
@@ -326,9 +368,7 @@ export const CATEGORIES = [
               'squeezeh', 'squeezev', 'zoomin'
             ] },
           { name: 'duration', label: 'Transition Duration (s)', type: 'number', required: false, default: 1.0, min: 0,
-            help: 'Can be long for artistic effect, but may be capped by clip lengths' },
-          { name: 'offset', label: 'Transition Offset (s)', type: 'number', required: false, default: 3.0,
-            help: 'Where the transition starts in the first video' }
+            help: 'Length of the wipe, taken from the end of the first video and the start of the second. Must fit inside both' }
         ]
       },
       { id: 'fade_flash', label: 'Fade & Flash', description: 'Fade in/out from black, white or any color, plus timed flashes that decay or snap on/off; optionally fades the audio too', args: [] },
@@ -340,6 +380,10 @@ export const CATEGORIES = [
     label: 'Speech & Captions',
     color: '#ffe500',
     programs: [
+      { id: 'audio_duck', label: 'Audio Duck', description: 'Lowers a music bed under the clip\'s own speech (sidechain compression), then mixes the two. Connect the music', args: [] },
+      { id: 'subtitle_burn', label: 'Subtitle Burn', description: 'Burns an .srt subtitle file into the picture, with font, size, colours, outline and position', args: [] },
+      { id: 'loudness_normalize', label: 'Loudness Normalize', description: 'Brings the sound to a target loudness (LUFS) with a true-peak ceiling, so quiet and loud clips come out level', args: [] },
+      { id: 'audio_denoise', label: 'Audio Denoise', description: 'Takes hiss and hum out of speech: a rumble high-pass plus an FFT denoiser', args: [] },
       {
         id: 'transcraibe',
         label: 'Transcraibe',
@@ -364,8 +408,8 @@ export const CATEGORIES = [
         label: 'Auto Narrate',
         description: 'Adds AI-narrated captions to a video — type your own script (offline, default) or draft one from a topic via an optional local Ollama model. Synthesizes speech (kokoro-tts), transcribes it locally (Vosk), mixes it over the original audio, and burns kinetic-typography captions (the spoken word pops larger, per-frame rendered — see Kinetic Captions).',
         args: [
-          { name: 'script', label: 'Script', type: 'text', required: false,
-            help: 'Your own narration text, used verbatim. The default, no-setup path — works fully offline.' },
+          { name: 'script', label: 'Script', type: 'text', required: false, multiline: true,
+            help: 'Your own narration text, used verbatim. The default, no-setup path — works fully offline. Add <<p:2>> for two seconds of silence at that point, or <<p:.5>> for half a second.' },
           { name: 'topic', label: 'Topic (optional)', type: 'text', required: false,
             help: 'Alternative to Script: draft narration from a topic via the optional Ollama Model below.' },
           { name: 'llm_model', label: 'Ollama Model (optional)', type: 'file', subtype: 'ollama_model', required: false,
@@ -376,6 +420,8 @@ export const CATEGORIES = [
             help: 'kokoro-tts voice — listed live from your local kokoro-tts install' },
           { name: 'voice_speed', label: 'Voice Speed', type: 'number', required: false, default: 1.0,
             help: 'kokoro-tts speech speed multiplier' },
+          { name: 'start_delay', label: 'Narration Starts At (s)', type: 'number', required: false, default: 0, min: 0,
+            help: 'Seconds of silence before the narration starts, so it begins that long after the video does. The video itself is not shifted' },
           { name: 'stt_model', label: 'Vosk Model', type: 'file', subtype: 'model', required: true,
             help: 'Used to transcribe the synthesized narration' },
           { name: 'original_volume', label: 'Original Audio Volume', type: 'number', required: false, default: 0.2,
@@ -484,6 +530,10 @@ export const CATEGORIES = [
     label: 'Media Tools',
     color: '#a8ad23',
     programs: [
+      { id: 'sharpen', label: 'Sharpen', description: 'Crisps up soft footage: unsharp edge sharpening, or cas, which adds detail where the picture is soft without much halo. Colour is not changed', args: [] },
+      { id: 'deinterlace', label: 'Deinterlace', description: 'Turns interlaced footage (the comb lines on camcorder and broadcast video) into clean frames, with yadif or bwdif', args: [] },
+      { id: 'denoise_video', label: 'Denoise Video', description: 'Softens the grain of noisy footage (low light, high ISO) while keeping the edges', args: [] },
+      { id: 'lens_correct', label: 'Lens Correct', description: 'Straightens the bend of a wide-angle or action-camera lens (barrel and pincushion distortion)', args: [] },
       {
         id: 'convert_mux',
         label: 'Convert',

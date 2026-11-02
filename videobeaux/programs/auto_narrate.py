@@ -1,4 +1,6 @@
 from videobeaux.utils.media import ensure_audio
+import json
+import re
 import subprocess
 import tempfile
 from pathlib import Path
@@ -8,8 +10,9 @@ import requests
 
 from videobeaux.utils.caption_render import burn_captions
 from videobeaux.programs.transcraibe import transcribe_single
-from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
+from videobeaux.utils.ffmpeg_operations import get_video_duration, run_ffmpeg_with_progress
 from videobeaux.utils.kokoro import SETUP_HINT, kokoro_command, model_paths, models_present
+from videobeaux.utils.script_align import align_script, to_transcript, vosk_words
 
 OLLAMA_URL = "http://localhost:11434/api/chat"
 
@@ -38,11 +41,19 @@ def register_arguments(parser):
         "to draft one via an optional local Ollama model instead. Either way: synthesizes speech "
         "with kokoro-tts, transcribes it locally (Vosk), mixes it over the original audio at a lower "
         "volume, and burns kinetic-typography captions (the actively-spoken word pops larger).\n"
+        "With --script, the captions use the words of your script, timed from the narration, so names and "
+        "unusual words are spelled as you wrote them. Put <<p:SECONDS>> in the script for silence at that "
+        "point, and use --start_delay to hold the narration back from the start of the video.\n"
         "Exactly one of --script or --topic is required."
     )
     parser.add_argument(
         "--script", type=str, default=None,
-        help="Your own narration text, used exactly as written. The default, no-setup path — no network/service call happens."
+        help="Your own narration text, used exactly as written. The default, no-setup path — no network/service call happens. "
+             "<<p:SECONDS>> inserts silence (e.g. <<p:2>> or <<p:.5>> for half a second)."
+    )
+    parser.add_argument(
+        "--start_delay", type=float, default=0.0,
+        help="Seconds of silence before the narration starts, so it begins that long after the video does. Default: 0."
     )
     parser.add_argument(
         "--topic", type=str, default=None,
@@ -140,6 +151,84 @@ Return ONLY the narration.
     return response.json()["message"]["content"].strip()
 
 
+# <<p:2>> in a script is two seconds of silence at that point; <<p:.5>> and <<p:0.5>> are half a second.
+PAUSE_RE = re.compile(r"<<\s*p\s*:\s*(\d+\.?\d*|\.\d+)\s*>>", re.IGNORECASE)
+KOKORO_RATE = 24000
+
+
+def split_script(script, start_delay=0.0):
+    """
+    The narration as an ordered list: ("text", str) to speak and ("pause", seconds) of silence.
+    A <<p:N>> marker is N seconds of silence where it sits; start_delay is silence before everything.
+    """
+    for marker in re.findall(r"<<.*?>>", script):
+        if not PAUSE_RE.fullmatch(marker):
+            raise SystemExit(
+                f"❌ Unknown marker {marker} in the script. The only marker is <<p:SECONDS>>, e.g. <<p:2>> or <<p:.5>>."
+            )
+    items = [("pause", start_delay)] if start_delay > 0 else []
+    pos = 0
+    for m in PAUSE_RE.finditer(script):
+        items.append(("text", script[pos:m.start()]))
+        items.append(("pause", float(m.group(1))))
+        pos = m.end()
+    items.append(("text", script[pos:]))
+    return [
+        (kind, value.strip() if kind == "text" else value)
+        for kind, value in items
+        if (kind == "text" and value.strip()) or (kind == "pause" and value > 0)
+    ]
+
+
+def _join_narration(items, tmp, speak):
+    """
+    Speak each text part with speak(text_file, wav), then join the parts and their pauses into one wav. The pauses are
+    real silence in that wav, so Vosk's timings (and the captions) already include them.
+    """
+    inputs, chains = [], []
+    wav = None
+    for n, (kind, value) in enumerate(items):
+        if kind == "text":
+            text_file, wav = tmp / f"part_{n:03d}.txt", tmp / f"part_{n:03d}.wav"
+            text_file.write_text(value, encoding="utf-8")
+            speak(text_file, wav)
+            inputs += ["-i", str(wav)]
+        else:
+            inputs += ["-f", "lavfi", "-t", f"{value:.3f}", "-i", f"anullsrc=r={KOKORO_RATE}:cl=mono"]
+        chains.append(f"[{n}:a]aformat=sample_rates={KOKORO_RATE}:channel_layouts=mono[p{n}]")
+    if len(items) == 1:
+        return wav
+    out = tmp / "narration.wav"
+    labels = "".join(f"[p{n}]" for n in range(len(items)))
+    filter_complex = ";".join(chains) + f";{labels}concat=n={len(items)}:v=0:a=1[out]"
+    try:
+        subprocess.run(
+            ["ffmpeg", "-y", "-v", "error", *inputs, "-filter_complex", filter_complex,
+             "-map", "[out]", "-c:a", "pcm_s16le", str(out)],
+            check=True,
+        )
+    except subprocess.CalledProcessError as e:
+        raise SystemExit(f"❌ Joining the narration with its pauses failed: {e}")
+    return out
+
+
+def _script_captions(script, vosk_json, narration_wav, tmp):
+    """
+    The transcript the captions are drawn from: the script's own words, timed by Vosk's word timings. When Vosk
+    heard none of the script's words, the script is spread evenly over the narration instead, so the captions
+    still read as the script.
+    """
+    heard = vosk_words(vosk_json) if vosk_json.exists() else []
+    words, matched = align_script(script, heard, duration=get_video_duration(str(narration_wav)))
+    if matched == 0:
+        print("⚠️  Vosk heard none of the script's words, so the script is timed evenly over the narration.")
+    else:
+        print(f"ℹ️  Timed {matched} of {len(words)} script words from the narration.")
+    out = tmp / "narration_script.json"
+    out.write_text(json.dumps(to_transcript(words), ensure_ascii=False), encoding="utf-8")
+    return out
+
+
 def run(args):
     # audio filter graphs need an audio track on every input
     if getattr(args, 'input', None):
@@ -181,25 +270,30 @@ def run(args):
 
     if not script:
         raise SystemExit("❌ Narration script is empty. Nothing to narrate.")
+    if args.start_delay < 0:
+        raise SystemExit("❌ --start_delay can't be negative.")
+    items = split_script(script, args.start_delay)
+    if not any(kind == "text" for kind, _ in items):
+        raise SystemExit("❌ The script has only pause markers and nothing to say.")
+    spoken = PAUSE_RE.sub(" ", script)   # the words the captions are drawn from: the script without its markers
 
     with tempfile.TemporaryDirectory(prefix="videobeaux_narrate_") as tmp_str:
         tmp = Path(tmp_str)
 
-        script_file = tmp / "narration.txt"
-        script_file.write_text(script, encoding="utf-8")
+        def speak(text_file, wav):
+            kokoro_cmd = [
+                *kokoro, str(text_file), str(wav),
+                "--voice", args.voice, "--speed", str(args.voice_speed), "--lang", "en-us",
+            ]
+            if have_models:
+                kokoro_cmd += ["--model", str(kokoro_model), "--voices", str(kokoro_voices)]
+            try:
+                subprocess.run(kokoro_cmd, check=True)
+            except subprocess.CalledProcessError as e:
+                raise SystemExit(f"❌ kokoro-tts failed: {e}")
 
-        narration_wav = tmp / "narration.wav"
         print("ℹ️  Synthesizing narration with kokoro-tts…")
-        kokoro_cmd = [
-            *kokoro, str(script_file), str(narration_wav),
-            "--voice", args.voice, "--speed", str(args.voice_speed), "--lang", "en-us",
-        ]
-        if have_models:
-            kokoro_cmd += ["--model", str(kokoro_model), "--voices", str(kokoro_voices)]
-        try:
-            subprocess.run(kokoro_cmd, check=True)
-        except subprocess.CalledProcessError as e:
-            raise SystemExit(f"❌ kokoro-tts failed: {e}")
+        narration_wav = _join_narration(items, tmp, speak)
 
         transcript_path = tmp / "narration.json"
         print("ℹ️  Transcribing narration locally (Vosk)…")
@@ -237,7 +331,7 @@ def run(args):
             input=str(mixed_path),
             output=args.output,
             force=getattr(args, 'force', False),
-            trans_json=str(transcript_path),
+            trans_json=str(_script_captions(spoken, transcript_path, narration_wav, tmp)),
             caption=None,
             font=args.font,
             # A requested starting size, not a guaranteed final one — the caption renderer

@@ -12,7 +12,7 @@
 #   --width/--height pixel dimensions when you need precise control
 # - Opacity via colorchannelmixer (alpha)
 # - Optional spin (continuous rotation over time)
-# - Timed enable window (start/end seconds)
+# - Timed enable window: appear at --start, go away at --end (seconds or m:ss / h:mm:ss)
 # - Safe stream mapping and mp4-friendly output
 #
 # Example:
@@ -53,8 +53,25 @@ GUI_METADATA = {
         'y_pos': {'help': "Vertical position (pixels or an ffmpeg expression). Only used when Placement is 'custom'."},
         'width': {'help': "Exact overlay width in pixels. Overrides --scale when set."},
         'height': {'help': "Exact overlay height in pixels (or -1 to preserve aspect ratio). Overrides --scale when set."},
+        'start': {'label': 'Appear at', 'help': "When the image appears: seconds (83.5) or a timestamp (1:23, 0:01:23.5). 0 = from the start."},
+        'end': {'label': 'Disappear at', 'help': "When the image goes away: seconds or a timestamp. 0 = it stays to the end."},
     }
 }
+
+
+def _parse_time(value, flag: str) -> float:
+    """Seconds, or a timestamp: 83, 83.5, 1:23, 1:23.5 or 0:01:23.5."""
+    text = str(value if value is not None else 0).strip() or "0"
+    try:
+        parts = [float(p) for p in text.split(":")]
+    except ValueError:
+        raise SystemExit(f"❌ {flag} must be seconds (83.5) or a timestamp (1:23 or 0:01:23.5).")
+    if len(parts) > 3 or any(p < 0 for p in parts):
+        raise SystemExit(f"❌ {flag} must be seconds (83.5) or a timestamp (1:23 or 0:01:23.5).")
+    seconds = 0.0
+    for part in parts:
+        seconds = seconds * 60 + part
+    return seconds
 
 
 # 9-point placement grid + margin, using ffmpeg overlay filter variables
@@ -147,9 +164,10 @@ def register_arguments(parser: argparse.ArgumentParser):
                         help="Watermark opacity (0.0–1.0).")
     parser.add_argument("--spin", type=float, default=0.0,
                         help="Watermark spin in degrees per second (0 = no rotation).")
-    parser.add_argument("--start", type=float, default=0.0, help="Enable overlay starting at t seconds.")
-    parser.add_argument("--end", type=float, default=0.0,
-                        help="Disable overlay after t seconds (0 = until end).")
+    parser.add_argument("--start", type=str, default="0",
+                        help="When the image appears: seconds (83.5) or a timestamp (1:23, 0:01:23.5). 0 = from the start.")
+    parser.add_argument("--end", type=str, default="0",
+                        help="When the image goes away: seconds or a timestamp. 0 = it stays to the end.")
 
     # GIF/animated controls
     parser.add_argument("--wm-loop", type=int, default=0,
@@ -187,11 +205,15 @@ def run(args: argparse.Namespace):
     else:
         x_expr, y_expr = _placement_xy(args.placement, args.margin)
 
-    # Enable expression
-    if args.end and args.end > 0:
-        enable_expr = f"between(t,{float(args.start)},{float(args.end)})"
+    # Enable window: appears at --start, goes away at --end (0 = never)
+    start = _parse_time(args.start, "--start")
+    end = _parse_time(args.end, "--end")
+    if end > 0 and end <= start:
+        raise SystemExit("❌ --end must be later than --start.")
+    if end > 0:
+        enable_expr = f"between(t,{start},{end})"
     else:
-        enable_expr = f"gte(t,{float(args.start)})"
+        enable_expr = f"gte(t,{start})"
 
     # Build the watermark processing chain
     # 1) size: exact --width/--height when given, else scale relative to its

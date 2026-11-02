@@ -100,7 +100,7 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
   const restored = startRef.current
   const [nodes, setNodes, onNodesChange] = useNodesState(restored ? restored.nodes : INITIAL_NODES)
   const [edges, setEdges, onEdgesChange] = useEdgesState(restored ? restored.edges : [])
-  const { screenToFlowPosition, getViewport, getNodes, deleteElements } = useReactFlow()
+  const { screenToFlowPosition, getViewport, getNodes, getInternalNode, deleteElements } = useReactFlow()
   // React Flow is shown *display* edges (collapsed groups re-route their boundary edges); logic uses the real ones.
   const edgesRef = useRef(edges)
   edgesRef.current = edges
@@ -276,13 +276,14 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
 
   // ── Clear workspace (confirmed, undoable) ──────────────────────────────────
   const [confirmClear, setConfirmClear] = useState(false)
-  const clearWorkspace = useCallback((alsoPaths) => {
+  // The Input and Output nodes stay where they are (with their format) but their file names are cleared too.
+  const clearWorkspace = useCallback(() => {
     record()
     const current = new Map(getNodes().map(n => [n.id, n]))
     setNodes(INITIAL_NODES.map(n => {
       const cur = current.get(n.id)
       if (!cur) return n
-      return alsoPaths ? { ...n, position: cur.position } : { ...n, position: cur.position, data: cur.data }
+      return { ...n, position: cur.position, data: { ...cur.data, filePath: '' } }
     }))
     setEdges([])
     setRunError(null)
@@ -294,16 +295,23 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
     setEdges(es => es.some(e => e.selected) ? es.map(e => (e.selected ? { ...e, selected: false } : e)) : es)
   }, [setNodes, setEdges])
 
-  // ✨ Tidy: arrange the programs left → right (the selection only, when 2+ are selected). One undo step.
-  const handleTidy = useCallback(() => {
-    const current = getNodes()
+  // ✨ Tidy: arrange the programs (the selection only, when 2+ are selected). One undo step.
+  // 'auto' follows the shape of the canvas on screen: a wide window flows left → right, a tall one top → bottom.
+  const handleTidy = useCallback((direction = 'auto') => {
+    // the sizes React Flow has measured (getNodes() does not carry them, so the layout would guess)
+    const current = getNodes().map(n => {
+      const measured = getInternalNode(n.id)?.measured
+      return measured ? { ...n, measured } : n
+    })
     const sel = current.filter(n => n.selected).map(n => n.id)
-    const { positions } = autoLayout({ nodes: current, edges: edgesRef.current, only: sel.length > 1 ? sel : null })
+    const canvas = document.querySelector('.react-flow')
+    const aspect = canvas && canvas.clientHeight ? canvas.clientWidth / canvas.clientHeight : 16 / 9
+    const { positions } = autoLayout({ nodes: current, edges: edgesRef.current, only: sel.length > 1 ? sel : null, direction, aspect })
     if (!Object.keys(positions).length) return
     record()
     setNodes(ns => ns.map(n => (positions[n.id] ? { ...n, position: positions[n.id] } : n)))
     setTimeout(() => fitView({ padding: 0.15, duration: 300, minZoom: 0.05 }), 60)
-  }, [getNodes, record, setNodes, fitView])
+  }, [getNodes, getInternalNode, record, setNodes, fitView])
   const handleTidyRef = useRef(handleTidy)
   handleTidyRef.current = handleTidy
 
@@ -317,11 +325,13 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
         clearSelection()
         return
       }
-      if (!(e.metaKey || e.ctrlKey) || e.altKey) return
+      if (!(e.metaKey || e.ctrlKey)) return
+      // ⇧⌘L tidies (auto); ⌥⇧⌘L tidies top → bottom. e.code, because Option changes e.key on macOS.
+      if (e.shiftKey && e.code === 'KeyL') { e.preventDefault(); handleTidyRef.current(e.altKey ? 'vertical' : 'auto'); return }
+      if (e.altKey) return
       const k = e.key.toLowerCase()
       if (k === 'z' && !e.shiftKey) { e.preventDefault(); undo() }
       else if ((k === 'z' && e.shiftKey) || k === 'y') { e.preventDefault(); redo() }
-      else if (k === 'l' && e.shiftKey) { e.preventDefault(); handleTidyRef.current() }
       else if (k === 'a') {
         e.preventDefault()
         setNodes(ns => ns.map(n => (n.selected ? n : { ...n, selected: true })))
@@ -896,7 +906,7 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
             isRunning={isRunning}
             canUndo={canUndo} canRedo={canRedo} onUndo={undo} onRedo={redo}
             onSave={handleSave} onLoad={() => handleLoad()} onExamples={() => setExamplesOpen(true)} onSnapshot={handleSnapshot}
-            onTidy={handleTidy} tidyLabel={selectionCount > 0 ? 'Tidy selection' : 'Tidy'}
+            onTidy={() => handleTidy('auto')} tidyLabel={selectionCount > 0 ? 'Tidy selection' : 'Tidy'}
             onClear={() => setConfirmClear(true)}
           />
         </Panel>
@@ -963,9 +973,8 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
             This removes {nodes.filter(n => n.type === 'effectNode').length} program(s)
             {nodes.some(n => n.type === 'groupNode') ? `, ${nodes.filter(n => n.type === 'groupNode').length} group(s)` : ''}
             {nodes.filter(n => n.type === 'inputNode' && n.deletable !== false).length ? ', the extra inputs' : ''} and {edges.length} connection(s).
-            You can undo it with ⌘Z.
+            The Input and Output file names are cleared too. You can undo it with ⌘Z.
           </>}
-          checkboxLabel="Also clear the Input / Output file paths"
           onConfirm={clearWorkspace}
           onCancel={() => setConfirmClear(false)}
         />

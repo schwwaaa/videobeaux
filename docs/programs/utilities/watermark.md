@@ -23,7 +23,8 @@ This tool covers both subtle branding use (small, semi-transparent, faded in/out
    - `wm-loop` determines whether GIF watermarks loop.  
    - `ignore-loop` overrides embedded GIF loop metadata for continuous playback.
 5. **Timing Controls**  
-   - `start` and `end` specify when the overlay appears (0/unset `end` means until the end of the clip).
+   - `start` (Appear at) and `end` (Disappear at) take seconds (`83.5`) or a timestamp (`1:23`, `0:01:23.5`).  
+   - `start` 0 means from the beginning; `end` 0 means it stays to the end of the clip.
 6. **Optional Spin**  
    - `spin` rotates the overlay continuously, in degrees per second (0 = no rotation).
 7. **Encoding**  
@@ -60,8 +61,8 @@ This tool covers both subtle branding use (small, semi-transparent, faded in/out
 - **width** / **height** — Exact pixel dimensions; overrides `scale` when either is set (`-1` preserves aspect ratio).  
 - **opacity** — Transparency level (0.0–1.0).  
 - **spin** — Rotation speed in degrees per second (0 = no rotation).  
-- **start** — Timestamp when the overlay begins appearing.  
-- **end** — Timestamp when the overlay stops appearing (0 = until the end).  
+- **start** — When the overlay appears: seconds or a timestamp (`1:23`). 0 = from the beginning.  
+- **end** — When the overlay goes away: seconds or a timestamp. 0 = it stays to the end.  
 - **wm-loop** — Controls looping behavior of animated (GIF) watermarks.  
 - **ignore-loop** — Forces continuous play, overriding GIF loop metadata.  
 - **video-crf** — CRF controlling overall visual quality.  

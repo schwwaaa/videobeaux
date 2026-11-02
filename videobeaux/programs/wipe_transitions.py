@@ -74,7 +74,11 @@ GUI_METADATA = {
 }
 
 def register_arguments(parser):
-    parser.description = "Combines two input videos with a transitional wipe using FFmpeg's xfade filter. Supports various preset transitions and customizable duration."
+    parser.description = (
+        "Joins two input videos with a transitional wipe using FFmpeg's xfade filter. The wipe sits at the join: "
+        "the first video plays to its end, the wipe runs over the last --duration seconds of it and the start of the "
+        "second video, and the audio crossfades at the same moment. Supports various preset transitions."
+    )
     # The first video comes from the standard global -i/--input, matching
     # every other multi-input program; only the second is an extra arg.
     parser.add_argument(
@@ -94,13 +98,7 @@ def register_arguments(parser):
         "--duration",
         type=float,
         default=1.0,
-        help="Duration of the transition in seconds (default: 1.0). Can be long for artistic effects, but may be capped by clip lengths."
-    )
-    parser.add_argument(
-        "--offset",
-        type=float,
-        default=3.0,
-        help="Offset in seconds where the transition starts in the first video (default: 3)."
+        help="Length of the wipe in seconds (default: 1.0). It is taken from the end of the first video and the start of the second, so it must fit inside both."
     )
 
 def run(args):
@@ -121,9 +119,13 @@ def run(args):
     dur1 = get_video_duration(args.input)
     dur2 = get_video_duration(args.input2)
 
-    # Warn if transition might exceed lengths
-    if args.offset + args.duration > dur1 or args.duration > dur2:
-        print("⚠️ Warning: Transition duration exceeds available clip lengths. Output may be truncated or incomplete.")
+    # The wipe sits at the join: it covers the last `duration` seconds of the first video and the first `duration`
+    # seconds of the second. Both clips play in full, and the picture and the sound change over at the same moment.
+    if args.duration <= 0 or args.duration > dur1 or args.duration > dur2:
+        print(f"❌ --duration ({args.duration}s) must be above 0 and no longer than either video "
+              f"({dur1:.2f}s and {dur2:.2f}s).")
+        sys.exit(1)
+    offset = dur1 - args.duration
 
     # xfade requires both video streams to share dimensions and frame rate —
     # real-world clips rarely match by default, so normalize the second clip
@@ -141,7 +143,7 @@ def run(args):
         f"[1:v]scale={w1}:{h1}:force_original_aspect_ratio=decrease,"
         f"pad={w1}:{h1}:(ow-iw)/2:(oh-ih)/2,setsar=1,fps={fps1}[v1n];"
         f"[0:v]crop={w1}:{h1}:0:0,fps={fps1},setsar=1[v0n];"
-        f"[v0n][v1n]xfade=transition={args.preset}:duration={args.duration}:offset={args.offset}[v];"
+        f"[v0n][v1n]xfade=transition={args.preset}:duration={args.duration}:offset={offset:.6f}[v];"
         f"[0:a]{an}[a0];[1:a]{an}[a1];[a0][a1]acrossfade=duration={args.duration}[a]"
     )
 
@@ -156,5 +158,6 @@ def run(args):
         str(clean_output)
     ]
 
-    # Add -y flag if force overwrite is enabled
-    run_ffmpeg_with_progress((command[:1] + ["-y"] + command[1:]) if args.force else command, args.input, clean_output)
+    # Add -y flag if force overwrite is enabled. The output is both clips less the overlap, so progress is measured against that.
+    run_ffmpeg_with_progress((command[:1] + ["-y"] + command[1:]) if args.force else command, args.input, clean_output,
+                             duration_override=dur1 + dur2 - args.duration)

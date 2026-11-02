@@ -1,0 +1,8 @@
+{"version": 1, "savedAt": "2026-11-01T00:00:00.000Z", "nodes": [
+ {"id": "input-1", "type": "inputNode", "position": {"x": 0, "y": 0}, "data": {"filePath": "/x/sample.mp4"}, "deletable": false},
+ {"id": "effect-1-1", "type": "effectNode", "position": {"x": 520, "y": 0}, "data": {"program": "auto_narrate", "args": {"script": "hello there friend this is a test of the typing box"}}},
+ {"id": "output-1", "type": "outputNode", "position": {"x": 1040, "y": 0}, "data": {"filePath": "/x/out.mp4", "format": "mp4"}, "deletable": false}
+], "edges": [
+ {"id": "e1", "source": "input-1", "target": "effect-1-1", "type": "smoothstep"},
+ {"id": "e2", "source": "effect-1-1", "target": "output-1", "type": "smoothstep"}
+], "view": {"x": 0, "y": 0, "zoom": 1}}

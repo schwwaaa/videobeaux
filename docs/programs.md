@@ -48,6 +48,12 @@ nav_order: 3
 | wbflare | Apply filter with a blown out white-balance flare | - |
 | zapruder | Apply zapruder-film like effect | - |
 | xrgb | Extreme RGB adjustment | - |
+| audio_visualizer | Draws the sound over the picture: a waveform line or a spectrum of bars, in a strip at the top or bottom or across the whole frame | style, position, height, color, opacity |
+| ken_burns | A slow push-in or pull-out across the whole clip, closing in on a focus point | start_zoom, end_zoom, focus_x, focus_y |
+| local_contrast | CLAHE: equalises contrast in small patches so dark and bright areas both show detail (lightness only) | clip, tiles |
+| motion_mask | Shows what moves: a black-and-white mask, the picture with the moving parts tinted, or only the moving parts | mode, history, threshold, invert |
+| pixel_sort | Glitch-art pixel sorting: streaks of pixels sorted by brightness, hue, saturation or a colour channel | threshold, select, sort_by, order, vertical, min_run, mix, max_width |
+| color_match | Moves the clip's colour toward a reference clip or still (Reinhard LAB transfer), measured once across the clip | reference, strength, samples |
 
 ### Utilities
 
@@ -73,4 +79,15 @@ nav_order: 3
 | tonemap_hdr_sdr | Converts HDR footage (PQ/HLG) to SDR using tunable tonemapping curves, preserving highlight detail and color accuracy | outfile, algo, desat, peak, dither, pix_fmt, x264_preset, crf, copy_audio |
 | transraibe | AI-based transcription tool | stt_model |
 | watermark | Watermark or general-purpose image overlay (PNG/JPG/GIF): 9-point placement or custom X/Y, scale or exact pixel sizing, opacity, spin, and a timed enable window (merges the former overlay_img_pro) | watermark, placement, margin, x_pos, y_pos, scale, width, height, opacity, spin, start, end, wm_loop, ignore_loop, video_crf, video_preset |
+| text_overlay | A simple titler: a block of text over the video with the Auto Narrate caption font and colours, placed and timed like watermark | text, font, font_size, primary_color, outline_color, placement, margin, x_pos, y_pos, opacity, start, end |
+| key_composite | The second half of Remove Background: puts the subject over a new background using a matte video (View = matte from Remove Background), without matting again | matte, background, bg_color, bg_image, bg_video, view, audio, shrink, feather, crf |
+| loudness_normalize | Brings the sound to a target loudness (LUFS) with a true-peak ceiling, so quiet and loud clips come out level | target, true_peak, lra |
+| audio_denoise | Takes hiss and hum out of speech: a rumble high-pass plus an FFT denoiser | reduction, noise_floor, highpass |
+| deinterlace | Turns interlaced footage into clean frames, with yadif or bwdif | method, double |
+| denoise_video | Softens the grain of noisy footage while keeping the edges (hqdn3d) | strength |
+| lens_correct | Straightens wide-angle and action-camera lens bend (barrel and pincushion) | k1, k2 |
+| subtitle_burn | Burns an .srt subtitle file into the picture with a chosen font, size, colours, outline and position | srt, font, font_size, primary_color, outline_color, outline, position, margin |
+| sharpen | Crisps up soft footage: unsharp edge sharpening, or cas (adds detail where the picture is soft, little halo). Colour unchanged | mode, amount, radius |
+| audio_duck | Lowers a music bed under the clip's own speech with sidechain compression, then mixes the two | music, threshold_db, ratio, release_ms, music_db |
+| clean_plate | Removes people and cars that move through a locked-off shot, using the median empty scene | mode, sensitivity, samples, detail |
 | wipe_transitions | Creates directional wipe transitions between clips using customizable timing, edge softness, and motion orientation | input1, input2, output_format, preset, duration, offset |
