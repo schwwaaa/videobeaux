@@ -5,7 +5,6 @@
 # - Shows progress via run_ffmpeg_with_progress, just like your other modules.
 
 import argparse
-import shlex
 import sys
 from pathlib import Path
 
@@ -514,9 +513,6 @@ def run(args):
     if getattr(args, "mode", MODE_ADVANCED) == MODE_SIMPLE:
         _apply_simple(args)
     cmd = _build_ffmpeg_command(args)
-
-    # Friendly echo so users can see exactly what will run (quoted like your original)
-    print("↪︎", " ".join(shlex.quote(c) for c in cmd))
 
     # Use the shared runner so progress + errors are consistent across programs
     run_ffmpeg_with_progress(

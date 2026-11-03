@@ -230,6 +230,12 @@ export const CATEGORIES = [
             help: "Vertical position in pixels or an ffmpeg expression. Only used when Placement is 'custom'" },
           { name: 'opacity', label: 'Opacity', type: 'number', required: false, default: 1.0, min: 0, max: 1,
             help: 'Text opacity, 0 to 1' },
+          { name: 'spin', label: 'Spin (°/s)', type: 'number', required: false, default: 0, min: -360, max: 360,
+            help: 'Continuous rotation in degrees per second, like Watermark. 0 = none' },
+          { name: 'wobble', label: 'Wobble (°)', type: 'number', required: false, default: 0, min: 0, max: 180,
+            help: 'Swings the text this many degrees one way, back through upright, then the same amount the other way. 0 = none' },
+          { name: 'wobble_period', label: 'Wobble Period (s)', type: 'number', required: false, default: 2, min: 0.1, max: 60,
+            help: 'Seconds for one full wobble: out, back through upright, the other way, and back. Only used with Wobble' },
           { name: 'start', label: 'Appear at', type: 'text', required: false, default: '0',
             help: 'When the text appears: seconds (83.5) or a timestamp (1:23). 0 = from the start' },
           { name: 'end', label: 'Disappear at', type: 'text', required: false, default: '0',
@@ -242,11 +248,8 @@ export const CATEGORIES = [
       {
         id: 'stack_2x',
         label: 'Stack 2×',
-        description: 'Stack two videos vertically (input on top, input2 on bottom)',
-        args: [
-          { name: 'input2', label: 'Second Video', type: 'file', subtype: 'video', required: true,
-            help: 'Path to the video to place on the bottom of the stack' }
-        ]
+        description: 'Stack two videos vertically (input on top, input2 on bottom). Choose which video sets the length, and whose audio is kept',
+        args: []   // fields come from stack_2x.py (its GUI_METADATA), so its options show here
       },
       {
         id: 'triptych',
@@ -426,6 +429,10 @@ export const CATEGORIES = [
             help: 'Used to transcribe the synthesized narration' },
           { name: 'original_volume', label: 'Original Audio Volume', type: 'number', required: false, default: 0.2,
             help: 'Background level of the original audio under the narration, 0-1' },
+          { name: 'duck', label: 'Duck the video audio under the narration', type: 'checkbox', required: false,
+            help: "Lowers the video's own sound whenever the narration speaks, so the voice stands out. Uses Duck Ratio." },
+          { name: 'duck_ratio', label: 'Duck Ratio', type: 'number', required: false, default: 6, min: 1, max: 20,
+            help: "How hard the video's sound is pulled down under the narration (1 = barely, 20 = almost silent). Only used with Duck." },
           { name: 'font', label: 'Font', type: 'font', required: false, default: 'Arial',
             help: 'Caption font name (or a path to a .ttf/.otf file)' },
           { name: 'font_size', label: 'Font Size', type: 'number', required: false, default: 76,
@@ -536,14 +543,20 @@ export const CATEGORIES = [
       { id: 'lens_correct', label: 'Lens Correct', description: 'Straightens the bend of a wide-angle or action-camera lens (barrel and pincushion distortion)', args: [] },
       {
         id: 'convert_mux',
-        label: 'Convert',
+        label: 'Convert Format',
         description: 'General-purpose converter — codec, quality, and format control. Output container is set by the Output node.',
         args: []   // fields come from the program itself (Simple / Advanced) — see videobeaux/programs/convert_mux.py
       },
       {
         id: 'convert_dims',
         label: 'Convert Dims',
-        description: 'Convert and change video dimensions',
+        description: 'Change the size of a video: a named preset, or any width and height you type',
+        args: []
+      },
+      {
+        id: 'color_pattern',
+        label: 'Color & Pattern',
+        description: 'Makes a video of a solid colour, gradient, checkerboard, colour bars, test pattern or noise, for as many seconds as you set. No input video needed: connect it straight to Output',
         args: []
       },
       {

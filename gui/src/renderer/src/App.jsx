@@ -12,7 +12,8 @@ import {
   useReactFlow,
   useStoreApi,
   useStore,
-  Panel
+  Panel,
+  SelectionMode
 } from '@xyflow/react'
 
 import InputNode  from './components/nodes/InputNode'
@@ -100,7 +101,7 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
   const restored = startRef.current
   const [nodes, setNodes, onNodesChange] = useNodesState(restored ? restored.nodes : INITIAL_NODES)
   const [edges, setEdges, onEdgesChange] = useEdgesState(restored ? restored.edges : [])
-  const { screenToFlowPosition, getViewport, getNodes, getInternalNode, deleteElements } = useReactFlow()
+  const { screenToFlowPosition, getViewport, setViewport, getNodes, getInternalNode, deleteElements } = useReactFlow()
   // React Flow is shown *display* edges (collapsed groups re-route their boundary edges); logic uses the real ones.
   const edgesRef = useRef(edges)
   edgesRef.current = edges
@@ -109,6 +110,16 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
   const { theme, showSelectionBar, autoOverwrite, setAutoOverwrite,
           lineMode, canvasBg, canvasBgOpacity, canvasBgFit, rememberWorkspace } = useSettings()
   const { fitView } = useReactFlow()
+  // BUG-REPORT: the bug report's picture shows every node, so the view fits them for a moment and goes back afterwards.
+  useEffect(() => {
+    const onCapture = e => {
+      const before = getViewport()
+      fitView({ padding: 0.08, duration: 0, minZoom: 0.05 })
+      e.detail.restore = () => setViewport(before, { duration: 0 })
+    }
+    window.addEventListener('vb:fit-for-capture', onCapture)
+    return () => window.removeEventListener('vb:fit-for-capture', onCapture)
+  }, [fitView, getViewport, setViewport])   // BUG-REPORT
   const modalLocked = useModalLocked()
   const [runError, setRunError] = useState(null)
   const wrapperRef = useRef(null)
@@ -868,6 +879,8 @@ function FlowCanvas({ isRunning, setIsRunning, setLogs, setLogCollapsed, progres
         onDragLeave={() => setFileDragOver(false)}
         defaultEdgeOptions={{ type: 'smoothstep' }}
         colorMode={theme === 'dark' ? 'dark' : 'light'}
+        selectionMode={SelectionMode.Partial}
+        proOptions={{ hideAttribution: true }}
       >
         <ClickConnectLine />
         <Background color={theme === 'dark' ? '#34323c' : '#d8d4c2'} gap={24} size={1.5} />
@@ -1068,13 +1081,13 @@ function AppInner() {
         }}>
           by schwwaaa
         </span>
-        <div style={{ marginLeft: 'auto', display: 'flex', gap: 8, WebkitAppRegion: 'no-drag' }}>
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8, WebkitAppRegion: 'no-drag' }}>
           <AppearanceMenu />
           <button
             onClick={() => setShowSetup(true)}
             style={{
               background: 'var(--paper)', color: 'var(--ink)',
-              padding: '5px 10px', borderRadius: 'var(--radius-sm)',
+              height: 30, boxSizing: 'border-box', lineHeight: 1, padding: '0 10px', borderRadius: 'var(--radius-sm)',
               fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: 11,
               border: '2px solid var(--ink)', cursor: 'pointer'
             }}
@@ -1087,7 +1100,7 @@ function AppInner() {
             aria-label="Help"
             style={{
               background: 'var(--paper)', color: 'var(--ink)',
-              width: 30, padding: '5px 0', borderRadius: 'var(--radius-sm)',
+              width: 30, height: 30, boxSizing: 'border-box', lineHeight: 1, padding: 0, borderRadius: 'var(--radius-sm)',
               fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: 13,
               border: '2px solid var(--ink)', cursor: 'pointer'
             }}

@@ -50,6 +50,8 @@ export function ProgramsProvider({ children }) {
                            ? prog.args
                            : (live && !live.error && live.args?.length > 0 ? live.args : []),
             presets:     live?.presets || prog.presets,
+            // A source program makes its own picture, so it needs no input video (see color_pattern.py).
+            source:      !!(prog.source || live?.source),
             // Same priority rule for outputType.
             outputType: prog.outputType || (live && !live.error ? live.outputType : null) || 'video',
           }
@@ -67,6 +69,7 @@ export function ProgramsProvider({ children }) {
             description:   info.description || '',
             args:          info.args || [],
             presets:       info.presets,
+            source:        !!info.source,
             outputType:    info.outputType || 'video',
             categoryId:    'new',
             categoryLabel: 'New Programs',

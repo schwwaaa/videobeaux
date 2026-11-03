@@ -30,6 +30,14 @@ GUI_METADATA = {
             'label': 'Ollama Model (optional)',
             'help': 'Only used with Topic — pick a locally-pulled Ollama model to draft the narration. Leave blank if using Script.',
         },
+        'duck': {
+            'label': 'Duck the video audio under the narration',
+            'help': 'Lowers the video\'s own sound whenever the narration speaks, so the voice stands out. Uses Duck Ratio.',
+        },
+        'duck_ratio': {
+            'label': 'Duck Ratio', 'min': 1, 'max': 20, 'default': 6.0,
+            'help': 'How hard the video\'s sound is pulled down under the narration (1 = barely, 20 = almost silent). Only used with Duck.',
+        },
     }
 }
 
@@ -82,6 +90,14 @@ def register_arguments(parser):
     parser.add_argument(
         "--original_volume", type=float, default=0.2,
         help="Background volume of the original audio under the narration, 0-1. Default: 0.2."
+    )
+    parser.add_argument(
+        "--duck", action="store_true",
+        help="Duck the video's own audio under the narration: it drops whenever the narration speaks, then comes back."
+    )
+    parser.add_argument(
+        "--duck_ratio", type=float, default=6.0,
+        help="How hard the video's audio is pulled down under the narration, 1-20. Only used with --duck. Default: 6."
     )
     parser.add_argument(
         "--font", type=str, default="Arial",
@@ -287,10 +303,11 @@ def run(args):
             ]
             if have_models:
                 kokoro_cmd += ["--model", str(kokoro_model), "--voices", str(kokoro_voices)]
-            try:
-                subprocess.run(kokoro_cmd, check=True)
-            except subprocess.CalledProcessError as e:
-                raise SystemExit(f"❌ kokoro-tts failed: {e}")
+            # kokoro-tts prints a spinner and a line per file. Keep that out of the log; show its last lines only on failure.
+            done = subprocess.run(kokoro_cmd, capture_output=True, text=True)
+            if done.returncode != 0:
+                tail = "\n".join((done.stderr or done.stdout or "").strip().splitlines()[-5:])
+                raise SystemExit(f"❌ kokoro-tts failed:\n{tail}")
 
         print("ℹ️  Synthesizing narration with kokoro-tts…")
         narration_wav = _join_narration(items, tmp, speak)
@@ -306,11 +323,21 @@ def run(args):
         )
 
         mixed_path = tmp / "mixed.mp4"
-        filter_complex = (
-            f"[0:a]volume={args.original_volume}[orig];"
-            f"[1:a]volume=1.0[voice];"
-            f"[orig][voice]amix=inputs=2:duration=first:normalize=0[aout]"
-        )
+        if args.duck:
+            # The narration is the sidechain: the video's sound drops whenever the voice is over the threshold (same idea as Audio Duck).
+            ratio = min(20.0, max(1.0, args.duck_ratio))
+            filter_complex = (
+                f"[1:a]volume=1.0,apad,asplit=2[voice][key];"   # apad: the duck lasts as long as the video, not just the narration
+                f"[0:a]volume={args.original_volume}[orig];"
+                f"[orig][key]sidechaincompress=threshold=0.02:ratio={ratio:.2f}:attack=20:release=400:makeup=1[ducked];"
+                f"[ducked][voice]amix=inputs=2:duration=first:normalize=0[aout]"
+            )
+        else:
+            filter_complex = (
+                f"[0:a]volume={args.original_volume}[orig];"
+                f"[1:a]volume=1.0[voice];"
+                f"[orig][voice]amix=inputs=2:duration=first:normalize=0[aout]"
+            )
         mix_command = [
             "ffmpeg", "-y",
             "-i", args.input,

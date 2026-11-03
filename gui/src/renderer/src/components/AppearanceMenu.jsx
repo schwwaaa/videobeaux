@@ -40,7 +40,7 @@ export default function AppearanceMenu() {
         onClick={() => setOpen(o => !o)}
         style={{
           background: 'var(--paper)', color: 'var(--ink)',
-          padding: '5px 10px', borderRadius: 'var(--radius-sm)',
+          height: 30, boxSizing: 'border-box', lineHeight: 1, padding: '0 10px', borderRadius: 'var(--radius-sm)',
           fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: 11,
           border: '2px solid var(--ink)', cursor: 'pointer'
         }}

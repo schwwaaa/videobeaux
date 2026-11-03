@@ -91,4 +91,5 @@ nav_order: 1
 - [sharpen](programs/utilities/sharpen.md)
 - [audio_duck](programs/utilities/audio_duck.md)
 - [clean_plate](programs/utilities/clean_plate.md)
+- [color_pattern](programs/utilities/color_pattern.md)
 - [wipe_transitions](programs/utilities/wipe_transitions.md)

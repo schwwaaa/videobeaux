@@ -6,7 +6,8 @@ const styles = {
   overlay: {
     position: 'fixed', inset: 0, background: 'rgba(8,8,8,0.55)',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
-    zIndex: 1000, padding: 24
+    zIndex: 1000, padding: 24,
+    WebkitAppRegion: 'no-drag'   // over the header's window drag area, so its buttons get clicks
   },
   panel: {
     background: 'var(--paper)', border: 'var(--border)', borderRadius: 'var(--radius)',

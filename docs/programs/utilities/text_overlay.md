@@ -29,6 +29,9 @@ videobeaux -P text_overlay -i input.mp4 -o output.mp4 --text "Your title" --plac
 - **outline_color**: outline colour. Default `#000000`.
 - **placement**, **margin**, **x_pos**, **y_pos**: where the text sits (see How It Works).
 - **opacity**: 0 to 1. Default `1.0`.
+- **spin**: rotation in degrees per second, the same as Watermark's spin (0 = no rotation). Default `0`.
+- **wobble**: swings the text this many degrees one way, back through upright, then the same amount the other way. Default `0` (none).
+- **wobble_period**: seconds for one full wobble (out, back through upright, the other way, and back). Default `2`.
 - **start**, **end**: when the text appears and goes away.
 
 ## Real World Example

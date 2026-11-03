@@ -53,6 +53,10 @@ GUI_METADATA = {
         'y_pos': {'help': "Vertical position (pixels or an ffmpeg expression). Only used when Placement is 'custom'."},
         'width': {'help': "Exact overlay width in pixels. Overrides --scale when set."},
         'height': {'help': "Exact overlay height in pixels (or -1 to preserve aspect ratio). Overrides --scale when set."},
+        'wobble': {'label': 'Wobble (°)', 'min': 0, 'max': 180,
+                   'help': "Swings the image this many degrees one way, back through upright, then the same amount the other way. 0 = none."},
+        'wobble_period': {'label': 'Wobble Period (s)', 'min': 0.1, 'max': 60,
+                          'help': "Seconds for one full wobble: out, back through upright, the other way, and back. Only used with Wobble."},
         'start': {'label': 'Appear at', 'help': "When the image appears: seconds (83.5) or a timestamp (1:23, 0:01:23.5). 0 = from the start."},
         'end': {'label': 'Disappear at', 'help': "When the image goes away: seconds or a timestamp. 0 = it stays to the end."},
     }
@@ -164,6 +168,10 @@ def register_arguments(parser: argparse.ArgumentParser):
                         help="Watermark opacity (0.0–1.0).")
     parser.add_argument("--spin", type=float, default=0.0,
                         help="Watermark spin in degrees per second (0 = no rotation).")
+    parser.add_argument("--wobble", type=float, default=0.0,
+                        help="Swing in degrees: the image goes this far one way, back through upright, then as far the other way (0 = none).")
+    parser.add_argument("--wobble_period", type=float, default=2.0,
+                        help="Seconds for one full wobble. Default: 2.")
     parser.add_argument("--start", type=str, default="0",
                         help="When the image appears: seconds (83.5) or a timestamp (1:23, 0:01:23.5). 0 = from the start.")
     parser.add_argument("--end", type=str, default="0",
@@ -230,15 +238,21 @@ def run(args: argparse.Namespace):
     wm_chain_parts = [size_filter, "format=rgba", f"colorchannelmixer=aa={opacity}"]
 
     spin = float(args.spin or 0.0)
-    if spin != 0.0:
-        # angle(t) = spin_deg_per_sec * t * pi/180
-        # Use ffmpeg expr: (spin*pi/180)*t
-        wm_chain_parts.append(f"rotate={(spin)}*PI/180*t:fillcolor=0x00000000")
+    wobble = float(getattr(args, "wobble", 0.0) or 0.0)
+    if spin != 0.0 or wobble != 0.0:
+        # angle(t) = spin * t + wobble * sin(2*pi*t / period), in degrees. The sine starts at 0, goes out to +wobble,
+        # comes back through 0, goes out to -wobble and returns to 0: one wobble per period.
+        period = max(0.1, float(getattr(args, "wobble_period", 2.0) or 2.0))
+        wm_chain_parts.append(f"rotate=({spin}*t+{wobble}*sin(2*PI*t/{period}))*PI/180:fillcolor=0x00000000")
 
     wm_chain = ",".join(wm_chain_parts)
 
-    # Overlay (+ enable)
-    overlay = f"overlay={x_expr}:{y_expr}:enable='{enable_expr}'"
+    # A still image is a single frame, so rotate's t would stay at 0 and nothing would turn. A spinning or wobbling still
+    # is therefore looped to give the rotation a clock. A GIF already has one.
+    still_loop = (spin != 0.0 or wobble != 0.0) and wm_path.suffix.lower() != ".gif"
+
+    # Overlay (+ enable). A looped still never ends by itself, so the overlay ends with the video.
+    overlay = f"overlay={x_expr}:{y_expr}:enable='{enable_expr}'" + (":shortest=1" if still_loop else "")
 
     # Assemble filter_complex with named pads
     # [1:v]wm_chain[wm];[0:v][wm]overlay=... (alpha premult handled by format=rgba)
@@ -247,7 +261,7 @@ def run(args: argparse.Namespace):
     # Inputs (include GIF flags when appropriate)
     input_flags: list[str] = ["-i", str(in_path)]
     gif_flags = _gif_input_flags(wm_path, int(args.wm_loop), bool(args.ignore_loop))
-    input_flags += gif_flags + ["-i", str(wm_path)]
+    input_flags += gif_flags + (["-loop", "1"] if still_loop else []) + ["-i", str(wm_path)]
 
     # Safe mapping: map main video/audio from #0, output yuv420p mp4 with x264
     command = [

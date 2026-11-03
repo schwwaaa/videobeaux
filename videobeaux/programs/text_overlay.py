@@ -52,6 +52,13 @@ def register_arguments(parser: argparse.ArgumentParser):
     parser.add_argument("--y_pos", type=str, default=None,
                         help="Vertical position, in pixels or an ffmpeg expression. Only used with --placement custom.")
     parser.add_argument("--opacity", type=float, default=1.0, help="Text opacity, 0.0 to 1.0. Default: 1.0.")
+    parser.add_argument("--spin", type=float, default=0.0,
+                        help="Spin in degrees per second, like Watermark (0 = no rotation). Default: 0.")
+    parser.add_argument("--wobble", type=float, default=0.0,
+                        help="Swing in degrees: the text goes this far one way, back through upright, then as far the other "
+                             "way (0 = none). Default: 0.")
+    parser.add_argument("--wobble_period", type=float, default=2.0,
+                        help="Seconds for one full wobble. Default: 2.")
     parser.add_argument("--start", type=str, default="0",
                         help="When the text appears: seconds (83.5) or a timestamp (1:23). 0 = from the start.")
     parser.add_argument("--end", type=str, default="0",
@@ -137,6 +144,7 @@ def run(args: argparse.Namespace):
             input=args.input, output=args.output, force=getattr(args, "force", False),
             watermark=str(title), placement=args.placement, margin=args.margin,
             x_pos=args.x_pos, y_pos=args.y_pos, width=None, height=None, scale=1.0,
-            opacity=args.opacity, spin=0.0, start=args.start, end=args.end,
+            opacity=args.opacity, spin=args.spin, wobble=args.wobble, wobble_period=args.wobble_period,
+            start=args.start, end=args.end,
             wm_loop=0, ignore_loop=False, video_crf=18, video_preset="fast",
         ))

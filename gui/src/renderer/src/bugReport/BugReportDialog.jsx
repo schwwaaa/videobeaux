@@ -25,18 +25,29 @@ export default function BugReportDialog({ onClose, logText = '', canvasJson = ''
 
   async function create() {
     setBusy(true); setError('')
+    const view = { restore: null }
     try {
-      if (includeScreenshot) { setHidden(true); await sleep(250) }
+      // The screenshot is the canvas only: the dialog and the Help window step aside (see index.css), and the picture is cut to the canvas.
+      const box = includeScreenshot ? document.querySelector('.react-flow')?.getBoundingClientRect() : null
+      const canvasRect = box ? { x: Math.round(box.x), y: Math.round(box.y), width: Math.round(box.width), height: Math.round(box.height) } : null
+      if (includeScreenshot) {
+        // The canvas fits every node for the picture, then goes back to the view the user had (in finally).
+        setHidden(true); document.documentElement.dataset.bugCapture = ''
+        window.dispatchEvent(new CustomEvent('vb:fit-for-capture', { detail: view }))
+        await sleep(250)
+      }
       const res = await window.electronAPI.createBugReport({
         description,
         includeLog: includeLog && !!logText, logText,
         includeCanvas: includeCanvas && !!canvasJson, canvasJson,
-        captureScreenshot: includeScreenshot
+        captureScreenshot: includeScreenshot, canvasRect
       })
       setResult(res)
     } catch (e) {
       setError(e?.message || 'Could not create the report.')
     } finally {
+      view.restore?.()
+      delete document.documentElement.dataset.bugCapture
       setHidden(false); setBusy(false)
     }
   }
@@ -57,7 +68,7 @@ export default function BugReportDialog({ onClose, logText = '', canvasJson = ''
   const quiet = { padding: '7px 14px', fontSize: 13 }
 
   return createPortal(
-    <div style={{ position: 'fixed', inset: 0, zIndex: 1100, background: 'rgba(8,8,8,0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}
+    <div style={{ position: 'fixed', inset: 0, zIndex: 1100, background: 'rgba(8,8,8,0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, WebkitAppRegion: 'no-drag' }}
          onMouseDown={e => { if (e.target === e.currentTarget && !busy) onClose() }}>
       <div role="dialog" aria-label="Send a bug report" style={{ width: 'min(520px, 100%)', background: 'var(--paper)', color: 'var(--ink)', border: 'var(--border)', borderRadius: 'var(--radius)', boxShadow: 'var(--shadow)', overflow: 'hidden' }}>
         <div style={{ padding: '10px 14px', background: 'var(--magenta)', color: '#fff', borderBottom: 'var(--border)', fontFamily: 'var(--font-display)', fontSize: 15 }}>

@@ -193,16 +193,37 @@ VIDEO_PRESETS = {
     "pinterest_square": (1000, 1000)
 }
 
+# Every named size, as the width and height the app fills in when you pick it (shared with Color & Pattern).
+SIZE_FILLS = {name: {"width": w, "height": h} for name, (w, h) in VIDEO_PRESETS.items()}
+
+GUI_METADATA = {
+    "args": {
+        "preset": {
+            "label": "Size preset",
+            "help": "Pick a common size and the width and height fields fill in. Pick Custom to type your own.",
+            "fills": SIZE_FILLS,
+        },
+        "width": {"label": "Width (px)", "default": 1920, "min": 16, "max": 8192,
+                  "help": "Output width. Used with Height; overrides the preset."},
+        "height": {"label": "Height (px)", "default": 1080, "min": 16, "max": 8192,
+                   "help": "Output height. Used with Width; overrides the preset."},
+    }
+}
+
 def register_arguments(parser):
     parser.description = (
         "Converts an input video to a specified preset dimension. "
         "Choose how to handle aspect ratio: pad, fit, fill-crop, or stretch. "
         "Use --portrait-full to force a 9:16 full-frame vertical output."
     )
-    parser.add_argument("--output-format", required=True, type=str,
-                        help="Format for output file extension (e.g., mp4, mov).")
-    parser.add_argument("--preset", required=True, type=str, choices=VIDEO_PRESETS.keys(),
-                        help="Preset dimension (e.g., 1080p, instagram_reels).")
+    parser.add_argument("--output-format", default=None, type=str,
+                        help="Format for output file extension (e.g., mp4, mov). Optional: defaults to the output file's own extension, or mp4.")
+    parser.add_argument("--preset", default="1080p", type=str, choices=[*VIDEO_PRESETS.keys(), "custom"],
+                        help="Preset dimension (e.g., 1080p, instagram_reels), or 'custom' with --width and --height.")
+    parser.add_argument("--width", type=int, default=None,
+                        help="Custom width in px. Use with --height; when both are given they override --preset.")
+    parser.add_argument("--height", type=int, default=None,
+                        help="Custom height in px. Use with --width; when both are given they override --preset.")
 
     # Flexible aspect behavior (overrides --translate when provided)
     parser.add_argument("--mode",
@@ -231,7 +252,9 @@ def register_arguments(parser):
     parser.add_argument("--portrait-full", action="store_true",
                         help="Force 9:16 portrait output and fill (cover + crop).")
 
-def _resolve_output_path(output: Path, fmt: str) -> Path:
+def _resolve_output_path(output: Path, fmt) -> Path:
+    if not fmt:
+        return output if output.suffix else output.with_suffix(".mp4")
     sfx = output.suffix.lower().lstrip(".")
     return output if sfx == fmt.lower() else output.with_suffix(f".{fmt}")
 
@@ -294,6 +317,15 @@ def _vf_for_mode(mode: str, w: int, h: int, anchor: str, pad_color_hex: str, sca
     return (f"scale={w}:{h}:flags={scale_flags}:force_original_aspect_ratio=decrease,"
             f"pad={w}:{h}:{x}:{y}:{color},setsar=1,setdar={w}/{h}")
 
+def target_size(args) -> tuple[int, int]:
+    """The custom width and height when both are given, else the named preset. Exits with a message if neither works."""
+    if args.width and args.height:
+        return _even(args.width), _even(args.height)
+    if args.preset in VIDEO_PRESETS:
+        return VIDEO_PRESETS[args.preset]
+    print("❌ A custom size needs both --width and --height (or pick a preset).")
+    sys.exit(1)
+
 def run(args):
     output_path = Path(args.output)
     clean_output = _resolve_output_path(output_path, args.output_format)
@@ -303,11 +335,7 @@ def run(args):
         print(f"❌ {clean_output} already exists. Use --force to overwrite.")
         sys.exit(1)
 
-    if args.preset not in VIDEO_PRESETS:
-        print(f"❌ Invalid preset: {args.preset}. Available presets: {', '.join(VIDEO_PRESETS.keys())}")
-        sys.exit(1)
-
-    target_width, target_height = VIDEO_PRESETS[args.preset]
+    target_width, target_height = target_size(args)
 
     if getattr(args, "portrait_full", False):
         target_width, target_height = _portrait_full_dims(target_width, target_height)

@@ -22,7 +22,7 @@ export const HELP_SECTIONS = [
       '**Clear** empties the canvas after asking you to confirm. **Save/Load Preset** keeps a whole setup.',
       '**Fold a program** — ▾ (or double-click its header) hides its settings; **▤ / ▦** in the bottom-left controls fold or unfold all. Folded state is saved in presets.',
       '**Look & lines** — 🎨 Appearance changes the *Look* (Classic is the original), the colour of connection lines, and puts an image behind the canvas.',
-      '**Visual editors** — a ✎ button next to a field opens a purpose-built editor: Lagkage → Layout JSON (drop in images), Topobeaux → Cut points (drag band dividers), Stackadelic → Layer 1 left (drag three boxes).'
+      '**Visual editors** — a ✎ button next to a field opens a purpose-built editor, such as Lagkage → Layout JSON (drop in images).'
     ]
   },
   {

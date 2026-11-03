@@ -235,7 +235,6 @@ def _maybe_prenormalize(inputs: List[Path], tmpdir: Path, args) -> List[Path]:
                               args.norm_vcodec, args.norm_crf, args.norm_preset, args.faststart,
                               getattr(args,"decode_tolerant",False),
                               getattr(args,"hard_trim",False), dur if dur>0 else 0.0)
-        print("↪︎", " ".join(cmd))
         if subprocess.run(cmd).returncode != 0:
             raise RuntimeError("ffmpeg normalization failed")
         out.append(dst)
@@ -353,7 +352,6 @@ def run(args):
             "-avoid_negative_ts","make_zero",
             str(out_path)
         ]
-        print("↪︎", " ".join(cmd))
         r = subprocess.run(cmd)
         if r.returncode == 0:
             print("✅ Done.")
@@ -378,7 +376,6 @@ def run(args):
         ]
         if args.faststart and out_path.suffix.lower() in {".mp4",".m4v",".mov"}:
             cmd += ["-movflags","+faststart"]
-        print("↪︎", " ".join(cmd))
         if subprocess.run(cmd).returncode != 0:
             raise RuntimeError("ffmpeg re-encode failed")
         print("✅ Done.")
@@ -473,7 +470,6 @@ def run(args):
         cmd += ["-movflags","+faststart"]
     cmd += [str(out_path)]
 
-    print("↪︎"," ".join(map(str,cmd)))
     if subprocess.run(cmd).returncode != 0:
         raise RuntimeError("ffmpeg filter-engine failed")
 

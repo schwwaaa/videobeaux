@@ -77,7 +77,7 @@ export default function ExamplesBrowser({ onClose, onOpen }) {
 
   return createPortal(
     <div style={{ position: 'fixed', inset: 0, zIndex: 1100, background: 'rgba(8,8,8,0.55)', display: 'flex',
-                  alignItems: 'center', justifyContent: 'center', padding: 16 }}
+                  alignItems: 'center', justifyContent: 'center', padding: 16, WebkitAppRegion: 'no-drag' }}
          onMouseDown={e => { if (e.target === e.currentTarget) onClose() }}>
       <div role="dialog" aria-label="Examples" style={{
         width: 'min(880px, 100%)', maxHeight: '86vh', display: 'flex', flexDirection: 'column',

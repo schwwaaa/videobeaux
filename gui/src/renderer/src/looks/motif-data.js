@@ -47,6 +47,11 @@ export default {
    "label": "Bowed grid, straightened",
    "reason": "A grid that bows out at the edges, the way a wide lens draws it, put back straight."
   },
+  "c_pattern": {
+   "category": "media",
+   "label": "Colour bars",
+   "reason": "Makes a picture from nothing: a solid colour, a bar pattern or a test card."
+  },
   "c_resize": {
    "category": "media",
    "label": "Size marks",
@@ -506,6 +511,7 @@ export default {
   "clean_plate": "y_plate",
   "color_match": "l_match",
   "color_pass": "l_sliders",
+  "color_pattern": "c_pattern",
   "concat": "e_join",
   "convert_dims": "c_resize",
   "convert_mux": "c_convert",

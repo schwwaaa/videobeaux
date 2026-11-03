@@ -10,6 +10,7 @@
     "stage-python": "node scripts/build-python-env.mjs",
     "ffmpeg:local": "../tools/ffmpeg-build/build-macos.sh --work .ffmpeg-build",
     "dist": "npm run stage-python && npm run build && electron-builder",
+    "release": "node scripts/release.mjs",
     "test": "node --test tests/*.test.mjs"
   },
   "dependencies": {

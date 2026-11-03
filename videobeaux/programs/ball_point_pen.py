@@ -25,6 +25,5 @@ def run(args):
         args.output
     ]
     command = apply_amount(command, getattr(args, "amount", 1.0))
-    print(" ".join(f'"{arg}"' if ' ' in arg or ':' in arg or '=' in arg else arg for arg in command))
     
     run_ffmpeg_with_progress((command[:1] + ["-y"] + command[1:]) if args.force else command, args.input, args.output)

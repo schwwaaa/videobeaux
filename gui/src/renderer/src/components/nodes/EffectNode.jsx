@@ -8,7 +8,7 @@ import { usePrograms } from '../../ProgramsContext'
 import { familyOf, motifOf } from '../../looks/registry'
 import { makeScale, valueFromPosition, describeScale } from '../../sliderScale'
 import { NodeGlyph, NodeArt } from '../../looks/NodeArt'
-import { videoArgsOf, upstreamIsBatch } from '../../pipeline'
+import { videoArgsOf, upstreamIsBatch, argPatch } from '../../pipeline'
 import { useUpdateNodeData } from '../../useCanvasHistory'
 import { ARG_HELPERS } from '../helpers/registry'
 import { useRealEdges } from '../../GroupContext'
@@ -743,7 +743,7 @@ function MediaInputRow({ nodeId, arg, value, onChange, color, inactive = false }
 // ── EffectNode ──────────────────────────────────────────────────────────────
 
 export default function EffectNode({ id, data, selected }) {
-  const { deleteElements, getNodes } = useReactFlow()
+  const { deleteElements, getNodes, setNodes } = useReactFlow()
   const realEdges = useRealEdges()
   const updateNodeData = useUpdateNodeData()
   const { programMap }     = usePrograms()
@@ -806,6 +806,9 @@ export default function EffectNode({ id, data, selected }) {
   const setArg = (name, value) => {
     updateNodeData(id, { args: { ...(data.args || {}), [name]: value } })
   }
+  const changeArg = (arg, value) => {
+    updateNodeData(id, { args: { ...(data.args || {}), ...argPatch(arg, value) } })
+  }
 
   const handleDelete = (e) => {
     e.stopPropagation()
@@ -820,7 +823,12 @@ export default function EffectNode({ id, data, selected }) {
   const hasAnyBody      = hasCollapsible || videoArgs.length > 0
   // Every program can be folded: nodes with settings hide them, nodes without any hide their description.
   const canCollapse     = hasCollapsible || !hasAnyBody
-  const toggleCollapsed = () => updateNodeData(id, { collapsed: !data.collapsed })
+  // Opening a program brings it to the front, so its settings don't open behind the nodes and lines around it.
+  const toggleCollapsed = () => {
+    const opening = !!data.collapsed
+    updateNodeData(id, { collapsed: !data.collapsed })
+    setNodes(ns => ns.map(n => (n.id === id ? { ...n, zIndex: opening ? 1000 : undefined } : n)))
+  }
   const bareHeader      = !expanded && videoArgs.length === 0 && !isBatchUpstream   // folded and nothing below the header
   // Arg-heavy nodes (e.g. Convert, with 17 options) run off the bottom of the
   // canvas as a single tall column — past this threshold, lay them out as a
@@ -988,7 +996,7 @@ export default function EffectNode({ id, data, selected }) {
                   nodeId={id}
                   values={effectiveValues}
                   setArgs={patch => updateNodeData(id, { args: { ...(data.args || {}), ...patch } })}
-                  onChange={v => setArg(arg.name, v)}
+                  onChange={v => changeArg(arg, v)}
                   inputPath={primaryUpstream?.type === 'inputNode' ? primaryUpstream.data?.filePath : undefined}
                 />
               </ArgLabel>
@@ -997,7 +1005,7 @@ export default function EffectNode({ id, data, selected }) {
                 nodeId={id}
                 arg={arg}
                 value={(data.args || {})[arg.name]}
-                onChange={v => setArg(arg.name, v)}
+                onChange={v => changeArg(arg, v)}
               />
             </div>
           ))}

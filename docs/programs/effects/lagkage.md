@@ -65,6 +65,19 @@ videobeaux -P lagkage \
 - **audio_mode** — Defines the audio strategy (`base`, `all`, `first`, `none`, etc.).  
 - **audio_src** — Optional override for specifying which audio file to use as final output.
 
+## Text, timing, spin and wobble
+Each layer in the layout JSON can also have:
+- **type `text`** — a text layer, with no file. `text` is the words (a new line for a second line), `font` a font name or .ttf/.otf path, `color` and `outline_color` hex colours, `text_size` the height of the text as a percentage of the video's height. The text is wrapped and centred in the layer's box (`size` = % of the video's width, `height_pct` = % of its height).
+- **start** / **end** — seconds. The layer appears at `start` and goes away at `end` (`end` 0 or missing = to the end of the video). A video or GIF layer starts playing at `start`.
+- **spin** — degrees per second; the layer turns as time goes on, counted from its `start`.
+- **wobble** — degrees either side of upright: the layer swings out one way, back through upright, out the other way, and back. **wobble_period** is the seconds for one full wobble (default 2).
+
+Spin and wobble can be combined with `rotate`, which is the layer's fixed tilt. A still picture or text that spins or wobbles is looped for the length of the base video.
+
+The output is always the base video's length, even when a layer starts late.
+
+In the Lagkage editor, **＋ Add text** adds a text layer, and the side panel has Appears at, Goes away at, Spin, Wobble and Wobble period for every layer. The preview shows where a layer sits, but does not animate: the turning is seen in the rendered output.
+
 ## Real World Example
 ```bash
 videobeaux -P lagkage \

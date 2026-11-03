@@ -27,6 +27,7 @@ This tool covers both subtle branding use (small, semi-transparent, faded in/out
    - `start` 0 means from the beginning; `end` 0 means it stays to the end of the clip.
 6. **Optional Spin**  
    - `spin` rotates the overlay continuously, in degrees per second (0 = no rotation).
+   - `wobble` swings the overlay this many degrees one way, back through upright, then the same amount the other way. `wobble_period` is the seconds for one full wobble. Both can be combined with `spin`.
 7. **Encoding**  
    Output uses the provided CRF and preset options for consistent quality.
 
@@ -61,6 +62,8 @@ This tool covers both subtle branding use (small, semi-transparent, faded in/out
 - **width** / **height** — Exact pixel dimensions; overrides `scale` when either is set (`-1` preserves aspect ratio).  
 - **opacity** — Transparency level (0.0–1.0).  
 - **spin** — Rotation speed in degrees per second (0 = no rotation).  
+- **wobble** — Swing in degrees: out to one side, back through upright, out to the other side, and back (0 = none).  
+- **wobble_period** — Seconds for one full wobble. Default `2`.  
 - **start** — When the overlay appears: seconds or a timestamp (`1:23`). 0 = from the beginning.  
 - **end** — When the overlay goes away: seconds or a timestamp. 0 = it stays to the end.  
 - **wm-loop** — Controls looping behavior of animated (GIF) watermarks.  

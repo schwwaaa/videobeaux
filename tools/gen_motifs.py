@@ -413,6 +413,9 @@ motif("c_lens", "media", "Bowed grid, straightened", "A grid that bows out at th
 motif("c_crisp", "media", "Crisp edge", "Soft edges are sharpened so the outline snaps into focus.",
       ["sharpen"],
       P("M2 24H22L26 10L30 24H62", D, 2.4) + P("M2 27H22L26 19L30 27H62", L, 1.2, "2 2"))
+motif("c_pattern", "media", "Colour bars", "Makes a picture from nothing: a solid colour, a bar pattern or a test card.",
+      ["color_pattern"],
+      "".join(R(3 + 9 * i, 6, 8, 20, c, 1) for i, c in enumerate([D, L, M, D, L, M])) + P("M3 30H59", D, 2))
 motif("s_duck", "speech", "Music ducking", "The music line dips wherever the voice speaks.",
       ["audio_duck"],
       P("M2 8H20Q24 8 24 14T28 14H36Q40 14 40 8H62", L, 1.8, "3 2") + R(8, 18, 4, 8, D, 1.2) +

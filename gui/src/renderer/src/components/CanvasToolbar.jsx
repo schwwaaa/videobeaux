@@ -110,8 +110,10 @@ export default function CanvasToolbar({ width, isRunning, canUndo, canRedo, onUn
           )}
         </div>
       )}
-      <button onClick={() => setHidden(true)} title="Hide the toolbar" aria-label="Hide toolbar"
-              style={{ background: 'transparent', border: 'none', color: 'var(--muted-dim)', fontSize: 14, padding: '0 4px', cursor: 'pointer', flexShrink: 0 }}>
+      <button onClick={() => setHidden(true)} title="Hide the toolbar" aria-label="Hide toolbar" {...press}
+              style={{ background: 'var(--paper)', color: 'var(--ink)', width: 34, height: 34, padding: 0, borderRadius: 'var(--radius-sm)',
+                       border: 'var(--border)', boxShadow: 'var(--shadow-sm)', fontFamily: 'var(--font-display)', fontSize: 16, lineHeight: 1,
+                       cursor: 'pointer', flexShrink: 0 }}>
         ◂
       </button>
     </div>

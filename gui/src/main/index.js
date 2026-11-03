@@ -275,7 +275,10 @@ app.whenReady().then(async () => {
     ipcMain.handle('bugReport:create', async (_, payload = {}) => {             // BUG-REPORT
       let screenshotPng = null                                                  // BUG-REPORT
       if (payload.captureScreenshot) {                                          // BUG-REPORT
-        try { screenshotPng = (await win.webContents.capturePage()).toPNG() } catch { /* report without it */ }   // BUG-REPORT
+        // The canvas only, when the renderer sent its rectangle; otherwise the whole window.   // BUG-REPORT
+        const r = payload.canvasRect                                                            // BUG-REPORT
+        const rect = r && r.width > 0 && r.height > 0 ? { x: r.x, y: r.y, width: r.width, height: r.height } : undefined   // BUG-REPORT
+        try { screenshotPng = (await win.webContents.capturePage(rect)).toPNG() } catch { /* report without it */ }   // BUG-REPORT
       }                                                                         // BUG-REPORT
       const files = buildReportFiles({                                          // BUG-REPORT
         description: payload.description, includeLog: !!payload.includeLog, logText: payload.logText,     // BUG-REPORT
@@ -1131,14 +1134,14 @@ app.whenReady().then(async () => {
   }
 
   function buildArgs(t, dest, resolveFn) {
-    const args = [
-      '-m', 'videobeaux.cli',
-      '-P', t.program,
-      '-i', resolveFn(t.primaryInput, `${t.program} main input`),
+    const args = ['-m', 'videobeaux.cli', '-P', t.program]
+    // A source program (Color & Pattern) makes its own picture, so it is run without an input video.
+    if (t.primaryInput) args.push('-i', resolveFn(t.primaryInput, `${t.program} main input`))
+    args.push(
       '-o', dest,
       '-F'  // always overwrite temp + final output — a pre-flight confirm
             // (run:confirmOverwrite) already gated whether we got here at all
-    ]
+    )
 
     // Extra video inputs (e.g. stack_2x's --input2), each resolved from an
     // upstream node's output or a manually picked literal path. Validation
@@ -1241,7 +1244,7 @@ app.whenReady().then(async () => {
           }
         } else {
           // ── Case C: consumes a batch — run once per item ─────────────────
-          const items = outputs.get(t.primaryInput.nodeId)
+          const items = outputs.get(t.primaryInput?.nodeId)
 
           if (isFinal) {
             batchOutDir = batchDirFor(outputPath)
@@ -1250,7 +1253,7 @@ app.whenReady().then(async () => {
           }
 
           const itemResolve = (item) => (ref, what) => {
-            if (ref.source === 'node' && ref.nodeId === t.primaryInput.nodeId) return item
+            if (ref.source === 'node' && ref.nodeId === t.primaryInput?.nodeId) return item
             return resolve(ref, what)
           }
 

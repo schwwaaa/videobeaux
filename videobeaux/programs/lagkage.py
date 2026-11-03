@@ -1,7 +1,9 @@
 # videobeaux/programs/lagkage.py
 #
-# Compose multiple visual layers (images/gifs/videos) on top of a base video
-# using a single JSON layout file.
+# Compose multiple visual layers (images/gifs/videos/text) on top of a base video using a single JSON layout file.
+#
+# Each layer can have a time window (start/end: when it appears and goes away), and can spin and wobble (degrees per
+# second, and a swing in degrees with a period). Text layers are drawn to a picture first, then placed like an image.
 #
 # GIF layers are preprocessed into finite-length videos that loop for roughly
 # the base video duration, so the main overlay graph stays simple and stable.
@@ -14,7 +16,12 @@ import tempfile
 import math
 from pathlib import Path
 
+from PIL import Image
+
+from videobeaux.programs.text_overlay import _render_title
 from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
+
+STILL_EXT = {".png", ".jpg", ".jpeg", ".webp", ".bmp", ".tif", ".tiff"}
 
 
 GUI_METADATA = {
@@ -22,7 +29,7 @@ GUI_METADATA = {
         'layout-json': {
             'type': 'file', 'label': 'Layout JSON',
             'help': 'The layout file. Press ✎ to design it visually (drag images / GIFs / videos onto a stand-in for '
-                    'your video), or browse to an existing JSON.',
+                    'your video, or add text), or browse to an existing JSON.',
         },
         'audio-src': {'type': 'file', 'label': 'External audio', 'help': 'Used when Audio Mode = external.'},
     }
@@ -307,6 +314,52 @@ def _resolve_sequence(layout: dict, cli_seq: str):
     return seq, layers
 
 
+def _motion(layer):
+    """Spin (degrees per second), wobble (degrees either side of upright) and wobble period (seconds) of a layer."""
+    spin = float(layer.get("spin", 0.0) or 0.0)
+    wobble = float(layer.get("wobble", 0.0) or 0.0)
+    period = max(0.1, float(layer.get("wobble_period", 2.0) or 2.0))
+    return spin, wobble, period
+
+
+def _is_animated(layer) -> bool:
+    spin, wobble, _ = _motion(layer)
+    return spin != 0.0 or wobble != 0.0
+
+
+def _enable_expr(start: float, end: float) -> str:
+    """The overlay's enable option for a layer's time window. end 0 means it stays to the end of the video."""
+    if end > start:
+        return f":enable='between(t,{start:.3f},{end:.3f})'"
+    if start > 0:
+        return f":enable='gte(t,{start:.3f})'"
+    return ""
+
+
+def _render_text_layer(layer: dict, base_w: int, base_h: int, tmp_dir: Path, idx: int) -> str:
+    """
+    Draw a text layer as a transparent PNG the size of its box (size = % of the video's width, height_pct = % of its
+    height). The text is sized by text_size (% of the video's height), wrapped to the box, and centred in it.
+    """
+    text = str(layer.get("text") or "").strip("\n")
+    if not text.strip():
+        raise ValueError(f"A text layer has no text: {layer}")
+    box_w = _even(max(2, round(base_w * float(layer.get("size", 40.0) or 40.0) / 100.0)))
+    box_h = _even(max(2, round(base_h * float(layer.get("height_pct", 12.0) or 12.0) / 100.0)))
+    px = max(4, round(base_h * float(layer.get("text_size", 6.0) or 6.0) / 100.0))
+
+    tmp_dir.mkdir(parents=True, exist_ok=True)
+    block = tmp_dir / f"text_{idx:03d}_block.png"
+    _render_title(text, layer.get("font") or "Arial", px, layer.get("color") or "#FFFFFF",
+                  layer.get("outline_color") or "#000000", box_w, box_h, block)
+    piece = Image.open(block).convert("RGBA")
+    canvas = Image.new("RGBA", (box_w, box_h), (0, 0, 0, 0))
+    canvas.paste(piece, ((box_w - piece.width) // 2, (box_h - piece.height) // 2), piece)
+    out = tmp_dir / f"text_{idx:03d}.png"
+    canvas.save(out)
+    return str(out)
+
+
 # ----------------- main entry -----------------
 
 
@@ -336,26 +389,35 @@ def run(args):
     tmp_dir = Path(tempfile.mkdtemp(prefix="lagkage_gifs_"))
 
     input_files = [base_input]  # index 0 = base
+    input_opts = [[]]           # extra ffmpeg flags for each input, placed before its -i
     overlay_specs = []          # (input_index, layer_dict, src_w, src_h)
     overlay_audio_indices = []  # which overlay inputs actually have audio
     audio_vol_db_by_index = {}  # per-input gain in dB
 
     for idx, layer in enumerate(ordered_layers, start=1):
-        filename = layer.get("filename")
-        if not filename:
-            raise ValueError(f"Layer missing 'filename': {layer}")
-
-        src = _resolve_layer_path(filename, layout_path)
         layer_type = (layer.get("type") or "").lower()
 
-        if layer_type == "gif":
-            overlay_src = _preprocess_gif(src, base_duration, tmp_dir, idx)
+        if layer_type == "text":
+            overlay_src = _render_text_layer(layer, base_w, base_h, tmp_dir, idx)
         else:
-            overlay_src = src
+            filename = layer.get("filename")
+            if not filename:
+                raise ValueError(f"Layer missing 'filename': {layer}")
+
+            src = _resolve_layer_path(filename, layout_path)
+
+            if layer_type == "gif":
+                overlay_src = _preprocess_gif(src, base_duration, tmp_dir, idx)
+            else:
+                overlay_src = src
 
         src_w, src_h = _probe_video_size(overlay_src)
 
         input_files.append(overlay_src)
+        # A still picture is one frame. One that turns or wobbles is looped for the length of the base video, so the
+        # rotation has a clock. A still that stays put, and a video or GIF, need nothing.
+        still = layer_type == "text" or Path(overlay_src).suffix.lower() in STILL_EXT
+        input_opts.append(["-loop", "1", "-t", f"{base_duration:.3f}"] if still and _is_animated(layer) else [])
         in_index = len(input_files) - 1
         overlay_specs.append((in_index, layer, src_w, src_h))
 
@@ -388,6 +450,7 @@ def run(args):
         else:
             audio_src_resolved = audio_src
         input_files.append(audio_src_resolved)
+        input_opts.append([])
         external_audio_index = len(input_files) - 1
 
     # figure out which indices feed audio mix
@@ -428,7 +491,11 @@ def run(args):
         pad = _even(int(math.ceil(blur_sigma * 3))) if blur_sigma > 0.05 else 0
         rot_deg = float(layer.get("rotate", 0.0) or 0.0)
         lay_w, lay_h = box_w + 2 * pad, box_h + 2 * pad          # box plus blur margin
-        if abs(rot_deg) % 360 > 0.01:
+        animated = _is_animated(layer)
+        if animated:
+            # A layer that spins or wobbles can point any way, so its canvas is a square that fits the box on the diagonal.
+            out_w = out_h = _even(int(math.ceil(math.hypot(lay_w, lay_h))))
+        elif abs(rot_deg) % 360 > 0.01:
             a = math.radians(rot_deg)
             out_w = _even(int(math.ceil(abs(lay_w * math.cos(a)) + abs(lay_h * math.sin(a)))))
             out_h = _even(int(math.ceil(abs(lay_w * math.sin(a)) + abs(lay_h * math.cos(a)))))
@@ -457,6 +524,10 @@ def run(args):
         next_label = f"[tmp{idx}]"
 
         layer_filters = []
+        start = max(0.0, float(layer.get("start", 0.0) or 0.0))
+        end = max(0.0, float(layer.get("end", 0.0) or 0.0))
+        if start > 0:
+            layer_filters.append(f"setpts=PTS+{start:.3f}/TB")     # the layer's first frame lands at its start time
 
         # optional crop (percent of source BEFORE zoom/scale)
         cx = layer.get("crop_x")
@@ -498,7 +569,12 @@ def run(args):
         if pad:
             layer_filters.append(f"pad={lay_w}:{lay_h}:{pad}:{pad}:color=0x00000000")
             layer_filters.append(f"gblur=sigma={blur_sigma:.2f}")
-        if (out_w, out_h) != (lay_w, lay_h) or abs(rot_deg) % 360 > 0.01:
+        if animated:
+            # Angle in degrees: the layer's own tilt, plus its spin, plus the wobble, all counted from its start time.
+            spin, wobble, period = _motion(layer)
+            angle = f"({rot_deg}+{spin}*(t-{start})+{wobble}*sin(2*PI*(t-{start})/{period}))*PI/180"
+            layer_filters.append(f"rotate={angle}:ow={out_w}:oh={out_h}:c=0x00000000")
+        elif (out_w, out_h) != (lay_w, lay_h) or abs(rot_deg) % 360 > 0.01:
             layer_filters.append(
                 f"rotate={math.radians(rot_deg):.6f}:ow={out_w}:oh={out_h}:c=0x00000000"
             )
@@ -509,7 +585,7 @@ def run(args):
         # overlay
         filter_parts.append(
             f"{current_label}{layer_label}"
-            f"overlay=x={x_expr}-{shift_x}:y={y_expr}-{shift_y}:format=auto"
+            f"overlay=x={x_expr}-{shift_x}:y={y_expr}-{shift_y}:format=auto{_enable_expr(start, end)}"
             f"{next_label}"
         )
 
@@ -559,8 +635,8 @@ def run(args):
     # 4) Build main ffmpeg command
     command = ["ffmpeg", "-hide_banner", "-loglevel", "error"]
 
-    for path in input_files:
-        command.extend(["-i", path])
+    for opts, path in zip(input_opts, input_files):
+        command.extend([*opts, "-i", path])
 
     command.extend(["-filter_complex", filter_complex, "-map", out_v_label])
 
@@ -605,6 +681,8 @@ def run(args):
     if audio_mode != "none":
         command.extend(["-c:a", "aac"])
 
+    # The output is the base video's length: a layer that starts late is shifted, and must not extend it.
+    command.extend(["-t", f"{base_duration:.3f}"])
     command.append(args.output)
 
     final_cmd = (command[:1] + ["-y"] + command[1:]) if args.force else command

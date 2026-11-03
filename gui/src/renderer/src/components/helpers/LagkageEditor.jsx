@@ -8,8 +8,15 @@ import { lockModal } from '../../useModalLock'
  * video, so a layout works at any resolution.
  *
  * Layers can be moved, resized freely (corners keep the aspect ratio, Shift or the edge handles stretch),
- * rotated, blurred; files can be dropped on the canvas; arrow keys nudge the selected layer.
+ * rotated, blurred; files can be dropped on the canvas; arrow keys nudge the selected layer. Text layers are typed
+ * in the side panel. Every layer can appear and go away at set times, and spin or wobble.
  */
+
+// Outline for the text preview: four shadows, a little less than a twelfth of the font size out.
+const outlineShadow = (c, px) => {
+  const s = Math.max(1, px * 0.08).toFixed(1)
+  return [`-${s}px -${s}px 0 ${c}`, `${s}px -${s}px 0 ${c}`, `-${s}px ${s}px 0 ${c}`, `${s}px ${s}px 0 ${c}`].join(', ')
+}
 
 const ASPECTS = { '16:9': [16, 9], '9:16': [9, 16], '1:1': [1, 1], '4:3': [4, 3], '21:9': [21, 9] }
 const REF_W = 1920                                  // only used to write readable pixel positions
@@ -90,9 +97,22 @@ export default function LagkageEditor({ value, onChange, onClose, nodeId }) {
     const w = extra.w ?? 25
     return {
       id: ++uid, name: extra.name || baseName(filename).replace(/\.[^.]+$/, ''), filename, type, ar, dataUrl,
-      x: 10, y: 10, w, h: extra.h ?? (w / ar) * ratio, lock: true, rotation: 0, blur: 0, opacity: 1, zoom: 1, raw: {}, ...extra
+      x: 10, y: 10, w, h: extra.h ?? (w / ar) * ratio, lock: true, rotation: 0, blur: 0, opacity: 1, zoom: 1, raw: {},
+      start: 0, end: 0, spin: 0, wobble: 0, wobblePeriod: 2, ...extra
     }
   }, [stageRatio])
+
+  // A text layer is drawn by lagkage (there is no file): its box is where and how big it is placed, and the text is centred in it.
+  const textLayer = (extra) => ({
+    id: ++uid, name: 'Text', type: 'text', filename: '', ar: 1, dataUrl: null,
+    x: 10, y: 10, w: 40, h: 12, lock: false, rotation: 0, blur: 0, opacity: 1, zoom: 1, raw: {},
+    start: 0, end: 0, spin: 0, wobble: 0, wobblePeriod: 2,
+    text: 'Title', font: 'Arial', color: '#FFFFFF', outline: '#000000', textSize: 8, ...extra
+  })
+  const motionOf = (L) => ({
+    start: Number(L.start ?? 0), end: Number(L.end ?? 0), spin: Number(L.spin ?? 0),
+    wobble: Number(L.wobble ?? 0), wobblePeriod: Number(L.wobble_period ?? 2)
+  })
 
   const loadJson = useCallback(async (jsonPath) => {
     const text = await window.electronAPI.readLayout(jsonPath)
@@ -104,15 +124,25 @@ export default function LagkageEditor({ value, onChange, onClose, nodeId }) {
     const refRatio = a / b
     const out = []
     for (const L of [...(data.layers || [])].sort((p, q) => (p.layer_number || 0) - (q.layer_number || 0))) {
-      if (!L.filename) continue
+      const isText = (L.type || '').toLowerCase() === 'text'
+      if (!L.filename && !isText) continue
       const w = Number(L.size ?? 100)
-      const layer = await makeLayer(L.filename, {
-        name: L.name, type: (L.type || '').toLowerCase() || undefined, w,
-        opacity: Number(L.opacity ?? 1), zoom: Number(L.zoom ?? 1), rotation: Number(L.rotate ?? 0), blur: Number(L.blur ?? 0), raw: L
-      }, jsonPath, refRatio)
-      if (L.height_pct != null) {
-        layer.h = Number(L.height_pct)
-        layer.lock = Math.abs(layer.h - (w / layer.ar) * refRatio) < 0.5      // stretched layouts open unlocked
+      const common = {
+        name: L.name, w, opacity: Number(L.opacity ?? 1), zoom: Number(L.zoom ?? 1), rotation: Number(L.rotate ?? 0),
+        blur: Number(L.blur ?? 0), raw: L, ...motionOf(L)
+      }
+      let layer
+      if (isText) {
+        layer = textLayer({
+          ...common, h: Number(L.height_pct ?? 12), text: L.text ?? '', font: L.font ?? 'Arial',
+          color: L.color ?? '#FFFFFF', outline: L.outline_color ?? '#000000', textSize: Number(L.text_size ?? 8)
+        })
+      } else {
+        layer = await makeLayer(L.filename, { ...common, type: (L.type || '').toLowerCase() || undefined }, jsonPath, refRatio)
+        if (L.height_pct != null) {
+          layer.h = Number(L.height_pct)
+          layer.lock = Math.abs(layer.h - (w / layer.ar) * refRatio) < 0.5      // stretched layouts open unlocked
+        }
       }
       const wPct = w, hPct = layer.h
       if ('pos_x_pct' in L || 'pos_y_pct' in L) { layer.x = Number(L.pos_x_pct ?? 0); layer.y = Number(L.pos_y_pct ?? 0) }
@@ -152,6 +182,12 @@ export default function LagkageEditor({ value, onChange, onClose, nodeId }) {
     setSelId(made[made.length - 1].id)
   }
 
+  const addText = () => {
+    const layer = textLayer({ x: 30, y: 40, w: 40, h: 12 })
+    setLayers(ls => [...ls, layer])
+    setSelId(layer.id)
+  }
+
   const addLayer = async () => {
     const picked = await window.electronAPI.openFile([
       { name: 'Images, GIFs and videos', extensions: [...MEDIA_EXT] }, { name: 'All Files', extensions: ['*'] }])
@@ -188,15 +224,25 @@ export default function LagkageEditor({ value, onChange, onClose, nodeId }) {
     layers: layers.map((l, i) => {
       const { place, ...rest } = l.raw || {}
       const out = {
-        ...rest, layer_number: i + 1, name: l.name, filename: l.filename, type: l.type, mode: 'free',
+        ...rest, layer_number: i + 1, name: l.name, type: l.type, mode: 'free',
         pos_x_pct: round(l.x), pos_y_pct: round(l.y),
         pos_x: Math.round((l.x / 100) * REF_W), pos_y: Math.round((l.y / 100) * (REF_W / stageRatio)),
         size: round(l.w), height_pct: round(l.h), opacity: round(l.opacity)
       }
-      for (const k of ['zoom', 'rotate', 'blur']) delete out[k]
+      if (l.type === 'text') {
+        Object.assign(out, { text: l.text, font: l.font, color: l.color, outline_color: l.outline, text_size: round(l.textSize, 2) })
+        delete out.filename
+      } else {
+        out.filename = l.filename
+      }
+      for (const k of ['zoom', 'rotate', 'blur', 'start', 'end', 'spin', 'wobble', 'wobble_period']) delete out[k]
       if (l.zoom > 1) out.zoom = round(l.zoom)
       if (Math.abs(l.rotation) > 0.01) out.rotate = round(l.rotation, 1)
       if (l.blur > 0.01) out.blur = round(l.blur, 2)
+      if (l.start > 0) out.start = round(l.start, 2)
+      if (l.end > 0) out.end = round(l.end, 2)
+      if (Math.abs(l.spin) > 0.01) out.spin = round(l.spin, 1)
+      if (Math.abs(l.wobble) > 0.01) { out.wobble = round(l.wobble, 1); out.wobble_period = round(l.wobblePeriod, 2) }
       return out
     })
   })
@@ -371,7 +417,12 @@ export default function LagkageEditor({ value, onChange, onClose, nodeId }) {
                                 outline: selected ? '2px solid var(--yellow)' : '1px dashed rgba(255,255,255,0.45)', outlineOffset: 1 }}>
                     <div style={{ width: '100%', height: '100%', overflow: 'hidden', pointerEvents: 'none',
                                   filter: l.blur > 0 ? `blur(${(stage.w * l.blur) / 100}px)` : 'none' }}>
-                      {l.dataUrl
+                      {l.type === 'text'
+                        ? <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                        textAlign: 'center', whiteSpace: 'pre-wrap', overflow: 'hidden', color: l.color, fontFamily: l.font,
+                                        fontWeight: 700, lineHeight: 1.2, fontSize: (stage.h * l.textSize) / 100,
+                                        textShadow: outlineShadow(l.outline, (stage.h * l.textSize) / 100) }}>{l.text}</div>
+                        : l.dataUrl
                         ? <img src={l.dataUrl} alt="" draggable={false}
                                style={{ width: '100%', height: '100%', display: 'block', objectFit: 'fill', transform: `scale(${l.zoom})` }} />
                         : <div style={{ width: '100%', height: '100%', background: 'rgba(50,185,223,0.55)', color: '#080808', display: 'flex',
@@ -408,6 +459,7 @@ export default function LagkageEditor({ value, onChange, onClose, nodeId }) {
           <div style={{ width: 300, borderLeft: 'var(--border)', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
             <div style={{ padding: 8, borderBottom: '2px solid var(--ink)' }}>
               <button style={{ ...btn, width: '100%', background: 'var(--lime-bright)', color: '#080808' }} onClick={addLayer}>＋ Add layer (image / GIF / video)</button>
+              <button style={{ ...btn, width: '100%', marginTop: 6, background: 'var(--lime-bright)', color: '#080808' }} onClick={addText}>＋ Add text</button>
             </div>
             <div style={{ flex: 1, overflow: 'auto', minHeight: 80 }}>
               {[...layers].reverse().map(l => {
@@ -419,7 +471,7 @@ export default function LagkageEditor({ value, onChange, onClose, nodeId }) {
                                 borderBottom: '1px solid var(--gray)' }}>
                     <span style={{ opacity: 0.6, width: 14 }}>{idx + 1}</span>
                     <span style={{ flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      {l.type === 'video' ? '🎞 ' : l.type === 'gif' ? '✨ ' : '🖼 '}{l.name}
+                      {l.type === 'text' ? 'T ' : l.type === 'video' ? '🎞 ' : l.type === 'gif' ? '✨ ' : '🖼 '}{l.name}
                     </span>
                     <button style={{ ...btn, padding: '0 5px', fontSize: 10 }} title="Bring forward" onClick={e => { e.stopPropagation(); move(l.id, 1) }}>▲</button>
                     <button style={{ ...btn, padding: '0 5px', fontSize: 10 }} title="Send back" onClick={e => { e.stopPropagation(); move(l.id, -1) }}>▼</button>
@@ -432,6 +484,26 @@ export default function LagkageEditor({ value, onChange, onClose, nodeId }) {
             {sel && (
               <div style={{ borderTop: '2px solid var(--ink)', padding: 8, display: 'flex', flexDirection: 'column', gap: 6, overflow: 'auto', maxHeight: '62%' }}>
                 <div><div style={label}>Name</div><input className="nodrag" style={field} value={sel.name} onChange={e => update(sel.id, { name: e.target.value })} /></div>
+                {sel.type === 'text' && (
+                  <>
+                    <div><div style={label}>Text</div>
+                      <textarea className="nodrag" rows={3} style={{ ...field, resize: 'vertical' }} value={sel.text}
+                                onChange={e => update(sel.id, { text: e.target.value })} /></div>
+                    <div style={{ display: 'flex', gap: 6, alignItems: 'flex-end' }}>
+                      <div style={{ flex: 1 }}><div style={label}>Font</div>
+                        <input className="nodrag" style={field} value={sel.font} onChange={e => update(sel.id, { font: e.target.value })} /></div>
+                      <div><div style={label}>Colour</div>
+                        <input className="nodrag" type="color" value={sel.color} style={{ ...field, width: 40, padding: 1 }}
+                               onChange={e => update(sel.id, { color: e.target.value })} /></div>
+                      <div><div style={label}>Outline</div>
+                        <input className="nodrag" type="color" value={sel.outline} style={{ ...field, width: 40, padding: 1 }}
+                               onChange={e => update(sel.id, { outline: e.target.value })} /></div>
+                    </div>
+                    <div><div style={label}>Text size {round(sel.textSize, 1)}% of the video's height</div>
+                      <input className="nodrag" type="range" min={1} max={30} step={0.1} value={sel.textSize} style={slider}
+                             onChange={e => update(sel.id, { textSize: Number(e.target.value) })} onPointerUp={blurOnRelease} /></div>
+                  </>
+                )}
                 <div style={{ display: 'flex', gap: 6, alignItems: 'flex-end' }}>
                   <div style={{ flex: 1 }}><div style={label}>Width %</div>
                     <input className="nodrag" type="number" step={0.5} style={field} value={round(sel.w, 1)} onChange={e => setW(sel, Math.max(1, Number(e.target.value)))} /></div>
@@ -460,6 +532,23 @@ export default function LagkageEditor({ value, onChange, onClose, nodeId }) {
                   <div style={{ flex: 1 }}><div style={label}>Y %</div>
                     <input className="nodrag" type="number" step={0.5} style={field} value={round(sel.y, 1)} onChange={e => update(sel.id, { y: Number(e.target.value) })} /></div>
                 </div>
+                <div style={{ display: 'flex', gap: 6 }}>
+                  <div style={{ flex: 1 }}><div style={label}>Appears at (s)</div>
+                    <input className="nodrag" type="number" min={0} step={0.1} style={field} value={sel.start}
+                           onChange={e => update(sel.id, { start: Math.max(0, Number(e.target.value)) })} /></div>
+                  <div style={{ flex: 1 }}><div style={label}>Goes away at (s, 0 = end)</div>
+                    <input className="nodrag" type="number" min={0} step={0.1} style={field} value={sel.end}
+                           onChange={e => update(sel.id, { end: Math.max(0, Number(e.target.value)) })} /></div>
+                </div>
+                <div><div style={label}>Spin {Math.round(sel.spin)}°/s</div>
+                  <input className="nodrag" type="range" min={-360} max={360} step={1} value={sel.spin} style={slider}
+                         onChange={e => update(sel.id, { spin: Number(e.target.value) })} onPointerUp={blurOnRelease} /></div>
+                <div><div style={label}>Wobble {Math.round(sel.wobble)}° each side</div>
+                  <input className="nodrag" type="range" min={0} max={180} step={1} value={sel.wobble} style={slider}
+                         onChange={e => update(sel.id, { wobble: Number(e.target.value) })} onPointerUp={blurOnRelease} /></div>
+                <div><div style={label}>Wobble period {round(sel.wobblePeriod, 1)} s</div>
+                  <input className="nodrag" type="range" min={0.5} max={10} step={0.1} value={sel.wobblePeriod} style={slider}
+                         onChange={e => update(sel.id, { wobblePeriod: Number(e.target.value) })} onPointerUp={blurOnRelease} /></div>
                 <div>
                   <div style={label}>Snap to</div>
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 30px)', gap: 3 }}>
@@ -467,7 +556,7 @@ export default function LagkageEditor({ value, onChange, onClose, nodeId }) {
                   </div>
                 </div>
                 <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                  <button style={btn} onClick={() => resetShape(sel)} title="Back to the picture's own shape, unrotated">Reset shape</button>
+                  {sel.type !== 'text' && <button style={btn} onClick={() => resetShape(sel)} title="Back to the picture's own shape, unrotated">Reset shape</button>}
                   <button style={btn} onClick={() => duplicate(sel)}>Duplicate</button>
                   <button style={{ ...btn, background: 'var(--coral)', color: '#080808' }} onClick={() => removeLayer(sel.id)}>Delete</button>
                 </div>

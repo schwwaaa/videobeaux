@@ -54,8 +54,9 @@ It gives direct control over **how** the aspect ratio is treated: padded, stretc
 
 ## Arguments
 
-- **output-format** — Required. Output file format/extension (e.g., `mp4`, `mov`). If the `-o` path has a different suffix, it is replaced with this.  
-- **preset** — Required. Named dimension preset (e.g., `1080p`, `square1080`, `instagram_reels`, `tiktok_video`, `ultrawide1440`, etc.). Each maps to a specific width/height.  
+- **output-format** — Optional. Output file format/extension (e.g., `mp4`, `mov`). If set, the `-o` path's suffix is replaced with it. If left out, the `-o` path's own extension is used, or `.mp4` when it has none.  
+- **preset** — Named dimension preset (e.g., `1080p`, `square1080`, `instagram_reels`, `tiktok_video`, `ultrawide1440`, etc.), or `custom` to use **width** and **height**. Default `1080p`. In the app, picking a preset fills in the width and height fields.  
+- **width**, **height** — Custom size in pixels. When both are given they override **preset**. Odd numbers are rounded down to even, because video needs even sizes.  
 - **mode** — Aspect-ratio handling mode:
   - `pad` – maintain AR, fit inside target, pad with color.  
   - `fit` – maintain AR, fit inside target, no padding.  

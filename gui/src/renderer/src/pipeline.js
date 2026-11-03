@@ -9,6 +9,14 @@ export function videoArgsOf(prog) {
   return (prog?.args || []).filter(a => a.type === 'file' && a.subtype === 'video')
 }
 
+/**
+ * The args to write when one field changes. A select can carry `fills`: picking one of its choices also sets the other
+ * fields it names (picking a size preset fills in width and height). A choice with no entry changes only that field.
+ */
+export function argPatch(arg, value) {
+  return { [arg.name]: value, ...(arg.fills?.[value] || {}) }
+}
+
 // Synthetic key for a node's default/unnamed target handle (the "main"
 // video input every effect/output node has).
 const PRIMARY = '__primary__'
@@ -100,10 +108,10 @@ export function buildPipeline(nodes, edges, programMap) {
       const prog = programMap?.[n.data.program]
       if (!prog) throw new Error(`Unknown program "${n.data.program}".`)
 
-      // Primary input has no arg fallback — it must be a graph connection.
+      // Primary input has no arg fallback — it must be a graph connection, unless the program makes its own picture (a source).
       const pEdge = slot.get(PRIMARY)
-      if (!pEdge) throw new Error(`${describe(n)}: main video input is not connected.`)
-      const primaryInput = { source: 'node', nodeId: pEdge.source }
+      if (!pEdge && !prog.source) throw new Error(`${describe(n)}: main video input is not connected.`)
+      const primaryInput = pEdge ? { source: 'node', nodeId: pEdge.source } : null
 
       // Extra video inputs — edge wins, else a manually picked literal path.
       const vArgs = videoArgsOf(prog)
@@ -203,7 +211,7 @@ export function buildPipeline(nodes, edges, programMap) {
   // earlier in the array.
   const batchProducerIds = new Set(Object.keys(batchSources))
   for (const t of tasks) {
-    t.consumesBatch = batchProducerIds.has(t.primaryInput.nodeId)
+    t.consumesBatch = !!t.primaryInput && batchProducerIds.has(t.primaryInput.nodeId)
     t.producesBatch = !!programMap?.[t.program]?.batchOutput || t.consumesBatch
     if (t.producesBatch) batchProducerIds.add(t.nodeId)
   }

@@ -25,7 +25,9 @@ export default function HelpWindow({ onClose, logText, canvasJson }) {   // logT
   }, [onClose])
 
   return createPortal(
-    <div style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(8,8,8,0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}
+    // no-drag: the header is a window drag area, and the close ✕ sits over it on a tall window, so clicks there were
+    // taken as window drags. This layer is no-drag all the way down, so the ✕ works.
+    <div style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(8,8,8,0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, WebkitAppRegion: 'no-drag' }}
          onMouseDown={e => { if (e.target === e.currentTarget) onClose() }}>
       <div role="dialog" aria-label="Help" style={{ width: 'min(680px, 100%)', maxHeight: '100%', display: 'flex', flexDirection: 'column', background: 'var(--paper)',
                                                    color: 'var(--ink)', border: 'var(--border)', borderRadius: 'var(--radius)', boxShadow: 'var(--shadow)', overflow: 'hidden' }}>
@@ -36,6 +38,9 @@ export default function HelpWindow({ onClose, logText, canvasJson }) {   // logT
           <button onClick={onClose} title="Close (Esc)" style={{ padding: '2px 9px' }}>✕</button>
         </div>
         <div style={{ overflowY: 'auto', padding: '6px 18px 18px', fontSize: 13, lineHeight: 1.55 }}>
+          <div style={{ marginTop: 10, paddingBottom: 12, borderBottom: '2px dashed var(--gray)' }}>{/* BUG-REPORT */}
+            <BugReportButton logText={logText} canvasJson={canvasJson} />{/* BUG-REPORT */}
+          </div>{/* BUG-REPORT */}
           {HELP_SECTIONS.map(sec => (
             <section key={sec.title} style={{ marginTop: 14 }}>
               <h3 style={{ fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 6px', color: 'var(--purple)' }}>{sec.title}</h3>
@@ -61,9 +66,6 @@ export default function HelpWindow({ onClose, logText, canvasJson }) {   // logT
               )}
             </section>
           ))}
-          <div style={{ marginTop: 18, paddingTop: 12, borderTop: '2px dashed var(--gray)' }}>{/* BUG-REPORT */}
-            <BugReportButton logText={logText} canvasJson={canvasJson} />{/* BUG-REPORT */}
-          </div>{/* BUG-REPORT */}
         </div>
       </div>
     </div>,

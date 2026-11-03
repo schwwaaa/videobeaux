@@ -346,3 +346,6 @@ select option { background: var(--paper); }
   border: 2px solid var(--ink); border-radius: 8px; box-shadow: var(--shadow-sm);
   padding: 5px 9px; font-family: var(--font); font-size: 12px; line-height: 1.35; white-space: pre-line;
 }
+
+/* BUG-REPORT: while the bug report takes its screenshot, the Help window steps aside so only the canvas is in the picture. */
+[data-bug-capture] div:has(> [role="dialog"][aria-label="Help"]) { visibility: hidden; }

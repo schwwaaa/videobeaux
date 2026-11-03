@@ -34,6 +34,12 @@ videobeaux -P stack_2x \
 ## Arguments
 
 - **input2** — Path to the second video file to place beneath the primary input.
+- **duration** — Which video sets the length of the output: `Longest` (default; the shorter one holds its last frame), `Top video`, or `Bottom video` (the output stops when that video stops, and the other is cut to match).
+- **audio** — Which sound is kept: `Top video`, `Bottom video`, `Mix both` (the two played together at equal level), or `Silent`.
+- **fit** — How the bottom video is fitted to the top one's width: keep the whole picture with bars, fill and crop, or stretch.
+- **gap** — Black gap between the two videos, in pixels.
+
+**Speed:** the encode is the slow part. A large top video makes a tall, large output: a 4K 60 fps top clip plus a 720p bottom ran at about 0.7× realtime on a test Mac, while 1080p and 720p ran at 4–5×.
 
 ## Real World Example
 ```bash

@@ -235,7 +235,7 @@ for prog_name in program_names:
 
         for schema in parser._captured:
             if schema['name'] in meta_args:
-                for key in ('type', 'subtype', 'label', 'help', 'default', 'choices', 'min', 'max', 'step', 'free', 'good_min', 'good_max', 'show_if', 'hidden', 'scale', 'slider_min', 'slider_max'):
+                for key in ('type', 'subtype', 'label', 'help', 'default', 'choices', 'min', 'max', 'step', 'free', 'good_min', 'good_max', 'show_if', 'hidden', 'scale', 'slider_min', 'slider_max', 'fills'):
                     if key in meta_args[schema['name']]:
                         schema[key] = meta_args[schema['name']][key]
 
@@ -269,6 +269,8 @@ for prog_name in program_names:
         }
         if gui_meta.get('presets'):
             result[prog_name]['presets'] = gui_meta['presets']
+        if gui_meta.get('source'):                 # no input video: the program makes its own picture (see GUI_METADATA)
+            result[prog_name]['source'] = True
     except Exception as exc:
         result[prog_name] = {
             'description': '',

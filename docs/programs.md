@@ -40,7 +40,7 @@ nav_order: 3
 | speed | Change the video and audio speed of a file | speed_factor |
 | splitting | A simple segmentation utility that divides a video into evenly timed chunks or scene-based fragments for modular editing | - |
 | splitting_pro | Precise segmentation tool that slices a source video into reusable chunks based on time, count, or scene-style rules for downstream editing and recombination. | width, position |
-| stack_2x | Stack 2 videos on top of each other keeping the original- | orientation | input2 |
+| stack_2x | Stack 2 videos on top of each other. Choose which video sets the length, whose audio is kept, and how the bottom video is fitted | input2, duration, audio, fit, gap |
 | steel_wash | Apply steel blue filter to video | - |
 | stutter_pro | Apply frame stutter effect with definable parameters | stutter |
 | t1000 | Apply filter from the perspective of liquid T-1000 | - |
@@ -62,7 +62,7 @@ nav_order: 3
 | captburn | Burns subtitles, captions, or transcript text directly into the video with precise styling, timing, and layout control | caption, style, rollup_lines, words_per_line, font, font_size, bold, italic, primary, outline, outline_width, shadow, back, back_opacity, scale_x, scale_y, spacing, rotate, margin_l, margin_r, margin_v, align, border_style, x, y, move, vcodec, crf, preset |
 | chain_builder | Assembles a sequence of videobeaux program steps into a single automated workflow, chaining multiple transformations into one output | chain |
 | convert | Simple video file convert | - |
-| convert_dims | Video file dimensions converter based on industry standards  | - |
+| convert_dims | Change the size of a video: a named preset, or any width and height you type. The output format is optional | preset, width, height, mode, anchor, pad-color, scale-flags, portrait-full |
 | convert_mux | Rewraps or converts media streams while copying or re-encoding video/audio, ideal for fixing containers, codecs, or sync issues. | format, profile, vcodec, acodec, crf, bitrate, maxrate, bufsize, preset, profile_v, level, pix_fmt, gop, r, vf, tagv, abitrate, ac, ar, copy |
 | extract_frames | Extract individuals frames from a video file as PNGs | - |
 | extract_sound | Extract audio from video file | - |
@@ -79,7 +79,7 @@ nav_order: 3
 | tonemap_hdr_sdr | Converts HDR footage (PQ/HLG) to SDR using tunable tonemapping curves, preserving highlight detail and color accuracy | outfile, algo, desat, peak, dither, pix_fmt, x264_preset, crf, copy_audio |
 | transraibe | AI-based transcription tool | stt_model |
 | watermark | Watermark or general-purpose image overlay (PNG/JPG/GIF): 9-point placement or custom X/Y, scale or exact pixel sizing, opacity, spin, and a timed enable window (merges the former overlay_img_pro) | watermark, placement, margin, x_pos, y_pos, scale, width, height, opacity, spin, start, end, wm_loop, ignore_loop, video_crf, video_preset |
-| text_overlay | A simple titler: a block of text over the video with the Auto Narrate caption font and colours, placed and timed like watermark | text, font, font_size, primary_color, outline_color, placement, margin, x_pos, y_pos, opacity, start, end |
+| text_overlay | A simple titler: a block of text over the video with the Auto Narrate caption font and colours, placed and timed like watermark, with optional spin | text, font, font_size, primary_color, outline_color, placement, margin, x_pos, y_pos, opacity, spin, start, end |
 | key_composite | The second half of Remove Background: puts the subject over a new background using a matte video (View = matte from Remove Background), without matting again | matte, background, bg_color, bg_image, bg_video, view, audio, shrink, feather, crf |
 | loudness_normalize | Brings the sound to a target loudness (LUFS) with a true-peak ceiling, so quiet and loud clips come out level | target, true_peak, lra |
 | audio_denoise | Takes hiss and hum out of speech: a rumble high-pass plus an FFT denoiser | reduction, noise_floor, highpass |
@@ -90,4 +90,5 @@ nav_order: 3
 | sharpen | Crisps up soft footage: unsharp edge sharpening, or cas (adds detail where the picture is soft, little halo). Colour unchanged | mode, amount, radius |
 | audio_duck | Lowers a music bed under the clip's own speech with sidechain compression, then mixes the two | music, threshold_db, ratio, release_ms, music_db |
 | clean_plate | Removes people and cars that move through a locked-off shot, using the median empty scene | mode, sensitivity, samples, detail |
+| color_pattern | Makes a video of a solid colour, gradient, checkerboard, colour bars, test pattern or noise, for as many seconds as you set. No input video needed | pattern, color, seconds, fps, preset, width, height |
 | wipe_transitions | Creates directional wipe transitions between clips using customizable timing, edge softness, and motion orientation | input1, input2, output_format, preset, duration, offset |

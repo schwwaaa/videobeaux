@@ -7,7 +7,7 @@ so 0.1× is 0.5 · 0.5 · 0.5 · 0.8) and keeps its pitch. At very slow speeds y
 """
 import sys
 
-from videobeaux.utils.ffmpeg_operations import run_ffmpeg_with_progress
+from videobeaux.utils.ffmpeg_operations import get_video_duration, run_ffmpeg_with_progress
 from videobeaux.utils.media import ensure_audio
 
 MIN_SPEED = 0.05
@@ -84,6 +84,9 @@ def run(args):
     keep_audio = getattr(args, "audio", AUDIO_CHOICES[0]) != "Mute"
     if keep_audio and getattr(args, 'input', None):
         args.input = ensure_audio(args.input)          # audio filter graphs need an audio track
+
+    seconds = get_video_duration(args.input)
+    print(f"Speed {args.speed_factor:g}×: {seconds:.2f} s of video becomes {seconds / args.speed_factor:.2f} s", flush=True)
 
     fps = 0.0
     if getattr(args, "smooth", False) and args.speed_factor < 1.0:
